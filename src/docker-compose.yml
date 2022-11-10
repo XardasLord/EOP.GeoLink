@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  geolink.identity:
+    image: ${DOCKER_REGISTRY-}geolinkidentity
+    container_name: geolink-identity
+    build:
+      context: .
+      dockerfile: GeoLink.Identity/Dockerfile
+    ports:
+      - "7001:80"
+      - "7002:443"
+    networks:
+      - geolink
+      
+networks:
+  geolink:
+    driver: bridge

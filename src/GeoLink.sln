@@ -1,6 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoLink.Identity", "GeoLink.Identity\GeoLink.Identity.csproj", "{2B76E87C-6443-41A2-AF48-57E800726018}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32407.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoLink.Identity", "GeoLink.Identity\GeoLink.Identity.csproj", "{2B76E87C-6443-41A2-AF48-57E800726018}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{85F53B6E-251F-478F-ADEA-2C279A589F5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +17,15 @@ Global
 		{2B76E87C-6443-41A2-AF48-57E800726018}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B76E87C-6443-41A2-AF48-57E800726018}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B76E87C-6443-41A2-AF48-57E800726018}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85F53B6E-251F-478F-ADEA-2C279A589F5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85F53B6E-251F-478F-ADEA-2C279A589F5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85F53B6E-251F-478F-ADEA-2C279A589F5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85F53B6E-251F-478F-ADEA-2C279A589F5A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FEEFEDE5-2F55-45C0-B42C-170F758D98FE}
 	EndGlobalSection
 EndGlobal
