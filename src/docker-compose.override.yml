@@ -5,7 +5,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443
-      - ConnectionStrings__Identity=SERVER=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=host.docker.internal)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=XE)));uid=system;pwd=Test$$123;
+      - ConnectionStrings__Identity=Data Source=host.docker.internal:1521;User Id=system;Password=Test$$123;
     ports:
       - "443"
     volumes:

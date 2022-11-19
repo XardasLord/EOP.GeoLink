@@ -1,3 +1,6 @@
+using GeoLink.Identity.Database;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,14 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<GeoLinkDbContext>(options =>
+{
+    
+    options.UseOracle(builder.Configuration.GetConnectionString("Identity"), 
+        x => x.MigrationsHistoryTable("__EFMigrationsHistory", "IDENTITY"));
+});
+// 'Add-migration <name> -OutputDir Database\Migrations' - https://medium.com/oracledevs/using-oracle-database-with-asp-net-core-identity-3216fab69eb
 
 var app = builder.Build();
 
