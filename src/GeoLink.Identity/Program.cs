@@ -1,3 +1,4 @@
+using GeoLink.Identity.Authorization;
 using GeoLink.Identity.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,13 +11,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddGeoLinkAuthorization(builder.Configuration);
+
 builder.Services.AddDbContext<GeoLinkDbContext>(options =>
 {
-    
+    // 'Add-migration <name> -OutputDir Database\Migrations' - https://medium.com/oracledevs/using-oracle-database-with-asp-net-core-identity-3216fab69eb
     options.UseOracle(builder.Configuration.GetConnectionString("Identity"), 
         x => x.MigrationsHistoryTable("__EFMigrationsHistory", "IDENTITY"));
 });
-// 'Add-migration <name> -OutputDir Database\Migrations' - https://medium.com/oracledevs/using-oracle-database-with-asp-net-core-identity-3216fab69eb
 
 var app = builder.Build();
 
@@ -29,6 +31,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
