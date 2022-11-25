@@ -1,16 +1,16 @@
 version: '3.4'
 
 services:
-  geolink.identity:
-    image: ${DOCKER_REGISTRY-}geolinkidentity
-    container_name: geolink-identity
-    build:
-      context: .
-      dockerfile: GeoLink.Identity/Dockerfile
-    ports:
-      - "7001:443"
-    networks:
-      - geolink
+  #geolink.identity:
+  #  image: ${DOCKER_REGISTRY-}geolinkidentity
+  #  container_name: geolink-identity
+  #  build:
+  #    context: .
+  #    dockerfile: GeoLink.Identity/Dockerfile
+  #  ports:
+  #    - "7001:443"
+  #  networks:
+  #    - geolink
   
   oracle:
     image: gvenzl/oracle-xe:21.3.0

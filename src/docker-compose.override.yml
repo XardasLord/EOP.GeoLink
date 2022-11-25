@@ -1,15 +1,15 @@
 version: '3.4'
 
 services:
-  geolink.identity:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443
-      - ConnectionStrings__Identity=Data Source=host.docker.internal:1521;User Id=system;Password=Test$$123;
-    ports:
-      - "443"
-    volumes:
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  #geolink.identity:
+  #  environment:
+  #    - ASPNETCORE_ENVIRONMENT=Development
+  #    - ASPNETCORE_URLS=https://+:443
+  #    - ConnectionStrings__Identity=Data Source=host.docker.internal:1521;User Id=system;Password=Test$$123;
+  #  ports:
+  #    - "443"
+  #  volumes:
+  #    - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
         
   oracle:
     environment:
