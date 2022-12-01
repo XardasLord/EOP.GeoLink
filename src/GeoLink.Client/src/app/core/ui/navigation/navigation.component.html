@@ -1,0 +1,36 @@
+<app-toolbar (toggleSideNav)="toggleMenu()"></app-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side" opened="true" fixedInViewport="true">
+    <mat-nav-list>
+      <mat-list-item
+        [routerLink]="RoutePaths.Map"
+        routerLinkActive="active-route">
+        <mat-icon matListIcon>person</mat-icon>
+        <span matLine *ngIf="sidenav.opened">Mapa</span>
+      </mat-list-item>
+      <mat-list-item
+        [routerLink]="RoutePaths.Map"
+        routerLinkActive="active-route">
+        <mat-icon matListIcon>power</mat-icon>
+        <span matLine *ngIf="sidenav.opened">Mapa</span>
+      </mat-list-item>
+      <mat-list-item
+        [routerLink]="RoutePaths.Map"
+        routerLinkActive="active-route">
+        <mat-icon matListIcon>person</mat-icon>
+        <span matLine *ngIf="sidenav.opened">Mapa</span>
+      </mat-list-item>
+      <mat-list-item
+        [routerLink]="RoutePaths.Map"
+        routerLinkActive="active-route">
+        <mat-icon matListIcon>person</mat-icon>
+        <span matLine *ngIf="sidenav.opened">Mapa</span>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content id="main-content">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
