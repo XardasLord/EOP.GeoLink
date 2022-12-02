@@ -6,26 +6,32 @@
       <mat-list-item
         [routerLink]="RoutePaths.Map"
         routerLinkActive="active-route">
-        <mat-icon matListIcon>person</mat-icon>
-        <span matLine *ngIf="sidenav.opened">Mapa</span>
+        <mat-icon matListItemIcon>map</mat-icon>
+        <span matListItemTitle *ngIf="sidenav.opened">Mapa</span>
       </mat-list-item>
       <mat-list-item
         [routerLink]="RoutePaths.Map"
         routerLinkActive="active-route">
-        <mat-icon matListIcon>power</mat-icon>
-        <span matLine *ngIf="sidenav.opened">Mapa</span>
+        <mat-icon matListItemIcon>power</mat-icon>
+        <span matListItemTitle *ngIf="sidenav.opened">Wykresy</span>
       </mat-list-item>
       <mat-list-item
         [routerLink]="RoutePaths.Map"
         routerLinkActive="active-route">
-        <mat-icon matListIcon>person</mat-icon>
-        <span matLine *ngIf="sidenav.opened">Mapa</span>
+        <mat-icon matListItemIcon>person</mat-icon>
+        <span matListItemTitle *ngIf="sidenav.opened">Raporty</span>
       </mat-list-item>
       <mat-list-item
         [routerLink]="RoutePaths.Map"
         routerLinkActive="active-route">
-        <mat-icon matListIcon>person</mat-icon>
-        <span matLine *ngIf="sidenav.opened">Mapa</span>
+        <mat-icon matListItemIcon>person</mat-icon>
+        <span matListItemTitle *ngIf="sidenav.opened">Analityka</span>
+      </mat-list-item>
+      <mat-list-item
+        [routerLink]="RoutePaths.Map"
+        routerLinkActive="active-route">
+        <mat-icon matListItemIcon>person</mat-icon>
+        <span matListItemTitle *ngIf="sidenav.opened">Administracja</span>
       </mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
