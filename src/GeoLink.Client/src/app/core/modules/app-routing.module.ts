@@ -11,7 +11,13 @@ const routes: Routes = [
   {
     path: '',
     component: NavigationComponent,
-    children: [],
+    children: [
+      {
+        path: RoutePaths.Map,
+        loadChildren: () =>
+          import('../../features/maps/maps.module').then(m => m.MapsModule),
+      },
+    ],
   },
   // {
   //   path: RoutePaths.Auth,

@@ -11,8 +11,4 @@ export class NavigationComponent {
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
   RoutePaths = RoutePaths;
-
-  toggleMenu() {
-    this.sidenav?.toggle();
-  }
 }

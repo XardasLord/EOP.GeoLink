@@ -1,4 +1,4 @@
-<app-toolbar (toggleSideNav)="toggleMenu()"></app-toolbar>
+<app-toolbar (toggleSideNav)="sidenav.toggle()"></app-toolbar>
 
 <mat-sidenav-container>
   <mat-sidenav #sidenav mode="side" opened="true" fixedInViewport="true">
@@ -8,30 +8,6 @@
         routerLinkActive="active-route">
         <mat-icon matListItemIcon>map</mat-icon>
         <span matListItemTitle *ngIf="sidenav.opened">Mapa</span>
-      </mat-list-item>
-      <mat-list-item
-        [routerLink]="RoutePaths.Map"
-        routerLinkActive="active-route">
-        <mat-icon matListItemIcon>power</mat-icon>
-        <span matListItemTitle *ngIf="sidenav.opened">Wykresy</span>
-      </mat-list-item>
-      <mat-list-item
-        [routerLink]="RoutePaths.Map"
-        routerLinkActive="active-route">
-        <mat-icon matListItemIcon>person</mat-icon>
-        <span matListItemTitle *ngIf="sidenav.opened">Raporty</span>
-      </mat-list-item>
-      <mat-list-item
-        [routerLink]="RoutePaths.Map"
-        routerLinkActive="active-route">
-        <mat-icon matListItemIcon>person</mat-icon>
-        <span matListItemTitle *ngIf="sidenav.opened">Analityka</span>
-      </mat-list-item>
-      <mat-list-item
-        [routerLink]="RoutePaths.Map"
-        routerLinkActive="active-route">
-        <mat-icon matListItemIcon>person</mat-icon>
-        <span matListItemTitle *ngIf="sidenav.opened">Administracja</span>
       </mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
