@@ -1,0 +1,12 @@
+@import '../../../../styles/variables';
+
+.mat-sidenav-container {
+  background: $navbar-background-color;
+
+  .mat-sidenav {
+    top: 64px !important;
+  }
+}
+
+
+
