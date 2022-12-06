@@ -1,0 +1,5 @@
+@import '../../../../../styles/variables.scss';
+
+#map-container {
+  min-height: calc(100vh - $toolbar-height);
+}
