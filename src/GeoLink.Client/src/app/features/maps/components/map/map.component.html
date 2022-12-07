@@ -1,1 +1,9 @@
-<p>map works!</p>
+<app-map-helper-bar></app-map-helper-bar>
+
+<div
+  id="map-container"
+  leaflet
+  [leafletOptions]="options"
+  [leafletLayersControl]="layersControl"
+  [leafletLayers]="layers"
+  (leafletClick)="mapClicked($event)"></div>
