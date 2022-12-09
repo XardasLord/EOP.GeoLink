@@ -1,0 +1,19 @@
+<mat-tab-group mat-stretch-tabs="false">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon">manage_accounts</mat-icon>
+      Panel użytkowników
+    </ng-template>
+    <ng-template matTabContent>
+      <app-user-management></app-user-management>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon">groups</mat-icon>
+      Grupy i role
+    </ng-template>
+    <ng-template matTabContent> Grupy i role treść </ng-template>
+  </mat-tab>
+</mat-tab-group>

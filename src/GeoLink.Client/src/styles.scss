@@ -11,3 +11,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   min-height: calc(100vh - $toolbar-height);
   background: $main-content-background-color;
 }
+
+.tab-icon {
+  margin-right: 6px;
+}
+
+.padding-content {
+  padding: $main-content-padding;
+}

@@ -5,6 +5,7 @@ import { NavigationComponent } from '../ui/navigation/navigation.component';
 export const RoutePaths = {
   Auth: 'auth',
   Map: 'map',
+  Administration: 'administration',
 };
 
 const routes: Routes = [
@@ -16,6 +17,13 @@ const routes: Routes = [
         path: RoutePaths.Map,
         loadChildren: () =>
           import('../../features/maps/maps.module').then(m => m.MapsModule),
+      },
+      {
+        path: RoutePaths.Administration,
+        loadChildren: () =>
+          import('../../features/administrations/administrations.module').then(
+            m => m.AdministrationsModule
+          ),
       },
     ],
   },
