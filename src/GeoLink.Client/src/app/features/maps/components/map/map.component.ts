@@ -16,9 +16,11 @@ import {
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent {
+  // https://leafletjs.com/examples/wms/wms.html
   options: MapOptions = {
     layers: [
-      tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      tileLayer.wms('http://ows.mundialis.de/services/service?', {
+        layers: 'TOPO-WMS,OSM-Overlay-WMS',
         opacity: 0.7,
         minZoom: 3,
         maxZoom: 19,
@@ -33,13 +35,31 @@ export class MapComponent {
 
   layersControl: LeafletControlLayersConfig = {
     baseLayers: {
-      'Open Street Map': tileLayer(
-        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        { maxZoom: 18, attribution: '...' }
+      Topography: tileLayer.wms('http://ows.mundialis.de/services/service?', {
+        layers: 'TOPO-WMS',
+        maxZoom: 18,
+        attribution: '...',
+      }),
+      Places: tileLayer.wms('http://ows.mundialis.de/services/service?', {
+        layers: 'OSM-Overlay-WMS',
+        maxZoom: 18,
+        attribution: '...',
+      }),
+      'Topography, then places': tileLayer.wms(
+        'http://ows.mundialis.de/services/service?',
+        {
+          layers: 'TOPO-WMS,OSM-Overlay-WMS',
+          maxZoom: 18,
+          attribution: '...',
+        }
       ),
-      'Open Cycle Map': tileLayer(
-        'https://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
-        { maxZoom: 18, attribution: '...' }
+      'Places, then topography': tileLayer.wms(
+        'http://ows.mundialis.de/services/service?',
+        {
+          layers: 'OSM-Overlay-WMS,TOPO-WMS',
+          maxZoom: 18,
+          attribution: '...',
+        }
       ),
     },
     overlays: {
