@@ -1,5 +1,5 @@
 <div class="padding-content">
-  <table mat-table [dataSource]="users" class="mat-elevation-z3">
+  <table mat-table [dataSource]="(users$ | async)!" class="mat-elevation-z3">
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Imię i nazwisko</th>
       <td mat-cell *matCellDef="let user">{{ user.name }}</td>
