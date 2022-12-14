@@ -5,7 +5,9 @@
       Panel użytkowników
     </ng-template>
     <ng-template matTabContent>
-      <app-user-management></app-user-management>
+      <div class="padding-content">
+        <app-users-management></app-users-management>
+      </div>
     </ng-template>
   </mat-tab>
 
@@ -14,6 +16,13 @@
       <mat-icon class="tab-icon">groups</mat-icon>
       Grupy i role
     </ng-template>
-    <ng-template matTabContent> Grupy i role treść </ng-template>
+    <ng-template matTabContent>
+      <div class="padding-content">
+        <app-groups-management></app-groups-management>
+      </div>
+      <div class="padding-content">
+        <app-roles-management></app-roles-management>
+      </div>
+    </ng-template>
   </mat-tab>
 </mat-tab-group>

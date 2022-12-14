@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
-import { catchError, of, take, tap, throwError } from 'rxjs';
+import { catchError, tap, throwError } from 'rxjs';
 import { AdministrationsStateModel } from './administrations.state.model';
 import { UserModel } from '../models/user.model';
 import { LoadUsers } from './administrations.action';
-import { IAdministrationsService } from '../services/administrations.service.base';
+import { IUsersService } from '../services/users.service.base';
 
 const ADMINISTRATIONS_STATE_TOKEN = new StateToken<AdministrationsStateModel>(
   'administrations'
@@ -18,7 +18,7 @@ const ADMINISTRATIONS_STATE_TOKEN = new StateToken<AdministrationsStateModel>(
 })
 @Injectable()
 export class AdministrationsState {
-  constructor(private administrationsService: IAdministrationsService) {}
+  constructor(private usersService: IUsersService) {}
 
   @Selector([ADMINISTRATIONS_STATE_TOKEN])
   static getUsers(state: AdministrationsStateModel): UserModel[] {
@@ -27,7 +27,7 @@ export class AdministrationsState {
 
   @Action(LoadUsers)
   loadUsers(ctx: StateContext<AdministrationsStateModel>, _: LoadUsers) {
-    return this.administrationsService.getAllUsers().pipe(
+    return this.usersService.getAllUsers().pipe(
       tap(response => {
         ctx.patchState({
           users: response,

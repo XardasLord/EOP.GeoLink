@@ -6,11 +6,11 @@ import { nameof } from '../../../../shared/helpers/name-of.helper';
 import { UserModel } from '../../models/user.model';
 
 @Component({
-  selector: 'app-user-management',
-  templateUrl: './user-management.component.html',
-  styleUrls: ['./user-management.component.scss'],
+  selector: 'app-users-management',
+  templateUrl: './users-management.component.html',
+  styleUrls: ['./users-management.component.scss'],
 })
-export class UserManagementComponent implements OnInit {
+export class UsersManagementComponent implements OnInit {
   displayedColumns: string[] = [
     nameof<UserModel>('name'),
     nameof<UserModel>('role'),

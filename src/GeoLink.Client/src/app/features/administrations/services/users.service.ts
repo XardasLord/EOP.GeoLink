@@ -1,11 +1,11 @@
-import { IAdministrationsService } from './administrations.service.base';
-import { Observable, of } from 'rxjs';
-import { UserModel } from '../models/user.model';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { UserModel } from '../models/user.model';
+import { IUsersService } from './users.service.base';
 
 @Injectable()
-export class AdministrationsService extends IAdministrationsService {
+export class UsersService extends IUsersService {
   constructor(httpClient: HttpClient) {
     super(httpClient);
   }
