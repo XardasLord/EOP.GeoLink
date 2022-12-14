@@ -12,6 +12,9 @@ import { IUsersService } from './services/users.service.base';
 import { GroupsState } from './states/groups.state';
 import { IGroupsService } from './services/groups.service.base';
 import { GroupsService } from './services/groups.service';
+import { RolesState } from './states/roles.state';
+import { IRolesService } from './services/roles.service.base';
+import { RolesService } from './services/roles.service';
 
 @NgModule({
   declarations: [
@@ -23,11 +26,12 @@ import { GroupsService } from './services/groups.service';
   imports: [
     SharedModule,
     AdministrationRoutingModule,
-    NgxsModule.forFeature([UsersState, GroupsState]),
+    NgxsModule.forFeature([UsersState, GroupsState, RolesState]),
   ],
   providers: [
     { provide: IUsersService, useClass: UsersService },
     { provide: IGroupsService, useClass: GroupsService },
+    { provide: IRolesService, useClass: RolesService },
   ],
 })
 export class AdministrationsModule {}

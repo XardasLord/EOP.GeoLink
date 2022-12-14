@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { catchError, tap, throwError } from 'rxjs';
-import { IGroupsService } from '../services/groups.service.base';
 import { GroupsStateModel } from './groups.state.model';
 import { GroupModel } from '../models/group.model';
+import { IGroupsService } from '../services/groups.service.base';
 import { Load } from './groups.action';
 
 const GROUPS_STATE_TOKEN = new StateToken<GroupsStateModel>('groups');
