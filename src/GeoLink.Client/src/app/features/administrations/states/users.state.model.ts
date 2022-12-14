@@ -1,5 +1,5 @@
 import { UserModel } from '../models/user.model';
 
-export interface AdministrationsStateModel {
+export interface UsersStateModel {
   users: UserModel[];
 }

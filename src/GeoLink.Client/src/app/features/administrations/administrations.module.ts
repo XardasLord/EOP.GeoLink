@@ -3,12 +3,15 @@ import { NgxsModule } from '@ngxs/store';
 import { SharedModule } from '../../shared/shared.module';
 import { AdministrationComponent } from './components/administration/administration.component';
 import { AdministrationRoutingModule } from './administrations-routing.module';
-import { AdministrationsState } from './state/administrations.state';
+import { UsersState } from './states/users.state';
 import { UsersService } from './services/users.service';
 import { UsersManagementComponent } from './components/users-management/users-management.component';
 import { GroupsManagementComponent } from './components/groups-management/groups-management.component';
 import { RolesManagementComponent } from './components/roles-management/roles-management.component';
 import { IUsersService } from './services/users.service.base';
+import { GroupsState } from './states/groups.state';
+import { IGroupsService } from './services/groups.service.base';
+import { GroupsService } from './services/groups.service';
 
 @NgModule({
   declarations: [
@@ -20,8 +23,11 @@ import { IUsersService } from './services/users.service.base';
   imports: [
     SharedModule,
     AdministrationRoutingModule,
-    NgxsModule.forFeature([AdministrationsState]),
+    NgxsModule.forFeature([UsersState, GroupsState]),
   ],
-  providers: [{ provide: IUsersService, useClass: UsersService }],
+  providers: [
+    { provide: IUsersService, useClass: UsersService },
+    { provide: IGroupsService, useClass: GroupsService },
+  ],
 })
 export class AdministrationsModule {}
