@@ -15,6 +15,7 @@ export class UserManagementComponent implements OnInit {
     nameof<UserModel>('name'),
     nameof<UserModel>('role'),
     nameof<UserModel>('group'),
+    'actions',
   ];
   users$ = this.store.select(AdministrationsState.getUsers);
 
@@ -22,5 +23,9 @@ export class UserManagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(new LoadUsers());
+  }
+
+  deleteUser(user: UserModel) {
+    console.warn('deleting user...', user);
   }
 }
