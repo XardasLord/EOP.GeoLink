@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { NgxsModule } from '@ngxs/store';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { SharedModule } from '../../shared/shared.module';
 import { AdministrationComponent } from './components/administration/administration.component';
 import { AdministrationRoutingModule } from './administrations-routing.module';
@@ -29,6 +30,7 @@ import { AddNewGroupDialogComponent } from './components/add-new-group-dialog/ad
     SharedModule,
     AdministrationRoutingModule,
     NgxsModule.forFeature([UsersState, GroupsState, RolesState]),
+    NgxsFormPluginModule,
   ],
   providers: [
     { provide: IUsersService, useClass: UsersService },

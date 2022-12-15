@@ -5,6 +5,7 @@ import { GroupsStateModel } from './groups.state.model';
 import { GroupModel } from '../models/group.model';
 import { IGroupsService } from '../services/groups.service.base';
 import { Load } from './groups.action';
+import { DefaultFormStateValue } from '../../../shared/models/form-states.model';
 
 const GROUPS_STATE_TOKEN = new StateToken<GroupsStateModel>('groups');
 
@@ -12,6 +13,7 @@ const GROUPS_STATE_TOKEN = new StateToken<GroupsStateModel>('groups');
   name: GROUPS_STATE_TOKEN,
   defaults: {
     groups: [],
+    addNewGroupForm: DefaultFormStateValue,
   },
 })
 @Injectable()
