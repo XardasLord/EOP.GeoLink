@@ -19,3 +19,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .tab-icon {
   margin-right: 6px;
 }
+
+.floating-fixed-buttons {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+
+  > .mat-mdc-fab {
+    margin: $margins-between-floating-fixed-buttons;
+  }
+}

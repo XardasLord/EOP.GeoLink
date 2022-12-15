@@ -1,10 +1,29 @@
 @import '../../../../styles/variables';
 
 .mat-sidenav-container {
-  background: $navbar-background-color;
-
   .mat-sidenav {
+    background-color: $navbar-background-color;
     top: 64px !important;
+
+    .mat-icon {
+      color: $navbar-text-color;
+    }
+
+    .mdc-list-item__primary-text {
+      color: $navbar-text-color;
+    }
+  }
+}
+
+.active-route {
+  background-color: $navbar-active-route-background-color;
+
+  .mat-icon {
+    color: $navbar-active-route-text-color !important;
+  }
+
+  .mdc-list-item__primary-text {
+    color: $navbar-active-route-text-color !important;
   }
 }
 
