@@ -25,7 +25,11 @@
       </div>
 
       <div class="floating-fixed-buttons">
-        <button mat-fab color="primary" matTooltip="Dodaj grupę">
+        <button
+          mat-fab
+          color="primary"
+          matTooltip="Dodaj grupę"
+          (click)="addNewGroup()">
           <mat-icon>group_add</mat-icon>
         </button>
         <button mat-fab color="primary" matTooltip="Dodaj rolę">
