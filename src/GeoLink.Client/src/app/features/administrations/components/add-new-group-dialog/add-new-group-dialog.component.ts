@@ -1,14 +1,9 @@
 import { Component } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { AddNewGroupFormGroup } from '../../models/add-new-group-form-group';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AddNewGroupFormGroup } from '../../models/forms/add-new-group-form-group';
 import { Store } from '@ngxs/store';
 import { Add } from '../../states/groups.action';
-import { AddNewGroupCommand } from '../../commands/add-new-group.command';
+import { AddNewGroupCommand } from '../../models/commands/add-new-group.command';
 
 @Component({
   selector: 'app-add-new-group-dialog',
@@ -30,8 +25,6 @@ export class AddNewGroupDialogComponent {
   onSubmit() {
     if (!this.addNewGroupForm.valid) return;
 
-    this.store.dispatch(
-      new Add(this.addNewGroupForm.value as AddNewGroupCommand)
-    );
+    this.store.dispatch(new Add(this.addNewGroupForm.value as AddNewGroupCommand));
   }
 }

@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { IGroupsService } from './groups.service.base';
 import { GroupModel } from '../models/group.model';
-import { AddNewGroupCommand } from '../commands/add-new-group.command';
+import { AddNewGroupCommand } from '../models/commands/add-new-group.command';
 
 @Injectable()
 export class GroupsService extends IGroupsService {
   constructor(httpClient: HttpClient) {
     super(httpClient);
   }
-
   getAllGroups(): Observable<GroupModel[]> {
     const groups: GroupModel[] = [
       {
@@ -38,7 +37,11 @@ export class GroupsService extends IGroupsService {
     return of(groups);
   }
 
-  addNewGroup(command: AddNewGroupCommand): Observable<number> {
+  addGroup(command: AddNewGroupCommand): Observable<number> {
     return of(999);
+  }
+
+  editGroup(groupId: number, command: AddNewGroupCommand): Observable<any> {
+    return of({});
   }
 }

@@ -4,6 +4,7 @@ import { nameof } from '../../../../shared/helpers/name-of.helper';
 import { GroupModel } from '../../models/group.model';
 import { GroupsState } from '../../states/groups.state';
 import { Load } from '../../states/groups.action';
+import { OpenEditGroupDialog } from '../../../../shared/states/modal.action';
 
 @Component({
   selector: 'app-groups-management',
@@ -22,6 +23,6 @@ export class GroupsManagementComponent implements OnInit {
   }
 
   renameGroup(group: GroupModel) {
-    console.log('renaming group...', group);
+    this.store.dispatch(new OpenEditGroupDialog(group));
   }
 }
