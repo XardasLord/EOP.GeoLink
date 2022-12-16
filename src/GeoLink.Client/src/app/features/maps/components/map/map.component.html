@@ -6,4 +6,7 @@
   [leafletOptions]="options"
   [leafletLayersControl]="layersControl"
   [leafletLayers]="layers"
+  [leafletMarkerCluster]="markerClusterData"
+  [leafletMarkerClusterOptions]="markerClusterOptions"
+  (leafletMarkerClusterReady)="markerClusterReady($event)"
   (leafletClick)="mapClicked($event)"></div>
