@@ -1,13 +1,9 @@
 import { ModalStateModel } from './modal.state.model';
 import { Action, State, StateContext, StateToken, Store } from '@ngxs/store';
 import { Injectable, NgZone } from '@angular/core';
-import {
-  MatDialog,
-  MatDialogConfig,
-  MatDialogRef,
-} from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { AddNewGroupDialogComponent } from '../../features/administrations/components/add-new-group-dialog/add-new-group-dialog.component';
-import { OpenAddNewGroupDialog } from './modal.action';
+import { CloseAddNewGroupDialog, OpenAddNewGroupDialog } from './modal.action';
 
 const MODAL_STATE_TOKEN = new StateToken<ModalStateModel>('modal');
 
@@ -20,32 +16,27 @@ export class ModalState {
 
   private readonly addNewGroupDialogConfig = new MatDialogConfig();
 
-  constructor(
-    private zone: NgZone,
-    private dialog: MatDialog,
-    private store: Store
-  ) {
+  constructor(private zone: NgZone, private dialog: MatDialog, private store: Store) {
     this.addNewGroupDialogConfig = {
       width: '320px',
     };
   }
 
   @Action(OpenAddNewGroupDialog)
-  openAddNewGroupDialog(
-    ctx: StateContext<ModalStateModel>,
-    _: OpenAddNewGroupDialog
-  ) {
+  openAddNewGroupDialog(ctx: StateContext<ModalStateModel>, _: OpenAddNewGroupDialog) {
     this.closeDialog(this.addNewGroupDialogRef);
 
     return this.zone.run(
       () =>
-        (this.addNewGroupDialogRef = this.dialog.open(
-          AddNewGroupDialogComponent,
-          {
-            ...this.addNewGroupDialogConfig,
-          }
-        ))
+        (this.addNewGroupDialogRef = this.dialog.open(AddNewGroupDialogComponent, {
+          ...this.addNewGroupDialogConfig,
+        }))
     );
+  }
+
+  @Action(CloseAddNewGroupDialog)
+  closeAddNewGroupDialog(ctx: StateContext<ModalStateModel>, _: CloseAddNewGroupDialog) {
+    this.closeDialog(this.addNewGroupDialogRef);
   }
 
   // @Action(OpenEditEmployeeDialog)

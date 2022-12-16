@@ -7,6 +7,6 @@ export class Load {
 }
 
 export class Add {
-  constructor(public group: AddNewGroupCommand) {}
+  constructor(public command: AddNewGroupCommand) {}
   static readonly type = `${prefix} ${Add.name}`;
 }
