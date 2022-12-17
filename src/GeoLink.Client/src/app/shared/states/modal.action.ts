@@ -1,4 +1,5 @@
 import { GroupModel } from '../../features/administrations/models/group.model';
+import { RoleModel } from '../../features/administrations/models/role.model';
 
 const prefix = '[Modal]';
 
@@ -17,4 +18,13 @@ export class OpenEditGroupDialog {
 
 export class CloseEditGroupDialog {
   static readonly type = `${prefix} ${CloseEditGroupDialog.name}`;
+}
+
+export class OpenAddEditRoleDialog {
+  constructor(public role?: RoleModel) {}
+  static readonly type = `${prefix} ${OpenAddEditRoleDialog.name}`;
+}
+
+export class CloseAddEditRoleDialog {
+  static readonly type = `${prefix} ${CloseAddEditRoleDialog.name}`;
 }

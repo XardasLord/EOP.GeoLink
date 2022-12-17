@@ -1,14 +1,15 @@
 <form
-  [formGroup]="editGroupForm"
+  [formGroup]="roleForm"
   (ngSubmit)="onSubmit()"
-  ngxsForm="groups.editGroupForm">
+  ngxsForm="roles.addEditRoleForm">
   <div class="form-content">
-    <h2 mat-dialog-title>Edytuj grupę</h2>
+    <h2 mat-dialog-title *ngIf="isAddMode">Dodaj nową rolę</h2>
+    <h2 mat-dialog-title *ngIf="!isAddMode">Edytuj rolę</h2>
 
     <mat-dialog-content>
       <section>
         <mat-form-field appearance="fill" class="input">
-          <mat-label>Nazwa grupy</mat-label>
+          <mat-label>Nazwa roli</mat-label>
           <input type="text" matInput formControlName="name" />
         </mat-form-field>
       </section>
@@ -21,7 +22,7 @@
         Anuluj
       </button>
       <button mat-raised-button color="primary" type="submit" cdkFocusInitial>
-        Edytuj
+        Zapisz
       </button>
     </mat-dialog-actions>
   </div>

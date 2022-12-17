@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { OpenAddNewGroupDialog } from '../../../../shared/states/modal.action';
+import { OpenAddEditRoleDialog, OpenAddNewGroupDialog } from '../../../../shared/states/modal.action';
 
 @Component({
   selector: 'app-administration',
@@ -12,5 +12,9 @@ export class AdministrationComponent {
 
   addNewGroup() {
     this.store.dispatch(new OpenAddNewGroupDialog());
+  }
+
+  addNewRole() {
+    this.store.dispatch(new OpenAddEditRoleDialog());
   }
 }

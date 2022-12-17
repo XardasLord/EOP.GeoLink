@@ -4,12 +4,15 @@ import { Injectable, NgZone } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { AddNewGroupDialogComponent } from '../../features/administrations/components/add-new-group-dialog/add-new-group-dialog.component';
 import {
+  CloseAddEditRoleDialog,
   CloseAddNewGroupDialog,
   CloseEditGroupDialog,
+  OpenAddEditRoleDialog,
   OpenAddNewGroupDialog,
   OpenEditGroupDialog,
 } from './modal.action';
 import { EditGroupDialogComponent } from '../../features/administrations/components/edit-group-dialog/edit-group-dialog.component';
+import { AddEditRoleDialogComponent } from '../../features/administrations/components/add-edit-role-dialog/add-edit-role-dialog.component';
 
 const MODAL_STATE_TOKEN = new StateToken<ModalStateModel>('modal');
 
@@ -20,9 +23,11 @@ const MODAL_STATE_TOKEN = new StateToken<ModalStateModel>('modal');
 export class ModalState {
   private addNewGroupDialogRef?: MatDialogRef<AddNewGroupDialogComponent>;
   private editGroupDialogRef?: MatDialogRef<EditGroupDialogComponent>;
+  private addEditRoleDialogRef?: MatDialogRef<AddEditRoleDialogComponent>;
 
   private readonly addNewGroupDialogConfig = new MatDialogConfig();
   private readonly editGroupDialogConfig = new MatDialogConfig();
+  private readonly addEditRoleDialogConfig = new MatDialogConfig();
 
   constructor(private zone: NgZone, private dialog: MatDialog, private store: Store) {
     this.addNewGroupDialogConfig = {
@@ -30,6 +35,7 @@ export class ModalState {
     };
 
     this.editGroupDialogConfig = this.addNewGroupDialogConfig;
+    this.addEditRoleDialogConfig = this.addNewGroupDialogConfig;
   }
 
   @Action(OpenAddNewGroupDialog)
@@ -57,6 +63,19 @@ export class ModalState {
     );
   }
 
+  @Action(OpenAddEditRoleDialog)
+  OpenAddEditRoleDialog(ctx: StateContext<ModalStateModel>, action: OpenAddEditRoleDialog) {
+    this.closeDialog(this.addNewGroupDialogRef);
+
+    return this.zone.run(
+      () =>
+        (this.addEditRoleDialogRef = this.dialog.open(AddEditRoleDialogComponent, {
+          ...this.addEditRoleDialogConfig,
+          data: action.role,
+        }))
+    );
+  }
+
   @Action(CloseAddNewGroupDialog)
   closeAddNewGroupDialog(ctx: StateContext<ModalStateModel>, _: CloseAddNewGroupDialog) {
     this.closeDialog(this.addNewGroupDialogRef);
@@ -67,18 +86,10 @@ export class ModalState {
     this.closeDialog(this.editGroupDialogRef);
   }
 
-  // @Action(OpenEditEmployeeDialog)
-  // openEditEmployeeDialog(ctx: StateContext<ModalStateModel>, action: OpenEditEmployeeDialog) {
-  //   this.closeDialog(this.editEmployeeDialogRef);
-  //
-  //   return this.zone.run(
-  //     () =>
-  //       (this.editEmployeeDialogRef = this.dialog.open(EditEmployeeDialogComponent, {
-  //         ...this.editEmployeeDialogConfig,
-  //         data: action.employee,
-  //       }))
-  //   );
-  // }
+  @Action(CloseAddEditRoleDialog)
+  closeAddEditRoleDialog(ctx: StateContext<ModalStateModel>, _: CloseAddEditRoleDialog) {
+    this.closeDialog(this.addEditRoleDialogRef);
+  }
 
   private closeDialog<T>(dialogRef: MatDialogRef<T> | undefined): void {
     if (dialogRef) {
