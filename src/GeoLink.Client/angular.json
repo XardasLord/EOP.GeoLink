@@ -36,7 +36,9 @@
               "./node_modules/leaflet.markercluster/dist/MarkerCluster.css",
               "src/styles.scss",
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/leaflet.browser.print/dist/leaflet.browser.print.min.js"
+            ]
           },
           "configurations": {
             "production": {

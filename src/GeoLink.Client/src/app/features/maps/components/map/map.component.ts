@@ -5,6 +5,8 @@ import { Map } from 'leaflet';
 import { MapsState } from '../../states/maps.state';
 import { LoadMapBackground, LoadMapObjects } from '../../states/maps.action';
 
+import '../../../../../../node_modules/leaflet.browser.print/dist/leaflet.browser.print.min.js';
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -32,5 +34,18 @@ export class MapComponent implements OnInit {
 
   onMapReady(map: Map) {
     map.addControl(this.store.selectSnapshot(MapsState.getMapScale));
+
+    // https://github.com/Igor-Vladyka/leaflet.browser.print
+    L.control
+      .browserPrint({
+        title: 'Drukuj',
+        printModesNames: {
+          Portrait: 'Pionowo',
+          Landscape: 'Poziomo',
+          Auto: 'Auto',
+          Custom: 'Wybierz obszar',
+        },
+      })
+      .addTo(map);
   }
 }
