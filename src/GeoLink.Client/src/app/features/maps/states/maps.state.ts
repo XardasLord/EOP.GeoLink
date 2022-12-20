@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { LeafletControlLayersConfig } from '@asymmetrik/ngx-leaflet';
-import { circle, latLng, Layer, MapOptions, marker, polygon, tileLayer } from 'leaflet';
+import { circle, Control, latLng, Layer, MapOptions, marker, polygon, tileLayer } from 'leaflet';
 import * as L from 'leaflet';
 import { MapsStateModel } from './maps.state.model';
 import { LoadMapBackground, LoadMapObjects } from './maps.action';
+import Scale = Control.Scale;
 
 const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
 
@@ -19,6 +20,12 @@ const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
     mapLayers: [],
     markerClusterData: [],
     markerClusterOptions: {},
+    mapScale: new Scale({
+      position: 'bottomleft',
+      metric: true,
+      imperial: false,
+      maxWidth: 200,
+    }),
   },
 })
 @Injectable()
@@ -46,6 +53,11 @@ export class MapsState {
   @Selector([MAPS_STATE_TOKEN])
   static getMapObjects(state: MapsStateModel): L.Marker[] {
     return state.markerClusterData;
+  }
+
+  @Selector([MAPS_STATE_TOKEN])
+  static getMapScale(state: MapsStateModel): Scale {
+    return state.mapScale;
   }
 
   @Action(LoadMapBackground)

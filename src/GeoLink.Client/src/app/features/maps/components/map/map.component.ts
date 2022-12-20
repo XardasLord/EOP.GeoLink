@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import * as L from 'leaflet';
+import { Map } from 'leaflet';
 import { MapsState } from '../../states/maps.state';
 import { LoadMapBackground, LoadMapObjects } from '../../states/maps.action';
 
@@ -25,7 +26,11 @@ export class MapComponent implements OnInit {
     this.store.dispatch(new LoadMapObjects());
   }
 
-  markerClusterReady(group: L.MarkerClusterGroup) {
+  onMarkerClusterReady(group: L.MarkerClusterGroup) {
     this.markerClusterGroup = group;
+  }
+
+  onMapReady(map: Map) {
+    map.addControl(this.store.selectSnapshot(MapsState.getMapScale));
   }
 }

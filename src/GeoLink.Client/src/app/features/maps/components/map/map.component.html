@@ -8,4 +8,5 @@
   [leafletLayers]="(mapLayersAsync$ | async)!"
   [leafletMarkerCluster]="(mapObjects$ | async)!"
   [leafletMarkerClusterOptions]="(markerClusterOptions$ | async)!"
-  (leafletMarkerClusterReady)="markerClusterReady($event)"></div>
+  (leafletMapReady)="onMapReady($event)"
+  (leafletMarkerClusterReady)="onMarkerClusterReady($event)"></div>
