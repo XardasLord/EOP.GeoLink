@@ -142,7 +142,7 @@ export class MapsState {
         shadowUrl: 'assets/leaflet/marker-shadow.png',
       });
 
-      markers.push(L.marker([this.generateLat(), this.generateLon()], { icon }));
+      markers.push(L.marker([this.generatePolandLat(), this.generatePolandLon()], { icon }));
     }
 
     ctx.patchState({
@@ -155,7 +155,15 @@ export class MapsState {
   private generateLat() {
     return Math.random() * 360 - 180;
   }
+
   private generateLon() {
     return Math.random() * 180 - 90;
+  }
+
+  private generatePolandLat() {
+    return +(Math.random() * (54.79086 - 49.29899) + 49.29899).toFixed(5);
+  }
+  private generatePolandLon() {
+    return +(Math.random() * (23.89251 - 14.24712) + 14.24712).toFixed(5);
   }
 }
