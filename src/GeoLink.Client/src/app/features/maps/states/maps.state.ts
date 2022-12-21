@@ -6,6 +6,8 @@ import * as L from 'leaflet';
 import { MapsStateModel } from './maps.state.model';
 import { LoadMapBackground, LoadMapObjects } from './maps.action';
 import Scale = Control.Scale;
+import { IMapsService } from '../services/maps.service.base';
+import { catchError, tap, throwError } from 'rxjs';
 
 const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
 
@@ -30,6 +32,8 @@ const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
 })
 @Injectable()
 export class MapsState {
+  constructor(private mapsService: IMapsService) {}
+
   @Selector([MAPS_STATE_TOKEN])
   static getMapOptions(state: MapsStateModel): MapOptions {
     return state.mapOptions;
@@ -131,39 +135,29 @@ export class MapsState {
 
   @Action(LoadMapObjects)
   loadMapObjects(ctx: StateContext<MapsStateModel>, _: LoadMapObjects) {
-    const markers: L.Marker[] = [];
+    return this.mapsService.getAllObjects().pipe(
+      tap(mapItems => {
+        const markers: L.Marker[] = [];
+        const icon = L.icon({
+          iconSize: [25, 41],
+          iconAnchor: [13, 41],
+          iconUrl: 'assets/leaflet/marker-icon.png',
+          iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
+          shadowUrl: 'assets/leaflet/marker-shadow.png',
+        });
 
-    for (let i = 0; i < 1000; i++) {
-      const icon = L.icon({
-        iconSize: [25, 41],
-        iconAnchor: [13, 41],
-        iconUrl: 'assets/leaflet/marker-icon.png',
-        iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
-        shadowUrl: 'assets/leaflet/marker-shadow.png',
-      });
+        mapItems.forEach(item => {
+          markers.push(L.marker([item.coordinates.latitude, item.coordinates.longitude], { icon }));
+        });
 
-      markers.push(L.marker([this.generatePolandLat(), this.generatePolandLon()], { icon }));
-    }
-
-    ctx.patchState({
-      markerClusterOptions: {},
-      markerClusterData: [...markers],
-    });
-  }
-
-  // Generators for lat/lon values
-  private generateLat() {
-    return Math.random() * 360 - 180;
-  }
-
-  private generateLon() {
-    return Math.random() * 180 - 90;
-  }
-
-  private generatePolandLat() {
-    return +(Math.random() * (54.79086 - 49.29899) + 49.29899).toFixed(5);
-  }
-  private generatePolandLon() {
-    return +(Math.random() * (23.89251 - 14.24712) + 14.24712).toFixed(5);
+        ctx.patchState({
+          markerClusterOptions: {},
+          markerClusterData: [...markers],
+        });
+      }),
+      catchError(error => {
+        return throwError(error);
+      })
+    );
   }
 }
