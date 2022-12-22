@@ -7,6 +7,12 @@ $navbar-active-route-background-color: #fff;
 $navbar-text-color: #fff;
 $navbar-active-route-text-color: #3f51b5;
 
+// Marker cluster group icon colors
+$marker-cluster-group-count-text-color: #000;
+$marker-cluster-group-good-status-color: rgba(89, 238, 165, 0.8);
+$marker-cluster-group-good-warning-color: rgba(255, 241, 96, 0.8);
+$marker-cluster-group-good-bad-color: rgba(255, 114, 132, 0.8);
+
 // Sizes
 $toolbar-height: 64px;
 $toolbar-helper-bar-height: 64px;

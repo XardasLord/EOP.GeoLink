@@ -38,3 +38,213 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     width: 100%;
   }
 }
+
+// ================================ Marker cluster groups ================================
+.marker-cluster-base {
+  line-height: 40px;
+  color: $marker-cluster-group-count-text-color;
+  text-align: center;
+  margin: 25px 0;
+  border-radius: 50%;
+  border: 16px solid transparent;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.marker-cluster-good-100 {
+  border: 16px solid $marker-cluster-group-good-status-color;
+  background-color: white;
+}
+
+.marker-cluster-warning-100 {
+  border: 16px solid $marker-cluster-group-good-warning-color;
+  background-color: white;
+}
+
+.marker-cluster-bad-100 {
+  border: 16px solid $marker-cluster-group-good-bad-color;
+  background-color: white;
+}
+
+.marker-cluster-good-75-warning-25 {
+  background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(white, white),
+  linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%);
+  background-position: center center, left top, right top, left bottom, right bottom;
+  background-origin: content-box, border-box, border-box, border-box, border-box;
+  background-clip: content-box, border-box, border-box, border-box, border-box;
+  transform: rotate(30deg);
+}
+
+.marker-cluster-good-50-warning-50 {
+  background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(white, white),
+  linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%);
+  background-position: center center, left top, right top, left bottom, right bottom;
+  background-origin: content-box, border-box, border-box, border-box, border-box;
+  background-clip: content-box, border-box, border-box, border-box, border-box;
+  transform: rotate(30deg);
+}
+
+.marker-cluster-good-25-warning-75 {
+   background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
+   background-repeat: no-repeat;
+   background-image: linear-gradient(white, white),
+   linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
+   linear-gradient(120deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
+   linear-gradient(210deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
+   linear-gradient(300deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%);
+   background-position: center center, left top, right top, left bottom, right bottom;
+   background-origin: content-box, border-box, border-box, border-box, border-box;
+   background-clip: content-box, border-box, border-box, border-box, border-box;
+   transform: rotate(30deg);
+}
+
+.marker-cluster-good-75-bad-25 {
+  background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(white, white),
+  linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%);
+  background-position: center center, left top, right top, left bottom, right bottom;
+  background-origin: content-box, border-box, border-box, border-box, border-box;
+  background-clip: content-box, border-box, border-box, border-box, border-box;
+  transform: rotate(30deg);
+}
+
+.marker-cluster-good-50-bad-50 {
+  background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(white, white),
+  linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%);
+  background-position: center center, left top, right top, left bottom, right bottom;
+  background-origin: content-box, border-box, border-box, border-box, border-box;
+  background-clip: content-box, border-box, border-box, border-box, border-box;
+  transform: rotate(30deg);
+}
+
+.marker-cluster-good-25-bad-75 {
+  background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(white, white),
+  linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%);
+  background-position: center center, left top, right top, left bottom, right bottom;
+  background-origin: content-box, border-box, border-box, border-box, border-box;
+  background-clip: content-box, border-box, border-box, border-box, border-box;
+  transform: rotate(30deg);
+}
+
+.marker-cluster-warning-75-bad-25 {
+  background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(white, white),
+  linear-gradient(0deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%);
+  background-position: center center, left top, right top, left bottom, right bottom;
+  background-origin: content-box, border-box, border-box, border-box, border-box;
+  background-clip: content-box, border-box, border-box, border-box, border-box;
+  transform: rotate(30deg);
+}
+
+.marker-cluster-warning-50-bad-50 {
+  background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(white, white),
+  linear-gradient(0deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%);
+  background-position: center center, left top, right top, left bottom, right bottom;
+  background-origin: content-box, border-box, border-box, border-box, border-box;
+  background-clip: content-box, border-box, border-box, border-box, border-box;
+  transform: rotate(30deg);
+}
+
+.marker-cluster-warning-25-bad-75 {
+  background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(white, white),
+  linear-gradient(0deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%);
+  background-position: center center, left top, right top, left bottom, right bottom;
+  background-origin: content-box, border-box, border-box, border-box, border-box;
+  background-clip: content-box, border-box, border-box, border-box, border-box;
+  transform: rotate(30deg);
+}
+
+.marker-cluster-good-50-warning-25-bad-25 {
+  background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(white, white),
+  linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%);
+  background-position: center center, left top, right top, left bottom, right bottom;
+  background-origin: content-box, border-box, border-box, border-box, border-box;
+  background-clip: content-box, border-box, border-box, border-box, border-box;
+  transform: rotate(30deg);
+}
+
+.marker-cluster-good-33-warning-33-bad-33 {
+  // TODO
+  background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(white, white),
+  linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%);
+  background-position: center center, left top, right top, left bottom, right bottom;
+  background-origin: content-box, border-box, border-box, border-box, border-box;
+  background-clip: content-box, border-box, border-box, border-box, border-box;
+  transform: rotate(30deg);
+}
+
+.marker-cluster-good-25-warning-50-bad-25 {
+  background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(white, white),
+  linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%);
+  background-position: center center, left top, right top, left bottom, right bottom;
+  background-origin: content-box, border-box, border-box, border-box, border-box;
+  background-clip: content-box, border-box, border-box, border-box, border-box;
+  transform: rotate(30deg);
+}
+
+.marker-cluster-good-25-warning-25-bad-50 {
+  background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(white, white),
+  linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%);
+  background-position: center center, left top, right top, left bottom, right bottom;
+  background-origin: content-box, border-box, border-box, border-box, border-box;
+  background-clip: content-box, border-box, border-box, border-box, border-box;
+  transform: rotate(30deg);
+}

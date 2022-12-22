@@ -1,13 +1,15 @@
-import { Injectable } from '@angular/core';
+import { ComponentFactoryResolver, Injectable, Injector } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { LeafletControlLayersConfig } from '@asymmetrik/ngx-leaflet';
-import { circle, Control, latLng, Layer, MapOptions, marker, polygon, tileLayer } from 'leaflet';
+import { circle, Control, latLng, Layer, MapOptions, Marker, polygon, tileLayer } from 'leaflet';
 import * as L from 'leaflet';
+import { tap } from 'rxjs';
 import { MapsStateModel } from './maps.state.model';
 import { LoadMapBackground, LoadMapObjects } from './maps.action';
 import Scale = Control.Scale;
 import { IMapsService } from '../services/maps.service.base';
-import { catchError, tap, throwError } from 'rxjs';
+import { MapItemModel } from '../models/map-item.model';
+import { MarkerClusterHelper } from '../helpers/marker-cluster.helper';
 
 const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
 
@@ -21,7 +23,19 @@ const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
     },
     mapLayers: [],
     markerClusterData: [],
-    markerClusterOptions: {},
+    markerClusterOptions: {
+      maxClusterRadius: 120,
+      iconCreateFunction: function (cluster) {
+        const childMarkers: Marker<MapItemModel>[] = cluster.getAllChildMarkers();
+        const css = new MarkerClusterHelper().getCssClassForClusterGroup(childMarkers);
+
+        return new L.DivIcon({
+          html: '<div><span>' + childMarkers.length + '</span></div>',
+          className: `marker-cluster-base marker-cluster-${css}`,
+          iconSize: new L.Point(40, 40),
+        });
+      },
+    },
     mapScale: new Scale({
       position: 'bottomleft',
       metric: true,
@@ -32,7 +46,11 @@ const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
 })
 @Injectable()
 export class MapsState {
-  constructor(private mapsService: IMapsService) {}
+  constructor(
+    private mapsService: IMapsService,
+    private resolver: ComponentFactoryResolver,
+    private injector: Injector
+  ) {}
 
   @Selector([MAPS_STATE_TOKEN])
   static getMapOptions(state: MapsStateModel): MapOptions {
@@ -120,15 +138,6 @@ export class MapsState {
           [46.92, -121.92],
           [46.87, -121.8],
         ]),
-        marker([52.22779941887071, 19.764404296875], {
-          icon: L.icon({
-            iconSize: [25, 41],
-            iconAnchor: [13, 41],
-            iconUrl: 'assets/leaflet/marker-icon.png',
-            iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
-            shadowUrl: 'assets/leaflet/marker-shadow.png',
-          }),
-        }),
       ],
     });
   }
@@ -137,7 +146,7 @@ export class MapsState {
   loadMapObjects(ctx: StateContext<MapsStateModel>, _: LoadMapObjects) {
     return this.mapsService.getAllObjects().pipe(
       tap(mapItems => {
-        const markers: L.Marker[] = [];
+        const markers: L.Marker<MapItemModel>[] = [];
         const icon = L.icon({
           iconSize: [25, 41],
           iconAnchor: [13, 41],
@@ -147,16 +156,26 @@ export class MapsState {
         });
 
         mapItems.forEach(item => {
-          markers.push(L.marker([item.coordinates.latitude, item.coordinates.longitude], { icon }));
+          const marker = new Marker<MapItemModel>([item.coordinates.latitude, item.coordinates.longitude], {
+            icon,
+          });
+
+          // TODO: We can extend the Marker object to have 'deviceData' property attached without this workaround needed - (marker as any)
+          (marker as any).deviceData = JSON.stringify(item);
+
+          // Bind custom Angular Component as a popup - https://stackoverflow.com/questions/42340067/angular-component-into-leaflet-popup
+          // Another solution - https://stackoverflow.com/a/45107300/3921353
+          // Another solution - https://stackoverflow.com/a/57773246/3921353
+          // const component = this.resolver.resolveComponentFactory(AddNewGroupDialogComponent).create(this.injector);
+          // marker.bindPopup(component.location.nativeElement, { className: '' });
+          // DomEvent.disableClickPropagation(component.location.nativeElement);
+
+          markers.push(marker);
         });
 
         ctx.patchState({
-          markerClusterOptions: {},
           markerClusterData: [...markers],
         });
-      }),
-      catchError(error => {
-        return throwError(error);
       })
     );
   }
