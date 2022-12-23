@@ -6,18 +6,15 @@ export class MarkerClusterHelper {
     let css = '';
 
     const goodStatuses = childMarkers.filter(
-      // @ts-ignore
-      x => (JSON.parse(x.deviceData) as MapItemModel).status === 2
+      x => (JSON.parse((x as any).deviceData) as MapItemModel).status === 2
     ).length;
 
     const warningStatuses = childMarkers.filter(
-      // @ts-ignore
-      x => (JSON.parse(x.deviceData) as MapItemModel).status === 1
+      x => (JSON.parse((x as any).deviceData) as MapItemModel).status === 1
     ).length;
-    // @ts-ignore
+
     const badStatuses = childMarkers.filter(
-      // @ts-ignore
-      x => (JSON.parse(x.deviceData) as MapItemModel).status === 0
+      x => (JSON.parse((x as any).deviceData) as MapItemModel).status === 0
     ).length;
 
     if (goodStatuses > 0 && warningStatuses === 0 && badStatuses === 0) {

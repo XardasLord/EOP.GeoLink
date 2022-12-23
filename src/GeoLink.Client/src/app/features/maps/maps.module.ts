@@ -5,9 +5,10 @@ import { MapComponent } from './components/map/map.component';
 import { SharedModule } from '../../shared/shared.module';
 import { MapRoutingModule } from './maps-routing.module';
 import { MapHelperBarComponent } from './components/map-helper-bar/map-helper-bar.component';
+import { MapItemTooltipDialogComponent } from './components/map-item-tooltip-dialog/map-item-tooltip-dialog.component';
 
 @NgModule({
-  declarations: [MapComponent, MapHelperBarComponent],
+  declarations: [MapComponent, MapHelperBarComponent, MapItemTooltipDialogComponent],
   imports: [SharedModule, MapRoutingModule, LeafletModule, LeafletMarkerClusterModule],
 })
 export class MapsModule {}

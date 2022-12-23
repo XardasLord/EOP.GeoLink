@@ -1,7 +1,18 @@
-import { ComponentFactoryResolver, Injectable, Injector } from '@angular/core';
+import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { LeafletControlLayersConfig } from '@asymmetrik/ngx-leaflet';
-import { circle, Control, latLng, Layer, MapOptions, Marker, polygon, tileLayer } from 'leaflet';
+import {
+  circle,
+  Control,
+  Icon,
+  latLng,
+  Layer,
+  LeafletMouseEvent,
+  MapOptions,
+  Marker,
+  polygon,
+  tileLayer,
+} from 'leaflet';
 import * as L from 'leaflet';
 import { tap } from 'rxjs';
 import { MapsStateModel } from './maps.state.model';
@@ -10,6 +21,7 @@ import Scale = Control.Scale;
 import { IMapsService } from '../services/maps.service.base';
 import { MapItemModel } from '../models/map-item.model';
 import { MarkerClusterHelper } from '../helpers/marker-cluster.helper';
+import { MapItemTooltipDialogComponent } from '../components/map-item-tooltip-dialog/map-item-tooltip-dialog.component';
 
 const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
 
@@ -35,6 +47,7 @@ const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
           iconSize: new L.Point(40, 40),
         });
       },
+      // Popup by clicking on cluster group icon - https://stackoverflow.com/questions/38824030/how-to-show-popup-on-click-leaflet-cluster-group
     },
     mapScale: new Scale({
       position: 'bottomleft',
@@ -49,7 +62,8 @@ export class MapsState {
   constructor(
     private mapsService: IMapsService,
     private resolver: ComponentFactoryResolver,
-    private injector: Injector
+    private injector: Injector,
+    private appRef: ApplicationRef
   ) {}
 
   @Selector([MAPS_STATE_TOKEN])
@@ -147,28 +161,9 @@ export class MapsState {
     return this.mapsService.getAllObjects().pipe(
       tap(mapItems => {
         const markers: L.Marker<MapItemModel>[] = [];
-        const icon = L.icon({
-          iconSize: [25, 41],
-          iconAnchor: [13, 41],
-          iconUrl: 'assets/leaflet/marker-icon.png',
-          iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
-          shadowUrl: 'assets/leaflet/marker-shadow.png',
-        });
 
-        mapItems.forEach(item => {
-          const marker = new Marker<MapItemModel>([item.coordinates.latitude, item.coordinates.longitude], {
-            icon,
-          });
-
-          // TODO: We can extend the Marker object to have 'deviceData' property attached without this workaround needed - (marker as any)
-          (marker as any).deviceData = JSON.stringify(item);
-
-          // Bind custom Angular Component as a popup - https://stackoverflow.com/questions/42340067/angular-component-into-leaflet-popup
-          // Another solution - https://stackoverflow.com/a/45107300/3921353
-          // Another solution - https://stackoverflow.com/a/57773246/3921353
-          // const component = this.resolver.resolveComponentFactory(AddNewGroupDialogComponent).create(this.injector);
-          // marker.bindPopup(component.location.nativeElement, { className: '' });
-          // DomEvent.disableClickPropagation(component.location.nativeElement);
+        mapItems.forEach((mapItem: MapItemModel) => {
+          const marker = this.createMapItemMarker(mapItem);
 
           markers.push(marker);
         });
@@ -178,5 +173,60 @@ export class MapsState {
         });
       })
     );
+  }
+
+  private createMapItemMarker(mapItem: MapItemModel): Marker<MapItemModel> {
+    const mapItemIcon = this.createMapItemIcon(mapItem);
+
+    const marker = new Marker<MapItemModel>([mapItem.coordinates.latitude, mapItem.coordinates.longitude], {
+      icon: mapItemIcon,
+    });
+
+    // TODO: We can extend the Marker object to have 'deviceData' property attached without this workaround needed - (marker as any)
+    (marker as any).deviceData = JSON.stringify(mapItem);
+
+    // Different approach to attach component as a popup - https://stackoverflow.com/a/44686112/3921353
+    marker.on('click', ($event: LeafletMouseEvent) => {
+      const popupComponent = this.createMapItemTooltip(mapItem);
+      marker.unbindPopup();
+      marker.bindPopup(popupComponent).openPopup();
+      // const htmlMarkerElement = marker.getElement();
+      // htmlMarkerElement?.parentElement?.appendChild(popupComponent);
+      //
+      // const markerPos = DomUtil.getPosition(htmlMarkerElement!);
+      // const markerClass = DomUtil.getClass(htmlMarkerElement!);
+      //
+      // DomUtil.setTransform(popupComponent, markerPos);
+      // DomUtil.setClass(popupComponent, markerClass);
+    });
+
+    marker.on('mouseover', ($event: LeafletMouseEvent) => {
+      const tooltipComponent = this.createMapItemTooltip(mapItem);
+      marker.unbindTooltip();
+      marker.bindTooltip(tooltipComponent).openTooltip();
+    });
+
+    return marker;
+  }
+
+  private createMapItemIcon(mapItem: MapItemModel): Icon {
+    return new Icon({
+      iconSize: [25, 41],
+      iconAnchor: [13, 41],
+      iconUrl: 'assets/leaflet/marker-icon.png',
+      iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
+      shadowUrl: 'assets/leaflet/marker-shadow.png',
+    });
+  }
+
+  private createMapItemTooltip(item: MapItemModel) {
+    // Bind custom Angular Component as a popup/tooltip - https://stackoverflow.com/questions/42340067/angular-component-into-leaflet-popup
+    // Another solution - https://stackoverflow.com/a/45107300/3921353
+    // Another solution - https://stackoverflow.com/a/57773246/3921353
+    const componentRef = this.resolver.resolveComponentFactory(MapItemTooltipDialogComponent).create(this.injector);
+
+    componentRef.instance.mapItem = item;
+    componentRef.changeDetectorRef.detectChanges();
+    return componentRef.location.nativeElement;
   }
 }
