@@ -1,3 +1,19 @@
 <mat-toolbar>
-  <mat-toolbar-row></mat-toolbar-row>
+  <mat-toolbar-row>
+    <div class="button-row">
+      <button mat-fab extended color="primary" (click)="toogleObjectFilters()">
+        <mat-icon>filter_alt</mat-icon>
+        Filtry obiektów
+      </button>
+      <button mat-fab extended color="accent">
+        <mat-icon>filter_alt</mat-icon>
+        Filtry obszarów
+      </button>
+    </div>
+  </mat-toolbar-row>
 </mat-toolbar>
+
+<!--We should move it as a separate component-->
+<div class="object-filters" *ngIf="showObjectFilters">
+  <p>ABC</p>
+</div>

@@ -1,0 +1,15 @@
+@import '../../../../../styles/variables.scss';
+
+.button-row button {
+  margin: $margins-between-map-filter-buttons;
+}
+
+.object-filters {
+  // TODO:
+  position: fixed;
+  top: 136px;
+  left: 215px;
+  z-index: 10000;
+  background: white;
+  width: 180px;
+}
