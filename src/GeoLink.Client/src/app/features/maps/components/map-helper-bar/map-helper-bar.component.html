@@ -13,7 +13,6 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
-<!--We should move it as a separate component-->
-<div class="object-filters" *ngIf="showObjectFilters">
-  <p>ABC</p>
-</div>
+<ng-container *ngIf="showObjectFilters">
+  <app-map-object-filters></app-map-object-filters>
+</ng-container>
