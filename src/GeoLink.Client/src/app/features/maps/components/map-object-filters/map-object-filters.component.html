@@ -1,3 +1,16 @@
-<div>
-  <p>TEST</p>
-</div>
+<section>
+  <ul *ngFor="let object of objectFilters">
+    <mat-checkbox
+      [checked]="object.allNestedFiltersCompleted"
+      color="accent"
+      [indeterminate]="someComplete(object)"
+      (change)="setAll($event.checked, object)">
+      <b>{{ object.name }}</b>
+    </mat-checkbox>
+    <li *ngFor="let subtask of object.nestedFilters">
+      <mat-checkbox color="accent" [(ngModel)]="subtask.completed" (ngModelChange)="updateAllComplete(object)">
+        {{ subtask.name }}
+      </mat-checkbox>
+    </li>
+  </ul>
+</section>

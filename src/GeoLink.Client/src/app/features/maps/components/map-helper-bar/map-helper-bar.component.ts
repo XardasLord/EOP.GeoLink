@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 export class MapHelperBarComponent {
   showObjectFilters = false;
 
-  toogleObjectFilters(): void {
+  toggleObjectFilters(): void {
     this.showObjectFilters = !this.showObjectFilters;
   }
 }
