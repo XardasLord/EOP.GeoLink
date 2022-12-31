@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { MapsState } from '../../states/maps.state';
 import { MapObjectFiltersModel } from '../../models/map-object-filter.model';
 
 @Component({
@@ -7,33 +9,9 @@ import { MapObjectFiltersModel } from '../../models/map-object-filter.model';
   styleUrls: ['./map-object-filters.component.scss'],
 })
 export class MapObjectFiltersComponent {
-  objectFilters: MapObjectFiltersModel[] = [
-    {
-      name: 'LINIE ENERGETYCZNE',
-      completed: false,
-      allNestedFiltersCompleted: false,
-      nestedFilters: [
-        { name: 'Linie WN', completed: false, allNestedFiltersCompleted: false },
-        { name: 'Linie SN', completed: false, allNestedFiltersCompleted: false },
-        { name: 'Linie NN', completed: false, allNestedFiltersCompleted: false },
-      ],
-    },
-    {
-      name: 'GPZ',
-      completed: false,
-      allNestedFiltersCompleted: false,
-      nestedFilters: [],
-    },
-    {
-      name: 'STACJE SN',
-      completed: false,
-      allNestedFiltersCompleted: false,
-      nestedFilters: [
-        { name: 'Szafa GPZ/PZ', completed: false, allNestedFiltersCompleted: false },
-        { name: 'Szafa AMI/SG', completed: false, allNestedFiltersCompleted: false },
-      ],
-    },
-  ];
+  mapFilters$ = this.store.select(MapsState.getMapFilters);
+
+  constructor(private store: Store) {}
 
   updateAllComplete(parent: MapObjectFiltersModel) {
     parent.allNestedFiltersCompleted = parent.nestedFilters != null && parent.nestedFilters.every(t => t.completed);

@@ -3,7 +3,7 @@ import { Store } from '@ngxs/store';
 import * as L from 'leaflet';
 import { Map } from 'leaflet';
 import { MapsState } from '../../states/maps.state';
-import { LoadMapBackground, LoadMapObjects } from '../../states/maps.action';
+import { LoadMapBackground, LoadMapObjectFilters, LoadMapObjects } from '../../states/maps.action';
 
 import '../../../../../../node_modules/leaflet.browser.print/dist/leaflet.browser.print.min.js';
 
@@ -26,6 +26,7 @@ export class MapComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(new LoadMapBackground());
     this.store.dispatch(new LoadMapObjects());
+    this.store.dispatch(new LoadMapObjectFilters());
   }
 
   onMarkerClusterReady(group: L.MarkerClusterGroup) {

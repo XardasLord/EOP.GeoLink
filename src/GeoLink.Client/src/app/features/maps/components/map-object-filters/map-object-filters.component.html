@@ -1,14 +1,14 @@
 <section>
-  <ul *ngFor="let object of objectFilters">
+  <ul *ngFor="let filter of (mapFilters$ | async)?.objectFilters">
     <mat-checkbox
-      [checked]="object.allNestedFiltersCompleted"
+      [checked]="filter.allNestedFiltersCompleted"
       color="accent"
-      [indeterminate]="someComplete(object)"
-      (change)="setAll($event.checked, object)">
-      <b>{{ object.name }}</b>
+      [indeterminate]="someComplete(filter)"
+      (change)="setAll($event.checked, filter)">
+      <b>{{ filter.name }}</b>
     </mat-checkbox>
-    <li *ngFor="let subtask of object.nestedFilters">
-      <mat-checkbox color="accent" [(ngModel)]="subtask.completed" (ngModelChange)="updateAllComplete(object)">
+    <li *ngFor="let subtask of filter.nestedFilters">
+      <mat-checkbox color="accent" [(ngModel)]="subtask.completed" (ngModelChange)="updateAllComplete(filter)">
         {{ subtask.name }}
       </mat-checkbox>
     </li>

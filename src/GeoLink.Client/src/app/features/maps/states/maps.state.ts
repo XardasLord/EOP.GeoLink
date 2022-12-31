@@ -16,12 +16,13 @@ import {
 import * as L from 'leaflet';
 import { tap } from 'rxjs';
 import { MapsStateModel } from './maps.state.model';
-import { LoadMapBackground, LoadMapObjects } from './maps.action';
+import { LoadMapBackground, LoadMapObjectFilters, LoadMapObjects } from './maps.action';
 import Scale = Control.Scale;
 import { IMapsService } from '../services/maps.service.base';
 import { MapItemModel } from '../models/map-item.model';
 import { MarkerClusterHelper } from '../helpers/marker-cluster.helper';
 import { MapItemTooltipDialogComponent } from '../components/map-item-tooltip-dialog/map-item-tooltip-dialog.component';
+import { MapFiltersModel } from '../models/map-filters.model';
 
 const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
 
@@ -55,6 +56,9 @@ const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
       imperial: false,
       maxWidth: 200,
     }),
+    mapFilters: {
+      objectFilters: [],
+    },
   },
 })
 @Injectable()
@@ -94,6 +98,11 @@ export class MapsState {
   @Selector([MAPS_STATE_TOKEN])
   static getMapScale(state: MapsStateModel): Scale {
     return state.mapScale;
+  }
+
+  @Selector([MAPS_STATE_TOKEN])
+  static getMapFilters(state: MapsStateModel): MapFiltersModel {
+    return state.mapFilters;
   }
 
   @Action(LoadMapBackground)
@@ -170,6 +179,20 @@ export class MapsState {
 
         ctx.patchState({
           markerClusterData: [...markers],
+        });
+      })
+    );
+  }
+
+  @Action(LoadMapObjectFilters)
+  loadMapObjectFilters(ctx: StateContext<MapsStateModel>, _: LoadMapObjectFilters) {
+    return this.mapsService.getObjectFilters().pipe(
+      tap(objectFilters => {
+        ctx.patchState({
+          mapFilters: {
+            ...ctx.getState().mapFilters,
+            objectFilters: objectFilters,
+          },
         });
       })
     );

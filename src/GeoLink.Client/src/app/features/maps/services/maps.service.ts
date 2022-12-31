@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { IMapsService } from './maps.service.base';
 import { MapItemModel } from '../models/map-item.model';
+import { MapObjectFiltersModel } from '../models/map-object-filter.model';
 
 @Injectable()
 export class MapsService extends IMapsService {
@@ -25,6 +26,38 @@ export class MapsService extends IMapsService {
     }
 
     return of(mapItems);
+  }
+
+  getObjectFilters(): Observable<MapObjectFiltersModel[]> {
+    const objectFilters: MapObjectFiltersModel[] = [
+      {
+        name: 'LINIE ENERGETYCZNE',
+        completed: false,
+        allNestedFiltersCompleted: false,
+        nestedFilters: [
+          { name: 'Linie WN', completed: false, allNestedFiltersCompleted: false },
+          { name: 'Linie SN', completed: false, allNestedFiltersCompleted: false },
+          { name: 'Linie NN', completed: false, allNestedFiltersCompleted: false },
+        ],
+      },
+      {
+        name: 'GPZ',
+        completed: false,
+        allNestedFiltersCompleted: false,
+        nestedFilters: [],
+      },
+      {
+        name: 'STACJE SN',
+        completed: false,
+        allNestedFiltersCompleted: false,
+        nestedFilters: [
+          { name: 'Szafa GPZ/PZ', completed: false, allNestedFiltersCompleted: false },
+          { name: 'Szafa AMI/SG', completed: false, allNestedFiltersCompleted: false },
+        ],
+      },
+    ];
+
+    return of(objectFilters);
   }
 
   private generatePolishLat() {
