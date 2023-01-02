@@ -7,9 +7,10 @@ import { MapRoutingModule } from './maps-routing.module';
 import { MapHelperBarComponent } from './components/map-helper-bar/map-helper-bar.component';
 import { MapItemTooltipDialogComponent } from './components/map-item-tooltip-dialog/map-item-tooltip-dialog.component';
 import { MapObjectFiltersComponent } from './components/map-object-filters/map-object-filters.component';
+import { MapAreaFiltersComponent } from './components/map-area-filters/map-area-filters.component';
 
 @NgModule({
-  declarations: [MapComponent, MapHelperBarComponent, MapItemTooltipDialogComponent, MapObjectFiltersComponent],
+  declarations: [MapComponent, MapHelperBarComponent, MapItemTooltipDialogComponent, MapObjectFiltersComponent, MapAreaFiltersComponent],
   imports: [SharedModule, MapRoutingModule, LeafletModule, LeafletMarkerClusterModule],
 })
 export class MapsModule {}

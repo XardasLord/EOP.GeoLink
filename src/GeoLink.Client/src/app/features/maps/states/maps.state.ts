@@ -16,7 +16,7 @@ import {
 import * as L from 'leaflet';
 import { tap } from 'rxjs';
 import { MapsStateModel } from './maps.state.model';
-import { LoadMapBackground, LoadMapObjectFilters, LoadMapObjects } from './maps.action';
+import { LoadMapAreaFilters, LoadMapBackground, LoadMapObjectFilters, LoadMapObjects } from './maps.action';
 import Scale = Control.Scale;
 import { IMapsService } from '../services/maps.service.base';
 import { MapItemModel } from '../models/map-item.model';
@@ -58,6 +58,7 @@ const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
     }),
     mapFilters: {
       objectFilters: [],
+      areaFilters: [],
     },
   },
 })
@@ -192,6 +193,20 @@ export class MapsState {
           mapFilters: {
             ...ctx.getState().mapFilters,
             objectFilters: objectFilters,
+          },
+        });
+      })
+    );
+  }
+
+  @Action(LoadMapAreaFilters)
+  loadMapAreaFilters(ctx: StateContext<MapsStateModel>, _: LoadMapAreaFilters) {
+    return this.mapsService.getAreaFilters().pipe(
+      tap(areaFilters => {
+        ctx.patchState({
+          mapFilters: {
+            ...ctx.getState().mapFilters,
+            areaFilters: areaFilters,
           },
         });
       })

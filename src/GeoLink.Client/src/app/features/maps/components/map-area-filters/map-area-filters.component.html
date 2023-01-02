@@ -1,8 +1,8 @@
 <section class="filter-container">
-  <ul *ngFor="let filter of (mapFilters$ | async)?.objectFilters">
+  <ul *ngFor="let filter of (mapFilters$ | async)?.areaFilters">
     <mat-checkbox
-      [checked]="filter.allNestedFiltersCompleted"
       color="accent"
+      [checked]="filter.allNestedFiltersCompleted"
       [indeterminate]="someComplete(filter)"
       (change)="setAll($event.checked, filter)">
       <b>{{ filter.name }}</b>

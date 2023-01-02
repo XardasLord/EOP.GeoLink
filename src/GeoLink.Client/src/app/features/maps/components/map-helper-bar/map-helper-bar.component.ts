@@ -7,8 +7,13 @@ import { Component } from '@angular/core';
 })
 export class MapHelperBarComponent {
   showObjectFilters = false;
+  showAreaFilters = false;
 
   toggleObjectFilters(): void {
     this.showObjectFilters = !this.showObjectFilters;
+  }
+
+  toggleAreaFilters(): void {
+    this.showAreaFilters = !this.showAreaFilters;
   }
 }
