@@ -1,27 +1,11 @@
+@import '../../../../../styles/variables.scss';
+
 :host {
-  // TODO:
   position: fixed;
-  top: 129px;
-  left: 195px;
+  background: #fff;
+  top: $toolbar-height + $toolbar-helper-bar-height;
+  left: $navbar-width;
+  width: $object-filter-width;
   z-index: 10000;
-  background: white;
-  width: 220px;
-
-  .filter-container {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    overflow: auto;
-
-    ul {
-      list-style-type: none;
-      padding-inline-start: 4px;
-      margin-block-start: 0px;
-      margin-block-end: 0px;
-
-      li {
-        list-style-type: none;
-        padding-inline-start: 30px;
-      }
-    }
-  }
+  border: $area-filter-border;
 }
