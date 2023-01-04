@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import * as L from 'leaflet';
 import { Map } from 'leaflet';
+import { Subscription, interval } from 'rxjs';
 import { MapsState } from '../../states/maps.state';
-import { LoadMapAreaFilters, LoadMapBackground, LoadMapObjectFilters, LoadMapObjects } from '../../states/maps.action';
 
+import { LoadMapAreaFilters, LoadMapBackground, LoadMapObjectFilters, LoadMapObjects } from '../../states/maps.action';
 import '../../../../../../node_modules/leaflet.browser.print/dist/leaflet.browser.print.min.js';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnDestroy {
   mapOptions$ = this.store.select(MapsState.getMapOptions);
   mapControlLayers$ = this.store.select(MapsState.getMapControlLayers);
   mapLayersAsync$ = this.store.select(MapsState.getMapLayers);
@@ -21,6 +23,8 @@ export class MapComponent implements OnInit {
 
   markerClusterGroup!: L.MarkerClusterGroup;
 
+  private refreshObjectsSubscription: Subscription = new Subscription();
+
   constructor(private store: Store) {}
 
   ngOnInit() {
@@ -28,6 +32,14 @@ export class MapComponent implements OnInit {
     this.store.dispatch(new LoadMapObjects());
     this.store.dispatch(new LoadMapObjectFilters());
     this.store.dispatch(new LoadMapAreaFilters());
+
+    this.refreshObjectsSubscription = interval(environment.refreshMapObjectsIntervalInMilliseconds).subscribe(_ =>
+      this.store.dispatch(new LoadMapObjects())
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.refreshObjectsSubscription.unsubscribe();
   }
 
   onMarkerClusterReady(group: L.MarkerClusterGroup) {
