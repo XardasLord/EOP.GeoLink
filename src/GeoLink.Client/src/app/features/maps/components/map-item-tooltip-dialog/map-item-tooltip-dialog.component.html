@@ -1,1 +1,32 @@
-<pre>{{ mapItem | json }}</pre>
+<mat-grid-list cols="2" rowHeight="50px">
+  <mat-grid-tile colspan="1" rowspan="1">
+    <mat-icon
+      [ngClass]="{ good: mapItem.status === 2, warning: mapItem.status === 1, bad: mapItem.status === 0 }"
+      svgIcon="router">
+    </mat-icon>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="1" rowspan="1">
+    <mat-icon
+      [ngClass]="{ good: mapItem.status === 2, warning: mapItem.status === 1, bad: mapItem.status === 0 }"
+      svgIcon="router">
+    </mat-icon>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="1" rowspan="1">
+    <mat-icon
+      [ngClass]="{ good: mapItem.status === 2, warning: mapItem.status === 1, bad: mapItem.status === 0 }"
+      svgIcon="router">
+    </mat-icon>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="1" rowspan="1">
+    <mat-icon
+      [ngClass]="{ good: mapItem.status === 2, warning: mapItem.status === 1, bad: mapItem.status === 0 }"
+      svgIcon="router">
+    </mat-icon
+  ></mat-grid-tile>
+  <mat-grid-tile colspan="2" rowspan="1">
+    <mat-icon
+      [ngClass]="{ good: mapItem.status === 2, warning: mapItem.status === 1, bad: mapItem.status === 0 }"
+      svgIcon="router">
+    </mat-icon
+  ></mat-grid-tile>
+</mat-grid-list>

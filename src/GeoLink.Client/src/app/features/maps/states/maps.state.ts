@@ -23,6 +23,7 @@ import { MapItemModel } from '../models/map-item.model';
 import { MarkerClusterHelper } from '../helpers/marker-cluster.helper';
 import { MapItemTooltipDialogComponent } from '../components/map-item-tooltip-dialog/map-item-tooltip-dialog.component';
 import { MapFiltersModel } from '../models/map-filters.model';
+import { MapItemContextDialogComponent } from '../components/map-item-context-dialog/map-item-context-dialog.component';
 
 const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
 
@@ -225,7 +226,7 @@ export class MapsState {
 
     // Different approach to attach component as a popup - https://stackoverflow.com/a/44686112/3921353
     marker.on('click', ($event: LeafletMouseEvent) => {
-      const popupComponent = this.createMapItemTooltip(mapItem);
+      const popupComponent = this.createMapItemPopup(mapItem);
       marker.unbindPopup();
       marker.bindPopup(popupComponent).openPopup();
       // const htmlMarkerElement = marker.getElement();
@@ -241,7 +242,11 @@ export class MapsState {
     marker.on('mouseover', ($event: LeafletMouseEvent) => {
       const tooltipComponent = this.createMapItemTooltip(mapItem);
       marker.unbindTooltip();
-      marker.bindTooltip(tooltipComponent).openTooltip();
+      marker
+        .bindTooltip(tooltipComponent, {
+          className: 'map-item-tooltip',
+        })
+        .openTooltip();
     });
 
     return marker;
@@ -255,6 +260,17 @@ export class MapsState {
       iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
       shadowUrl: 'assets/leaflet/marker-shadow.png',
     });
+  }
+
+  private createMapItemPopup(item: MapItemModel) {
+    // Bind custom Angular Component as a popup/tooltip - https://stackoverflow.com/questions/42340067/angular-component-into-leaflet-popup
+    // Another solution - https://stackoverflow.com/a/45107300/3921353
+    // Another solution - https://stackoverflow.com/a/57773246/3921353
+    const componentRef = this.resolver.resolveComponentFactory(MapItemContextDialogComponent).create(this.injector);
+
+    componentRef.instance.mapItem = item;
+    componentRef.changeDetectorRef.detectChanges();
+    return componentRef.location.nativeElement;
   }
 
   private createMapItemTooltip(item: MapItemModel) {

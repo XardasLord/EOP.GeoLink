@@ -1,0 +1,13 @@
+@import '../../../../../styles/variables.scss';
+
+.good {
+  color: $marker-cluster-group-good-status-color;
+}
+
+.warning {
+  color: $marker-cluster-group-good-warning-color;
+}
+
+.bad {
+  color: $marker-cluster-group-good-bad-color;
+}

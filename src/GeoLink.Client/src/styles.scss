@@ -266,3 +266,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-clip: content-box, border-box, border-box, border-box, border-box;
   transform: rotate(30deg);
 }
+
+.map-item-tooltip {
+  width: 200px;
+  height: 150px;
+}
