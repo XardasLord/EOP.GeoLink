@@ -23,6 +23,36 @@ export class MapsService extends IMapsService {
           longitude: this.generatePolishLon(),
           latitude: this.generatePolishLat(),
         },
+        groupItems: [
+          {
+            name: 'TELCO',
+            deviceItems: [
+              { name: 'Szafa', status: this.randomIntFromInterval(0, 2), deviceItems: [] },
+              { name: 'Router', status: this.randomIntFromInterval(0, 2), deviceItems: [] },
+              { name: 'Switch', status: this.randomIntFromInterval(0, 2), deviceItems: [] },
+              { name: 'Modem Tetra', status: this.randomIntFromInterval(0, 2), deviceItems: [] },
+              { name: 'Modem GSM', status: this.randomIntFromInterval(0, 2), deviceItems: [] },
+            ],
+          },
+          {
+            name: 'POMIARY',
+            deviceItems: [
+              { name: 'Koncentrator', status: this.randomIntFromInterval(0, 2), deviceItems: [] },
+              { name: 'Licznik', status: this.randomIntFromInterval(0, 2), deviceItems: [] },
+            ],
+          },
+          {
+            name: 'SCADA',
+            deviceItems: [{ name: 'Sterownik', status: this.randomIntFromInterval(0, 2), deviceItems: [] }],
+          },
+          {
+            name: 'SIŁOWNIA',
+            deviceItems: [
+              { name: 'Zasilanie', status: this.randomIntFromInterval(0, 2), deviceItems: [] },
+              { name: 'UPS', status: this.randomIntFromInterval(0, 2), deviceItems: [] },
+            ],
+          },
+        ],
       });
     }
 

@@ -5,4 +5,16 @@ export interface MapItemModel {
   name: string;
   status: number;
   coordinates: Coordinates;
+  groupItems: DeviceGroupModel[];
+}
+
+export interface DeviceGroupModel {
+  name: string;
+  deviceItems: DeviceItemModel[];
+}
+
+export interface DeviceItemModel {
+  name: string;
+  status: number;
+  deviceItems: DeviceItemModel[];
 }

@@ -1,0 +1,17 @@
+@import '../../../../../styles/variables.scss';
+
+table, th, td {
+  border: $map-item-context-menu-table-border;
+  border-collapse: collapse;
+  text-align: center;
+  width: 240px;
+}
+
+tr.header-summary-row {
+  background-color: lightblue;
+  font-weight: bold;
+}
+
+td.group-name {
+  font-weight: bold;
+}
