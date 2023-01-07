@@ -1,9 +1,10 @@
 import { Coordinates } from './coordinates.model';
+import { DeviceStatusEnum } from './device-status.enum';
 
 export interface MapItemModel {
   id: number;
   name: string;
-  status: number;
+  status: DeviceStatusEnum;
   coordinates: Coordinates;
   groupItems: DeviceGroupModel[];
 }
@@ -15,6 +16,6 @@ export interface DeviceGroupModel {
 
 export interface DeviceItemModel {
   name: string;
-  status: number;
+  status: DeviceStatusEnum;
   deviceItems: DeviceItemModel[];
 }

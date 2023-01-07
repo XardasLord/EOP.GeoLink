@@ -5,6 +5,7 @@ import { IMapsService } from './maps.service.base';
 import { MapItemModel } from '../models/map-item.model';
 import { MapObjectFiltersModel } from '../models/map-object-filter.model';
 import { MapAreaFiltersModel } from '../models/map-area-filters.model';
+import { DeviceStatusEnum } from '../models/device-status.enum';
 
 @Injectable()
 export class MapsService extends IMapsService {
@@ -18,7 +19,7 @@ export class MapsService extends IMapsService {
       mapItems.push({
         id: i,
         name: 'Router',
-        status: this.randomIntFromInterval(0, 2),
+        status: this.randomEnum(DeviceStatusEnum),
         coordinates: {
           longitude: this.generatePolishLon(),
           latitude: this.generatePolishLat(),
@@ -27,29 +28,29 @@ export class MapsService extends IMapsService {
           {
             name: 'TELCO',
             deviceItems: [
-              { name: 'Szafa', status: this.randomIntFromInterval(0, 2), deviceItems: [] },
-              { name: 'Router', status: this.randomIntFromInterval(0, 2), deviceItems: [] },
-              { name: 'Switch', status: this.randomIntFromInterval(0, 2), deviceItems: [] },
-              { name: 'Modem Tetra', status: this.randomIntFromInterval(0, 2), deviceItems: [] },
-              { name: 'Modem GSM', status: this.randomIntFromInterval(0, 2), deviceItems: [] },
+              { name: 'Szafa', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
+              { name: 'Router', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
+              { name: 'Switch', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
+              { name: 'Modem Tetra', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
+              { name: 'Modem GSM', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
             ],
           },
           {
             name: 'POMIARY',
             deviceItems: [
-              { name: 'Koncentrator', status: this.randomIntFromInterval(0, 2), deviceItems: [] },
-              { name: 'Licznik', status: this.randomIntFromInterval(0, 2), deviceItems: [] },
+              { name: 'Koncentrator', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
+              { name: 'Licznik', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
             ],
           },
           {
             name: 'SCADA',
-            deviceItems: [{ name: 'Sterownik', status: this.randomIntFromInterval(0, 2), deviceItems: [] }],
+            deviceItems: [{ name: 'Sterownik', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] }],
           },
           {
             name: 'SIŁOWNIA',
             deviceItems: [
-              { name: 'Zasilanie', status: this.randomIntFromInterval(0, 2), deviceItems: [] },
-              { name: 'UPS', status: this.randomIntFromInterval(0, 2), deviceItems: [] },
+              { name: 'Zasilanie', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
+              { name: 'UPS', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
             ],
           },
         ],
@@ -168,5 +169,14 @@ export class MapsService extends IMapsService {
 
   private randomIntFromInterval(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  private randomEnum<T>(enumValue: T): T[keyof T] {
+    const enumValues = Object.keys(enumValue!)
+      .map(n => Number.parseInt(n))
+      .filter(n => !Number.isNaN(n)) as unknown as T[keyof T][];
+    const randomIndex = Math.floor(Math.random() * enumValues.length);
+    const randomEnumValue = enumValues[randomIndex];
+    return randomEnumValue;
   }
 }
