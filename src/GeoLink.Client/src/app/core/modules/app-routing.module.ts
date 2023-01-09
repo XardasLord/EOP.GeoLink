@@ -6,6 +6,7 @@ export const RoutePaths = {
   Auth: 'auth',
   Map: 'map',
   Administration: 'administration',
+  Configuration: 'configuration',
 };
 
 const routes: Routes = [
@@ -15,15 +16,17 @@ const routes: Routes = [
     children: [
       {
         path: RoutePaths.Map,
-        loadChildren: () =>
-          import('../../features/maps/maps.module').then(m => m.MapsModule),
+        loadChildren: () => import('../../features/maps/maps.module').then(m => m.MapsModule),
       },
       {
         path: RoutePaths.Administration,
         loadChildren: () =>
-          import('../../features/administrations/administrations.module').then(
-            m => m.AdministrationsModule
-          ),
+          import('../../features/administrations/administrations.module').then(m => m.AdministrationsModule),
+      },
+      {
+        path: RoutePaths.Configuration,
+        loadChildren: () =>
+          import('../../features/configurations/configurations.module').then(m => m.ConfigurationsModule),
       },
     ],
   },

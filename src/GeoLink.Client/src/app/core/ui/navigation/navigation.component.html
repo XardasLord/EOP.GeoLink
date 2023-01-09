@@ -3,17 +3,17 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav mode="side" opened="true" fixedInViewport="true">
     <mat-nav-list>
-      <mat-list-item
-        [routerLink]="RoutePaths.Map"
-        routerLinkActive="active-route">
+      <mat-list-item [routerLink]="RoutePaths.Map" routerLinkActive="active-route">
         <mat-icon matListItemIcon>map</mat-icon>
         <span matListItemTitle *ngIf="sidenav.opened">Mapa</span>
       </mat-list-item>
-      <mat-list-item
-        [routerLink]="RoutePaths.Administration"
-        routerLinkActive="active-route">
+      <mat-list-item [routerLink]="RoutePaths.Administration" routerLinkActive="active-route">
         <mat-icon matListItemIcon>settings</mat-icon>
         <span matListItemTitle *ngIf="sidenav.opened">Administracja</span>
+      </mat-list-item>
+      <mat-list-item [routerLink]="RoutePaths.Configuration" routerLinkActive="active-route">
+        <mat-icon matListItemIcon>settings</mat-icon>
+        <span matListItemTitle *ngIf="sidenav.opened">Konfiguracja</span>
       </mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
