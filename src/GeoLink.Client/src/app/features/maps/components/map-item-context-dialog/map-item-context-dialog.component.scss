@@ -12,6 +12,10 @@ tr.header-summary-row {
   font-weight: bold;
 }
 
+tr.device-item-row {
+  cursor: pointer;
+}
+
 td.group-name {
   font-weight: bold;
 }
@@ -37,6 +41,8 @@ td {
   }
 }
 
-td.status {
-  cursor: pointer;
+.second-level-table {
+  position: fixed;
+  background-color: white;
+  left: 275px; // TODO: Dynamic
 }
