@@ -1,5 +1,5 @@
 import { AfterContentChecked, Component } from '@angular/core';
-import { MapItemModel } from '../../models/map-item.model';
+import { DeviceItemModel, MapItemModel } from '../../models/map-item.model';
 
 @Component({
   selector: 'app-map-item-context-dialog',
@@ -15,5 +15,9 @@ export class MapItemContextDialogComponent implements AfterContentChecked {
 
   ngAfterContentChecked(): void {
     console.warn('call from ngAfterContentChecked');
+  }
+
+  showStatusChart(deviceItem: DeviceItemModel) {
+    console.log('Showing device item chart...', deviceItem);
   }
 }

@@ -228,7 +228,7 @@ export class MapsState {
     marker.on('click', ($event: LeafletMouseEvent) => {
       const popupComponent = this.createMapItemPopup(mapItem);
       marker.unbindPopup();
-      marker.bindPopup(popupComponent).openPopup();
+      marker.bindPopup(popupComponent, {}).openPopup();
       // const htmlMarkerElement = marker.getElement();
       // htmlMarkerElement?.parentElement?.appendChild(popupComponent);
       //

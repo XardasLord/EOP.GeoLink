@@ -18,8 +18,9 @@
     <ng-container *ngFor="let deviceItem of item.deviceItems">
       <tr>
         <td>{{ deviceItem.name }}</td>
-        <td>
+        <td class="status" (click)="showStatusChart(deviceItem)">
           <mat-icon
+            matTooltip="abc test 123"
             [ngClass]="{
               good: deviceItem.status === 2,
               warning: deviceItem.status === 1,
