@@ -18,7 +18,16 @@
     <ng-container *ngFor="let deviceItem of item.deviceItems">
       <tr>
         <td>{{ deviceItem.name }}</td>
-        <td>{{ deviceItem.status }}</td>
+        <td>
+          <mat-icon
+            [ngClass]="{
+              good: deviceItem.status === 2,
+              warning: deviceItem.status === 1,
+              bad: deviceItem.status === 0
+            }"
+            >circle</mat-icon
+          >
+        </td>
         <td>>>></td>
       </tr>
     </ng-container>
