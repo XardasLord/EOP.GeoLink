@@ -43,6 +43,11 @@ const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
         const childMarkers: Marker<MapItemModel>[] = cluster.getAllChildMarkers();
         const css = new MarkerClusterHelper().getCssClassForClusterGroup(childMarkers);
 
+        // TODO: Display custom Angular Component with grouped data
+        cluster.on('click', () => {
+          console.warn(cluster.getAllChildMarkers());
+        });
+
         return new L.DivIcon({
           html: '<div><span>' + childMarkers.length + '</span></div>',
           className: `marker-cluster-base marker-cluster-${css}`,
