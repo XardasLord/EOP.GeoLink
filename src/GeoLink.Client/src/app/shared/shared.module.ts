@@ -6,22 +6,18 @@ import { NgxsModule } from '@ngxs/store';
 
 import { MaterialModule } from './modules/material.module';
 import { ModalState } from './states/modal.state';
+import { EnumToDescriptionPipePipe } from './pipes/device-status-description.pipe';
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MaterialModule,
-    HttpClientModule,
-    NgxsModule.forFeature([ModalState]),
-  ],
+  declarations: [EnumToDescriptionPipePipe],
+  imports: [CommonModule, ReactiveFormsModule, MaterialModule, HttpClientModule, NgxsModule.forFeature([ModalState])],
   exports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
     HttpClientModule,
+    EnumToDescriptionPipePipe,
   ],
 })
 export class SharedModule {}
