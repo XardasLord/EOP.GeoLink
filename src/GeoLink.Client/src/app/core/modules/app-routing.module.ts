@@ -7,6 +7,7 @@ export const RoutePaths = {
   Map: 'map',
   Administration: 'administration',
   Configuration: 'configuration',
+  Filters: 'filters',
 };
 
 const routes: Routes = [
@@ -27,6 +28,11 @@ const routes: Routes = [
         path: RoutePaths.Configuration,
         loadChildren: () =>
           import('../../features/configurations/configurations.module').then(m => m.ConfigurationsModule),
+      },
+      {
+        path: RoutePaths.Filters,
+        loadChildren: () =>
+          import('../../features/filter-settings/filter-settings.module').then(m => m.FilterSettingsModule),
       },
     ],
   },
