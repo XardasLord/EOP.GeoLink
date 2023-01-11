@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { NgxsModule } from '@ngxs/store';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 
 import { SharedModule } from '../shared/shared.module';
 import { AppRoutingModule } from './modules/app-routing.module';
@@ -12,7 +13,13 @@ import { MapsService } from '../features/maps/services/maps.service';
 
 @NgModule({
   declarations: [NavigationComponent, ToolbarComponent],
-  imports: [SharedModule, AppRoutingModule, AppNgxsModule, NgxsModule.forRoot([MapsState])],
+  imports: [
+    SharedModule,
+    AppRoutingModule,
+    AppNgxsModule,
+    NgxsModule.forRoot([MapsState]),
+    NgxsFormPluginModule.forRoot(),
+  ],
   providers: [{ provide: IMapsService, useClass: MapsService }],
 })
 export class CoreModule {}

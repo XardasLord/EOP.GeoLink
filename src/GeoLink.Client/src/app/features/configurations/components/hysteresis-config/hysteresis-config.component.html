@@ -1,0 +1,25 @@
+<form [formGroup]="hysteresisForm" (ngSubmit)="onSubmit()" ngxsForm="hysteresisConfig.configFormGroup">
+  <p>
+    <mat-form-field appearance="outline">
+      <mat-label>Próg dostępności [%]</mat-label>
+      <input
+        matInput
+        placeholder="Próg dostępności"
+        formControlName="availabilityThresholdPercentage"
+        type="number"
+        min="0"
+        max="100" />
+      <mat-hint>Zakres od 0 do 100</mat-hint>
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field appearance="outline">
+      <mat-label>Czułość [%]</mat-label>
+      <input matInput placeholder="Czułość" formControlName="sensitivenessPercentage" type="number" min="0" max="100" />
+      <mat-hint>Zakres od 0 do 100</mat-hint>
+    </mat-form-field>
+  </p>
+  <p>
+    <button mat-raised-button color="primary" type="submit">Zapisz</button>
+  </p>
+</form>
