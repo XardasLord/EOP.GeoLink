@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { patch } from '@ngxs/store/operators';
 import { catchError, tap, throwError } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 import { DefaultFormStateValue } from '../../../shared/models/form-states.model';
 import { HysteresisConfigStateModel } from './hysteresis-config.state.model';
 import { Load, Save } from './hysteresis-config.action';
@@ -22,7 +23,7 @@ const HYSTERESIS_CONFIG_STATE_TOKEN = new StateToken<HysteresisConfigStateModel>
 })
 @Injectable()
 export class HysteresisConfigState {
-  constructor(private hysteresisConfigService: IHysteresisConfigService) {}
+  constructor(private hysteresisConfigService: IHysteresisConfigService, private toastrService: ToastrService) {}
 
   @Selector([HYSTERESIS_CONFIG_STATE_TOKEN])
   static getConfig(state: HysteresisConfigStateModel): HysteresisConfigModel {
@@ -55,6 +56,10 @@ export class HysteresisConfigState {
             },
           })
         );
+
+        this.toastrService.success('Parametry histerezy zostały edytowane', 'Edycja parametrów', {
+          onActivateTick: true,
+        });
       }),
       catchError(error => {
         return throwError(error);
