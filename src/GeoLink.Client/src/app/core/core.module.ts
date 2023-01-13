@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 
@@ -10,6 +10,7 @@ import { AppNgxsModule } from './modules/app-ngxs.module';
 import { MapsState } from '../features/maps/states/maps.state';
 import { IMapsService } from '../features/maps/services/maps.service.base';
 import { MapsService } from '../features/maps/services/maps.service';
+import { GlobalErrorHandler } from './interceptor/error-handler.interceptor';
 
 @NgModule({
   declarations: [NavigationComponent, ToolbarComponent],
@@ -20,6 +21,12 @@ import { MapsService } from '../features/maps/services/maps.service';
     NgxsModule.forRoot([MapsState]),
     NgxsFormPluginModule.forRoot(),
   ],
-  providers: [{ provide: IMapsService, useClass: MapsService }],
+  providers: [
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler,
+    },
+    { provide: IMapsService, useClass: MapsService },
+  ],
 })
 export class CoreModule {}
