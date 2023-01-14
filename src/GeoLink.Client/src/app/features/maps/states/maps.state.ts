@@ -1,18 +1,7 @@
 import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { LeafletControlLayersConfig } from '@asymmetrik/ngx-leaflet';
-import {
-  circle,
-  Control,
-  Icon,
-  latLng,
-  Layer,
-  LeafletMouseEvent,
-  MapOptions,
-  Marker,
-  polygon,
-  tileLayer,
-} from 'leaflet';
+import { Control, Icon, latLng, Layer, LeafletMouseEvent, MapOptions, Marker, tileLayer } from 'leaflet';
 import * as L from 'leaflet';
 import { tap } from 'rxjs';
 import { MapsStateModel } from './maps.state.model';
@@ -24,6 +13,7 @@ import { MarkerClusterHelper } from '../helpers/marker-cluster.helper';
 import { MapItemTooltipDialogComponent } from '../components/map-item-tooltip-dialog/map-item-tooltip-dialog.component';
 import { MapFiltersModel } from '../models/map-filters.model';
 import { MapItemContextDialogComponent } from '../components/map-item-context-dialog/map-item-context-dialog.component';
+import { environment } from '../../../../environments/environment';
 
 const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
 
@@ -119,55 +109,40 @@ export class MapsState {
         zoom: 7,
         center: latLng(52.22779941887071, 19.764404296875),
       },
-      mapLayersControl: {
-        baseLayers: {
-          Topography: tileLayer.wms('http://ows.mundialis.de/services/service?', {
-            layers: 'TOPO-WMS',
-            maxZoom: 18,
-            attribution: '...',
-          }),
-          Places: tileLayer.wms('http://ows.mundialis.de/services/service?', {
-            layers: 'OSM-Overlay-WMS',
-            maxZoom: 18,
-            attribution: '...',
-          }),
-          'Topography, then places': tileLayer.wms('http://ows.mundialis.de/services/service?', {
-            layers: 'TOPO-WMS,OSM-Overlay-WMS',
-            maxZoom: 18,
-            attribution: '...',
-          }),
-          'Places, then topography': tileLayer.wms('http://ows.mundialis.de/services/service?', {
-            layers: 'OSM-Overlay-WMS,TOPO-WMS',
-            maxZoom: 18,
-            attribution: '...',
-          }),
-        },
-        overlays: {
-          'Big Circle': circle([46.95, -122], { radius: 5000 }),
-          'Big Square': polygon([
-            [46.8, -121.55],
-            [46.9, -121.55],
-            [46.9, -121.7],
-            [46.8, -121.7],
-          ]),
-        },
-      },
+      // mapLayersControl: {
+      //   baseLayers: {
+      //     Topography: tileLayer.wms('http://ows.mundialis.de/services/service?', {
+      //       layers: 'TOPO-WMS',
+      //       maxZoom: 18,
+      //       attribution: '...',
+      //     }),
+      //     Places: tileLayer.wms('http://ows.mundialis.de/services/service?', {
+      //       layers: 'OSM-Overlay-WMS',
+      //       maxZoom: 18,
+      //       attribution: '...',
+      //     }),
+      //     'Topography, then places': tileLayer.wms('http://ows.mundialis.de/services/service?', {
+      //       layers: 'TOPO-WMS,OSM-Overlay-WMS',
+      //       maxZoom: 18,
+      //       attribution: '...',
+      //     }),
+      //     'Places, then topography': tileLayer.wms('http://ows.mundialis.de/services/service?', {
+      //       layers: 'OSM-Overlay-WMS,TOPO-WMS',
+      //       maxZoom: 18,
+      //       attribution: '...',
+      //     }),
+      //   },
+      // },
       mapLayers: [
         // https://leafletjs.com/examples/wms/wms.html
-        tileLayer.wms('http://ows.mundialis.de/services/service?', {
-          layers: 'TOPO-WMS,OSM-Overlay-WMS',
-          opacity: 0.7,
-          minZoom: 3,
+        // http://ows.mundialis.de/services/service?
+        tileLayer.wms(environment.wmsMapBackground, {
+          layers: environment.wmsBaseLayerName,
+          opacity: 0.8,
+          minZoom: 6,
           maxZoom: 19,
           detectRetina: true,
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }),
-        circle([46.95, -122], { radius: 5000 }),
-        polygon([
-          [46.8, -121.85],
-          [46.92, -121.92],
-          [46.87, -121.8],
-        ]),
       ],
     });
   }
