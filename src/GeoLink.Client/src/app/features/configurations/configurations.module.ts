@@ -12,9 +12,10 @@ import { RetentionTimeConfigComponent } from './components/retention-time-config
 import { IRetentionTimeConfigService } from './services/retention-time-config.service.base';
 import { RetentionTimeConfigService } from './services/retention-time-config.service';
 import { RetentionTimeConfigState } from './states/retention-time-config.state';
+import { TimeWindowsConfigComponent } from './components/time-windows-config/time-windows-config.component';
 
 @NgModule({
-  declarations: [ConfigurationsComponent, HysteresisConfigComponent, RetentionTimeConfigComponent],
+  declarations: [ConfigurationsComponent, HysteresisConfigComponent, RetentionTimeConfigComponent, TimeWindowsConfigComponent],
   imports: [
     SharedModule,
     ConfigurationRoutingModule,
