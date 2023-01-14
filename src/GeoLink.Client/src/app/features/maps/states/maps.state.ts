@@ -142,6 +142,7 @@ export class MapsState {
           minZoom: 6,
           maxZoom: 19,
           detectRetina: true,
+          format: 'image/png',
         }),
       ],
     });
