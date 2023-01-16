@@ -19,6 +19,10 @@
         <mat-icon matListItemIcon>desktop_windows</mat-icon>
         <span matListItemTitle *ngIf="sidenav.opened">Filtry</span>
       </mat-list-item>
+      <mat-list-item [routerLink]="RoutePaths.Logs" routerLinkActive="active-route">
+        <mat-icon matListItemIcon>description</mat-icon>
+        <span matListItemTitle *ngIf="sidenav.opened">Logi</span>
+      </mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
 

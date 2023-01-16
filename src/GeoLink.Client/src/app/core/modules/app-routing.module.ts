@@ -8,6 +8,7 @@ export const RoutePaths = {
   Administration: 'administration',
   Configuration: 'configuration',
   Filters: 'filters',
+  Logs: 'logs',
 };
 
 const routes: Routes = [
@@ -33,6 +34,10 @@ const routes: Routes = [
         path: RoutePaths.Filters,
         loadChildren: () =>
           import('../../features/filter-settings/filter-settings.module').then(m => m.FilterSettingsModule),
+      },
+      {
+        path: RoutePaths.Logs,
+        loadChildren: () => import('../../features/logs/logs.module').then(m => m.LogsModule),
       },
     ],
   },
