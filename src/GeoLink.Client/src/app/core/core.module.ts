@@ -11,6 +11,7 @@ import { MapsState } from '../features/maps/states/maps.state';
 import { IMapsService } from '../features/maps/services/maps.service.base';
 import { MapsService } from '../features/maps/services/maps.service';
 import { GlobalErrorHandler } from './interceptor/error-handler.interceptor';
+import { DynamicComponentCreatorHelper } from '../features/maps/helpers/dynamic-component-creator.helper';
 
 @NgModule({
   declarations: [NavigationComponent, ToolbarComponent],
@@ -27,6 +28,7 @@ import { GlobalErrorHandler } from './interceptor/error-handler.interceptor';
       useClass: GlobalErrorHandler,
     },
     { provide: IMapsService, useClass: MapsService },
+    DynamicComponentCreatorHelper,
   ],
 })
 export class CoreModule {}

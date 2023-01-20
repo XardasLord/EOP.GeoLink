@@ -11,7 +11,15 @@ import { MapAreaFiltersComponent } from './components/map-area-filters/map-area-
 import { MapItemContextDialogComponent } from './components/map-item-context-dialog/map-item-context-dialog.component';
 
 @NgModule({
-  declarations: [MapComponent, MapHelperBarComponent, MapItemTooltipDialogComponent, MapObjectFiltersComponent, MapAreaFiltersComponent, MapItemContextDialogComponent],
+  declarations: [
+    MapComponent,
+    MapHelperBarComponent,
+    MapItemTooltipDialogComponent,
+    MapObjectFiltersComponent,
+    MapAreaFiltersComponent,
+    MapItemContextDialogComponent,
+  ],
   imports: [SharedModule, MapRoutingModule, LeafletModule, LeafletMarkerClusterModule],
+  providers: [],
 })
 export class MapsModule {}

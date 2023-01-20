@@ -2,7 +2,7 @@ import { Marker } from 'leaflet';
 import { MapItemModel } from '../models/map-item.model';
 
 export class MarkerClusterHelper {
-  public getCssClassForClusterGroup(childMarkers: Marker<MapItemModel>[]): string {
+  public static getCssClassForClusterGroup(childMarkers: Marker<MapItemModel>[]): string {
     let css = '';
 
     const goodStatuses = childMarkers.filter(
