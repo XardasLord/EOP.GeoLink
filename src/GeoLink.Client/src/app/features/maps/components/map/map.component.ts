@@ -50,7 +50,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
     (this.markerClusterGroup as any).options.iconCreateFunction = (cluster: L.MarkerCluster) => {
       const childMarkers: Marker<MapItemModel>[] = cluster.getAllChildMarkers();
-      const css = MarkerClusterHelper.getCssClassForClusterGroup(childMarkers);
 
       cluster.on('click', () => {
         const mapItem = MarkerClusterHelper.getMapItemModels(childMarkers);
@@ -60,9 +59,11 @@ export class MapComponent implements OnInit, OnDestroy {
         cluster.bindPopup(popupComponent, {}).openPopup();
       });
 
+      const cssName = MarkerClusterHelper.getCssClassForClusterGroup(childMarkers);
+
       return new L.DivIcon({
         html: '<div><span>' + childMarkers.length + '</span></div>',
-        className: `marker-cluster-base marker-cluster-${css}`,
+        className: cssName,
         iconSize: new L.Point(40, 40),
       });
     };
