@@ -18,7 +18,9 @@ const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
 @State<MapsStateModel>({
   name: MAPS_STATE_TOKEN,
   defaults: {
-    mapOptions: {},
+    mapOptions: {
+      preferCanvas: true,
+    },
     mapLayersControl: {
       baseLayers: {},
       overlays: {},
@@ -26,10 +28,28 @@ const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
     mapLayers: [],
     markerClusterData: [],
     markerClusterOptions: {
-      maxClusterRadius: 120,
+      maxClusterRadius: 200,
       zoomToBoundsOnClick: false,
+      removeOutsideVisibleBounds: true,
+      // chunkedLoading: true,
+      // chunkProgress: function (processed, total, elapsed) {
+      //   const progress = document.getElementById('progress')!;
+      //   const progressBar = document.getElementById('progress-bar')!;
+      //
+      //   if (elapsed > 1000) {
+      //     // if it takes more than a second to load, display the progress bar:
+      //     progress.style.display = 'block';
+      //     progressBar.style.width = Math.round((processed / total) * 100) + '%';
+      //   }
+      //
+      //   if (processed === total) {
+      //     // all markers processed - hide the progress bar:
+      //     progress.style.display = 'none';
+      //   }
+      // },
       // Cluster icon creation + binding cluster context popup component is done within map.component after clusters are ready
     },
+
     mapScale: new Scale({
       position: 'bottomleft',
       metric: true,
