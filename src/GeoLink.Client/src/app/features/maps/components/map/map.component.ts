@@ -1,13 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import * as L from 'leaflet';
-import { Map } from 'leaflet';
+import { Map, Marker } from 'leaflet';
 import { Subscription, interval } from 'rxjs';
 import { MapsState } from '../../states/maps.state';
 
 import { LoadMapAreaFilters, LoadMapBackground, LoadMapObjectFilters, LoadMapObjects } from '../../states/maps.action';
 import '../../../../../../node_modules/leaflet.browser.print/dist/leaflet.browser.print.min.js';
 import { environment } from '../../../../../environments/environment';
+import { MarkerClusterHelper } from '../../helpers/marker-cluster.helper';
+import { MapItemModel } from '../../models/map-item.model';
+import { DynamicComponentCreatorHelper } from '../../helpers/dynamic-component-creator.helper';
 
 @Component({
   selector: 'app-map',
@@ -25,7 +28,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private refreshObjectsSubscription: Subscription = new Subscription();
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private dynamicComponentCreator: DynamicComponentCreatorHelper) {}
 
   ngOnInit() {
     this.store.dispatch(new LoadMapBackground());
@@ -44,6 +47,27 @@ export class MapComponent implements OnInit, OnDestroy {
 
   onMarkerClusterReady(group: L.MarkerClusterGroup) {
     this.markerClusterGroup = group;
+
+    (this.markerClusterGroup as any).options.iconCreateFunction = (cluster: L.MarkerCluster) => {
+      const childMarkers: Marker<MapItemModel>[] = cluster.getAllChildMarkers();
+      const css = MarkerClusterHelper.getCssClassForClusterGroup(childMarkers);
+
+      cluster.on('click', () => {
+        const mapItem = MarkerClusterHelper.getMapItemModels(childMarkers);
+        const popupComponent = this.dynamicComponentCreator.createClusterGroupPopup(mapItem);
+
+        cluster.unbindPopup();
+        cluster.bindPopup(popupComponent, {}).openPopup();
+      });
+
+      return new L.DivIcon({
+        html: '<div><span>' + childMarkers.length + '</span></div>',
+        className: `marker-cluster-base marker-cluster-${css}`,
+        iconSize: new L.Point(40, 40),
+      });
+    };
+
+    this.markerClusterGroup.refreshClusters();
   }
 
   onMapReady(map: Map) {

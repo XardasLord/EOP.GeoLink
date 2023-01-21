@@ -10,7 +10,6 @@ import { LoadMapAreaFilters, LoadMapBackground, LoadMapObjectFilters, LoadMapObj
 import Scale = Control.Scale;
 import { IMapsService } from '../services/maps.service.base';
 import { MapItemModel } from '../models/map-item.model';
-import { MarkerClusterHelper } from '../helpers/marker-cluster.helper';
 import { MapFiltersModel } from '../models/map-filters.model';
 import { DynamicComponentCreatorHelper } from '../helpers/dynamic-component-creator.helper';
 
@@ -28,27 +27,8 @@ const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
     markerClusterData: [],
     markerClusterOptions: {
       maxClusterRadius: 120,
-      iconCreateFunction: function (cluster) {
-        const childMarkers: Marker<MapItemModel>[] = cluster.getAllChildMarkers();
-        const css = MarkerClusterHelper.getCssClassForClusterGroup(childMarkers);
-
-        // TODO: Display custom Angular Component with grouped data
-        cluster.on('click', () => {
-          console.warn(childMarkers);
-
-          // const popupComponent = this.createMapItemPopup(childMarkers[0]);
-          //
-          // cluster.unbindPopup();
-          // cluster.bindPopup(popupComponent, {}).openPopup();
-        });
-
-        return new L.DivIcon({
-          html: '<div><span>' + childMarkers.length + '</span></div>',
-          className: `marker-cluster-base marker-cluster-${css}`,
-          iconSize: new L.Point(40, 40),
-        });
-      },
-      // Popup by clicking on cluster group icon - https://stackoverflow.com/questions/38824030/how-to-show-popup-on-click-leaflet-cluster-group
+      zoomToBoundsOnClick: false,
+      // Cluster icon creation + binding cluster context popup component is done within map.component after clusters are ready
     },
     mapScale: new Scale({
       position: 'bottomleft',

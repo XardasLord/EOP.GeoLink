@@ -84,4 +84,19 @@ export class MarkerClusterHelper {
 
     return css;
   }
+
+  public static getMapItemModels(markers: Marker<MapItemModel>[]): MapItemModel[] {
+    const mapItems: MapItemModel[] = [];
+
+    markers.forEach(marker => {
+      mapItems.push(JSON.parse((marker as any).deviceData));
+    });
+
+    return mapItems;
+  }
+  public static getMapItemModel(marker: Marker<MapItemModel>): MapItemModel {
+    const mapItem: MapItemModel = JSON.parse((marker as any).deviceData);
+
+    return mapItem;
+  }
 }
