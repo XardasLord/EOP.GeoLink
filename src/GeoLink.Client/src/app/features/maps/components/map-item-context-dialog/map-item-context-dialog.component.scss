@@ -16,6 +16,10 @@ tr.device-item-row {
   cursor: pointer;
 }
 
+tr.device-item-row:hover {
+  background-color: $context-menu-row-background-color-on-hover;
+}
+
 td.group-name {
   font-weight: bold;
 }

@@ -24,6 +24,10 @@ tr.group-row {
   }
 }
 
+tr.group-row:hover {
+  background-color: $context-menu-row-background-color-on-hover;
+}
+
 td {
   .mat-icon {
     font-size: 9px;
