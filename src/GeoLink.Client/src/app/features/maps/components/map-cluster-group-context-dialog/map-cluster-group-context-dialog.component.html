@@ -1,1 +1,58 @@
-{{ mapItems | json }}
+<table>
+  <tr class="header-summary-row">
+    <th colspan="4">Grupa obiektów</th>
+    <th colspan="2">{{ mapItems.length }}</th>
+  </tr>
+  <tr>
+    <th>Typ obiektu</th>
+    <th>Liczba obiektów</th>
+    <th colspan="4">Status</th>
+  </tr>
+
+  <!--  Should be dynamic -->
+  <tr class="group-row">
+    <td>GPZ</td>
+    <td>25</td>
+    <td><mat-icon class="good">circle</mat-icon>22</td>
+    <td><mat-icon class="warning">circle</mat-icon>2</td>
+    <td><mat-icon class="bad">circle</mat-icon>1</td>
+    <td>>>></td>
+  </tr>
+  <tr class="group-row">
+    <td>Stacja SN</td>
+    <td>375</td>
+    <td><mat-icon class="good">circle</mat-icon>175</td>
+    <td><mat-icon class="warning">circle</mat-icon>100</td>
+    <td><mat-icon class="bad">circle</mat-icon>100</td>
+    <td>>>></td>
+  </tr>
+  <tr class="group-row">
+    <td>Odłącznik SN</td>
+    <td>17</td>
+    <td><mat-icon class="good">circle</mat-icon>10</td>
+    <td><mat-icon class="warning">circle</mat-icon>5</td>
+    <td><mat-icon class="bad">circle</mat-icon>2</td>
+    <td>>>></td>
+  </tr>
+
+  <!--  <ng-container *ngFor="let item of mapItem.groupItems; index as i; first as isFirst; last as isLast">-->
+  <!--    <td colspan="3" class="group-name">{{ item.name }}</td>-->
+  <!--    <ng-container *ngFor="let deviceItem of item.deviceItems">-->
+  <!--      <tr class="device-item-row">-->
+  <!--        <td>{{ deviceItem.name }}</td>-->
+  <!--        <td (click)="showStatusChart(deviceItem)">-->
+  <!--          <mat-icon-->
+  <!--            matTooltip="abc test 123"-->
+  <!--            [ngClass]="{-->
+  <!--              good: deviceItem.status === 2,-->
+  <!--              warning: deviceItem.status === 1,-->
+  <!--              bad: deviceItem.status === 0-->
+  <!--            }"-->
+  <!--            >circle</mat-icon-->
+  <!--          >-->
+  <!--        </td>-->
+  <!--        <td (click)="showDeviceSubMenu(deviceItem, $event)">>>></td>-->
+  <!--      </tr>-->
+  <!--    </ng-container>-->
+  <!--  </ng-container>-->
+</table>

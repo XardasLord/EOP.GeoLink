@@ -1,0 +1,56 @@
+@import '../../../../../styles/variables.scss';
+
+table, th, td {
+  border: $map-item-context-menu-table-border;
+  border-collapse: collapse;
+  text-align: center;
+  width: 390px;
+}
+
+tr.header-summary-row {
+  background-color: $context-menu-summary-header-background-color;
+  font-size: 20px;
+  font-weight: bold;
+  height: 40px;
+}
+
+tr.group-row {
+  cursor: pointer;
+  font-weight: bold;
+  height: 30px;
+
+  td {
+    border: none;
+  }
+}
+
+td {
+  .mat-icon {
+    font-size: 9px;
+    height: 16px;
+    line-height: 16px;
+    vertical-align: middle;
+  }
+
+  .mat-icon.good {
+    color: green;
+  }
+
+  .mat-icon.warning {
+    color: yellow;
+  }
+
+  .mat-icon.bad {
+    color: red;
+  }
+
+  .aligned-with-icon {
+    position: absolute;
+  }
+}
+
+.second-level-table {
+  position: fixed;
+  background-color: white;
+  left: 275px; // TODO: Dynamic
+}

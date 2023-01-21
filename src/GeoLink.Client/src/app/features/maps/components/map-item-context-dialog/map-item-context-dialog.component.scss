@@ -8,7 +8,7 @@ table, th, td {
 }
 
 tr.header-summary-row {
-  background-color: lightblue;
+  background-color: $context-menu-summary-header-background-color;
   font-weight: bold;
 }
 

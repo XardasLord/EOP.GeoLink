@@ -267,7 +267,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   transform: rotate(30deg);
 }
 
+// Tooltip for single map item
 .map-item-tooltip {
   width: 200px;
   height: 150px;
+}
+
+// Context popup for cluster group
+.cluster-group-context-menu {
+  width: 435px;
 }

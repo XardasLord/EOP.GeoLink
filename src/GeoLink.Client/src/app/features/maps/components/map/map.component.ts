@@ -56,7 +56,11 @@ export class MapComponent implements OnInit, OnDestroy {
         const popupComponent = this.dynamicComponentCreator.createClusterGroupPopup(mapItem);
 
         cluster.unbindPopup();
-        cluster.bindPopup(popupComponent, {}).openPopup();
+        cluster
+          .bindPopup(popupComponent, {
+            className: 'cluster-group-context-menu',
+          })
+          .openPopup();
       });
 
       const cssName = MarkerClusterHelper.getCssClassForClusterGroup(childMarkers);
