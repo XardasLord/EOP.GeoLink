@@ -10,6 +10,7 @@ import { MapObjectFiltersComponent } from './components/map-object-filters/map-o
 import { MapAreaFiltersComponent } from './components/map-area-filters/map-area-filters.component';
 import { MapItemContextDialogComponent } from './components/map-item-context-dialog/map-item-context-dialog.component';
 import { MapClusterGroupContextDialogComponent } from './components/map-cluster-group-context-dialog/map-cluster-group-context-dialog.component';
+import { MapClusterGroupReportContextDialogComponent } from './components/map-cluster-group-report-context-dialog/map-cluster-group-report-context-dialog.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { MapClusterGroupContextDialogComponent } from './components/map-cluster-
     MapAreaFiltersComponent,
     MapItemContextDialogComponent,
     MapClusterGroupContextDialogComponent,
+    MapClusterGroupReportContextDialogComponent,
   ],
   imports: [SharedModule, MapRoutingModule, LeafletModule, LeafletMarkerClusterModule],
   providers: [],

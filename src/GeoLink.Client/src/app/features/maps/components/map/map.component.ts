@@ -63,6 +63,18 @@ export class MapComponent implements OnInit, OnDestroy {
           .openPopup();
       });
 
+      cluster.on('contextmenu', () => {
+        const mapItem = MarkerClusterHelper.getMapItemModels(childMarkers);
+        const popupComponent = this.dynamicComponentCreator.createClusterGroupQuickReportsPopup(mapItem);
+
+        cluster.unbindPopup();
+        cluster
+          .bindPopup(popupComponent, {
+            className: 'cluster-group-quick-reports-context-menu',
+          })
+          .openPopup();
+      });
+
       const cssName = MarkerClusterHelper.getCssClassForClusterGroup(childMarkers);
 
       return new L.DivIcon({
