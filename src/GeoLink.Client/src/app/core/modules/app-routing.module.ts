@@ -9,6 +9,7 @@ export const RoutePaths = {
   Configuration: 'configuration',
   Filters: 'filters',
   Logs: 'logs',
+  Analytics: 'analytics',
 };
 
 const routes: Routes = [
@@ -38,6 +39,10 @@ const routes: Routes = [
       {
         path: RoutePaths.Logs,
         loadChildren: () => import('../../features/logs/logs.module').then(m => m.LogsModule),
+      },
+      {
+        path: RoutePaths.Analytics,
+        loadChildren: () => import('../../features/analytics/analytics.module').then(m => m.AnalyticsModule),
       },
     ],
   },
