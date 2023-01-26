@@ -10,6 +10,7 @@ export const RoutePaths = {
   Filters: 'filters',
   Logs: 'logs',
   Analytics: 'analytics',
+  Reports: 'reports',
 };
 
 const routes: Routes = [
@@ -20,6 +21,10 @@ const routes: Routes = [
       {
         path: RoutePaths.Map,
         loadChildren: () => import('../../features/maps/maps.module').then(m => m.MapsModule),
+      },
+      {
+        path: RoutePaths.Reports,
+        loadChildren: () => import('../../features/reports/reports.module').then(m => m.ReportsModule),
       },
       {
         path: RoutePaths.Administration,
