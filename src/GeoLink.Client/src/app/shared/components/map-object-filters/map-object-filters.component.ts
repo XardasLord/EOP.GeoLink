@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { MapsState } from '../../states/maps.state';
 import { Store } from '@ngxs/store';
-import { MapObjectFiltersModel } from '../../models/map-object-filter.model';
+import { MapsState } from '../../../features/maps/states/maps.state';
+import { MapObjectFiltersModel } from '../../../features/maps/models/map-object-filter.model';
 
 @Component({
-  selector: 'app-map-area-filters',
-  templateUrl: './map-area-filters.component.html',
-  styleUrls: ['./map-area-filters.component.scss'],
+  selector: 'app-map-object-filters',
+  templateUrl: './map-object-filters.component.html',
+  styleUrls: ['./map-object-filters.component.scss'],
 })
-export class MapAreaFiltersComponent {
+export class MapObjectFiltersComponent {
   mapFilters$ = this.store.select(MapsState.getMapFilters);
 
   constructor(private store: Store) {}
