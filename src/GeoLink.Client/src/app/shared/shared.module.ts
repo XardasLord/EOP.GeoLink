@@ -12,9 +12,15 @@ import { ErrorService } from './errors/error.service';
 import { MapAreaFiltersComponent } from './components/map-area-filters/map-area-filters.component';
 import { MapObjectFiltersComponent } from './components/map-object-filters/map-object-filters.component';
 import { AuthService } from './services/auth.service';
+import { AuthScopeAllowDirective } from './auth/directives/auth-scope-allow.directive';
 
 @NgModule({
-  declarations: [EnumToDescriptionPipePipe, MapAreaFiltersComponent, MapObjectFiltersComponent],
+  declarations: [
+    EnumToDescriptionPipePipe,
+    MapAreaFiltersComponent,
+    MapObjectFiltersComponent,
+    AuthScopeAllowDirective,
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -34,6 +40,7 @@ import { AuthService } from './services/auth.service';
     ToastrModule,
     MapAreaFiltersComponent,
     MapObjectFiltersComponent,
+    AuthScopeAllowDirective,
   ],
   providers: [ErrorService, AuthService, { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }],
 })

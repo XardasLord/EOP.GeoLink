@@ -33,4 +33,18 @@ export class AuthService {
   //   const expiresAt = JSON.parse(expiration);
   //   return moment(expiresAt);
   // }
+
+  public isUserAllowedByScopes(scopes: number[]): boolean {
+    // if (this.userRole === AuthRoles.Admin) {
+    //   return true;
+    // }
+
+    return true;
+
+    if (!scopes) {
+      return false;
+    }
+
+    // return scopes.filter((scope) => scope != null).some((scope) => this.userScopes.includes(scope));
+  }
 }
