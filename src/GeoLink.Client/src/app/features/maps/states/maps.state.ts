@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
-import { LeafletControlLayersConfig } from '@asymmetrik/ngx-leaflet';
-import { Control, Icon, latLng, Layer, LeafletMouseEvent, MapOptions, Marker, tileLayer } from 'leaflet';
+import { Icon, LeafletMouseEvent, Marker } from 'leaflet';
 import * as L from 'leaflet';
 import { tap } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 import { MapsStateModel } from './maps.state.model';
-import { LoadMapAreaFilters, LoadMapBackground, LoadMapObjectFilters, LoadMapObjects } from './maps.action';
-import Scale = Control.Scale;
+import { LoadMapAreaFilters, LoadMapObjectFilters, LoadMapObjects } from './maps.action';
 import { IMapsService } from '../services/maps.service.base';
 import { MapItemModel } from '../models/map-item.model';
 import { MapFiltersModel } from '../models/map-filters.model';
@@ -18,44 +15,7 @@ const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
 @State<MapsStateModel>({
   name: MAPS_STATE_TOKEN,
   defaults: {
-    mapOptions: {
-      preferCanvas: true,
-    },
-    mapLayersControl: {
-      baseLayers: {},
-      overlays: {},
-    },
-    mapLayers: [],
     markerClusterData: [],
-    markerClusterOptions: {
-      maxClusterRadius: 200,
-      zoomToBoundsOnClick: false,
-      removeOutsideVisibleBounds: true,
-      // chunkedLoading: true,
-      // chunkProgress: function (processed, total, elapsed) {
-      //   const progress = document.getElementById('progress')!;
-      //   const progressBar = document.getElementById('progress-bar')!;
-      //
-      //   if (elapsed > 1000) {
-      //     // if it takes more than a second to load, display the progress bar:
-      //     progress.style.display = 'block';
-      //     progressBar.style.width = Math.round((processed / total) * 100) + '%';
-      //   }
-      //
-      //   if (processed === total) {
-      //     // all markers processed - hide the progress bar:
-      //     progress.style.display = 'none';
-      //   }
-      // },
-      // Cluster icon creation + binding cluster context popup component is done within map.component after clusters are ready
-    },
-
-    mapScale: new Scale({
-      position: 'bottomleft',
-      metric: true,
-      imperial: false,
-      maxWidth: 200,
-    }),
     mapFilters: {
       objectFilters: [],
       areaFilters: [],
@@ -67,84 +27,13 @@ export class MapsState {
   constructor(private mapsService: IMapsService, private componentCreatorHelper: DynamicComponentCreatorHelper) {}
 
   @Selector([MAPS_STATE_TOKEN])
-  static getMapOptions(state: MapsStateModel): MapOptions {
-    return state.mapOptions;
-  }
-
-  @Selector([MAPS_STATE_TOKEN])
-  static getMapControlLayers(state: MapsStateModel): LeafletControlLayersConfig {
-    return state.mapLayersControl;
-  }
-
-  @Selector([MAPS_STATE_TOKEN])
-  static getMapLayers(state: MapsStateModel): Layer[] {
-    return state.mapLayers;
-  }
-
-  @Selector([MAPS_STATE_TOKEN])
-  static getMarkerClusterOptions(state: MapsStateModel): L.MarkerClusterGroupOptions {
-    return state.markerClusterOptions;
-  }
-
-  @Selector([MAPS_STATE_TOKEN])
   static getMapObjects(state: MapsStateModel): L.Marker[] {
     return state.markerClusterData;
   }
 
   @Selector([MAPS_STATE_TOKEN])
-  static getMapScale(state: MapsStateModel): Scale {
-    return state.mapScale;
-  }
-
-  @Selector([MAPS_STATE_TOKEN])
   static getMapFilters(state: MapsStateModel): MapFiltersModel {
     return state.mapFilters;
-  }
-
-  @Action(LoadMapBackground)
-  loadMapBackground(ctx: StateContext<MapsStateModel>, _: LoadMapBackground) {
-    ctx.patchState({
-      mapOptions: {
-        zoom: 7,
-        center: latLng(52.22779941887071, 19.764404296875),
-      },
-      // mapLayersControl: {
-      //   baseLayers: {
-      //     Topography: tileLayer.wms('http://ows.mundialis.de/services/service?', {
-      //       layers: 'TOPO-WMS',
-      //       maxZoom: 18,
-      //       attribution: '...',
-      //     }),
-      //     Places: tileLayer.wms('http://ows.mundialis.de/services/service?', {
-      //       layers: 'OSM-Overlay-WMS',
-      //       maxZoom: 18,
-      //       attribution: '...',
-      //     }),
-      //     'Topography, then places': tileLayer.wms('http://ows.mundialis.de/services/service?', {
-      //       layers: 'TOPO-WMS,OSM-Overlay-WMS',
-      //       maxZoom: 18,
-      //       attribution: '...',
-      //     }),
-      //     'Places, then topography': tileLayer.wms('http://ows.mundialis.de/services/service?', {
-      //       layers: 'OSM-Overlay-WMS,TOPO-WMS',
-      //       maxZoom: 18,
-      //       attribution: '...',
-      //     }),
-      //   },
-      // },
-      mapLayers: [
-        // https://leafletjs.com/examples/wms/wms.html
-        // http://ows.mundialis.de/services/service?
-        tileLayer.wms(environment.wmsMapBackground, {
-          layers: environment.wmsBaseLayerName,
-          opacity: 0.8,
-          minZoom: 6,
-          maxZoom: 19,
-          detectRetina: true,
-          format: 'image/png',
-        }),
-      ],
-    });
   }
 
   @Action(LoadMapObjects)

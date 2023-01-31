@@ -4,10 +4,9 @@
 <div
   id="map-container"
   leaflet
-  [leafletOptions]="(mapOptions$ | async)!"
-  [leafletLayersControl]="(mapControlLayers$ | async)!"
-  [leafletLayers]="(mapLayersAsync$ | async)!"
+  [leafletOptions]="mapOptions!"
+  [leafletLayers]="mapLayers!"
   [leafletMarkerCluster]="(mapObjects$ | async)!"
-  [leafletMarkerClusterOptions]="(markerClusterOptions$ | async)!"
+  [leafletMarkerClusterOptions]="markerClusterOptions!"
   (leafletMapReady)="onMapReady($event)"
   (leafletMarkerClusterReady)="onMarkerClusterReady($event)"></div>

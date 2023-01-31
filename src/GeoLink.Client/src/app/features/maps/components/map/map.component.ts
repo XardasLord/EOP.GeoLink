@@ -1,16 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import * as L from 'leaflet';
-import { Map, Marker } from 'leaflet';
+import * as esri from 'esri-leaflet';
+import { Control, latLng, Layer, Map, MapOptions, Marker, tileLayer } from 'leaflet';
 import { Subscription, interval } from 'rxjs';
 import { MapsState } from '../../states/maps.state';
 
-import { LoadMapAreaFilters, LoadMapBackground, LoadMapObjectFilters, LoadMapObjects } from '../../states/maps.action';
+import { LoadMapAreaFilters, LoadMapObjectFilters, LoadMapObjects } from '../../states/maps.action';
 import '../../../../../../node_modules/leaflet.browser.print/dist/leaflet.browser.print.min.js';
 import { environment } from '../../../../../environments/environment';
 import { MarkerClusterHelper } from '../../helpers/marker-cluster.helper';
 import { MapItemModel } from '../../models/map-item.model';
 import { DynamicComponentCreatorHelper } from '../../helpers/dynamic-component-creator.helper';
+import Scale = Control.Scale;
 
 @Component({
   selector: 'app-map',
@@ -18,10 +20,10 @@ import { DynamicComponentCreatorHelper } from '../../helpers/dynamic-component-c
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit, OnDestroy {
-  mapOptions$ = this.store.select(MapsState.getMapOptions);
-  mapControlLayers$ = this.store.select(MapsState.getMapControlLayers);
-  mapLayersAsync$ = this.store.select(MapsState.getMapLayers);
-  markerClusterOptions$ = this.store.select(MapsState.getMarkerClusterOptions);
+  mapOptions!: MapOptions;
+  mapLayers!: Layer[];
+  markerClusterOptions!: L.MarkerClusterGroupOptions;
+  mapScale!: Scale;
   mapObjects$ = this.store.select(MapsState.getMapObjects);
 
   markerClusterGroup!: L.MarkerClusterGroup;
@@ -31,7 +33,42 @@ export class MapComponent implements OnInit, OnDestroy {
   constructor(private store: Store, private dynamicComponentCreator: DynamicComponentCreatorHelper) {}
 
   ngOnInit() {
-    this.store.dispatch(new LoadMapBackground());
+    this.mapOptions = {
+      zoom: 7,
+      maxZoom: 14,
+      center: latLng(52.22779941887071, 19.764404296875),
+      preferCanvas: true,
+    };
+
+    this.markerClusterOptions = {
+      maxClusterRadius: 200,
+      zoomToBoundsOnClick: false,
+      removeOutsideVisibleBounds: true,
+      // chunkedLoading: true,
+      // chunkProgress: function (processed, total, elapsed) {
+      //   const progress = document.getElementById('progress')!;
+      //   const progressBar = document.getElementById('progress-bar')!;
+      //
+      //   if (elapsed > 1000) {
+      //     // if it takes more than a second to load, display the progress bar:
+      //     progress.style.display = 'block';
+      //     progressBar.style.width = Math.round((processed / total) * 100) + '%';
+      //   }
+      //
+      //   if (processed === total) {
+      //     // all markers processed - hide the progress bar:
+      //     progress.style.display = 'none';
+      //   }
+      // },
+    };
+
+    this.mapScale = new Scale({
+      position: 'bottomleft',
+      metric: true,
+      imperial: false,
+      maxWidth: 200,
+    });
+
     this.store.dispatch(new LoadMapObjects());
     this.store.dispatch(new LoadMapObjectFilters());
     this.store.dispatch(new LoadMapAreaFilters());
@@ -88,7 +125,13 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   onMapReady(map: Map) {
-    map.addControl(this.store.selectSnapshot(MapsState.getMapScale));
+    if (environment.arcGisMapBackground.length > 0) {
+      this.loadLayersFromArcGIS(map);
+    } else if (environment.wmsMapBackground.length > 0) {
+      this.loadLayersFromWMS();
+    }
+
+    map.addControl(this.mapScale);
 
     // https://github.com/Igor-Vladyka/leaflet.browser.print
     L.control
@@ -102,5 +145,40 @@ export class MapComponent implements OnInit, OnDestroy {
         },
       })
       .addTo(map);
+  }
+
+  private loadLayersFromArcGIS(map: Map) {
+    // ArcGIS Vector Tile Server
+
+    const basemapLayers = {
+      Streets: esri.basemapLayer('Streets').addTo(map),
+      Topographic: esri.basemapLayer('Topographic'),
+      Terrain: esri.basemapLayer('Terrain'),
+      Gray: esri.basemapLayer('Gray'),
+      Imagery: esri.basemapLayer('Imagery'),
+    };
+
+    L.control.layers(basemapLayers, undefined, { collapsed: false }).addTo(map);
+
+    // esri
+    //   .tiledMapLayer({
+    //     url: environment.arcGisMapBackground,
+    //   })
+    //   .addTo(map);
+  }
+
+  private loadLayersFromWMS() {
+    this.mapLayers = [
+      // https://leafletjs.com/examples/wms/wms.html
+      // http://ows.mundialis.de/services/service?
+      tileLayer.wms(environment.wmsMapBackground, {
+        layers: environment.wmsBaseLayerName,
+        opacity: 0.8,
+        minZoom: 6,
+        maxZoom: 19,
+        detectRetina: true,
+        format: 'image/png',
+      }),
+    ];
   }
 }
