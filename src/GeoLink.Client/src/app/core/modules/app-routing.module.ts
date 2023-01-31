@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NavigationComponent } from '../ui/navigation/navigation.component';
+import { AuthGuard } from '../guards/auth.guard';
+import { LoginComponent } from '../ui/login/login/login.component';
 
 export const RoutePaths = {
   Auth: 'auth',
+  Login: 'login',
   Map: 'map',
   Administration: 'administration',
   Configuration: 'configuration',
@@ -25,6 +28,7 @@ const routes: Routes = [
       {
         path: RoutePaths.Reports,
         loadChildren: () => import('../../features/reports/reports.module').then(m => m.ReportsModule),
+        canActivate: [AuthGuard],
       },
       {
         path: RoutePaths.Administration,
@@ -51,15 +55,10 @@ const routes: Routes = [
       },
     ],
   },
-  // {
-  //   path: RoutePaths.Auth,
-  //   component: LoginComponent,
-  //   canActivate: [LoginScreenGuard]
-  // },
-  // {
-  //   path: 'auth-callback',
-  //   component: AuthCallbackComponent
-  // },
+  {
+    path: RoutePaths.Login,
+    component: LoginComponent,
+  },
   {
     path: '**',
     redirectTo: '',
