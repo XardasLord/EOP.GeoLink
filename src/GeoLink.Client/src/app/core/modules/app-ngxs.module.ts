@@ -3,6 +3,7 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { AuthState } from '../../shared/states/auth.state';
 
 @NgModule({
   imports: [
@@ -13,7 +14,7 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
         injectContainerState: false,
       },
     }),
-    NgxsModule.forFeature([]),
+    NgxsModule.forFeature([AuthState]),
     NgxsLoggerPluginModule.forRoot({
       collapsed: false,
       disabled: !isDevMode(),

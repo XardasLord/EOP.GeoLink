@@ -36,6 +36,7 @@
     "leaflet.browser.print": "^2.0.2",
     "leaflet.markercluster": "^1.5.3",
     "ngx-toastr": "^16.0.2",
+    "oidc-client": "^1.11.5",
     "prettier-eslint": "^15.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.4.1",
