@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import * as L from 'leaflet';
 import * as esri from 'esri-leaflet';
+import { vectorBasemapLayer, vectorTileLayer } from 'esri-leaflet-vector';
 import { Control, latLng, Layer, Map, MapOptions, Marker, tileLayer } from 'leaflet';
 import { Subscription, interval } from 'rxjs';
 import { MapsState } from '../../states/maps.state';
@@ -126,7 +127,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   onMapReady(map: Map) {
     if (environment.arcGisMapBackground.length > 0) {
-      this.loadLayersFromArcGIS(map);
+      this.loadLayersFromArcGIS();
     } else if (environment.wmsMapBackground.length > 0) {
       this.loadLayersFromWMS();
     }
@@ -147,24 +148,9 @@ export class MapComponent implements OnInit, OnDestroy {
       .addTo(map);
   }
 
-  private loadLayersFromArcGIS(map: Map) {
+  private loadLayersFromArcGIS() {
     // ArcGIS Vector Tile Server
-
-    const basemapLayers = {
-      Streets: esri.basemapLayer('Streets').addTo(map),
-      Topographic: esri.basemapLayer('Topographic'),
-      Terrain: esri.basemapLayer('Terrain'),
-      Gray: esri.basemapLayer('Gray'),
-      Imagery: esri.basemapLayer('Imagery'),
-    };
-
-    L.control.layers(basemapLayers, undefined, { collapsed: false }).addTo(map);
-
-    // esri
-    //   .tiledMapLayer({
-    //     url: environment.arcGisMapBackground,
-    //   })
-    //   .addTo(map);
+    this.mapLayers = [vectorTileLayer(environment.arcGisMapBackground, {})];
   }
 
   private loadLayersFromWMS() {
