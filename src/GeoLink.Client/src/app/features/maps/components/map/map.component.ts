@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import * as L from 'leaflet';
-import * as esri from 'esri-leaflet';
-import { vectorBasemapLayer, vectorTileLayer } from 'esri-leaflet-vector';
+import { vectorTileLayer } from 'esri-leaflet-vector';
 import { Control, latLng, Layer, Map, MapOptions, Marker, tileLayer } from 'leaflet';
 import { Subscription, interval } from 'rxjs';
 import { MapsState } from '../../states/maps.state';
@@ -14,6 +13,7 @@ import { MarkerClusterHelper } from '../../helpers/marker-cluster.helper';
 import { MapItemModel } from '../../models/map-item.model';
 import { DynamicComponentCreatorHelper } from '../../helpers/dynamic-component-creator.helper';
 import Scale = Control.Scale;
+import { LeafletControlLayersConfig } from '@asymmetrik/ngx-leaflet';
 
 @Component({
   selector: 'app-map',
@@ -23,6 +23,7 @@ import Scale = Control.Scale;
 export class MapComponent implements OnInit, OnDestroy {
   mapOptions!: MapOptions;
   mapLayers!: Layer[];
+  mapLayersControl!: LeafletControlLayersConfig;
   markerClusterOptions!: L.MarkerClusterGroupOptions;
   mapScale!: Scale;
   mapObjects$ = this.store.select(MapsState.getMapObjects);
@@ -127,7 +128,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   onMapReady(map: Map) {
     if (environment.arcGisMapBackground.length > 0) {
-      this.loadLayersFromArcGIS();
+      this.loadLayersFromArcGIS(map);
     } else if (environment.wmsMapBackground.length > 0) {
       this.loadLayersFromWMS();
     }
@@ -148,23 +149,43 @@ export class MapComponent implements OnInit, OnDestroy {
       .addTo(map);
   }
 
-  private loadLayersFromArcGIS() {
+  private loadLayersFromArcGIS(map: Map) {
     // ArcGIS Vector Tile Server
-    this.mapLayers = [vectorTileLayer(environment.arcGisMapBackground, {})];
+    this.mapLayersControl = {
+      baseLayers: {
+        'ArcGIS VectorTileServer Map': vectorTileLayer(environment.arcGisMapBackground, {}),
+      },
+      overlays: {
+        Test: tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 18,
+          attribution: '...',
+        }),
+      },
+    };
+
+    this.mapLayers = [this.mapLayersControl.baseLayers['ArcGIS VectorTileServer Map']];
   }
 
   private loadLayersFromWMS() {
-    this.mapLayers = [
-      // https://leafletjs.com/examples/wms/wms.html
-      // http://ows.mundialis.de/services/service?
-      tileLayer.wms(environment.wmsMapBackground, {
-        layers: environment.wmsBaseLayerName,
-        opacity: 0.8,
-        minZoom: 6,
-        maxZoom: 19,
-        detectRetina: true,
-        format: 'image/png',
-      }),
-    ];
+    this.mapLayersControl = {
+      baseLayers: {
+        'WMS Map': tileLayer.wms(environment.wmsMapBackground, {
+          layers: environment.wmsBaseLayerName,
+          opacity: 0.8,
+          minZoom: 6,
+          maxZoom: 19,
+          detectRetina: true,
+          format: 'image/png',
+        }),
+      },
+      overlays: {
+        Test: tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 18,
+          attribution: '...',
+        }),
+      },
+    };
+
+    this.mapLayers = [this.mapLayersControl.baseLayers['WMS Map']];
   }
 }
