@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import * as L from 'leaflet';
+import * as esri from 'esri-leaflet';
 import { vectorTileLayer } from 'esri-leaflet-vector';
 import { Control, latLng, Layer, Map, MapOptions, Marker, tileLayer } from 'leaflet';
 import { Subscription, interval } from 'rxjs';
@@ -156,9 +157,26 @@ export class MapComponent implements OnInit, OnDestroy {
         'ArcGIS VectorTileServer Map': vectorTileLayer(environment.arcGisMapBackground, {}),
       },
       overlays: {
-        Test: tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 18,
-          attribution: '...',
+        'Stacja SN/nN': esri.featureLayer({
+          url: 'http://localhost:3002/server/rest/services/siec/MapServer/0',
+          fields: ['OBJECTID'],
+          minZoom: 14,
+        }),
+        'Odcinek WN': esri.featureLayer({
+          url: 'http://localhost:3002/server/rest/services/siec/MapServer/1',
+          fields: ['OBJECTID'],
+        }),
+        'Odcinek nN': esri.featureLayer({
+          url: 'http://localhost:3002/server/rest/services/siec/MapServer/2',
+          fields: ['OBJECTID'],
+        }),
+        'Odcinek SN': esri.featureLayer({
+          url: 'http://localhost:3002/server/rest/services/siec/MapServer/3',
+          fields: ['OBJECTID'],
+        }),
+        GPZ: esri.featureLayer({
+          url: 'http://localhost:3002/server/rest/services/siec/MapServer/4',
+          fields: ['OBJECTID'],
         }),
       },
     };
