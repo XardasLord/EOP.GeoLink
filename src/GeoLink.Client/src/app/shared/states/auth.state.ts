@@ -72,6 +72,14 @@ export class AuthState implements NgxsOnInit {
 
   @Action(Logout)
   logout(ctx: StateContext<AuthStateModel>, _: Logout) {
-    return this.authService.logout().pipe(tap(() => ctx.dispatch(new Navigate([RoutePaths.Login]))));
+    return this.authService.logout().pipe(
+      tap(() => {
+        ctx.patchState({
+          user: null,
+        });
+
+        ctx.dispatch(new Navigate([RoutePaths.Login]));
+      })
+    );
   }
 }
