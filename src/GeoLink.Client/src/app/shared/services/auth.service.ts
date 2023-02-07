@@ -1,11 +1,43 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { Observable, of, Subscription } from 'rxjs';
 import { UserAuthModel } from '../auth/models/user-auth.model';
 import { User } from 'oidc-client';
 import { UserAuthHelper } from '../auth/helpers/user-auth.helper';
+import { AuthScopes } from '../auth/models/auth.scopes';
+import { AuthState } from '../states/auth.state';
+import { AuthRoles } from '../auth/models/auth.roles';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements OnDestroy {
+  private readonly roleSubscription: Subscription | undefined;
+  private userRole: string | undefined;
+  private userScopes!: number[];
+
+  user$ = this.store.select(AuthState.getUser);
+
+  constructor(private store: Store) {
+    this.roleSubscription = this.user$?.subscribe(user => {
+      if (!user) {
+        this.userRole = undefined;
+        this.userScopes = [];
+        return;
+      }
+
+      this.userRole = user.role;
+
+      if (user.scopes) {
+        this.userScopes = Object.values(user.scopes).map(x => +x as number);
+      }
+    });
+  }
+
+  public ngOnDestroy(): void {
+    if (this.roleSubscription) {
+      this.roleSubscription.unsubscribe();
+    }
+  }
+
   login(login: string, password: string): Observable<UserAuthModel> {
     // TODO: Http call to Log in
 
@@ -18,6 +50,8 @@ export class AuthService {
         aud: '',
         exp: 0,
         iat: 0,
+        role: AuthRoles.Admin,
+        auth_scopes: [AuthScopes.MenuMap, AuthScopes.MenuCharts],
       },
       access_token:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNTM0NTQzNTQzNTQzNTM0NTMiLCJleHAiOjE1MDQ2OTkyNTZ9.zG-2FvGegujxoLWwIQfNB5IT46D-xC4e8dEDYwi6aRM',
@@ -31,8 +65,10 @@ export class AuthService {
     const authUser = UserAuthHelper.parseUserAuthData(mockedUser);
 
     if (authUser) {
-      // const expiresAt = moment().add(authResult.expiresIn,'second');
       localStorage.setItem('access_token', authUser.accessToken!);
+      localStorage.setItem('user', JSON.stringify(authUser));
+
+      // const expiresAt = moment().add(authResult.expiresIn,'second');
       // localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()) );
     }
 
@@ -41,6 +77,7 @@ export class AuthService {
 
   logout(): Observable<any> {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('user');
     // localStorage.removeItem("expires_at");
 
     return of({});
@@ -62,16 +99,14 @@ export class AuthService {
   // }
 
   public isUserAllowedByScopes(scopes: number[]): boolean {
-    // if (this.userRole === AuthRoles.Admin) {
-    //   return true;
-    // }
-
-    return true;
+    if (this.userRole === AuthRoles.Admin) {
+      return true;
+    }
 
     if (!scopes) {
       return false;
     }
 
-    // return scopes.filter((scope) => scope != null).some((scope) => this.userScopes.includes(scope));
+    return scopes.filter(scope => scope != null).some(scope => this.userScopes.includes(scope));
   }
 }

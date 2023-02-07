@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
+import { Action, NgxsOnInit, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
 import { tap } from 'rxjs';
 import { UserAuthModel } from '../auth/models/user-auth.model';
@@ -18,11 +18,25 @@ export const AUTH_STATE_TOKEN = new StateToken<AuthStateModel>('auth');
   },
 })
 @Injectable()
-export class AuthState {
+export class AuthState implements NgxsOnInit {
   constructor(private authService: AuthService) {}
+
+  ngxsOnInit(ctx: StateContext<AuthStateModel>): void {
+    // TODO: Pre login implementation in the background
+    const user = AuthState.getUser(ctx.getState());
+
+    if (!user) {
+      ctx.dispatch(new Navigate([RoutePaths.Login]));
+    }
+  }
 
   @Selector([AUTH_STATE_TOKEN])
   static getUser(state: AuthStateModel): UserAuthModel | null {
+    // TODO: It's a temporary solution. Once the login with backend is done this simulation will no longer be needed.
+    if (state?.user === null && localStorage.getItem('user') !== null) {
+      return JSON.parse(localStorage.getItem('user')!);
+    }
+
     return state?.user;
   }
 
@@ -32,10 +46,12 @@ export class AuthState {
   }
 
   @Selector([AUTH_STATE_TOKEN])
-  static getUserScope(state: AuthStateModel): AuthScopes[] {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return Object.values(state?.user.scopes).map(x => +x as number);
+  static getUserScopes(state: AuthStateModel): AuthScopes[] {
+    if (!state || !state.user || !state.user.scopes) {
+      return [];
+    }
+
+    return Object.values(state.user.scopes).map(x => +x as number);
   }
 
   @Action(Login)
@@ -51,13 +67,11 @@ export class AuthState {
       user: action.response,
     });
 
-    console.log('User is logged in');
-
     ctx.dispatch(new Navigate(['/']));
   }
 
   @Action(Logout)
   logout(ctx: StateContext<AuthStateModel>, _: Logout) {
-    return this.authService.logout().pipe(tap(() => ctx.dispatch(new Navigate([RoutePaths.Auth]))));
+    return this.authService.logout().pipe(tap(() => ctx.dispatch(new Navigate([RoutePaths.Login]))));
   }
 }
