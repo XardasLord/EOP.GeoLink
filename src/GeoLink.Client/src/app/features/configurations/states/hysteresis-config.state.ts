@@ -6,8 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { DefaultFormStateValue } from '../../../shared/models/form-states.model';
 import { HysteresisConfigStateModel } from './hysteresis-config.state.model';
 import { Load, Save } from './hysteresis-config.action';
-import { IHysteresisConfigService } from '../services/hysteresis-config.service.base';
 import { HysteresisConfigModel } from '../models/hysteresis-config.model';
+import { HysteresisConfigService } from '../services/hysteresis-config.service';
 
 const HYSTERESIS_CONFIG_STATE_TOKEN = new StateToken<HysteresisConfigStateModel>('hysteresisConfig');
 
@@ -23,7 +23,7 @@ const HYSTERESIS_CONFIG_STATE_TOKEN = new StateToken<HysteresisConfigStateModel>
 })
 @Injectable()
 export class HysteresisConfigState {
-  constructor(private hysteresisConfigService: IHysteresisConfigService, private toastrService: ToastrService) {}
+  constructor(private hysteresisConfigService: HysteresisConfigService, private toastrService: ToastrService) {}
 
   @Selector([HYSTERESIS_CONFIG_STATE_TOKEN])
   static getConfig(state: HysteresisConfigStateModel): HysteresisConfigModel {

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { catchError, tap, throwError } from 'rxjs';
 import { AnalyticsStateModel } from './analytics.state.model';
-import { IAnalyticsService } from '../services/analytics.service.base';
 import { LoadAlgorithms, LoadConjunctions } from './analytics.action';
+import { AnalyticsService } from '../services/analytics.service';
 
 const ANALYTICS_STATE_TOKEN = new StateToken<AnalyticsStateModel>('analytics');
 
@@ -16,7 +16,7 @@ const ANALYTICS_STATE_TOKEN = new StateToken<AnalyticsStateModel>('analytics');
 })
 @Injectable()
 export class AnalyticsState {
-  constructor(private analyticsService: IAnalyticsService) {}
+  constructor(private analyticsService: AnalyticsService) {}
 
   @Selector([ANALYTICS_STATE_TOKEN])
   static getConjunctions(state: AnalyticsStateModel): string[] {

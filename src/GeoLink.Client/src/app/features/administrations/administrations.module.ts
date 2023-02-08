@@ -9,12 +9,9 @@ import { UsersService } from './services/users.service';
 import { UsersManagementComponent } from './components/users-management/users-management.component';
 import { GroupsManagementComponent } from './components/groups-management/groups-management.component';
 import { RolesManagementComponent } from './components/roles-management/roles-management.component';
-import { IUsersService } from './services/users.service.base';
 import { GroupsState } from './states/groups.state';
-import { IGroupsService } from './services/groups.service.base';
 import { GroupsService } from './services/groups.service';
 import { RolesState } from './states/roles.state';
-import { IRolesService } from './services/roles.service.base';
 import { RolesService } from './services/roles.service';
 import { AddNewGroupDialogComponent } from './components/add-new-group-dialog/add-new-group-dialog.component';
 import { EditGroupDialogComponent } from './components/edit-group-dialog/edit-group-dialog.component';
@@ -36,10 +33,6 @@ import { AddEditRoleDialogComponent } from './components/add-edit-role-dialog/ad
     NgxsModule.forFeature([UsersState, GroupsState, RolesState]),
     NgxsFormPluginModule,
   ],
-  providers: [
-    { provide: IUsersService, useClass: UsersService },
-    { provide: IGroupsService, useClass: GroupsService },
-    { provide: IRolesService, useClass: RolesService },
-  ],
+  providers: [UsersService, GroupsService, RolesService],
 })
 export class AdministrationsModule {}

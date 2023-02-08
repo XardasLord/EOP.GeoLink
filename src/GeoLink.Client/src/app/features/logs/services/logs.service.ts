@@ -1,14 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { ILogsService } from './logs.service.base';
 import { LogModel } from '../models/log.model';
 
 @Injectable()
-export class LogsService extends ILogsService {
-  constructor(httpClient: HttpClient) {
-    super(httpClient);
-  }
+export class LogsService {
   load(): Observable<LogModel[]> {
     const logs: LogModel[] = [
       { date: new Date(), category: 'System', message: 'Utrata komunikacji z System Ekspercki MindMade' },

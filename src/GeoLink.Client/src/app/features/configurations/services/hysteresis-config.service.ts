@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { IHysteresisConfigService } from './hysteresis-config.service.base';
 import { SaveHysteresisConfigCommand } from '../models/commands/save-hysteresis-config.command';
 import { HysteresisConfigModel } from '../models/hysteresis-config.model';
+import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
 
 @Injectable()
-export class HysteresisConfigService extends IHysteresisConfigService {
+export class HysteresisConfigService extends RemoteServiceBase {
   constructor(httpClient: HttpClient) {
     super(httpClient);
   }

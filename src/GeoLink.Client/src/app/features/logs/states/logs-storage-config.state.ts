@@ -7,7 +7,7 @@ import { DefaultFormStateValue } from '../../../shared/models/form-states.model'
 import { LogsStorageConfigStateModel } from './logs-storage-config.state.model';
 import { Load, Save } from './logs-storage-config.action';
 import { LogsStorageConfigModel } from '../models/logs-storage-config.model';
-import { ILogsStorageConfigService } from '../services/logs-storage-config.service.base';
+import { LogsStorageConfigService } from '../services/logs-storage-config.service';
 
 const LOGS_STORAGE_CONFIG_STATE_TOKEN = new StateToken<LogsStorageConfigStateModel>('logsStorageConfig');
 
@@ -22,7 +22,7 @@ const LOGS_STORAGE_CONFIG_STATE_TOKEN = new StateToken<LogsStorageConfigStateMod
 })
 @Injectable()
 export class LogsStorageConfigState {
-  constructor(private logsStorageConfigService: ILogsStorageConfigService, private toastrService: ToastrService) {}
+  constructor(private logsStorageConfigService: LogsStorageConfigService, private toastrService: ToastrService) {}
 
   @Selector([LOGS_STORAGE_CONFIG_STATE_TOKEN])
   static getConfig(state: LogsStorageConfigStateModel): LogsStorageConfigModel {

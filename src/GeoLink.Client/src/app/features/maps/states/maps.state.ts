@@ -5,10 +5,10 @@ import * as L from 'leaflet';
 import { tap } from 'rxjs';
 import { MapsStateModel } from './maps.state.model';
 import { LoadMapAreaFilters, LoadMapObjectFilters, LoadMapObjects } from './maps.action';
-import { IMapsService } from '../services/maps.service.base';
 import { MapItemModel } from '../models/map-item.model';
 import { MapFiltersModel } from '../models/map-filters.model';
 import { DynamicComponentCreatorHelper } from '../helpers/dynamic-component-creator.helper';
+import { MapsService } from '../services/maps.service';
 
 const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
 
@@ -24,7 +24,7 @@ const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
 })
 @Injectable()
 export class MapsState {
-  constructor(private mapsService: IMapsService, private componentCreatorHelper: DynamicComponentCreatorHelper) {}
+  constructor(private mapsService: MapsService, private componentCreatorHelper: DynamicComponentCreatorHelper) {}
 
   @Selector([MAPS_STATE_TOKEN])
   static getMapObjects(state: MapsStateModel): L.Marker[] {

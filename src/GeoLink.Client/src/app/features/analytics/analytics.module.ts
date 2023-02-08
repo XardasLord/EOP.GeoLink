@@ -4,7 +4,6 @@ import { SharedModule } from '../../shared/shared.module';
 import { AnalyticsComponent } from './components/analytics/analytics.component';
 import { AnalyticsRoutingModule } from './analytics-routing.module';
 import { AnalyticsState } from './states/analytics.state';
-import { IAnalyticsService } from './services/analytics.service.base';
 import { AnalyticsService } from './services/analytics.service';
 import { ConjunctionsComponent } from './components/conjunctions/conjunctions.component';
 import { AlgorithmsComponent } from './components/algorithms/algorithms.component';
@@ -12,6 +11,6 @@ import { AlgorithmsComponent } from './components/algorithms/algorithms.componen
 @NgModule({
   declarations: [AnalyticsComponent, ConjunctionsComponent, AlgorithmsComponent],
   imports: [SharedModule, AnalyticsRoutingModule, NgxsModule.forFeature([AnalyticsState])],
-  providers: [{ provide: IAnalyticsService, useClass: AnalyticsService }],
+  providers: [AnalyticsService],
 })
 export class AnalyticsModule {}

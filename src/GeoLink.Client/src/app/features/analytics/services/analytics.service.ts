@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { IAnalyticsService } from './analytics.service.base';
+import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
 
 @Injectable()
-export class AnalyticsService extends IAnalyticsService {
+export class AnalyticsService extends RemoteServiceBase {
   constructor(httpClient: HttpClient) {
     super(httpClient);
   }

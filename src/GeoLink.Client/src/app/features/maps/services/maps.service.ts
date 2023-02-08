@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { IMapsService } from './maps.service.base';
 import { MapItemModel } from '../models/map-item.model';
 import { MapObjectFiltersModel } from '../models/map-object-filter.model';
 import { MapAreaFiltersModel } from '../models/map-area-filters.model';
 import { DeviceStatusEnum } from '../models/device-status.enum';
+import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
 
 @Injectable()
-export class MapsService extends IMapsService {
+export class MapsService extends RemoteServiceBase {
   constructor(httpClient: HttpClient) {
     super(httpClient);
   }
+
   getAllObjects(): Observable<MapItemModel[]> {
     const mapItems: MapItemModel[] = [];
 

@@ -6,8 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { DefaultFormStateValue } from '../../../shared/models/form-states.model';
 import { RetentionTimeConfigStateModel } from './retention-time-config.state.model';
 import { RetentionTimeConfigModel } from '../models/retention-time-config.model';
-import { IRetentionTimeConfigService } from '../services/retention-time-config.service.base';
 import { Load, Save } from './retention-time-config.action';
+import { RetentionTimeConfigService } from '../services/retention-time-config.service';
 
 const RETENTION_TIME_CONFIG_STATE_TOKEN = new StateToken<RetentionTimeConfigStateModel>('retentionTimeConfig');
 
@@ -23,7 +23,7 @@ const RETENTION_TIME_CONFIG_STATE_TOKEN = new StateToken<RetentionTimeConfigStat
 })
 @Injectable()
 export class RetentionTimeConfigState {
-  constructor(private retentionTimeConfigService: IRetentionTimeConfigService, private toastrService: ToastrService) {}
+  constructor(private retentionTimeConfigService: RetentionTimeConfigService, private toastrService: ToastrService) {}
 
   @Selector([RETENTION_TIME_CONFIG_STATE_TOKEN])
   static getConfig(state: RetentionTimeConfigStateModel): RetentionTimeConfigModel {

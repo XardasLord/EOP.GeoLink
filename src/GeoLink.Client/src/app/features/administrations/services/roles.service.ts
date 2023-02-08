@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { IRolesService } from './roles.service.base';
 import { RoleModel } from '../models/role.model';
 import { AddRoleCommand } from '../models/commands/add-role.command';
 import { EditRoleCommand } from '../models/commands/edit-role.command';
+import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
 
 @Injectable()
-export class RolesService extends IRolesService {
+export class RolesService extends RemoteServiceBase {
   constructor(httpClient: HttpClient) {
     super(httpClient);
   }

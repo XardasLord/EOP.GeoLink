@@ -3,8 +3,8 @@ import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { catchError, tap, throwError } from 'rxjs';
 import { LogsStateModel } from './logs.state.model';
 import { Load } from './logs.action';
-import { ILogsService } from '../services/logs.service.base';
 import { LogModel } from '../models/log.model';
+import { LogsService } from '../services/logs.service';
 
 const LOGS_STATE_TOKEN = new StateToken<LogsStateModel>('logs');
 
@@ -16,7 +16,7 @@ const LOGS_STATE_TOKEN = new StateToken<LogsStateModel>('logs');
 })
 @Injectable()
 export class LogsState {
-  constructor(private logsService: ILogsService) {}
+  constructor(private logsService: LogsService) {}
 
   @Selector([LOGS_STATE_TOKEN])
   static getLogs(state: LogsStateModel): LogModel[] {
