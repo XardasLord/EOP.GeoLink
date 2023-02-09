@@ -18,13 +18,8 @@
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let user">
       <div class="table-action-buttons">
-        <button
-          mat-icon-button
-          matTooltip="Usuń użytkownika"
-          (click)="deleteUser(user); $event.stopPropagation()">
-          <mat-icon class="material-icons-outlined" matListItemIcon
-            >delete_outline</mat-icon
-          >
+        <button mat-icon-button matTooltip="Usuń użytkownika" (click)="deleteUser(user); $event.stopPropagation()">
+          <mat-icon class="material-icons-outlined" matListItemIcon>delete_outline</mat-icon>
         </button>
       </div>
     </td>
