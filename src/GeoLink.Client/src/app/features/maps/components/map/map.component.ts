@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import * as L from 'leaflet';
 import * as esri from 'esri-leaflet';
+import 'esri-leaflet-renderers';
 import { vectorTileLayer } from 'esri-leaflet-vector';
 import { Control, latLng, Layer, Map, MapOptions, Marker, tileLayer } from 'leaflet';
 import { Subscription, interval } from 'rxjs';
