@@ -1,13 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
+import { LeafletControlLayersConfig } from '@asymmetrik/ngx-leaflet';
 import * as L from 'leaflet';
 import * as esri from 'esri-leaflet';
 import 'esri-leaflet-renderers';
 import { vectorTileLayer } from 'esri-leaflet-vector';
 import { Control, latLng, Layer, Map, MapOptions, Marker, tileLayer } from 'leaflet';
 import { Subscription, interval } from 'rxjs';
-import { MapsState } from '../../states/maps.state';
 
+import { MapsState } from '../../states/maps.state';
 import { LoadMapAreaFilters, LoadMapObjectFilters, LoadMapObjects } from '../../states/maps.action';
 import '../../../../../../node_modules/leaflet.browser.print/dist/leaflet.browser.print.min.js';
 import { environment } from '../../../../../environments/environment';
@@ -15,7 +16,6 @@ import { MarkerClusterHelper } from '../../helpers/marker-cluster.helper';
 import { MapItemModel } from '../../models/map-item.model';
 import { DynamicComponentCreatorHelper } from '../../helpers/dynamic-component-creator.helper';
 import Scale = Control.Scale;
-import { LeafletControlLayersConfig } from '@asymmetrik/ngx-leaflet';
 
 @Component({
   selector: 'app-map',
@@ -153,31 +153,33 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private loadLayersFromArcGIS(map: Map) {
     // ArcGIS Vector Tile Server
+    const objectIdField = 'OBJECTID';
+
     this.mapLayersControl = {
       baseLayers: {
         'ArcGIS VectorTileServer Map': vectorTileLayer(environment.arcGisMapBackground, {}),
       },
       overlays: {
         'Stacja SN/nN': esri.featureLayer({
-          url: 'http://localhost:3002/server/rest/services/siec/MapServer/0',
-          fields: ['OBJECTID'],
+          url: environment.arcGisMapLayer0,
+          fields: [objectIdField],
           minZoom: 14,
         }),
         'Odcinek WN': esri.featureLayer({
-          url: 'http://localhost:3002/server/rest/services/siec/MapServer/1',
-          fields: ['OBJECTID'],
+          url: environment.arcGisMapLayer1,
+          fields: [objectIdField],
         }),
         'Odcinek nN': esri.featureLayer({
-          url: 'http://localhost:3002/server/rest/services/siec/MapServer/2',
-          fields: ['OBJECTID'],
+          url: environment.arcGisMapLayer2,
+          fields: [objectIdField],
         }),
         'Odcinek SN': esri.featureLayer({
-          url: 'http://localhost:3002/server/rest/services/siec/MapServer/3',
-          fields: ['OBJECTID'],
+          url: environment.arcGisMapLayer3,
+          fields: [objectIdField],
         }),
         GPZ: esri.featureLayer({
-          url: 'http://localhost:3002/server/rest/services/siec/MapServer/4',
-          fields: ['OBJECTID'],
+          url: environment.arcGisMapLayer4,
+          fields: [objectIdField],
         }),
       },
     };
