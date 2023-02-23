@@ -24,6 +24,7 @@ import { AuthGuard } from './guards/auth.guard';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true,
     },
     MapsService,
     DynamicComponentCreatorHelper,

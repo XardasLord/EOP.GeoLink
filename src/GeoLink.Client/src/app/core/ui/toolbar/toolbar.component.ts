@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Logout } from '../../../shared/states/auth.action';
+import { AuthState } from '../../../shared/states/auth.state';
 
 @Component({
   selector: 'app-toolbar',
@@ -10,6 +11,7 @@ import { Logout } from '../../../shared/states/auth.action';
 export class ToolbarComponent {
   @Output()
   toggleSideNav: EventEmitter<boolean> = new EventEmitter();
+  user$ = this.store.select(AuthState.getUser);
 
   constructor(private store: Store) {}
 

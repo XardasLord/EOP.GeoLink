@@ -1,12 +1,11 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Store } from '@ngxs/store';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of, Subscription } from 'rxjs';
-import { UserAuthModel } from '../auth/models/user-auth.model';
 import { User } from 'oidc-client';
-import { UserAuthHelper } from '../auth/helpers/user-auth.helper';
-import { AuthScopes } from '../auth/models/auth.scopes';
 import { AuthState } from '../states/auth.state';
 import { AuthRoles } from '../auth/models/auth.roles';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class AuthService implements OnDestroy {
@@ -16,7 +15,7 @@ export class AuthService implements OnDestroy {
 
   user$ = this.store.select(AuthState.getUser);
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private httpClient: HttpClient) {
     this.roleSubscription = this.user$?.subscribe(user => {
       if (!user) {
         this.userRole = undefined;
@@ -26,8 +25,8 @@ export class AuthService implements OnDestroy {
 
       this.userRole = user.role;
 
-      if (user.scopes) {
-        this.userScopes = Object.values(user.scopes).map(x => +x as number);
+      if (user.auth_scopes) {
+        this.userScopes = Object.values(user.auth_scopes).map(x => +x as number);
       }
     });
   }
@@ -38,46 +37,17 @@ export class AuthService implements OnDestroy {
     }
   }
 
-  login(login: string, password: string): Observable<UserAuthModel> {
-    // TODO: Http call to Log in
+  login(login: string, password: string): Observable<User> {
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append('Login', login);
+    queryParams = queryParams.append('Password', password);
 
-    const mockedUser = new User({
-      id_token: '',
-      session_state: '',
-      profile: {
-        iss: '',
-        sub: '',
-        aud: '',
-        exp: 0,
-        iat: 0,
-        role: AuthRoles.Admin,
-        auth_scopes: [AuthScopes.MenuMap, AuthScopes.MenuCharts],
-      },
-      access_token:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNTM0NTQzNTQzNTQzNTM0NTMiLCJleHAiOjE1MDQ2OTkyNTZ9.zG-2FvGegujxoLWwIQfNB5IT46D-xC4e8dEDYwi6aRM',
-      token_type: 'Bearer',
-      expires_at: 0,
-      refresh_token: '',
-      scope: '',
-      state: undefined,
-    });
-
-    const authUser = UserAuthHelper.parseUserAuthData(mockedUser);
-
-    if (authUser) {
-      localStorage.setItem('access_token', authUser.accessToken!);
-      localStorage.setItem('user', JSON.stringify(authUser));
-
-      // const expiresAt = moment().add(authResult.expiresIn,'second');
-      // localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()) );
-    }
-
-    return of(authUser!);
+    return this.httpClient.get<User>(`${environment.apiEndpoint}/auth/getToken`, { params: queryParams });
   }
 
   logout(): Observable<any> {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('user');
+    // localStorage.removeItem('access_token');
+    // localStorage.removeItem('user');
     // localStorage.removeItem("expires_at");
 
     return of({});

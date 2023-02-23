@@ -1,24 +1,20 @@
 import { User } from 'oidc-client';
 import { UserAuthModel } from '../models/user-auth.model';
 import { AuthScopes } from '../models/auth.scopes';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 export class UserAuthHelper {
-  public static parseUserAuthData(user: User): UserAuthModel | undefined {
-    if (!user || !user.profile) {
+  public static parseUserAuthData(user: User): UserAuthModel | null {
+    if (!user) {
       console.error('UserData not defined!');
-      return undefined;
+      return null;
     }
 
-    const output = new UserAuthModel({
-      userName: user.profile.name,
-      fullName: `${user.profile.given_name} ${user.profile.family_name}`,
-      email: user.profile.email,
-      role: user.profile['role'],
-      accessToken: user.access_token,
-      scopes: user.profile['auth_scopes'],
-    });
+    const helper = new JwtHelperService();
 
-    return output;
+    const decodedToken = helper.decodeToken<UserAuthModel>(user.access_token);
+
+    return decodedToken;
   }
 
   public static getScopes(keys: string[]): number[] {

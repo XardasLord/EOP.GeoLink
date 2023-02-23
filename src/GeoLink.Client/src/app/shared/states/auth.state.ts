@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Action, NgxsOnInit, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
-import { tap } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { UserAuthModel } from '../auth/models/user-auth.model';
 import { AuthScopes } from '../auth/models/auth.scopes';
 import { Login, LoginCompleted, Logout } from './auth.action';
 import { RoutePaths } from '../../core/modules/app-routing.module';
 import { AuthService } from '../services/auth.service';
 import { AuthStateModel } from './auth.state.model';
+import { User } from 'oidc-client';
+import { UserAuthHelper } from '../auth/helpers/user-auth.helper';
 
 export const AUTH_STATE_TOKEN = new StateToken<AuthStateModel>('auth');
 
@@ -22,17 +24,19 @@ export class AuthState implements NgxsOnInit {
   constructor(private authService: AuthService) {}
 
   ngxsOnInit(ctx: StateContext<AuthStateModel>): void {
-    // TODO: Pre login implementation in the background
     const user = AuthState.getUser(ctx.getState());
 
     if (!user) {
       ctx.dispatch(new Navigate([RoutePaths.Login]));
     }
+
+    ctx.patchState({
+      user: user,
+    });
   }
 
   @Selector([AUTH_STATE_TOKEN])
   static getUser(state: AuthStateModel): UserAuthModel | null {
-    // TODO: It's a temporary solution. Once the login with backend is done this simulation will no longer be needed.
     if (state?.user === null && localStorage.getItem('user') !== null) {
       return JSON.parse(localStorage.getItem('user')!);
     }
@@ -42,23 +46,35 @@ export class AuthState implements NgxsOnInit {
 
   @Selector([AUTH_STATE_TOKEN])
   static isAuthenticated(state: AuthStateModel): boolean {
-    return !!state.user?.accessToken;
+    return !!state.user;
   }
 
   @Selector([AUTH_STATE_TOKEN])
   static getUserScopes(state: AuthStateModel): AuthScopes[] {
-    if (!state || !state.user || !state.user.scopes) {
+    if (!state || !state.user || !state.user.auth_scopes) {
       return [];
     }
 
-    return Object.values(state.user.scopes).map(x => +x as number);
+    return Object.values(state.user.auth_scopes).map(x => +x as number);
   }
 
   @Action(Login)
   login(ctx: StateContext<AuthStateModel>, action: Login) {
-    return this.authService
-      .login(action.login, action.password)
-      .pipe(tap((response: UserAuthModel) => ctx.dispatch(new LoginCompleted(response))));
+    return this.authService.login(action.login, action.password).pipe(
+      map((user: User) => {
+        const authUser = UserAuthHelper.parseUserAuthData(user);
+
+        if (authUser) {
+          localStorage.setItem('access_token', user.access_token);
+          localStorage.setItem('user', JSON.stringify(authUser));
+
+          // const expiresAt = moment().add(authResult.expiresIn,'second');
+          // localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()) );
+
+          ctx.dispatch(new LoginCompleted(authUser));
+        }
+      })
+    );
   }
 
   @Action(LoginCompleted)
@@ -74,6 +90,10 @@ export class AuthState implements NgxsOnInit {
   logout(ctx: StateContext<AuthStateModel>, _: Logout) {
     return this.authService.logout().pipe(
       tap(() => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('user');
+        // localStorage.removeItem("expires_at");
+
         ctx.patchState({
           user: null,
         });
