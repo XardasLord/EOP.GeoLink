@@ -4,10 +4,10 @@ import { append, patch, updateItem } from '@ngxs/store/operators';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { RolesStateModel } from './roles.state.model';
 import { RoleModel } from '../models/role.model';
-import { IRolesService } from '../services/roles.service.base';
 import { Add, Edit, Load } from './roles.action';
 import { CloseAddEditRoleDialog } from '../../../shared/states/modal.action';
 import { DefaultFormStateValue } from '../../../shared/models/form-states.model';
+import { RolesService } from '../services/roles.service';
 
 const ROLES_STATE_TOKEN = new StateToken<RolesStateModel>('roles');
 
@@ -20,7 +20,7 @@ const ROLES_STATE_TOKEN = new StateToken<RolesStateModel>('roles');
 })
 @Injectable()
 export class RolesState {
-  constructor(private rolesService: IRolesService) {}
+  constructor(private rolesService: RolesService) {}
 
   @Selector([ROLES_STATE_TOKEN])
   static getRoles(state: RolesStateModel): RoleModel[] {

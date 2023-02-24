@@ -3,11 +3,31 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav mode="side" opened="true" fixedInViewport="true">
     <mat-nav-list>
-      <mat-list-item [routerLink]="RoutePaths.Map" routerLinkActive="active-route">
+      <mat-list-item
+        [routerLink]="RoutePaths.Map"
+        routerLinkActive="active-route"
+        *appScopeAllow="[AuthScopes.MenuMap]">
         <mat-icon matListItemIcon>map</mat-icon>
         <span matListItemTitle *ngIf="sidenav.opened">Mapa</span>
       </mat-list-item>
-      <mat-list-item [routerLink]="RoutePaths.Administration" routerLinkActive="active-route">
+      <!--      <mat-list-item-->
+      <!--        [routerLink]="RoutePaths.Reports"-->
+      <!--        routerLinkActive="active-route"-->
+      <!--        *appScopeAllow="[AuthScopes.MenuReports]">-->
+      <!--        <mat-icon matListItemIcon>description</mat-icon>-->
+      <!--        <span matListItemTitle *ngIf="sidenav.opened">Raporty</span>-->
+      <!--      </mat-list-item>-->
+      <!--      <mat-list-item-->
+      <!--        [routerLink]="RoutePaths.Analytics"-->
+      <!--        routerLinkActive="active-route"-->
+      <!--        *appScopeAllow="[AuthScopes.MenuAnalytics]">-->
+      <!--        <mat-icon matListItemIcon>psychology</mat-icon>-->
+      <!--        <span matListItemTitle *ngIf="sidenav.opened">Analityka</span>-->
+      <!--      </mat-list-item>-->
+      <mat-list-item
+        [routerLink]="RoutePaths.Administration"
+        routerLinkActive="active-route"
+        *appScopeAllow="[AuthScopes.MenuAdministration]">
         <mat-icon matListItemIcon>settings</mat-icon>
         <span matListItemTitle *ngIf="sidenav.opened">Administracja</span>
       </mat-list-item>
@@ -15,9 +35,19 @@
       <!--        <mat-icon matListItemIcon>construction</mat-icon>-->
       <!--        <span matListItemTitle *ngIf="sidenav.opened">Konfiguracja</span>-->
       <!--      </mat-list-item>-->
-      <mat-list-item [routerLink]="RoutePaths.Filters" routerLinkActive="active-route">
+      <mat-list-item
+        [routerLink]="RoutePaths.Filters"
+        routerLinkActive="active-route"
+        *appScopeAllow="[AuthScopes.MenuFilters]">
         <mat-icon matListItemIcon>desktop_windows</mat-icon>
         <span matListItemTitle *ngIf="sidenav.opened">Filtry</span>
+      </mat-list-item>
+      <mat-list-item
+        [routerLink]="RoutePaths.Logs"
+        routerLinkActive="active-route"
+        *appScopeAllow="[AuthScopes.MenuLogs]">
+        <mat-icon matListItemIcon>description</mat-icon>
+        <span matListItemTitle *ngIf="sidenav.opened">Logi</span>
       </mat-list-item>
     </mat-nav-list>
   </mat-sidenav>

@@ -8,12 +8,16 @@ table, th, td {
 }
 
 tr.header-summary-row {
-  background-color: lightblue;
+  background-color: $context-menu-summary-header-background-color;
   font-weight: bold;
 }
 
 tr.device-item-row {
   cursor: pointer;
+}
+
+tr.device-item-row:hover {
+  background-color: $context-menu-row-background-color-on-hover;
 }
 
 td.group-name {

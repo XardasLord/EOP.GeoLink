@@ -8,13 +8,8 @@
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let role">
       <div class="table-action-buttons">
-        <button
-          mat-icon-button
-          matTooltip="Zmień nazwę"
-          (click)="renameRole(role); $event.stopPropagation()">
-          <mat-icon class="material-icons-outlined" matListItemIcon
-            >edit</mat-icon
-          >
+        <button mat-icon-button matTooltip="Zmień nazwę" (click)="renameRole(role); $event.stopPropagation()">
+          <mat-icon class="material-icons-outlined" matListItemIcon>edit</mat-icon>
         </button>
       </div>
     </td>

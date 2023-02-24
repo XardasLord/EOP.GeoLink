@@ -23,4 +23,4 @@ VersionInfo.cs
 
 #logs
 **/App_Data/logs/*
-**/logs/*
+#**/logs/*

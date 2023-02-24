@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { UserModel } from '../models/user.model';
-import { IUsersService } from './users.service.base';
+import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
 
 @Injectable()
-export class UsersService extends IUsersService {
+export class UsersService extends RemoteServiceBase {
   constructor(httpClient: HttpClient) {
     super(httpClient);
   }

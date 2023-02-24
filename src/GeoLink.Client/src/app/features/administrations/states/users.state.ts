@@ -3,8 +3,8 @@ import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { catchError, tap, throwError } from 'rxjs';
 import { UsersStateModel } from './users.state.model';
 import { UserModel } from '../models/user.model';
-import { IUsersService } from '../services/users.service.base';
 import { Load } from './users.action';
+import { UsersService } from '../services/users.service';
 
 const USERS_STATE_TOKEN = new StateToken<UsersStateModel>('users');
 
@@ -16,7 +16,7 @@ const USERS_STATE_TOKEN = new StateToken<UsersStateModel>('users');
 })
 @Injectable()
 export class UsersState {
-  constructor(private usersService: IUsersService) {}
+  constructor(private usersService: UsersService) {}
 
   @Selector([USERS_STATE_TOKEN])
   static getUsers(state: UsersStateModel): UserModel[] {

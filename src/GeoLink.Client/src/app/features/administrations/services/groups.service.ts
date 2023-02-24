@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EMPTY, Observable, of } from 'rxjs';
-import { IGroupsService } from './groups.service.base';
 import { GroupModel } from '../models/group.model';
 import { AddNewGroupCommand } from '../models/commands/add-new-group.command';
+import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
 
 @Injectable()
-export class GroupsService extends IGroupsService {
+export class GroupsService extends RemoteServiceBase {
   constructor(httpClient: HttpClient) {
     super(httpClient);
   }

@@ -1,7 +1,4 @@
-<form
-  [formGroup]="editGroupForm"
-  (ngSubmit)="onSubmit()"
-  ngxsForm="groups.editGroupForm">
+<form [formGroup]="editGroupForm" (ngSubmit)="onSubmit()" ngxsForm="groups.editGroupForm">
   <div class="form-content">
     <h2 mat-dialog-title>Edytuj grupę</h2>
 
@@ -17,12 +14,8 @@
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
-      <button mat-button color="primary" type="button" mat-dialog-close>
-        Anuluj
-      </button>
-      <button mat-raised-button color="primary" type="submit" cdkFocusInitial>
-        Edytuj
-      </button>
+      <button mat-button color="primary" type="button" mat-dialog-close>Anuluj</button>
+      <button mat-raised-button color="primary" type="submit" cdkFocusInitial>Edytuj</button>
     </mat-dialog-actions>
   </div>
 </form>

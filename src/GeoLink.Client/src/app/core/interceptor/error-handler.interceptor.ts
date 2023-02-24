@@ -15,6 +15,7 @@ export class GlobalErrorHandler implements ErrorHandler {
     //   //   error?.status
     //   // )
     // );
+
     this.zone.run(() => this.errorService.display(error?.message));
     console.error('Error from global error handler', error);
   }

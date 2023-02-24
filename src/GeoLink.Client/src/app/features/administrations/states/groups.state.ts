@@ -4,10 +4,10 @@ import { append, patch, updateItem } from '@ngxs/store/operators';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { GroupsStateModel } from './groups.state.model';
 import { GroupModel } from '../models/group.model';
-import { IGroupsService } from '../services/groups.service.base';
 import { Add, Edit, Load } from './groups.action';
 import { DefaultFormStateValue } from '../../../shared/models/form-states.model';
 import { CloseAddNewGroupDialog, CloseEditGroupDialog } from '../../../shared/states/modal.action';
+import { GroupsService } from '../services/groups.service';
 
 const GROUPS_STATE_TOKEN = new StateToken<GroupsStateModel>('groups');
 
@@ -21,7 +21,7 @@ const GROUPS_STATE_TOKEN = new StateToken<GroupsStateModel>('groups');
 })
 @Injectable()
 export class GroupsState {
-  constructor(private groupsService: IGroupsService) {}
+  constructor(private groupsService: GroupsService) {}
 
   @Selector([GROUPS_STATE_TOKEN])
   static getGroups(state: GroupsStateModel): GroupModel[] {

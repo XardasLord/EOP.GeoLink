@@ -3,10 +3,13 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { AuthState } from '../../shared/states/auth.state';
+import { MapsState } from '../../features/maps/states/maps.state';
 
 @NgModule({
   imports: [
-    NgxsModule.forRoot([], {
+    NgxsModule.forRoot([MapsState, AuthState], {
       developmentMode: isDevMode(),
       selectorOptions: {
         suppressErrors: false,
@@ -15,7 +18,7 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
     }),
     NgxsModule.forFeature([]),
     NgxsLoggerPluginModule.forRoot({
-      collapsed: false,
+      collapsed: true,
       disabled: !isDevMode(),
     }),
     NgxsReduxDevtoolsPluginModule.forRoot({
@@ -23,6 +26,7 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
       disabled: !isDevMode(),
     }),
     NgxsRouterPluginModule.forRoot(),
+    NgxsFormPluginModule.forRoot(),
   ],
   exports: [NgxsReduxDevtoolsPluginModule],
 })

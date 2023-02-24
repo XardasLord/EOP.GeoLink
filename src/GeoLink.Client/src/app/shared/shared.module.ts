@@ -9,11 +9,21 @@ import { MaterialModule } from './modules/material.module';
 import { ModalState } from './states/modal.state';
 import { EnumToDescriptionPipePipe } from './pipes/device-status-description.pipe';
 import { ErrorService } from './errors/error.service';
+import { MapAreaFiltersComponent } from './components/map-area-filters/map-area-filters.component';
+import { MapObjectFiltersComponent } from './components/map-object-filters/map-object-filters.component';
+import { AuthService } from './services/auth.service';
+import { AuthScopeAllowDirective } from './auth/directives/auth-scope-allow.directive';
 
 @NgModule({
-  declarations: [EnumToDescriptionPipePipe],
+  declarations: [
+    EnumToDescriptionPipePipe,
+    MapAreaFiltersComponent,
+    MapObjectFiltersComponent,
+    AuthScopeAllowDirective,
+  ],
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     MaterialModule,
     HttpClientModule,
@@ -28,7 +38,10 @@ import { ErrorService } from './errors/error.service';
     HttpClientModule,
     EnumToDescriptionPipePipe,
     ToastrModule,
+    MapAreaFiltersComponent,
+    MapObjectFiltersComponent,
+    AuthScopeAllowDirective,
   ],
-  providers: [ErrorService, { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }],
+  providers: [ErrorService, AuthService, { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }],
 })
 export class SharedModule {}

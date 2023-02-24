@@ -1,0 +1,5 @@
+@import '../../../../../styles/variables.scss';
+
+.button-row button {
+  margin: $margins-between-map-filter-buttons;
+}
