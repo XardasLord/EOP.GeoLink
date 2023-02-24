@@ -15,7 +15,7 @@
       </span>
 
       <span class="section user-info">
-        <span class="name">{{ (user$ | async)?.unique_name }}</span>
+        <span class="name">{{ (user$ | async)?.unique_name }} ({{ (user$ | async)?.role }})</span>
         <button mat-icon-button>
           <mat-icon matListIcon>face</mat-icon>
         </button>
