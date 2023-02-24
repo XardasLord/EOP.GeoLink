@@ -1,5 +1,5 @@
 export const environment = {
-  apiEndpoint: 'http://10.0.2.71:8200/api',
+  apiEndpoint: 'http://localhost:8200/api',
   refreshMapObjectsIntervalInMilliseconds: 60 * 15 * 1000,
   arcGisMapBackground: '',
   arcGisMapLayer0: '',
