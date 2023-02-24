@@ -3,7 +3,7 @@ FROM node:19.3 as node
 WORKDIR /app
 COPY . .
 RUN npm install
-RUN npm run build --acc
+RUN npm run build-acc
 
 # Stage 2
 FROM nginx:alpine

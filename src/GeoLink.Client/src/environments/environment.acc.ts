@@ -1,5 +1,6 @@
 export const environment = {
   apiEndpoint: '',
+  environmentName: 'acc',
   refreshMapObjectsIntervalInMilliseconds: 60 * 15 * 1000,
   arcGisMapBackground: 'https://localhost:5002/server/rest/services/Hosted/osm_2021/VectorTileServer',
   arcGisMapLayer0: 'http://localhost:5002/server/rest/services/siec/MapServer/0',

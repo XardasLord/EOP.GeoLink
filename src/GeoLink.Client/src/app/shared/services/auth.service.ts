@@ -42,7 +42,9 @@ export class AuthService implements OnDestroy {
     queryParams = queryParams.append('Login', login);
     queryParams = queryParams.append('Password', password);
 
-    return this.httpClient.get<User>(`${environment.apiEndpoint}/auth/getToken`, { params: queryParams });
+    const apiEndpoint = environment.apiEndpoint;
+
+    return this.httpClient.get<User>(`${apiEndpoint}/auth/getToken`, { params: queryParams });
   }
 
   logout(): Observable<any> {

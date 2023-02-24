@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import { Login } from '../../../../shared/states/auth.action';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -10,8 +11,10 @@ import { Login } from '../../../../shared/states/auth.action';
 })
 export class LoginComponent {
   form: FormGroup;
+  environmentName = environment.environmentName;
 
   constructor(private fb: FormBuilder, private store: Store) {
+    console.log('environment - ', this.environmentName);
     this.form = this.fb.group({
       login: ['', Validators.required],
       password: ['', Validators.required],
