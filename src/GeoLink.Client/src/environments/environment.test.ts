@@ -8,6 +8,6 @@ export const environment = {
   arcGisMapLayer2: '',
   arcGisMapLayer3: '',
   arcGisMapLayer4: '',
-  wmsMapBackground: '10.0.2.71:8381/wms?',
+  wmsMapBackground: 'http://10.0.2.71:8381/wms?',
   wmsBaseLayerName: 'WMS- geoportal',
 };
