@@ -1,34 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UserModel } from '../models/user.model';
 import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
+import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class UsersService extends RemoteServiceBase {
+  private apiUrl = environment.apiEndpoint;
+
   constructor(httpClient: HttpClient) {
     super(httpClient);
   }
 
   getAllUsers(): Observable<UserModel[]> {
-    const users: UserModel[] = [
-      {
-        name: 'Krzysztof Świerczyński',
-        role: 'Administrator',
-        group: 'Admin',
-      },
-      {
-        name: 'Przymysław Mączkowski',
-        role: 'Użytkownik',
-        group: 'Telco, IT, Pomiary',
-      },
-      {
-        name: 'Arkadiusz Ubych',
-        role: 'Użytkownik',
-        group: 'Telco',
-      },
-    ];
-
-    return of(users);
+    return this.httpClient.get<UserModel[]>(`${this.apiUrl}/settings/getUsers`);
   }
 }

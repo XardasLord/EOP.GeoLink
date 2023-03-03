@@ -14,7 +14,8 @@ export class UsersManagementComponent implements OnInit {
   displayedColumns: string[] = [
     nameof<UserModel>('name'),
     nameof<UserModel>('role'),
-    nameof<UserModel>('group'),
+    nameof<UserModel>('groups'),
+    nameof<UserModel>('regions'),
     'actions',
   ];
   users$ = this.store.select(UsersState.getUsers);

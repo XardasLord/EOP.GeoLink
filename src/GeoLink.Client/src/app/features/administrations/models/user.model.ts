@@ -1,5 +1,8 @@
 export interface UserModel {
+  login: string;
   name: string;
+  surname: string;
   role: string;
-  group: string;
+  groups: string[] | null;
+  regions: string[] | null;
 }
