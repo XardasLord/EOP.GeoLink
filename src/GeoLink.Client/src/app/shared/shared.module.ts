@@ -13,6 +13,8 @@ import { MapAreaFiltersComponent } from './components/map-area-filters/map-area-
 import { MapObjectFiltersComponent } from './components/map-object-filters/map-object-filters.component';
 import { AuthService } from './services/auth.service';
 import { AuthScopeAllowDirective } from './auth/directives/auth-scope-allow.directive';
+import { DictionaryService } from './services/dictionary.service';
+import { DictionaryState } from './states/dictionary.state';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,7 @@ import { AuthScopeAllowDirective } from './auth/directives/auth-scope-allow.dire
     ReactiveFormsModule,
     MaterialModule,
     HttpClientModule,
-    NgxsModule.forFeature([ModalState]),
+    NgxsModule.forFeature([ModalState, DictionaryState]),
     ToastrModule.forRoot(),
   ],
   exports: [
@@ -42,6 +44,11 @@ import { AuthScopeAllowDirective } from './auth/directives/auth-scope-allow.dire
     MapObjectFiltersComponent,
     AuthScopeAllowDirective,
   ],
-  providers: [ErrorService, AuthService, { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }],
+  providers: [
+    ErrorService,
+    AuthService,
+    DictionaryService,
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
+  ],
 })
 export class SharedModule {}

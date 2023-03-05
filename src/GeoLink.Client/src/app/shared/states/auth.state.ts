@@ -10,6 +10,8 @@ import { AuthService } from '../services/auth.service';
 import { AuthStateModel } from './auth.state.model';
 import { User } from 'oidc-client';
 import { UserAuthHelper } from '../auth/helpers/user-auth.helper';
+import { AuthRoles } from '../auth/models/auth.roles';
+import { GetSystemGroups, GetSystemPermissions, GetSystemRegions, GetSystemRoles } from './dictionary.action';
 
 export const AUTH_STATE_TOKEN = new StateToken<AuthStateModel>('auth');
 
@@ -33,6 +35,13 @@ export class AuthState implements NgxsOnInit {
     ctx.patchState({
       user: user,
     });
+
+    if (user?.role === AuthRoles.Geolink_Admin) {
+      ctx.dispatch(new GetSystemGroups());
+      ctx.dispatch(new GetSystemRoles());
+      ctx.dispatch(new GetSystemRegions());
+      ctx.dispatch(new GetSystemPermissions());
+    }
   }
 
   @Selector([AUTH_STATE_TOKEN])

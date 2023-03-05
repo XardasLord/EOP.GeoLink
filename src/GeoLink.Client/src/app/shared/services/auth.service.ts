@@ -71,7 +71,7 @@ export class AuthService implements OnDestroy {
   // }
 
   public isUserAllowedByScopes(scopes: number[]): boolean {
-    if (this.userRole === AuthRoles.Admin) {
+    if (this.userRole === AuthRoles.Geolink_Admin) {
       return true;
     }
 
