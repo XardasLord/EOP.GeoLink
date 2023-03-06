@@ -3,6 +3,6 @@ export interface UserModel {
   name: string;
   surname: string;
   role: string;
-  groups: string[] | null;
-  regions: string[] | null;
+  groups: number[];
+  regions: number[];
 }

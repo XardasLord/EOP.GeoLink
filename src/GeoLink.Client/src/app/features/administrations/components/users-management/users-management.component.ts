@@ -4,6 +4,10 @@ import { UsersState } from '../../states/users.state';
 import { nameof } from '../../../../shared/helpers/name-of.helper';
 import { UserModel } from '../../models/user.model';
 import { Load } from '../../states/users.action';
+import { DictionaryState } from '../../../../shared/states/dictionary.state';
+import { filter, map, Observable } from 'rxjs';
+import { EnumDescriptionWithScopesModel } from '../../../../shared/models/enum-description-with-scopes.model';
+import { EnumDescriptionRegionModel } from '../../../../shared/models/enum-description-region.model';
 
 @Component({
   selector: 'app-users-management',
@@ -19,6 +23,8 @@ export class UsersManagementComponent implements OnInit {
     'actions',
   ];
   users$ = this.store.select(UsersState.getUsers);
+  systemGroups$ = this.store.select(DictionaryState.getSystemGroups);
+  systemRegions$ = this.store.select(DictionaryState.getSystemRegions);
 
   constructor(private store: Store) {}
 
@@ -28,5 +34,13 @@ export class UsersManagementComponent implements OnInit {
 
   deleteUser(user: UserModel) {
     console.log('deleting user...', user);
+  }
+
+  getSystemGroupDescription(groupId: number): Observable<EnumDescriptionWithScopesModel> {
+    return this.systemGroups$.pipe(map(x => x.filter(e => e.id === groupId)[0]));
+  }
+
+  getSystemRegionDescription(regionId: number): Observable<EnumDescriptionRegionModel> {
+    return this.systemRegions$.pipe(map(x => x.filter(e => e.id === regionId)[0]));
   }
 }

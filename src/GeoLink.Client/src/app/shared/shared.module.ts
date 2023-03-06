@@ -7,7 +7,6 @@ import { NgxsModule } from '@ngxs/store';
 import { ToastrModule } from 'ngx-toastr';
 import { MaterialModule } from './modules/material.module';
 import { ModalState } from './states/modal.state';
-import { EnumToDescriptionPipePipe } from './pipes/device-status-description.pipe';
 import { ErrorService } from './errors/error.service';
 import { MapAreaFiltersComponent } from './components/map-area-filters/map-area-filters.component';
 import { MapObjectFiltersComponent } from './components/map-object-filters/map-object-filters.component';
@@ -15,14 +14,10 @@ import { AuthService } from './services/auth.service';
 import { AuthScopeAllowDirective } from './auth/directives/auth-scope-allow.directive';
 import { DictionaryService } from './services/dictionary.service';
 import { DictionaryState } from './states/dictionary.state';
+import { EnumDescriptionPipePipe } from './pipes/enum-description.pipe';
 
 @NgModule({
-  declarations: [
-    EnumToDescriptionPipePipe,
-    MapAreaFiltersComponent,
-    MapObjectFiltersComponent,
-    AuthScopeAllowDirective,
-  ],
+  declarations: [EnumDescriptionPipePipe, MapAreaFiltersComponent, MapObjectFiltersComponent, AuthScopeAllowDirective],
   imports: [
     CommonModule,
     FormsModule,
@@ -38,7 +33,7 @@ import { DictionaryState } from './states/dictionary.state';
     ReactiveFormsModule,
     MaterialModule,
     HttpClientModule,
-    EnumToDescriptionPipePipe,
+    EnumDescriptionPipePipe,
     ToastrModule,
     MapAreaFiltersComponent,
     MapObjectFiltersComponent,
