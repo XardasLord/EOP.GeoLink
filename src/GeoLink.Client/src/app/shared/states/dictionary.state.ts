@@ -15,6 +15,8 @@ import { DictionaryStateModel } from './dictionary.state.model';
 import { EnumDescriptionModel } from '../models/enum-description.model';
 import { DictionaryService } from '../services/dictionary.service';
 import { GetSystemGroups, GetSystemPermissions, GetSystemRegions, GetSystemRoles } from './dictionary.action';
+import { EnumDescriptionWithScopesModel } from '../models/enum-description-with-scopes.model';
+import { EnumDescriptionRegionModel } from '../models/enum-description-region.model';
 
 export const DICTIONARY_STATE_TOKEN = new StateToken<DictionaryStateModel>('dictionary');
 
@@ -32,17 +34,17 @@ export class DictionaryState {
   constructor(private dictionaryService: DictionaryService) {}
 
   @Selector([DICTIONARY_STATE_TOKEN])
-  static getSystemGroups(state: DictionaryStateModel): EnumDescriptionModel[] {
+  static getSystemGroups(state: DictionaryStateModel): EnumDescriptionWithScopesModel[] {
     return state.systemGroups;
   }
 
   @Selector([DICTIONARY_STATE_TOKEN])
-  static getSystemRoles(state: DictionaryStateModel): EnumDescriptionModel[] {
+  static getSystemRoles(state: DictionaryStateModel): EnumDescriptionWithScopesModel[] {
     return state.systemRoles;
   }
 
   @Selector([DICTIONARY_STATE_TOKEN])
-  static getSystemRegions(state: DictionaryStateModel): EnumDescriptionModel[] {
+  static getSystemRegions(state: DictionaryStateModel): EnumDescriptionRegionModel[] {
     return state.systemRegions;
   }
 

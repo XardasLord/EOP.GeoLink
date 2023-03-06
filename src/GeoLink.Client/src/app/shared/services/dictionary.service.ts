@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { RemoteServiceBase } from './remote-service.base';
 import { EnumDescriptionModel } from '../models/enum-description.model';
+import { EnumDescriptionWithScopesModel } from '../models/enum-description-with-scopes.model';
+import { EnumDescriptionRegionModel } from '../models/enum-description-region.model';
 
 @Injectable()
 export class DictionaryService extends RemoteServiceBase {
@@ -13,16 +15,16 @@ export class DictionaryService extends RemoteServiceBase {
     super(httpClient);
   }
 
-  getSystemGroups(): Observable<EnumDescriptionModel[]> {
-    return this.httpClient.get<EnumDescriptionModel[]>(`${this.apiUrl}/settings/getGroups`);
+  getSystemGroups(): Observable<EnumDescriptionWithScopesModel[]> {
+    return this.httpClient.get<EnumDescriptionWithScopesModel[]>(`${this.apiUrl}/settings/getGroups`);
   }
 
-  getSystemRoles(): Observable<EnumDescriptionModel[]> {
-    return this.httpClient.get<EnumDescriptionModel[]>(`${this.apiUrl}/settings/getRoles`);
+  getSystemRoles(): Observable<EnumDescriptionWithScopesModel[]> {
+    return this.httpClient.get<EnumDescriptionWithScopesModel[]>(`${this.apiUrl}/settings/getRoles`);
   }
 
-  getSystemRegions(): Observable<EnumDescriptionModel[]> {
-    return this.httpClient.get<EnumDescriptionModel[]>(`${this.apiUrl}/settings/getRegions`);
+  getSystemRegions(): Observable<EnumDescriptionRegionModel[]> {
+    return this.httpClient.get<EnumDescriptionRegionModel[]>(`${this.apiUrl}/settings/getRegions`);
   }
 
   getSystemPermission(): Observable<EnumDescriptionModel[]> {
