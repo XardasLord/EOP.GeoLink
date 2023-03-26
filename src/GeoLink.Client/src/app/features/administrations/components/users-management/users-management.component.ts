@@ -5,7 +5,7 @@ import { nameof } from '../../../../shared/helpers/name-of.helper';
 import { UserModel } from '../../models/user.model';
 import { Load } from '../../states/users.action';
 import { DictionaryState } from '../../../../shared/states/dictionary.state';
-import { filter, map, Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { EnumDescriptionWithScopesModel } from '../../../../shared/models/enum-description-with-scopes.model';
 import { EnumDescriptionRegionModel } from '../../../../shared/models/enum-description-region.model';
 

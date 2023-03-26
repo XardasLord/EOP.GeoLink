@@ -4,7 +4,6 @@ import { nameof } from '../../../../shared/helpers/name-of.helper';
 import { RoleModel } from '../../models/role.model';
 import { Load } from '../../states/roles.action';
 import { RolesState } from '../../states/roles.state';
-import { OpenAddEditRoleDialog } from '../../../../shared/states/modal.action';
 
 @Component({
   selector: 'app-roles-management',
@@ -22,7 +21,7 @@ export class RolesManagementComponent implements OnInit {
     this.store.dispatch(new Load());
   }
 
-  renameRole(role: RoleModel) {
-    this.store.dispatch(new OpenAddEditRoleDialog(role));
+  changePrivileges(role: RoleModel) {
+    // this.store.dispatch(new OpenChangePrivilegesDialog(role));
   }
 }

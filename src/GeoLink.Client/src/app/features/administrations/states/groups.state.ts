@@ -6,7 +6,6 @@ import { GroupsStateModel } from './groups.state.model';
 import { GroupModel } from '../models/group.model';
 import { Add, Edit, Load } from './groups.action';
 import { DefaultFormStateValue } from '../../../shared/models/form-states.model';
-import { CloseAddNewGroupDialog, CloseEditGroupDialog } from '../../../shared/states/modal.action';
 import { GroupsService } from '../services/groups.service';
 
 const GROUPS_STATE_TOKEN = new StateToken<GroupsStateModel>('groups');
@@ -57,7 +56,7 @@ export class GroupsState {
           })
         );
 
-        ctx.dispatch(new CloseAddNewGroupDialog());
+        // ctx.dispatch(new CloseAddNewGroupDialog());
       }),
       catchError(error => {
         return throwError(error);
@@ -80,7 +79,7 @@ export class GroupsState {
           })
         );
 
-        ctx.dispatch(new CloseEditGroupDialog());
+        // ctx.dispatch(new CloseEditGroupDialog());
       }),
       catchError(error => {
         return throwError(error);

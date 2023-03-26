@@ -5,7 +5,7 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 import { RolesStateModel } from './roles.state.model';
 import { RoleModel } from '../models/role.model';
 import { Add, Edit, Load } from './roles.action';
-import { CloseAddEditRoleDialog } from '../../../shared/states/modal.action';
+import { CloseChangePrivilegesDialog } from '../../../shared/states/modal.action';
 import { DefaultFormStateValue } from '../../../shared/models/form-states.model';
 import { RolesService } from '../services/roles.service';
 
@@ -56,7 +56,7 @@ export class RolesState {
           })
         );
 
-        ctx.dispatch(new CloseAddEditRoleDialog());
+        ctx.dispatch(new CloseChangePrivilegesDialog());
       }),
       catchError(error => {
         return throwError(error);
@@ -79,7 +79,7 @@ export class RolesState {
           })
         );
 
-        ctx.dispatch(new CloseAddEditRoleDialog());
+        ctx.dispatch(new CloseChangePrivilegesDialog());
       }),
       catchError(error => {
         return throwError(error);

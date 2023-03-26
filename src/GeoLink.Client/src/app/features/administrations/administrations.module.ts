@@ -14,7 +14,6 @@ import { GroupsService } from './services/groups.service';
 import { RolesState } from './states/roles.state';
 import { RolesService } from './services/roles.service';
 import { AddNewGroupDialogComponent } from './components/add-new-group-dialog/add-new-group-dialog.component';
-import { EditGroupDialogComponent } from './components/edit-group-dialog/edit-group-dialog.component';
 import { AddEditRoleDialogComponent } from './components/add-edit-role-dialog/add-edit-role-dialog.component';
 
 @NgModule({
@@ -24,7 +23,6 @@ import { AddEditRoleDialogComponent } from './components/add-edit-role-dialog/ad
     GroupsManagementComponent,
     RolesManagementComponent,
     AddNewGroupDialogComponent,
-    EditGroupDialogComponent,
     AddEditRoleDialogComponent,
   ],
   imports: [
