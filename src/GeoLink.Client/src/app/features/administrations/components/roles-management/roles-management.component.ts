@@ -3,7 +3,8 @@ import { Store } from '@ngxs/store';
 import { nameof } from '../../../../shared/helpers/name-of.helper';
 import { RoleModel } from '../../models/role.model';
 import { Load } from '../../states/roles.action';
-import { RolesState } from '../../states/roles.state';
+import { DictionaryState } from '../../../../shared/states/dictionary.state';
+import { EnumDescriptionWithScopesModel } from '../../../../shared/models/enum-description-with-scopes.model';
 
 @Component({
   selector: 'app-roles-management',
@@ -11,9 +12,13 @@ import { RolesState } from '../../states/roles.state';
   styleUrls: ['./roles-management.component.scss'],
 })
 export class RolesManagementComponent implements OnInit {
-  displayedColumns: string[] = [nameof<RoleModel>('name'), 'actions'];
+  displayedColumns: string[] = [
+    nameof<EnumDescriptionWithScopesModel>('name'),
+    nameof<EnumDescriptionWithScopesModel>('description'),
+    'actions',
+  ];
 
-  roles$ = this.store.select(RolesState.getRoles);
+  roles$ = this.store.select(DictionaryState.getSystemRoles);
 
   constructor(private store: Store) {}
 
