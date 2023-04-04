@@ -2,7 +2,13 @@ import { ModalStateModel } from './modal.state.model';
 import { Action, State, StateContext, StateToken, Store } from '@ngxs/store';
 import { Injectable, NgZone } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
-import { CloseChangePrivilegesDialog, OpenChangePrivilegesDialog } from './modal.action';
+import {
+  CloseEditPrivilegesDialogForGroup,
+  CloseEditPrivilegesDialogForRole,
+  OpenEditPrivilegesDialogForGroup,
+  OpenEditPrivilegesDialogForRole,
+} from './modal.action';
+import { ManagePrivilegesDialogComponent } from '../../features/administrations/components/manage-privileges-dialog/manage-privileges-dialog.component';
 
 const MODAL_STATE_TOKEN = new StateToken<ModalStateModel>('modal');
 
@@ -11,36 +17,48 @@ const MODAL_STATE_TOKEN = new StateToken<ModalStateModel>('modal');
 })
 @Injectable()
 export class ModalState {
-  // private addNewGroupDialogRef?: MatDialogRef<AddNewGroupDialogComponent>;
+  private managePrivilegesDialogRef?: MatDialogRef<ManagePrivilegesDialogComponent>;
 
-  private readonly addNewGroupDialogConfig = new MatDialogConfig();
-  private readonly editGroupDialogConfig = new MatDialogConfig();
-  private readonly addEditRoleDialogConfig = new MatDialogConfig();
+  private readonly managePrivilegesDialogConfig = new MatDialogConfig();
 
   constructor(private zone: NgZone, private dialog: MatDialog, private store: Store) {
-    this.addNewGroupDialogConfig = {
+    this.managePrivilegesDialogConfig = {
       width: '320px',
     };
-
-    this.editGroupDialogConfig = this.addNewGroupDialogConfig;
-    this.addEditRoleDialogConfig = this.addNewGroupDialogConfig;
   }
 
-  @Action(OpenChangePrivilegesDialog)
-  OpenAddEditRoleDialog(ctx: StateContext<ModalStateModel>, action: OpenChangePrivilegesDialog) {
-    // this.closeDialog(this.addNewGroupDialogRef);
-    // return this.zone.run(
-    //   () =>
-    //     (this.addEditRoleDialogRef = this.dialog.open(AddEditRoleDialogComponent, {
-    //       ...this.addEditRoleDialogConfig,
-    //       data: action.role,
-    //     }))
-    // );
+  @Action(OpenEditPrivilegesDialogForGroup)
+  openEditPrivilegesDialogForGroup(ctx: StateContext<ModalStateModel>, action: OpenEditPrivilegesDialogForGroup) {
+    this.closeDialog(this.managePrivilegesDialogRef);
+    return this.zone.run(
+      () =>
+        (this.managePrivilegesDialogRef = this.dialog.open(ManagePrivilegesDialogComponent, {
+          ...this.managePrivilegesDialogConfig,
+          data: action.group,
+        }))
+    );
   }
 
-  @Action(CloseChangePrivilegesDialog)
-  closeAddEditRoleDialog(ctx: StateContext<ModalStateModel>, _: CloseChangePrivilegesDialog) {
-    // this.closeDialog(this.addEditRoleDialogRef);
+  @Action(OpenEditPrivilegesDialogForRole)
+  openEditPrivilegesDialogForRole(ctx: StateContext<ModalStateModel>, action: OpenEditPrivilegesDialogForRole) {
+    this.closeDialog(this.managePrivilegesDialogRef);
+    return this.zone.run(
+      () =>
+        (this.managePrivilegesDialogRef = this.dialog.open(ManagePrivilegesDialogComponent, {
+          ...this.managePrivilegesDialogConfig,
+          data: action.role,
+        }))
+    );
+  }
+
+  @Action(CloseEditPrivilegesDialogForGroup)
+  closeEditPrivilegesDialogForGroup(ctx: StateContext<ModalStateModel>, _: CloseEditPrivilegesDialogForGroup) {
+    this.closeDialog(this.managePrivilegesDialogRef);
+  }
+
+  @Action(CloseEditPrivilegesDialogForRole)
+  closeEditPrivilegesDialogForRole(ctx: StateContext<ModalStateModel>, _: CloseEditPrivilegesDialogForRole) {
+    this.closeDialog(this.managePrivilegesDialogRef);
   }
 
   private closeDialog<T>(dialogRef: MatDialogRef<T> | undefined): void {

@@ -1,19 +1,19 @@
-<form [formGroup]="addNewGroupForm" (ngSubmit)="onSubmit()" ngxsForm="groups.addNewGroupForm">
+<form [formGroup]="editPrivilegesForm" (ngSubmit)="onSubmit()" ngxsForm="groups.editPrivilegesForm">
   <div class="form-content">
-    <h2 mat-dialog-title>Dodaj nową grupę</h2>
+    <h2 mat-dialog-title>Edytuj uprawnienia dla {{ model.name }}</h2>
 
     <mat-dialog-content>
       <section>
-        <mat-form-field appearance="fill" class="input">
-          <mat-label>Nazwa grupy</mat-label>
-          <input type="text" matInput formControlName="name" />
-        </mat-form-field>
+        <!--        <mat-form-field appearance="fill" class="input">-->
+        <!--          <mat-label>Nazwa grupy</mat-label>-->
+        <!--          <input type="text" matInput formControlName="name" />-->
+        <!--        </mat-form-field>-->
       </section>
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
       <button mat-button color="primary" type="button" mat-dialog-close>Anuluj</button>
-      <button mat-raised-button color="primary" type="submit" cdkFocusInitial>Dodaj</button>
+      <button mat-raised-button color="primary" type="submit" cdkFocusInitial>Zapisz</button>
     </mat-dialog-actions>
   </div>
 </form>

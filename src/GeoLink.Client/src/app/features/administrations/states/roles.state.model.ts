@@ -1,8 +1,8 @@
 import { RoleModel } from '../models/role.model';
 import { FormStateModel } from '../../../shared/models/form-states.model';
-import { AddNewGroupFormGroup } from '../models/forms/add-new-group-form-group';
+import { EditPrivilegesFormGroup } from '../models/forms/edit-privileges-form-group';
 
 export interface RolesStateModel {
   roles: RoleModel[];
-  addEditRoleForm: FormStateModel<AddNewGroupFormGroup>;
+  addEditRoleForm: FormStateModel<EditPrivilegesFormGroup>;
 }

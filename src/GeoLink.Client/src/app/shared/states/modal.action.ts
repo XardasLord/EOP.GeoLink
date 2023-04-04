@@ -1,12 +1,23 @@
-import { RoleModel } from '../../features/administrations/models/role.model';
+import { EnumDescriptionWithScopesModel } from '../models/enum-description-with-scopes.model';
 
 const prefix = '[Modal]';
 
-export class OpenChangePrivilegesDialog {
-  constructor(public role?: RoleModel) {}
-  static readonly type = `${prefix} ${OpenChangePrivilegesDialog.name}`;
+export class OpenEditPrivilegesDialogForGroup {
+  constructor(public group?: EnumDescriptionWithScopesModel) {}
+
+  static readonly type = `${prefix} ${OpenEditPrivilegesDialogForGroup.name}`;
 }
 
-export class CloseChangePrivilegesDialog {
-  static readonly type = `${prefix} ${CloseChangePrivilegesDialog.name}`;
+export class OpenEditPrivilegesDialogForRole {
+  constructor(public role?: EnumDescriptionWithScopesModel) {}
+
+  static readonly type = `${prefix} ${OpenEditPrivilegesDialogForRole.name}`;
+}
+
+export class CloseEditPrivilegesDialogForGroup {
+  static readonly type = `${prefix} ${CloseEditPrivilegesDialogForGroup.name}`;
+}
+
+export class CloseEditPrivilegesDialogForRole {
+  static readonly type = `${prefix} ${CloseEditPrivilegesDialogForRole.name}`;
 }

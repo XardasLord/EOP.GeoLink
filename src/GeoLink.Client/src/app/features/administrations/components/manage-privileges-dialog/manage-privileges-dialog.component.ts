@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AddNewGroupFormGroup } from '../../models/forms/add-new-group-form-group';
+import { Component, Inject } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { EditPrivilegesFormGroup } from '../../models/forms/edit-privileges-form-group';
 import { Store } from '@ngxs/store';
 import { Add } from '../../states/groups.action';
 import { AddNewGroupCommand } from '../../models/commands/add-new-group.command';
+import { AuthScopes } from '../../../../shared/auth/models/auth.scopes';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { EnumDescriptionWithScopesModel } from '../../../../shared/models/enum-description-with-scopes.model';
 
 @Component({
   selector: 'app-manage-privileges-dialog',
@@ -11,20 +14,23 @@ import { AddNewGroupCommand } from '../../models/commands/add-new-group.command'
   styleUrls: ['./manage-privileges-dialog.component.scss'],
 })
 export class ManagePrivilegesDialogComponent {
-  addNewGroupForm!: FormGroup<AddNewGroupFormGroup>;
+  editPrivilegesForm!: FormGroup<EditPrivilegesFormGroup>;
 
-  constructor(private fb: FormBuilder, private store: Store) {
-    this.addNewGroupForm = fb.group<AddNewGroupFormGroup>({
-      name: new FormControl<string>('', {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public model: EnumDescriptionWithScopesModel,
+    private fb: FormBuilder,
+    private store: Store
+  ) {
+    this.editPrivilegesForm = fb.group<EditPrivilegesFormGroup>({
+      scopes: new FormControl<AuthScopes[]>([], {
         nonNullable: true,
-        validators: [Validators.required],
       }),
     });
   }
 
   onSubmit() {
-    if (!this.addNewGroupForm.valid) return;
+    if (!this.editPrivilegesForm.valid) return;
 
-    this.store.dispatch(new Add(this.addNewGroupForm.value as AddNewGroupCommand));
+    this.store.dispatch(new Add(this.editPrivilegesForm.value as AddNewGroupCommand));
   }
 }

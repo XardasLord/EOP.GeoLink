@@ -14,8 +14,7 @@ const GROUPS_STATE_TOKEN = new StateToken<GroupsStateModel>('groups');
   name: GROUPS_STATE_TOKEN,
   defaults: {
     groups: [],
-    addNewGroupForm: DefaultFormStateValue,
-    editGroupForm: DefaultFormStateValue,
+    editPrivilegesForm: DefaultFormStateValue,
   },
 })
 @Injectable()

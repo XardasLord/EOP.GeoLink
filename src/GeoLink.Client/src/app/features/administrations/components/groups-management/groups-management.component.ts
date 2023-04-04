@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { nameof } from '../../../../shared/helpers/name-of.helper';
-import { GroupModel } from '../../models/group.model';
 import { DictionaryState } from '../../../../shared/states/dictionary.state';
 import { EnumDescriptionWithScopesModel } from '../../../../shared/models/enum-description-with-scopes.model';
+import { OpenEditPrivilegesDialogForGroup } from '../../../../shared/states/modal.action';
 
 @Component({
   selector: 'app-groups-management',
@@ -21,5 +21,7 @@ export class GroupsManagementComponent {
 
   constructor(private store: Store) {}
 
-  changePrivileges(group: GroupModel) {}
+  changePrivileges(group: EnumDescriptionWithScopesModel) {
+    this.store.dispatch(new OpenEditPrivilegesDialogForGroup(group));
+  }
 }
