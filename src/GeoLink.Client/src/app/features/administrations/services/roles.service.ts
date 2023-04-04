@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { RoleModel } from '../models/role.model';
 import { AddRoleCommand } from '../models/commands/add-role.command';
 import { EditRoleCommand } from '../models/commands/edit-role.command';
 import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
@@ -10,25 +9,6 @@ import { RemoteServiceBase } from '../../../shared/services/remote-service.base'
 export class RolesService extends RemoteServiceBase {
   constructor(httpClient: HttpClient) {
     super(httpClient);
-  }
-
-  getAllRoles(): Observable<RoleModel[]> {
-    const roles: RoleModel[] = [
-      {
-        id: 1,
-        name: 'Admin',
-      },
-      {
-        id: 2,
-        name: 'User',
-      },
-      {
-        id: 3,
-        name: 'Przeglądający',
-      },
-    ];
-
-    return of(roles);
   }
 
   addRole(command: AddRoleCommand): Observable<number> {

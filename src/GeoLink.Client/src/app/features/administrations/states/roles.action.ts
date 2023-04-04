@@ -3,10 +3,6 @@ import { EditRoleCommand } from '../models/commands/edit-role.command';
 
 const prefix = '[Roles]';
 
-export class Load {
-  static readonly type = `${prefix} ${Load.name}`;
-}
-
 export class Add {
   constructor(public command: AddRoleCommand) {}
   static readonly type = `${prefix} ${Add.name}`;

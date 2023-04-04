@@ -6,11 +6,11 @@ import { Add } from '../../states/groups.action';
 import { AddNewGroupCommand } from '../../models/commands/add-new-group.command';
 
 @Component({
-  selector: 'app-add-new-group-dialog',
-  templateUrl: './add-new-group-dialog.component.html',
-  styleUrls: ['./add-new-group-dialog.component.scss'],
+  selector: 'app-manage-privileges-dialog',
+  templateUrl: './manage-privileges-dialog.component.html',
+  styleUrls: ['./manage-privileges-dialog.component.scss'],
 })
-export class AddNewGroupDialogComponent {
+export class ManagePrivilegesDialogComponent {
   addNewGroupForm!: FormGroup<AddNewGroupFormGroup>;
 
   constructor(private fb: FormBuilder, private store: Store) {

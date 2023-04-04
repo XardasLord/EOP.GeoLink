@@ -2,7 +2,6 @@ import { ModalStateModel } from './modal.state.model';
 import { Action, State, StateContext, StateToken, Store } from '@ngxs/store';
 import { Injectable, NgZone } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
-import { AddNewGroupDialogComponent } from '../../features/administrations/components/add-new-group-dialog/add-new-group-dialog.component';
 import { CloseChangePrivilegesDialog, OpenChangePrivilegesDialog } from './modal.action';
 
 const MODAL_STATE_TOKEN = new StateToken<ModalStateModel>('modal');
@@ -12,7 +11,7 @@ const MODAL_STATE_TOKEN = new StateToken<ModalStateModel>('modal');
 })
 @Injectable()
 export class ModalState {
-  private addNewGroupDialogRef?: MatDialogRef<AddNewGroupDialogComponent>;
+  // private addNewGroupDialogRef?: MatDialogRef<AddNewGroupDialogComponent>;
 
   private readonly addNewGroupDialogConfig = new MatDialogConfig();
   private readonly editGroupDialogConfig = new MatDialogConfig();
@@ -29,8 +28,7 @@ export class ModalState {
 
   @Action(OpenChangePrivilegesDialog)
   OpenAddEditRoleDialog(ctx: StateContext<ModalStateModel>, action: OpenChangePrivilegesDialog) {
-    this.closeDialog(this.addNewGroupDialogRef);
-
+    // this.closeDialog(this.addNewGroupDialogRef);
     // return this.zone.run(
     //   () =>
     //     (this.addEditRoleDialogRef = this.dialog.open(AddEditRoleDialogComponent, {

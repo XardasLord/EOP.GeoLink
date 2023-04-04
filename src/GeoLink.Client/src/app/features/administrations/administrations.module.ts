@@ -13,7 +13,7 @@ import { GroupsState } from './states/groups.state';
 import { GroupsService } from './services/groups.service';
 import { RolesState } from './states/roles.state';
 import { RolesService } from './services/roles.service';
-import { AddNewGroupDialogComponent } from './components/add-new-group-dialog/add-new-group-dialog.component';
+import { ManagePrivilegesDialogComponent } from './components/manage-privileges-dialog/manage-privileges-dialog.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,7 @@ import { AddNewGroupDialogComponent } from './components/add-new-group-dialog/ad
     UsersManagementComponent,
     GroupsManagementComponent,
     RolesManagementComponent,
-    AddNewGroupDialogComponent,
+    ManagePrivilegesDialogComponent,
   ],
   imports: [
     SharedModule,

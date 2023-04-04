@@ -4,7 +4,7 @@ import { append, patch, updateItem } from '@ngxs/store/operators';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { GroupsStateModel } from './groups.state.model';
 import { GroupModel } from '../models/group.model';
-import { Add, Edit, Load } from './groups.action';
+import { Add, Edit, LoadPrivileges } from './groups.action';
 import { DefaultFormStateValue } from '../../../shared/models/form-states.model';
 import { GroupsService } from '../services/groups.service';
 
@@ -27,18 +27,18 @@ export class GroupsState {
     return state.groups;
   }
 
-  @Action(Load)
-  loadGroups(ctx: StateContext<GroupsStateModel>, _: Load) {
-    return this.groupsService.getAllGroups().pipe(
-      tap(response => {
-        ctx.patchState({
-          groups: response,
-        });
-      }),
-      catchError(error => {
-        return throwError(error);
-      })
-    );
+  @Action(LoadPrivileges)
+  loadPrivileges(ctx: StateContext<GroupsStateModel>, _: LoadPrivileges) {
+    // return this.groupsService.getAllGroups().pipe(
+    //   tap(response => {
+    //     ctx.patchState({
+    //       groups: response,
+    //     });
+    //   }),
+    //   catchError(error => {
+    //     return throwError(error);
+    //   })
+    // );
   }
 
   @Action(Add)

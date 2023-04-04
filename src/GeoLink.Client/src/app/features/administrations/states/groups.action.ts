@@ -3,8 +3,8 @@ import { EditGroupCommand } from '../models/commands/edit-group.command';
 
 const prefix = '[Groups]';
 
-export class Load {
-  static readonly type = `${prefix} ${Load.name}`;
+export class LoadPrivileges {
+  static readonly type = `${prefix} ${LoadPrivileges.name}`;
 }
 
 export class Add {

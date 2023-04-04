@@ -4,7 +4,7 @@ import { append, patch, updateItem } from '@ngxs/store/operators';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { RolesStateModel } from './roles.state.model';
 import { RoleModel } from '../models/role.model';
-import { Add, Edit, Load } from './roles.action';
+import { Add, Edit } from './roles.action';
 import { CloseChangePrivilegesDialog } from '../../../shared/states/modal.action';
 import { DefaultFormStateValue } from '../../../shared/models/form-states.model';
 import { RolesService } from '../services/roles.service';
@@ -25,20 +25,6 @@ export class RolesState {
   @Selector([ROLES_STATE_TOKEN])
   static getRoles(state: RolesStateModel): RoleModel[] {
     return state.roles;
-  }
-
-  @Action(Load)
-  loadGroups(ctx: StateContext<RolesStateModel>, _: Load) {
-    return this.rolesService.getAllRoles().pipe(
-      tap(response => {
-        ctx.patchState({
-          roles: response,
-        });
-      }),
-      catchError(error => {
-        return throwError(error);
-      })
-    );
   }
 
   @Action(Add)
