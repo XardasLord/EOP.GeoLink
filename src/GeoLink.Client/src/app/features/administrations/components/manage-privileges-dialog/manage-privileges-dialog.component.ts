@@ -2,8 +2,6 @@ import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { EditPrivilegesFormGroup } from '../../models/forms/edit-privileges-form-group';
 import { Store } from '@ngxs/store';
-import { Add } from '../../states/groups.action';
-import { AddNewGroupCommand } from '../../models/commands/add-new-group.command';
 import { AuthScopes } from '../../../../shared/auth/models/auth.scopes';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EnumDescriptionWithScopesModel } from '../../../../shared/models/enum-description-with-scopes.model';
@@ -31,6 +29,6 @@ export class ManagePrivilegesDialogComponent {
   onSubmit() {
     if (!this.editPrivilegesForm.valid) return;
 
-    this.store.dispatch(new Add(this.editPrivilegesForm.value as AddNewGroupCommand));
+    // this.store.dispatch(new EditPrivileges(this.editPrivilegesForm.value as AddNewGroupCommand));
   }
 }

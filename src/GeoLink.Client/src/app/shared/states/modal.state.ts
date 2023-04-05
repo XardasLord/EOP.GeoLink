@@ -23,7 +23,7 @@ export class ModalState {
 
   constructor(private zone: NgZone, private dialog: MatDialog, private store: Store) {
     this.managePrivilegesDialogConfig = {
-      width: '320px',
+      width: '460px',
     };
   }
 
