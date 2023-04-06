@@ -1,5 +1,9 @@
+import { AuthScopes } from '../../../shared/auth/models/auth.scopes';
+
 const prefix = '[Groups]';
 
-export class LoadPrivileges {
-  static readonly type = `${prefix} ${LoadPrivileges.name}`;
+export class EditPrivileges {
+  constructor(public groupId: number, public scopes: AuthScopes[]) {}
+
+  static readonly type = `${prefix} ${EditPrivileges.name}`;
 }

@@ -9,7 +9,6 @@ const ROLES_STATE_TOKEN = new StateToken<RolesStateModel>('roles');
 @State<RolesStateModel>({
   name: ROLES_STATE_TOKEN,
   defaults: {
-    roles: [],
     addEditRoleForm: DefaultFormStateValue,
   },
 })

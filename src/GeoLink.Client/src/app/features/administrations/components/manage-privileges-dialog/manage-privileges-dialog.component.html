@@ -1,13 +1,20 @@
-<form [formGroup]="editPrivilegesForm" (ngSubmit)="onSubmit()" ngxsForm="groups.editPrivilegesForm">
+<form (ngSubmit)="onSubmit()">
   <div class="form-content">
     <h2 mat-dialog-title>Edytuj uprawnienia dla {{ model.name }}</h2>
 
     <mat-dialog-content>
-      <section>
-        <!--        <mat-form-field appearance="fill" class="input">-->
-        <!--          <mat-label>Nazwa grupy</mat-label>-->
-        <!--          <input type="text" matInput formControlName="name" />-->
-        <!--        </mat-form-field>-->
+      <section class="filter-container">
+        <ul>
+          <li *ngFor="let systemPermission of systemPermissions$ | async">
+            <mat-checkbox
+              color="accent"
+              [checked]="isSelected(systemPermission.id)"
+              (change)="changeSelection($event.checked, systemPermission.id)"
+              [matTooltip]="systemPermission.description">
+              {{ systemPermission.name }}
+            </mat-checkbox>
+          </li>
+        </ul>
       </section>
     </mat-dialog-content>
 

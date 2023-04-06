@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { nameof } from '../../../../shared/helpers/name-of.helper';
-import { RoleModel } from '../../models/role.model';
 import { DictionaryState } from '../../../../shared/states/dictionary.state';
 import { EnumDescriptionWithScopesModel } from '../../../../shared/models/enum-description-with-scopes.model';
 
@@ -21,7 +20,7 @@ export class RolesManagementComponent {
 
   constructor(private store: Store) {}
 
-  changePrivileges(role: RoleModel) {
+  changePrivileges(role: any) {
     // this.store.dispatch(new OpenChangePrivilegesDialog(role));
   }
 }
