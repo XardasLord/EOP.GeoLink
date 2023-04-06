@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { nameof } from '../../../../shared/helpers/name-of.helper';
 import { DictionaryState } from '../../../../shared/states/dictionary.state';
 import { EnumDescriptionWithScopesModel } from '../../../../shared/models/enum-description-with-scopes.model';
+import { OpenEditPrivilegesDialogForRole } from '../../../../shared/states/modal.action';
 
 @Component({
   selector: 'app-roles-management',
@@ -21,6 +22,6 @@ export class RolesManagementComponent {
   constructor(private store: Store) {}
 
   changePrivileges(role: any) {
-    // this.store.dispatch(new OpenChangePrivilegesDialog(role));
+    this.store.dispatch(new OpenEditPrivilegesDialogForRole(role));
   }
 }

@@ -1,10 +1,11 @@
 import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
 import { AuthScopes } from '../../../../shared/auth/models/auth.scopes';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EnumDescriptionWithScopesModel } from '../../../../shared/models/enum-description-with-scopes.model';
 import { DictionaryState } from '../../../../shared/states/dictionary.state';
-import { EditPrivileges } from '../../states/groups.action';
+import { EditPrivileges as EditGroupPrivileges } from '../../states/groups.action';
+import { EditPrivileges as EditRolePrivileges } from '../../states/roles.action';
 
 @Component({
   selector: 'app-manage-privileges-dialog',
@@ -15,8 +16,12 @@ export class ManagePrivilegesDialogComponent {
   systemPermissions$ = this.store.select(DictionaryState.getSystemPermissions);
   selectedPermissions: AuthScopes[];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public model: EnumDescriptionWithScopesModel, private store: Store) {
-    this.selectedPermissions = [...model.authScopes];
+  constructor(
+    @Inject(MAT_DIALOG_DATA)
+    public dialogData: { isGroup: boolean; isRole: boolean; model: EnumDescriptionWithScopesModel },
+    private store: Store
+  ) {
+    this.selectedPermissions = [...dialogData.model.authScopes];
   }
 
   isSelected(scope: AuthScopes): boolean {
@@ -29,12 +34,13 @@ export class ManagePrivilegesDialogComponent {
     } else {
       this.selectedPermissions.push(scope);
     }
-
-    console.log(this.selectedPermissions);
   }
 
   onSubmit() {
-    // TODO: Verify if it is a group or role and dispatch corresponding action
-    this.store.dispatch(new EditPrivileges(this.model.id, this.selectedPermissions));
+    if (this.dialogData.isGroup) {
+      this.store.dispatch(new EditGroupPrivileges(this.dialogData.model.id, this.selectedPermissions));
+    } else {
+      this.store.dispatch(new EditRolePrivileges(this.dialogData.model.id, this.selectedPermissions));
+    }
   }
 }

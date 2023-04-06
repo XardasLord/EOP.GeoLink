@@ -34,7 +34,11 @@ export class ModalState {
       () =>
         (this.managePrivilegesDialogRef = this.dialog.open(ManagePrivilegesDialogComponent, {
           ...this.managePrivilegesDialogConfig,
-          data: action.group,
+          data: {
+            isGroup: true,
+            isRole: false,
+            model: action.group,
+          },
         }))
     );
   }
@@ -46,7 +50,11 @@ export class ModalState {
       () =>
         (this.managePrivilegesDialogRef = this.dialog.open(ManagePrivilegesDialogComponent, {
           ...this.managePrivilegesDialogConfig,
-          data: action.role,
+          data: {
+            isGroup: false,
+            isRole: true,
+            model: action.role,
+          },
         }))
     );
   }

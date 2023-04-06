@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { AddRoleCommand } from '../models/commands/add-role.command';
-import { EditRoleCommand } from '../models/commands/edit-role.command';
 import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
+import { AuthScopes } from '../../../shared/auth/models/auth.scopes';
+import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class RolesService extends RemoteServiceBase {
+  private apiUrl = environment.apiEndpoint;
+
   constructor(httpClient: HttpClient) {
     super(httpClient);
   }
 
-  addRole(command: AddRoleCommand): Observable<number> {
-    return of(999);
-  }
-
-  editRole(roleId: number, command: EditRoleCommand): Observable<any> {
-    return of({});
+  editPrivileges(roleId: number, scopes: AuthScopes[]) {
+    return this.httpClient.post(`${this.apiUrl}/settings/setRolePermissions`, {
+      Id: roleId,
+      AuthScopes: scopes,
+    });
   }
 }
