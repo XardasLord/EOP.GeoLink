@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
+import { map, Observable } from 'rxjs';
 import { UsersState } from '../../states/users.state';
 import { nameof } from '../../../../shared/helpers/name-of.helper';
 import { UserModel } from '../../models/user.model';
 import { Load } from '../../states/users.action';
 import { DictionaryState } from '../../../../shared/states/dictionary.state';
-import { map, Observable } from 'rxjs';
 import { EnumDescriptionWithScopesModel } from '../../../../shared/models/enum-description-with-scopes.model';
 import { EnumDescriptionRegionModel } from '../../../../shared/models/enum-description-region.model';
 
@@ -20,7 +20,6 @@ export class UsersManagementComponent implements OnInit {
     nameof<UserModel>('role'),
     nameof<UserModel>('groups'),
     nameof<UserModel>('regions'),
-    'actions',
   ];
   users$ = this.store.select(UsersState.getUsers);
   systemGroups$ = this.store.select(DictionaryState.getSystemGroups);
@@ -30,10 +29,6 @@ export class UsersManagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(new Load());
-  }
-
-  deleteUser(user: UserModel) {
-    console.log('deleting user...', user);
   }
 
   getSystemGroupDescription(groupId: number): Observable<EnumDescriptionWithScopesModel> {
