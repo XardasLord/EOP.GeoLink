@@ -5,6 +5,7 @@ import * as L from 'leaflet';
 import * as esri from 'esri-leaflet';
 import 'esri-leaflet-renderers';
 import { vectorTileLayer } from 'esri-leaflet-vector';
+import * as lvtl from 'leaflet-vector-tile-layer';
 import { Control, latLng, Layer, Map, MapOptions, Marker, tileLayer } from 'leaflet';
 import { Subscription, interval } from 'rxjs';
 
@@ -129,11 +130,13 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   onMapReady(map: Map) {
-    if (environment.arcGisMapBackground.length > 0) {
-      this.loadLayersFromArcGIS(map);
-    } else if (environment.wmsMapBackground.length > 0) {
-      this.loadLayersFromWMS();
-    }
+    // if (environment.arcGisMapBackground.length > 0) {
+    //   this.loadLayersFromArcGIS(map);
+    // } else if (environment.wmsMapBackground.length > 0) {
+    //   this.loadLayersFromWMS();
+    // }
+
+    this.test();
 
     map.addControl(this.mapScale);
 
@@ -149,6 +152,19 @@ export class MapComponent implements OnInit, OnDestroy {
         },
       })
       .addTo(map);
+  }
+
+  private test() {
+    this.mapLayersControl = {
+      baseLayers: {
+        OpenInfraMap: lvtl.default('https://openinframap.org/tiles/{z}/{x}/{y}.pbf', {
+          style: {},
+        }),
+      },
+      overlays: {},
+    };
+
+    this.mapLayers = [this.mapLayersControl.baseLayers['OpenInfraMap']];
   }
 
   private loadLayersFromArcGIS(map: Map) {
@@ -200,7 +216,7 @@ export class MapComponent implements OnInit, OnDestroy {
         }),
       },
       overlays: {
-        Test: tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        'Open Street Map': tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 18,
           attribution: '...',
         }),
