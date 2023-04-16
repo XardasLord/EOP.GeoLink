@@ -94,7 +94,6 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   onMarkerClusterReady(group: L.MarkerClusterGroup) {
-    console.warn('aaaaaaaaaa');
     this.markerClusterGroup = group;
 
     (this.markerClusterGroup as any).options.iconCreateFunction = (cluster: L.MarkerCluster) => {
