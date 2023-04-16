@@ -4478,10 +4478,10 @@ esri-leaflet-renderers@^3.0.0:
   optionalDependencies:
     esri-leaflet-cluster "^3.0.0"
 
-esri-leaflet-vector@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/esri-leaflet-vector/-/esri-leaflet-vector-4.0.2.tgz#aa0b7de0e4e88eb30cf6f5b1e81e3232e0438f65"
-  integrity sha512-dP3daznKobK2uS5w5E5DPHQ1DWlacJeM4+Df7jkvC8ijjluBe+ARigAWK7p/xtH95gf21p83Ts++dS/2QDQSPA==
+esri-leaflet-vector@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/esri-leaflet-vector/-/esri-leaflet-vector-4.0.0.tgz#aa41bdefebe92825a03c9fec6a8dcd09e321abb8"
+  integrity sha512-x/GsRje5qUt/u0FXNKtotSQKa6ATMc94TQg6pPHr3p5vKaQJSCyqiqvViBDi7oITptEUpwzD81AOkjPsahAExQ==
 
 esri-leaflet@^3.0.10:
   version "3.0.10"
@@ -5751,18 +5751,6 @@ klona@^2.0.4, klona@^2.0.5:
   resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.6.tgz#85bffbf819c03b2f53270412420a4555ef882e22"
   integrity sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==
 
-leaflet-shape-markers@1.x:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/leaflet-shape-markers/-/leaflet-shape-markers-1.0.6.tgz#d54056a4e533828120107a71a237b1efc1a07649"
-  integrity sha512-yoGE03cTAKQOHgyAi5wVO1O5iO2BJREv+Fp8UbHUx6feiH8kNFxvjGszCOPiYqjx8Q2pPaZy5ifZ+nBr6knRkQ==
-  dependencies:
-    leaflet "^1.0.0"
-
-leaflet-vector-tile-layer@^0.14.1:
-  version "0.14.1"
-  resolved "https://registry.yarnpkg.com/leaflet-vector-tile-layer/-/leaflet-vector-tile-layer-0.14.1.tgz#1378792b7e0ef69e44c21679840ebeaeed2f81ac"
-  integrity sha512-U3uAAuoLcbXnqWIJhKE46OgRgfC27DhTZe5QbH8tLu6mzB0slR4V47HRSpXaMKlNxtshYcLvrVMidHYb2Yf05g==
-
 leaflet.browser.print@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/leaflet.browser.print/-/leaflet.browser.print-2.0.2.tgz#20a9e02fc55293cac12d58521b88d68bcd93cc6a"
@@ -5773,7 +5761,7 @@ leaflet.markercluster@^1.5.3:
   resolved "https://registry.yarnpkg.com/leaflet.markercluster/-/leaflet.markercluster-1.5.3.tgz#9cdb52a4eab92671832e1ef9899669e80efc4056"
   integrity sha512-vPTw/Bndq7eQHjLBVlWpnGeLa3t+3zGiuM7fJwCkiMFq+nmRuG3RI3f7f4N4TDX7T4NpbAXpR2+NTRSEGfCSeA==
 
-leaflet@^1.0.0, leaflet@^1.9.3:
+leaflet@^1.9.3:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.9.3.tgz#52ec436954964e2d3d39e0d433da4b2500d74414"
   integrity sha512-iB2cR9vAkDOu5l3HAay2obcUHZ7xwUBBjph8+PGtmW/2lYhbLizWtG7nTeYht36WfOslixQF9D/uSIzhZgGMfQ==
@@ -6000,7 +5988,7 @@ make-fetch-happen@^11.0.0:
     socks-proxy-agent "^7.0.0"
     ssri "^10.0.0"
 
-maplibre-gl@^2.4.0:
+maplibre-gl@^2.2.1:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/maplibre-gl/-/maplibre-gl-2.4.0.tgz#2b53dbf526626bf4ee92ad4f33f13ef09e5af182"
   integrity sha512-csNFylzntPmHWidczfgCZpvbTSmhaWvLRj9e1ezUDBEPizGgshgm3ea1T5TCNEEBq0roauu7BPuRZjA3wO4KqA==

@@ -1,13 +1,11 @@
-<div id="progress"><div id="progress-bar"></div></div>
 <app-map-helper-bar></app-map-helper-bar>
-
 <div
   id="map-container"
   leaflet
   [leafletOptions]="mapOptions!"
   [leafletLayers]="mapLayers!"
   [leafletLayersControl]="mapLayersControl!"
-  [leafletMarkerCluster]="(mapObjects$ | async)!"
+  [leafletMarkerCluster]="mapObjects!"
   [leafletMarkerClusterOptions]="markerClusterOptions!"
   (leafletMapReady)="onMapReady($event)"
   (leafletMarkerClusterReady)="onMarkerClusterReady($event)"></div>

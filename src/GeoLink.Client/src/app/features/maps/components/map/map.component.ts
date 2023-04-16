@@ -1,21 +1,21 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { LeafletControlLayersConfig } from '@asymmetrik/ngx-leaflet';
 import * as L from 'leaflet';
 import * as esri from 'esri-leaflet';
 import 'esri-leaflet-renderers';
 import { vectorTileLayer } from 'esri-leaflet-vector';
-import { Control, latLng, Layer, Map, MapOptions, Marker, tileLayer } from 'leaflet';
-import { Subscription, interval } from 'rxjs';
+import { Control, Icon, latLng, Layer, LeafletMouseEvent, Map, MapOptions, Marker, tileLayer } from 'leaflet';
+import { Subscription, interval, tap } from 'rxjs';
 
-import { MapsState } from '../../states/maps.state';
-import { LoadMapAreaFilters, LoadMapObjectFilters, LoadMapObjects } from '../../states/maps.action';
+import { LoadMapAreaFilters, LoadMapObjectFilters } from '../../states/maps.action';
 import '../../../../../../node_modules/leaflet.browser.print/dist/leaflet.browser.print.min.js';
 import { environment } from '../../../../../environments/environment';
 import { MarkerClusterHelper } from '../../helpers/marker-cluster.helper';
 import { MapItemModel } from '../../models/map-item.model';
 import { DynamicComponentCreatorHelper } from '../../helpers/dynamic-component-creator.helper';
 import Scale = Control.Scale;
+import { MapsService } from '../../services/maps.service';
 
 @Component({
   selector: 'app-map',
@@ -28,13 +28,19 @@ export class MapComponent implements OnInit, OnDestroy {
   mapLayersControl!: LeafletControlLayersConfig;
   markerClusterOptions!: L.MarkerClusterGroupOptions;
   mapScale!: Scale;
-  mapObjects$ = this.store.select(MapsState.getMapObjects);
+  mapObjects!: Marker<MapItemModel>[];
 
   markerClusterGroup!: L.MarkerClusterGroup;
 
   private refreshObjectsSubscription: Subscription = new Subscription();
+  private getObjectsSubscriptions: Subscription = new Subscription();
 
-  constructor(private store: Store, private dynamicComponentCreator: DynamicComponentCreatorHelper) {}
+  constructor(
+    private store: Store,
+    private dynamicComponentCreator: DynamicComponentCreatorHelper,
+    private mapsService: MapsService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.mapOptions = {
@@ -73,20 +79,22 @@ export class MapComponent implements OnInit, OnDestroy {
       maxWidth: 200,
     });
 
-    this.store.dispatch(new LoadMapObjects());
+    this.getObjectsSubscriptions.add(this.loadMapObjects());
     this.store.dispatch(new LoadMapObjectFilters());
     this.store.dispatch(new LoadMapAreaFilters());
 
     this.refreshObjectsSubscription = interval(environment.refreshMapObjectsIntervalInMilliseconds).subscribe(_ =>
-      this.store.dispatch(new LoadMapObjects())
+      this.getObjectsSubscriptions.add(this.loadMapObjects())
     );
   }
 
   ngOnDestroy(): void {
     this.refreshObjectsSubscription.unsubscribe();
+    this.getObjectsSubscriptions.unsubscribe();
   }
 
   onMarkerClusterReady(group: L.MarkerClusterGroup) {
+    console.warn('aaaaaaaaaa');
     this.markerClusterGroup = group;
 
     (this.markerClusterGroup as any).options.iconCreateFunction = (cluster: L.MarkerCluster) => {
@@ -151,6 +159,21 @@ export class MapComponent implements OnInit, OnDestroy {
       .addTo(map);
   }
 
+  private loadMapObjects() {
+    this.mapsService.getAllObjects().subscribe(mapItems => {
+      const markers: L.Marker<MapItemModel>[] = [];
+
+      mapItems.forEach((mapItem: MapItemModel) => {
+        const marker = this.createMapItemMarker(mapItem);
+
+        markers.push(marker);
+      });
+
+      this.mapObjects = [...markers];
+      this.changeDetectorRef.detectChanges();
+    });
+  }
+
   private loadLayersFromArcGIS(map: Map) {
     // ArcGIS Vector Tile Server
     const objectIdField = 'OBJECTID';
@@ -208,5 +231,53 @@ export class MapComponent implements OnInit, OnDestroy {
     };
 
     this.mapLayers = [this.mapLayersControl.baseLayers['WMS Map']];
+  }
+
+  private createMapItemMarker(mapItem: MapItemModel): Marker<MapItemModel> {
+    const mapItemIcon = this.createMapItemIcon(mapItem);
+
+    const marker = new Marker<MapItemModel>([mapItem.coordinates.latitude, mapItem.coordinates.longitude], {
+      icon: mapItemIcon,
+    });
+
+    // TODO: We can extend the Marker object to have 'deviceData' property attached without this workaround needed - (marker as any)
+    (marker as any).deviceData = JSON.stringify(mapItem);
+
+    // Different approach to attach component as a popup - https://stackoverflow.com/a/44686112/3921353
+    marker.on('click', ($event: LeafletMouseEvent) => {
+      const popupComponent = this.dynamicComponentCreator.createMapItemPopup(mapItem);
+      marker.unbindPopup();
+      marker.bindPopup(popupComponent, {}).openPopup();
+      // const htmlMarkerElement = marker.getElement();
+      // htmlMarkerElement?.parentElement?.appendChild(popupComponent);
+      //
+      // const markerPos = DomUtil.getPosition(htmlMarkerElement!);
+      // const markerClass = DomUtil.getClass(htmlMarkerElement!);
+      //
+      // DomUtil.setTransform(popupComponent, markerPos);
+      // DomUtil.setClass(popupComponent, markerClass);
+    });
+
+    marker.on('mouseover', ($event: LeafletMouseEvent) => {
+      const tooltipComponent = this.dynamicComponentCreator.createMapItemTooltip(mapItem);
+      marker.unbindTooltip();
+      marker
+        .bindTooltip(tooltipComponent, {
+          className: 'map-item-tooltip',
+        })
+        .openTooltip();
+    });
+
+    return marker;
+  }
+
+  private createMapItemIcon(mapItem: MapItemModel): Icon {
+    return new Icon({
+      iconSize: [25, 41],
+      iconAnchor: [13, 41],
+      iconUrl: 'assets/leaflet/marker-icon.png',
+      iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
+      shadowUrl: 'assets/leaflet/marker-shadow.png',
+    });
   }
 }

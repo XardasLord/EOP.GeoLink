@@ -59,25 +59,25 @@ declare module 'esri-leaflet-vector' {
     | 'ArcGIS:ModernAntique'
     | 'ArcGIS:ModernAntique:Base';
 
-  // interface BasemapLayerOptions extends L.TileLayerOptions {
-  //   apiKey?: string;
-  //   token?: string;
-  // }
+  interface BasemapLayerOptions extends L.TileLayerOptions {
+    apiKey?: string;
+    token?: string;
+  }
 
-  // class VectorBasemapLayer extends L.TileLayer {
-  //   constructor(key: VectorBasemaps, options?: BasemapLayerOptions);
-  // }
+  class VectorBasemapLayer extends L.TileLayer {
+    constructor(key: VectorBasemaps, options?: BasemapLayerOptions);
+  }
 
-  // export function vectorBasemapLayer(key: VectorBasemaps, options: BasemapLayerOptions): VectorBasemapLayer;
+  export function vectorBasemapLayer(key: VectorBasemaps, options: BasemapLayerOptions): VectorBasemapLayer;
 
-  // interface VectorTileLayerOptions extends L.LayerOptions {
-  //   apiKey?: string;
-  //   token?: string;
-  //   portalUrl?: string;
-  // }
+  interface VectorTileLayerOptions extends L.LayerOptions {
+    apiKey?: string;
+    token?: string;
+    portalUrl?: string;
+  }
 
-  // export function vectorTileLayer(key: string, options: VectorTileLayerOptions): any;
-  // export const VectorTileLayer: any;
-  // export function maplibreGLJSLayer(options: any): any;
-  // export const MaplibreGLJSLayer: any;
+  export function vectorTileLayer(key: string, options: VectorTileLayerOptions): any;
+  export const VectorTileLayer: any;
+  export function maplibreGLJSLayer(options: any): any;
+  export const MaplibreGLJSLayer: any;
 }
