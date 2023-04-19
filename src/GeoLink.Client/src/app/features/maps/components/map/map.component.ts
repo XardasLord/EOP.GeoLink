@@ -5,7 +5,7 @@ import * as L from 'leaflet';
 import * as esri from 'esri-leaflet';
 import 'esri-leaflet-renderers';
 import { vectorTileLayer } from 'esri-leaflet-vector';
-import { Control, Icon, latLng, Layer, LeafletMouseEvent, Map, MapOptions, Marker, tileLayer } from 'leaflet';
+import { Control, Icon, LatLng, latLng, Layer, LeafletMouseEvent, Map, MapOptions, Marker, tileLayer } from 'leaflet';
 import { Subscription, interval, tap } from 'rxjs';
 
 import { LoadMapAreaFilters, LoadMapObjectFilters } from '../../states/maps.action';
@@ -16,6 +16,8 @@ import { MapItemModel } from '../../models/map-item.model';
 import { DynamicComponentCreatorHelper } from '../../helpers/dynamic-component-creator.helper';
 import Scale = Control.Scale;
 import { MapsService } from '../../services/maps.service';
+import * as Supercluster from 'supercluster';
+import { ClusterFeature } from 'supercluster';
 
 @Component({
   selector: 'app-map',
@@ -31,6 +33,8 @@ export class MapComponent implements OnInit, OnDestroy {
   mapObjects!: Marker<MapItemModel>[];
 
   markerClusterGroup!: L.MarkerClusterGroup;
+
+  markers: L.Marker<MapItemModel>[] = [];
 
   private refreshObjectsSubscription: Subscription = new Subscription();
   private getObjectsSubscriptions: Subscription = new Subscription();
@@ -54,22 +58,6 @@ export class MapComponent implements OnInit, OnDestroy {
       maxClusterRadius: 200,
       zoomToBoundsOnClick: false,
       removeOutsideVisibleBounds: true,
-      // chunkedLoading: true,
-      // chunkProgress: function (processed, total, elapsed) {
-      //   const progress = document.getElementById('progress')!;
-      //   const progressBar = document.getElementById('progress-bar')!;
-      //
-      //   if (elapsed > 1000) {
-      //     // if it takes more than a second to load, display the progress bar:
-      //     progress.style.display = 'block';
-      //     progressBar.style.width = Math.round((processed / total) * 100) + '%';
-      //   }
-      //
-      //   if (processed === total) {
-      //     // all markers processed - hide the progress bar:
-      //     progress.style.display = 'none';
-      //   }
-      // },
     };
 
     this.mapScale = new Scale({
@@ -79,13 +67,12 @@ export class MapComponent implements OnInit, OnDestroy {
       maxWidth: 200,
     });
 
-    this.getObjectsSubscriptions.add(this.loadMapObjects());
     this.store.dispatch(new LoadMapObjectFilters());
     this.store.dispatch(new LoadMapAreaFilters());
 
-    this.refreshObjectsSubscription = interval(environment.refreshMapObjectsIntervalInMilliseconds).subscribe(_ =>
-      this.getObjectsSubscriptions.add(this.loadMapObjects())
-    );
+    // this.refreshObjectsSubscription = interval(environment.refreshMapObjectsIntervalInMilliseconds).subscribe(_ =>
+    //   this.getObjectsSubscriptions.add(this.loadMapObjects())
+    // );
   }
 
   ngOnDestroy(): void {
@@ -136,6 +123,8 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   onMapReady(map: Map) {
+    this.getObjectsSubscriptions.add(this.loadMapObjects(map));
+
     if (environment.arcGisMapBackground.length > 0) {
       this.loadLayersFromArcGIS(map);
     } else if (environment.wmsMapBackground.length > 0) {
@@ -156,20 +145,117 @@ export class MapComponent implements OnInit, OnDestroy {
         },
       })
       .addTo(map);
+
+    // map.on('moveend', ($event: any) => {
+    //   const superClusterComponents = this.markers.map(mapItemModel => {
+    //     const lng = mapItemModel.getLatLng().lng;
+    //     const lat = mapItemModel.getLatLng().lat;
+    //
+    //     return {
+    //       type: 'Feature',
+    //       geometry: {
+    //         type: 'Point',
+    //         coordinates: [lng, lat],
+    //       },
+    //       properties: {},
+    //     };
+    //   });
+    //
+    //   const superClusterMarkers = L.geoJson(undefined, {
+    //     pointToLayer: (feature, latlng) => this.createMapItemIconForSupercluster(feature, latlng),
+    //   }).addTo(map);
+    //
+    //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //   // @ts-ignore
+    //   const Supercluster = require('supercluster');
+    //
+    //   const index = new Supercluster.default({
+    //     radius: 200,
+    //     extent: 256,
+    //     maxZoom: 17,
+    //   }).load(superClusterComponents);
+    //
+    //   const bounds = map.getBounds();
+    //   const bbox: GeoJSON.BBox = [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()];
+    //   const zoom = map.getZoom();
+    //
+    //   const clusters = index.getClusters(bbox, zoom);
+    //   console.log(clusters);
+    //
+    //   superClusterMarkers.clearLayers();
+    //   superClusterMarkers.addData(clusters as any);
+    // });
   }
 
-  private loadMapObjects() {
+  private loadMapObjects(map: Map) {
     this.mapsService.getAllObjects().subscribe(mapItems => {
-      const markers: L.Marker<MapItemModel>[] = [];
+      // const markers: L.Marker<MapItemModel>[] = [];
 
       mapItems.forEach((mapItem: MapItemModel) => {
         const marker = this.createMapItemMarker(mapItem);
 
-        markers.push(marker);
+        this.markers.push(marker);
       });
 
-      this.mapObjects = [...markers];
-      this.changeDetectorRef.detectChanges();
+      // this.mapObjects = [...markers];
+      // this.changeDetectorRef.detectChanges();
+
+      // SUPERCLUSTER part
+      const superClusterComponents = this.markers.map(mapItemModel => {
+        const lng = mapItemModel.getLatLng().lng;
+        const lat = mapItemModel.getLatLng().lat;
+
+        return {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [lng, lat],
+          },
+          properties: {
+            deviceData: (mapItemModel as any).deviceData,
+          },
+        };
+      });
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const Supercluster = require('supercluster');
+      const superclusterRef = new Supercluster.default({
+        radius: 200,
+        extent: 256,
+        maxZoom: 17,
+      });
+      const superClusterMarkers = L.geoJson(undefined, {
+        pointToLayer: (feature, latlng) => this.createMapItemIconForSupercluster(feature, latlng, superclusterRef),
+      }).addTo(map);
+
+      superclusterRef.load(superClusterComponents);
+
+      const bounds = map.getBounds();
+      const bbox: GeoJSON.BBox = [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()];
+      const zoom = map.getZoom();
+
+      const clusters: ClusterFeature<any>[] = superclusterRef.getClusters(bbox, zoom);
+      console.log(clusters);
+      clusters.forEach((clus: any) => {
+        clus.on('click', () => {
+          const childMarkers = superclusterRef.getLeaves(clus.id, 1000000);
+          const mapItem = MarkerClusterHelper.getMapItemModels(childMarkers);
+          const popupComponent = this.dynamicComponentCreator.createClusterGroupPopup(mapItem);
+
+          clus.unbindPopup();
+          clus
+            .bindPopup(popupComponent, {
+              className: 'cluster-group-context-menu',
+            })
+            .openPopup();
+        });
+      });
+
+      superClusterMarkers.clearLayers();
+      superClusterMarkers.addData(clusters as any);
+
+      // this.changeDetectorRef.detectChanges();
     });
   }
 
@@ -233,10 +319,10 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private createMapItemMarker(mapItem: MapItemModel): Marker<MapItemModel> {
-    const mapItemIcon = this.createMapItemIcon(mapItem);
+    const mapItemIcon = this.createMapItemIcon();
 
     const marker = new Marker<MapItemModel>([mapItem.coordinates.latitude, mapItem.coordinates.longitude], {
-      icon: mapItemIcon,
+      icon: mapItemIcon.getIcon(),
     });
 
     // TODO: We can extend the Marker object to have 'deviceData' property attached without this workaround needed - (marker as any)
@@ -270,13 +356,42 @@ export class MapComponent implements OnInit, OnDestroy {
     return marker;
   }
 
-  private createMapItemIcon(mapItem: MapItemModel): Icon {
-    return new Icon({
-      iconSize: [25, 41],
-      iconAnchor: [13, 41],
+  public createMapItemIconForSupercluster(feature: any, latlng: LatLng, supercluster: Supercluster): Marker {
+    const count = feature.properties.point_count;
+    const childMarkers = (supercluster as Supercluster).getLeaves(feature.properties.cluster_id, 100000000);
+
+    const cssName = MarkerClusterHelper.getCssClassForSuperclusterGroup(childMarkers);
+
+    const icon = new L.DivIcon({
+      html: '<div><span>' + count + '</span></div>',
+      className: cssName,
+      iconSize: new L.Point(40, 40),
       iconUrl: 'assets/leaflet/marker-icon.png',
       iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
       shadowUrl: 'assets/leaflet/marker-shadow.png',
     });
+
+    return new L.Marker(latlng, { icon });
+  }
+
+  public createMapItemIcon(): Marker {
+    const icon = new L.DivIcon({
+      html: '<div><span>3</span></div>',
+      className: 'marker-cluster-base marker-cluster-good-100',
+      iconSize: new L.Point(40, 40),
+      iconUrl: 'assets/leaflet/marker-icon.png',
+      iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
+      shadowUrl: 'assets/leaflet/marker-shadow.png',
+    });
+
+    return new L.Marker(new LatLng(0, 0), { icon });
+
+    // return new Icon({
+    //   iconSize: [25, 41],
+    //   iconAnchor: [13, 41],
+    //   iconUrl: 'assets/leaflet/marker-icon.png',
+    //   iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
+    //   shadowUrl: 'assets/leaflet/marker-shadow.png',
+    // });
   }
 }

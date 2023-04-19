@@ -33,6 +33,7 @@
     "@ngxs/store": "^3.8.0",
     "@types/esri-leaflet": "^2.1.9",
     "@types/leaflet.markercluster": "^1.5.1",
+    "@types/supercluster": "^7.1.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "esri-leaflet": "^3.0.10",
@@ -46,6 +47,7 @@
     "oidc-client": "^1.11.5",
     "prettier-eslint": "^15.0.1",
     "rxjs": "~7.8.0",
+    "supercluster": "^7.1.5",
     "tslib": "^2.5.0",
     "zone.js": "~0.13.0"
   },
