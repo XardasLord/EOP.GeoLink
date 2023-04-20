@@ -18,6 +18,7 @@ import Scale = Control.Scale;
 import { MapsService } from '../../services/maps.service';
 import * as Supercluster from 'supercluster';
 import { ClusterFeature } from 'supercluster';
+import * as GeoJSON from 'geojson';
 
 @Component({
   selector: 'app-map',
@@ -35,6 +36,7 @@ export class MapComponent implements OnInit, OnDestroy {
   markerClusterGroup!: L.MarkerClusterGroup;
 
   markers: L.Marker<MapItemModel>[] = [];
+  superclusterIndex!: Supercluster;
 
   private refreshObjectsSubscription: Subscription = new Subscription();
   private getObjectsSubscriptions: Subscription = new Subscription();
@@ -212,6 +214,7 @@ export class MapComponent implements OnInit, OnDestroy {
             coordinates: [lng, lat],
           },
           properties: {
+            cluster: false,
             deviceData: (mapItemModel as any).deviceData,
           },
         };
@@ -220,40 +223,74 @@ export class MapComponent implements OnInit, OnDestroy {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const Supercluster = require('supercluster');
-      const superclusterRef = new Supercluster.default({
+      this.superclusterIndex = new Supercluster.default({
         radius: 200,
         extent: 256,
         maxZoom: 17,
       });
       const superClusterMarkers = L.geoJson(undefined, {
-        pointToLayer: (feature, latlng) => this.createMapItemIconForSupercluster(feature, latlng, superclusterRef),
+        pointToLayer: (feature, latlng) =>
+          this.createMapItemIconForSupercluster(feature, latlng, this.superclusterIndex),
       }).addTo(map);
 
-      superclusterRef.load(superClusterComponents);
+      this.superclusterIndex.load(superClusterComponents as any); // TODO: Typings
 
       const bounds = map.getBounds();
       const bbox: GeoJSON.BBox = [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()];
       const zoom = map.getZoom();
+      console.log('initial bbox: ', bbox);
 
-      const clusters: ClusterFeature<any>[] = superclusterRef.getClusters(bbox, zoom);
+      const clusters: ClusterFeature<any>[] = this.superclusterIndex.getClusters(bbox, zoom);
       console.log(clusters);
-      clusters.forEach((clus: any) => {
-        clus.on('click', () => {
-          const childMarkers = superclusterRef.getLeaves(clus.id, 1000000);
-          const mapItem = MarkerClusterHelper.getMapItemModels(childMarkers);
-          const popupComponent = this.dynamicComponentCreator.createClusterGroupPopup(mapItem);
-
-          clus.unbindPopup();
-          clus
-            .bindPopup(popupComponent, {
-              className: 'cluster-group-context-menu',
-            })
-            .openPopup();
-        });
-      });
+      // clusters.forEach((clus: any) => {
+      //   clus.on('click', () => {
+      //     const childMarkers = superclusterRef.getLeaves(clus.id, 1000000);
+      //     const mapItem = MarkerClusterHelper.getMapItemModels(childMarkers);
+      //     const popupComponent = this.dynamicComponentCreator.createClusterGroupPopup(mapItem);
+      //
+      //     clus.unbindPopup();
+      //     clus
+      //       .bindPopup(popupComponent, {
+      //         className: 'cluster-group-context-menu',
+      //       })
+      //       .openPopup();
+      //   });
+      // });
 
       superClusterMarkers.clearLayers();
       superClusterMarkers.addData(clusters as any);
+
+      // TODO: Event kliknięcia na mapę
+      map.on('click', (event: LeafletMouseEvent) => {
+        // const latlng = event.latlng;
+        // const point = [latlng.lng, latlng.lat];
+        //
+        // const zoom = map.getZoom();
+        // const bbox = this.superclusterIndex.getClusterExpansionZoom(0, zoom);
+        // const clusters = this.superclusterIndex.getClusters(bbox, zoom, point);
+
+        const currentZoomLevel = map.getZoom();
+        const bbox: GeoJSON.BBox = [
+          event.latlng.lng - 1 / 2,
+          event.latlng.lat - 1 / 2,
+          event.latlng.lng + 1 / 2,
+          event.latlng.lat + 1 / 2,
+        ];
+
+        const clusters: ClusterFeature<any>[] = this.superclusterIndex.getClusters(bbox, currentZoomLevel);
+        console.warn(clusters);
+        // jeśli w pobliżu kliknięcia jest tylko jeden punkt, to wykonaj jakąś akcję
+        if (clusters.length === 1 && !clusters[0].properties.cluster) {
+          // tutaj można zrobić coś z pojedynczym punktem
+          console.log('Clicked on single point:', clusters[0]);
+        } else if (clusters[0]) {
+          // w przeciwnym razie wykonaj jakąś inną akcję, np. powiększ mapę do klikniętego klastra
+          console.log('Clicked on cluster:', clusters[0]);
+          map.flyTo(event.latlng, currentZoomLevel + 1, {});
+        } else {
+          console.warn('Clicked not on a cluster or marker, just a map');
+        }
+      });
 
       // this.changeDetectorRef.detectChanges();
     });
