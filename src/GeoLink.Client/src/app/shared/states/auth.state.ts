@@ -11,7 +11,15 @@ import { AuthStateModel } from './auth.state.model';
 import { User } from 'oidc-client';
 import { UserAuthHelper } from '../auth/helpers/user-auth.helper';
 import { AuthRoles } from '../auth/models/auth.roles';
-import { GetSystemGroups, GetSystemPermissions, GetSystemRegions, GetSystemRoles } from './dictionary.action';
+import {
+  GetMapDeviceTypes,
+  GetMapObjectStatusTypes,
+  GetMapObjectTypes,
+  GetSystemGroups,
+  GetSystemPermissions,
+  GetSystemRegions,
+  GetSystemRoles,
+} from './dictionary.action';
 
 export const AUTH_STATE_TOKEN = new StateToken<AuthStateModel>('auth');
 
@@ -42,6 +50,10 @@ export class AuthState implements NgxsOnInit {
       ctx.dispatch(new GetSystemRegions());
       ctx.dispatch(new GetSystemPermissions());
     }
+
+    ctx.dispatch(new GetMapObjectTypes());
+    ctx.dispatch(new GetMapDeviceTypes());
+    ctx.dispatch(new GetMapObjectStatusTypes());
   }
 
   @Selector([AUTH_STATE_TOKEN])

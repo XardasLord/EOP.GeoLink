@@ -15,3 +15,15 @@ export class GetSystemRegions {
 export class GetSystemPermissions {
   static readonly type = `${prefix} ${GetSystemPermissions.name}`;
 }
+
+export class GetMapObjectTypes {
+  static readonly type = `${prefix} ${GetMapObjectTypes.name}`;
+}
+
+export class GetMapDeviceTypes {
+  static readonly type = `${prefix} ${GetMapDeviceTypes.name}`;
+}
+
+export class GetMapObjectStatusTypes {
+  static readonly type = `${prefix} ${GetMapObjectStatusTypes.name}`;
+}
