@@ -1,18 +1,30 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { LeafletControlLayersConfig } from '@asymmetrik/ngx-leaflet';
 import * as L from 'leaflet';
 import * as esri from 'esri-leaflet';
 import 'esri-leaflet-renderers';
 import { vectorTileLayer } from 'esri-leaflet-vector';
-import { Control, Icon, latLng, Layer, LeafletMouseEvent, Map, MapOptions, Marker, tileLayer } from 'leaflet';
+import {
+  Control,
+  DivIcon,
+  Icon,
+  latLng,
+  LatLngBounds,
+  Layer,
+  LeafletMouseEvent,
+  Map,
+  MapOptions,
+  Marker,
+  tileLayer,
+} from 'leaflet';
 import { Subscription, interval, tap } from 'rxjs';
 
 import { LoadMapAreaFilters, LoadMapObjectFilters } from '../../states/maps.action';
 import '../../../../../../node_modules/leaflet.browser.print/dist/leaflet.browser.print.min.js';
 import { environment } from '../../../../../environments/environment';
 import { MarkerClusterHelper } from '../../helpers/marker-cluster.helper';
-import { MapItemModel } from '../../models/map-item.model';
+import { MapClusterModel, MapItemModel, MapObjectModel } from '../../models/map-item.model';
 import { DynamicComponentCreatorHelper } from '../../helpers/dynamic-component-creator.helper';
 import Scale = Control.Scale;
 import { MapsService } from '../../services/maps.service';
@@ -23,14 +35,14 @@ import { MapsService } from '../../services/maps.service';
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit, OnDestroy {
+  map!: L.Map;
   mapOptions!: MapOptions;
   mapLayers!: Layer[];
   mapLayersControl!: LeafletControlLayersConfig;
-  markerClusterOptions!: L.MarkerClusterGroupOptions;
   mapScale!: Scale;
-  mapObjects!: Marker<MapItemModel>[];
 
-  markerClusterGroup!: L.MarkerClusterGroup;
+  private clusterMarkers: L.LayerGroup = L.layerGroup();
+  private objectMarkers: L.LayerGroup = L.layerGroup();
 
   private refreshObjectsSubscription: Subscription = new Subscription();
   private getObjectsSubscriptions: Subscription = new Subscription();
@@ -38,8 +50,7 @@ export class MapComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store,
     private dynamicComponentCreator: DynamicComponentCreatorHelper,
-    private mapsService: MapsService,
-    private changeDetectorRef: ChangeDetectorRef
+    private mapsService: MapsService
   ) {}
 
   ngOnInit() {
@@ -50,28 +61,6 @@ export class MapComponent implements OnInit, OnDestroy {
       preferCanvas: true,
     };
 
-    this.markerClusterOptions = {
-      maxClusterRadius: 200,
-      zoomToBoundsOnClick: false,
-      removeOutsideVisibleBounds: true,
-      // chunkedLoading: true,
-      // chunkProgress: function (processed, total, elapsed) {
-      //   const progress = document.getElementById('progress')!;
-      //   const progressBar = document.getElementById('progress-bar')!;
-      //
-      //   if (elapsed > 1000) {
-      //     // if it takes more than a second to load, display the progress bar:
-      //     progress.style.display = 'block';
-      //     progressBar.style.width = Math.round((processed / total) * 100) + '%';
-      //   }
-      //
-      //   if (processed === total) {
-      //     // all markers processed - hide the progress bar:
-      //     progress.style.display = 'none';
-      //   }
-      // },
-    };
-
     this.mapScale = new Scale({
       position: 'bottomleft',
       metric: true,
@@ -79,7 +68,6 @@ export class MapComponent implements OnInit, OnDestroy {
       maxWidth: 200,
     });
 
-    this.getObjectsSubscriptions.add(this.loadMapObjects());
     this.store.dispatch(new LoadMapObjectFilters());
     this.store.dispatch(new LoadMapAreaFilters());
 
@@ -93,49 +81,56 @@ export class MapComponent implements OnInit, OnDestroy {
     this.getObjectsSubscriptions.unsubscribe();
   }
 
-  onMarkerClusterReady(group: L.MarkerClusterGroup) {
-    this.markerClusterGroup = group;
-
-    (this.markerClusterGroup as any).options.iconCreateFunction = (cluster: L.MarkerCluster) => {
-      const childMarkers: Marker<MapItemModel>[] = cluster.getAllChildMarkers();
-
-      cluster.on('click', () => {
-        const mapItem = MarkerClusterHelper.getMapItemModels(childMarkers);
-        const popupComponent = this.dynamicComponentCreator.createClusterGroupPopup(mapItem);
-
-        cluster.unbindPopup();
-        cluster
-          .bindPopup(popupComponent, {
-            className: 'cluster-group-context-menu',
-          })
-          .openPopup();
-      });
-
-      cluster.on('contextmenu', () => {
-        const mapItem = MarkerClusterHelper.getMapItemModels(childMarkers);
-        const popupComponent = this.dynamicComponentCreator.createClusterGroupQuickReportsPopup(mapItem);
-
-        cluster.unbindPopup();
-        cluster
-          .bindPopup(popupComponent, {
-            className: 'cluster-group-quick-reports-context-menu',
-          })
-          .openPopup();
-      });
-
-      const cssName = MarkerClusterHelper.getCssClassForClusterGroup(childMarkers);
-
-      return new L.DivIcon({
-        html: '<div><span>' + childMarkers.length + '</span></div>',
-        className: cssName,
-        iconSize: new L.Point(40, 40),
-      });
-    };
-
-    this.markerClusterGroup.refreshClusters();
-  }
+  // onMarkerClusterReady(group: L.MarkerClusterGroup) {
+  //   this.markerClusterGroup = group;
+  //
+  //   (this.markerClusterGroup as any).options.iconCreateFunction = (cluster: L.MarkerCluster) => {
+  //     const childMarkers: Marker<MapItemModel>[] = cluster.getAllChildMarkers();
+  //
+  //     cluster.on('click', () => {
+  //       const mapItem = MarkerClusterHelper.getMapItemModels(childMarkers);
+  //       const popupComponent = this.dynamicComponentCreator.createClusterGroupPopup(mapItem);
+  //
+  //       cluster.unbindPopup();
+  //       cluster
+  //         .bindPopup(popupComponent, {
+  //           className: 'cluster-group-context-menu',
+  //         })
+  //         .openPopup();
+  //     });
+  //
+  //     cluster.on('contextmenu', () => {
+  //       const mapItem = MarkerClusterHelper.getMapItemModels(childMarkers);
+  //       const popupComponent = this.dynamicComponentCreator.createClusterGroupQuickReportsPopup(mapItem);
+  //
+  //       cluster.unbindPopup();
+  //       cluster
+  //         .bindPopup(popupComponent, {
+  //           className: 'cluster-group-quick-reports-context-menu',
+  //         })
+  //         .openPopup();
+  //     });
+  //
+  //     const cssName = MarkerClusterHelper.getCssClassForClusterGroup(childMarkers);
+  //
+  //     return new L.DivIcon({
+  //       html: '<div><span>' + childMarkers.length + '</span></div>',
+  //       className: cssName,
+  //       iconSize: new L.Point(40, 40),
+  //     });
+  //   };
+  //
+  //   this.markerClusterGroup.refreshClusters();
+  // }
 
   onMapReady(map: Map) {
+    this.map = map;
+
+    this.clusterMarkers.addTo(this.map);
+    this.objectMarkers.addTo(this.map);
+
+    this.getObjectsSubscriptions.add(this.loadMapObjects());
+
     if (environment.arcGisMapBackground.length > 0) {
       this.loadLayersFromArcGIS(map);
     } else if (environment.wmsMapBackground.length > 0) {
@@ -156,21 +151,38 @@ export class MapComponent implements OnInit, OnDestroy {
         },
       })
       .addTo(map);
+
+    this.map.on('zoomend', event => {
+      this.getObjectsSubscriptions.add(this.loadMapObjects());
+    });
   }
 
   private loadMapObjects() {
-    this.mapsService.getAllObjects().subscribe(mapItems => {
-      const markers: L.Marker<MapItemModel>[] = [];
+    this.clusterMarkers.clearLayers();
+    const bbox: LatLngBounds = this.map.getBounds();
 
-      mapItems.forEach((mapItem: MapItemModel) => {
-        const marker = this.createMapItemMarker(mapItem);
+    this.mapsService
+      .getClustersAndObjects(
+        bbox.getSouthWest().lng,
+        bbox.getSouthWest().lat,
+        bbox.getNorthEast().lng,
+        bbox.getNorthEast().lat
+      )
+      .subscribe(response => {
+        response.clusters.forEach(cluster => {
+          const markerCluster = this.createMapClusterMarker(cluster);
 
-        markers.push(marker);
+          this.clusterMarkers.addLayer(markerCluster);
+        });
+
+        response.objects?.forEach(object => {
+          const markerObject = this.createMapObjectMarker(object);
+
+          this.objectMarkers.addLayer(markerObject);
+        });
+
+        console.log(response);
       });
-
-      this.mapObjects = [...markers];
-      this.changeDetectorRef.detectChanges();
-    });
   }
 
   private loadLayersFromArcGIS(map: Map) {
@@ -232,33 +244,53 @@ export class MapComponent implements OnInit, OnDestroy {
     this.mapLayers = [this.mapLayersControl.baseLayers['WMS Map']];
   }
 
-  private createMapItemMarker(mapItem: MapItemModel): Marker<MapItemModel> {
-    const mapItemIcon = this.createMapItemIcon(mapItem);
+  private createMapClusterMarker(cluster: MapClusterModel): Marker<MapClusterModel> {
+    const clusterIcon = this.createMapClusterIcon(cluster);
 
-    const marker = new Marker<MapItemModel>([mapItem.coordinates.latitude, mapItem.coordinates.longitude], {
-      icon: mapItemIcon,
+    const marker = new Marker<MapClusterModel>([cluster.pointLat, cluster.pointLon], {
+      icon: clusterIcon,
     });
 
-    // TODO: We can extend the Marker object to have 'deviceData' property attached without this workaround needed - (marker as any)
-    (marker as any).deviceData = JSON.stringify(mapItem);
+    marker.on('click', ($event: LeafletMouseEvent) => {
+      const popupComponent = this.dynamicComponentCreator.createClusterGroupPopup(cluster.objectGroups);
+
+      marker.unbindPopup();
+      marker
+        .bindPopup(popupComponent, {
+          className: 'cluster-group-context-menu',
+        })
+        .openPopup();
+    });
+
+    // marker.on('mouseover', ($event: LeafletMouseEvent) => {
+    //   const tooltipComponent = this.dynamicComponentCreator.createMapItemTooltip(mapItem);
+    //   marker.unbindTooltip();
+    //   marker
+    //     .bindTooltip(tooltipComponent, {
+    //       className: 'map-item-tooltip',
+    //     })
+    //     .openTooltip();
+    // });
+
+    return marker;
+  }
+
+  private createMapObjectMarker(mapObject: MapObjectModel): Marker<MapObjectModel> {
+    const mapObjectIcon = this.createMapObjectIcon(mapObject);
+
+    const marker = new Marker<MapObjectModel>([mapObject.lat, mapObject.lon], {
+      icon: mapObjectIcon,
+    });
 
     // Different approach to attach component as a popup - https://stackoverflow.com/a/44686112/3921353
     marker.on('click', ($event: LeafletMouseEvent) => {
-      const popupComponent = this.dynamicComponentCreator.createMapItemPopup(mapItem);
+      const popupComponent = this.dynamicComponentCreator.createMapItemPopup(mapObject);
       marker.unbindPopup();
       marker.bindPopup(popupComponent, {}).openPopup();
-      // const htmlMarkerElement = marker.getElement();
-      // htmlMarkerElement?.parentElement?.appendChild(popupComponent);
-      //
-      // const markerPos = DomUtil.getPosition(htmlMarkerElement!);
-      // const markerClass = DomUtil.getClass(htmlMarkerElement!);
-      //
-      // DomUtil.setTransform(popupComponent, markerPos);
-      // DomUtil.setClass(popupComponent, markerClass);
     });
 
     marker.on('mouseover', ($event: LeafletMouseEvent) => {
-      const tooltipComponent = this.dynamicComponentCreator.createMapItemTooltip(mapItem);
+      const tooltipComponent = this.dynamicComponentCreator.createMapItemTooltip(mapObject);
       marker.unbindTooltip();
       marker
         .bindTooltip(tooltipComponent, {
@@ -270,7 +302,19 @@ export class MapComponent implements OnInit, OnDestroy {
     return marker;
   }
 
-  private createMapItemIcon(mapItem: MapItemModel): Icon {
+  private createMapClusterIcon(cluster: MapClusterModel): DivIcon {
+    console.log(cluster.objectGroups);
+
+    const cssName = MarkerClusterHelper.getCssClassForClusterGroup(cluster);
+
+    return new DivIcon({
+      html: '<div><span>' + cluster.objCount + '</span></div>',
+      className: cssName,
+      iconSize: new L.Point(40, 40),
+    });
+  }
+
+  private createMapObjectIcon(mapItem: MapObjectModel): Icon {
     return new Icon({
       iconSize: [25, 41],
       iconAnchor: [13, 41],

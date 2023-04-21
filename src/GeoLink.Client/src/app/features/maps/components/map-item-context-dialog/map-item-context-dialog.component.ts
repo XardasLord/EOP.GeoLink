@@ -1,5 +1,5 @@
 import { AfterContentChecked, ChangeDetectorRef, Component } from '@angular/core';
-import { DeviceItemModel, MapItemModel } from '../../models/map-item.model';
+import { DeviceItemModel, MapObjectModel } from '../../models/map-item.model';
 
 @Component({
   selector: 'app-map-item-context-dialog',
@@ -7,7 +7,7 @@ import { DeviceItemModel, MapItemModel } from '../../models/map-item.model';
   styleUrls: ['./map-item-context-dialog.component.scss'],
 })
 export class MapItemContextDialogComponent implements AfterContentChecked {
-  public mapItem!: MapItemModel;
+  public mapItem!: MapObjectModel;
   public showSubMenu = false;
   public topCssValue = '';
 

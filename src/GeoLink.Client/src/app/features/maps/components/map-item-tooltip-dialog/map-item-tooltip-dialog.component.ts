@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MapItemModel } from '../../models/map-item.model';
+import { MapItemModel, MapObjectModel } from '../../models/map-item.model';
 
 const ROUTER_SVG_ICON = `
 <svg width="64px" height="64px" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
@@ -15,7 +15,7 @@ const ROUTER_SVG_ICON = `
   styleUrls: ['./map-item-tooltip-dialog.component.scss'],
 })
 export class MapItemTooltipDialogComponent {
-  public mapItem!: MapItemModel;
+  public mapItem!: MapObjectModel;
 
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIconLiteral('router', sanitizer.bypassSecurityTrustHtml(ROUTER_SVG_ICON));

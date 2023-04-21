@@ -1,7 +1,7 @@
 <table>
   <tr class="header-summary-row">
-    <th>{{ mapItem.name }}</th>
-    <th colspan="2">{{ mapItem.id }}</th>
+    <th>{{ mapItem.idObj }}</th>
+    <th colspan="2">{{ mapItem.idObj }}</th>
   </tr>
   <tr class="header-summary-row">
     <th>Nazwa</th>
@@ -13,25 +13,25 @@
     <th>Link</th>
   </tr>
 
-  <ng-container *ngFor="let item of mapItem.groupItems; index as i; first as isFirst; last as isLast">
-    <td colspan="3" class="group-name">{{ item.name }}</td>
-    <ng-container *ngFor="let deviceItem of item.deviceItems">
-      <tr class="device-item-row">
-        <td>{{ deviceItem.name }}</td>
-        <td (click)="showStatusChart(deviceItem)">
-          <mat-icon
-            matTooltip="abc test 123"
-            [ngClass]="{
-              good: deviceItem.status === 2,
-              warning: deviceItem.status === 1,
-              bad: deviceItem.status === 0
-            }"
-            >circle</mat-icon
-          >
-        </td>
-        <td (click)="showDeviceSubMenu(deviceItem, $event)">>>></td>
-      </tr>
-    </ng-container>
+  <ng-container *ngFor="let item of mapItem.devices; index as i; first as isFirst; last as isLast">
+    <td colspan="3" class="group-name">{{ item.model }}</td>
+    <!--    <ng-container *ngFor="let deviceItem of item.deviceItems">-->
+    <!--      <tr class="device-item-row">-->
+    <!--        <td>{{ deviceItem.name }}</td>-->
+    <!--        <td (click)="showStatusChart(deviceItem)">-->
+    <!--          <mat-icon-->
+    <!--            matTooltip="abc test 123"-->
+    <!--            [ngClass]="{-->
+    <!--              good: deviceItem.status === 2,-->
+    <!--              warning: deviceItem.status === 1,-->
+    <!--              bad: deviceItem.status === 0-->
+    <!--            }"-->
+    <!--            >circle</mat-icon-->
+    <!--          >-->
+    <!--        </td>-->
+    <!--        <td (click)="showDeviceSubMenu(deviceItem, $event)">>>></td>-->
+    <!--      </tr>-->
+    <!--    </ng-container>-->
   </ng-container>
 </table>
 

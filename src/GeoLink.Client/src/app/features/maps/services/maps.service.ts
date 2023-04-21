@@ -1,16 +1,34 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { MapItemModel } from '../models/map-item.model';
+import { MapClusterObjectModel, MapItemModel } from '../models/map-item.model';
 import { MapObjectFiltersModel } from '../models/map-object-filter.model';
 import { MapAreaFiltersModel } from '../models/map-area-filters.model';
 import { DeviceStatusEnum } from '../models/device-status.enum';
 import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
+import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class MapsService extends RemoteServiceBase {
+  private apiUrl = environment.apiEndpoint;
+
   constructor(httpClient: HttpClient) {
     super(httpClient);
+  }
+
+  getClustersAndObjects(
+    lonMin: number, // SW
+    latMin: number, // SW
+    lonMax: number, // NE
+    latMax: number // NE
+  ): Observable<MapClusterObjectModel> {
+    const params = new HttpParams()
+      .set('lonMin', lonMin)
+      .set('latMin', latMin)
+      .set('lonMax', lonMax)
+      .set('latMax', latMax);
+
+    return this.httpClient.get<MapClusterObjectModel>(`${this.apiUrl}/map/getClustersAndObjects`, { params: params });
   }
 
   getAllObjects(): Observable<MapItemModel[]> {
