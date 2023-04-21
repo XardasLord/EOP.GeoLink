@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { MapClusterObjectModel, MapItemModel } from '../models/map-item.model';
+import { MapClusterObjectModel, MapItemModel, MapObjectModel } from '../models/map-item.model';
 import { MapObjectFiltersModel } from '../models/map-object-filter.model';
 import { MapAreaFiltersModel } from '../models/map-area-filters.model';
 import { DeviceStatusEnum } from '../models/device-status.enum';
@@ -20,15 +20,32 @@ export class MapsService extends RemoteServiceBase {
     lonMin: number, // SW
     latMin: number, // SW
     lonMax: number, // NE
-    latMax: number // NE
+    latMax: number, // NE
+    zoomLevel: number
   ): Observable<MapClusterObjectModel> {
+    const params = new HttpParams()
+      .set('lonMin', lonMin)
+      .set('latMin', latMin)
+      .set('lonMax', lonMax)
+      .set('latMax', latMax)
+      .set('zoomLevel', zoomLevel);
+
+    return this.httpClient.get<MapClusterObjectModel>(`${this.apiUrl}/map/getClustersAndObjects`, { params: params });
+  }
+
+  getObjects(
+    lonMin: number, // SW
+    latMin: number, // SW
+    lonMax: number, // NE
+    latMax: number // NE
+  ): Observable<MapObjectModel[]> {
     const params = new HttpParams()
       .set('lonMin', lonMin)
       .set('latMin', latMin)
       .set('lonMax', lonMax)
       .set('latMax', latMax);
 
-    return this.httpClient.get<MapClusterObjectModel>(`${this.apiUrl}/map/getClustersAndObjects`, { params: params });
+    return this.httpClient.get<MapObjectModel[]>(`${this.apiUrl}/map/getObjects`, { params: params });
   }
 
   getAllObjects(): Observable<MapItemModel[]> {

@@ -18,7 +18,7 @@ import {
   Marker,
   tileLayer,
 } from 'leaflet';
-import { Subscription, interval, tap } from 'rxjs';
+import { Subscription, interval, tap, switchMap, Observable } from 'rxjs';
 
 import { LoadMapAreaFilters, LoadMapObjectFilters } from '../../states/maps.action';
 import '../../../../../../node_modules/leaflet.browser.print/dist/leaflet.browser.print.min.js';
@@ -44,6 +44,8 @@ export class MapComponent implements OnInit, OnDestroy {
   private clusterMarkers: L.LayerGroup = L.layerGroup();
   private objectMarkers: L.LayerGroup = L.layerGroup();
 
+  private lastRequestForCluster$!: Observable<any>;
+
   private refreshObjectsSubscription: Subscription = new Subscription();
   private getObjectsSubscriptions: Subscription = new Subscription();
 
@@ -56,7 +58,7 @@ export class MapComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.mapOptions = {
       zoom: 7,
-      maxZoom: 14,
+      maxZoom: 18,
       center: latLng(52.22779941887071, 19.764404296875),
       preferCanvas: true,
     };
@@ -159,16 +161,25 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private loadMapObjects() {
     this.clusterMarkers.clearLayers();
-    const bbox: LatLngBounds = this.map.getBounds();
+    this.objectMarkers.clearLayers();
 
-    this.mapsService
-      .getClustersAndObjects(
+    const bbox: LatLngBounds = this.map.getBounds();
+    const mapZoom = this.map.getZoom();
+
+    if (mapZoom <= 17) {
+      const request$ = this.mapsService.getClustersAndObjects(
         bbox.getSouthWest().lng,
         bbox.getSouthWest().lat,
         bbox.getNorthEast().lng,
-        bbox.getNorthEast().lat
-      )
-      .subscribe(response => {
+        bbox.getNorthEast().lat,
+        mapZoom
+      );
+      this.lastRequestForCluster$ = request$;
+
+      this.lastRequestForCluster$.pipe(switchMap(() => request$)).subscribe(response => {
+        this.clusterMarkers.clearLayers();
+        this.objectMarkers.clearLayers();
+
         response.clusters.forEach(cluster => {
           const markerCluster = this.createMapClusterMarker(cluster);
 
@@ -180,9 +191,19 @@ export class MapComponent implements OnInit, OnDestroy {
 
           this.objectMarkers.addLayer(markerObject);
         });
-
-        console.log(response);
       });
+    } else {
+      // Zoom 18 (max)
+      this.mapsService
+        .getObjects(bbox.getSouthWest().lng, bbox.getSouthWest().lat, bbox.getNorthEast().lng, bbox.getNorthEast().lat)
+        .subscribe(objects => {
+          objects?.forEach(object => {
+            const markerObject = this.createMapObjectMarker(object);
+
+            this.objectMarkers.addLayer(markerObject);
+          });
+        });
+    }
   }
 
   private loadLayersFromArcGIS(map: Map) {
@@ -303,8 +324,6 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private createMapClusterIcon(cluster: MapClusterModel): DivIcon {
-    console.log(cluster.objectGroups);
-
     const cssName = MarkerClusterHelper.getCssClassForClusterGroup(cluster);
 
     return new DivIcon({
