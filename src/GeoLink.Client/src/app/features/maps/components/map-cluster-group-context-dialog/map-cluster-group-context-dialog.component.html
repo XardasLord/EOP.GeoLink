@@ -1,7 +1,7 @@
 <table>
   <tr class="header-summary-row">
     <th colspan="4">Grupa obiektów</th>
-    <th colspan="2">{{ mapItems.length }}</th>
+    <th colspan="2">{{ getAllObjectsInsideCluster() }}</th>
   </tr>
   <tr>
     <th>Typ obiektu</th>
@@ -9,29 +9,12 @@
     <th colspan="4">Status</th>
   </tr>
 
-  <!--  Should be dynamic -->
-  <tr class="group-row">
-    <td>GPZ</td>
-    <td>25</td>
-    <td><mat-icon class="good">circle</mat-icon>22</td>
-    <td><mat-icon class="warning">circle</mat-icon>2</td>
-    <td><mat-icon class="bad">circle</mat-icon>1</td>
-    <td>>>></td>
-  </tr>
-  <tr class="group-row">
-    <td>Stacja SN</td>
-    <td>375</td>
-    <td><mat-icon class="good">circle</mat-icon>175</td>
-    <td><mat-icon class="warning">circle</mat-icon>100</td>
-    <td><mat-icon class="bad">circle</mat-icon>100</td>
-    <td>>>></td>
-  </tr>
-  <tr class="group-row">
-    <td>Odłącznik SN</td>
-    <td>17</td>
-    <td><mat-icon class="good">circle</mat-icon>10</td>
-    <td><mat-icon class="warning">circle</mat-icon>5</td>
-    <td><mat-icon class="bad">circle</mat-icon>2</td>
+  <tr class="group-row" *ngFor="let group of mapItems">
+    <td>{{ getObjectType(group) }}</td>
+    <td>{{ group.objCount }}</td>
+    <td><mat-icon class="good">circle</mat-icon>{{ getSuccessStatusDevicesCount(group) }}</td>
+    <td><mat-icon class="warning">circle</mat-icon>{{ getWarningStatusDevicesCount(group) }}</td>
+    <td><mat-icon class="bad">circle</mat-icon>{{ getBadStatusDevicesCount(group) }}</td>
     <td>>>></td>
   </tr>
 

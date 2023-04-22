@@ -24,7 +24,7 @@ import { LoadMapAreaFilters, LoadMapObjectFilters } from '../../states/maps.acti
 import '../../../../../../node_modules/leaflet.browser.print/dist/leaflet.browser.print.min.js';
 import { environment } from '../../../../../environments/environment';
 import { MarkerClusterHelper } from '../../helpers/marker-cluster.helper';
-import { MapClusterModel, MapItemModel, MapObjectModel } from '../../models/map-item.model';
+import { MapClusterModel, MapObjectModel } from '../../models/map-item.model';
 import { DynamicComponentCreatorHelper } from '../../helpers/dynamic-component-creator.helper';
 import Scale = Control.Scale;
 import { MapsService } from '../../services/maps.service';
