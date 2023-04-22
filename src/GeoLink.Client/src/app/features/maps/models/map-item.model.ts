@@ -45,22 +45,3 @@ export interface DeviceModel {
   model: string;
   idStatus: number;
 }
-
-export interface MapItemModel {
-  id: number;
-  name: string;
-  status: DeviceStatusEnum;
-  coordinates: Coordinates;
-  groupItems: DeviceGroupModel[];
-}
-
-export interface DeviceGroupModel {
-  name: string;
-  deviceItems: DeviceItemModel[];
-}
-
-export interface DeviceItemModel {
-  name: string;
-  status: DeviceStatusEnum;
-  deviceItems: DeviceItemModel[];
-}

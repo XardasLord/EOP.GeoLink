@@ -1,5 +1,5 @@
 import { AfterContentChecked, ChangeDetectorRef, Component } from '@angular/core';
-import { MapItemModel } from '../../models/map-item.model';
+import { MapClusterModel } from '../../models/map-item.model';
 
 @Component({
   selector: 'app-map-cluster-group-report-context-dialog',
@@ -7,7 +7,7 @@ import { MapItemModel } from '../../models/map-item.model';
   styleUrls: ['./map-cluster-group-report-context-dialog.component.scss'],
 })
 export class MapClusterGroupReportContextDialogComponent implements AfterContentChecked {
-  public mapItems!: MapItemModel[];
+  public mapItems!: MapClusterModel;
 
   constructor(private changeDetectorRef: ChangeDetectorRef) {
     // https://indepth.dev/posts/1054/here-is-what-you-need-to-know-about-dynamic-components-in-angular#ngonchanges

@@ -1,5 +1,5 @@
 import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector } from '@angular/core';
-import { MapItemModel, MapObjectGroupModel, MapObjectModel } from '../models/map-item.model';
+import { MapClusterModel, MapObjectGroupModel, MapObjectModel } from '../models/map-item.model';
 import { MapItemContextDialogComponent } from '../components/map-item-context-dialog/map-item-context-dialog.component';
 import { MapItemTooltipDialogComponent } from '../components/map-item-tooltip-dialog/map-item-tooltip-dialog.component';
 import { MapClusterGroupContextDialogComponent } from '../components/map-cluster-group-context-dialog/map-cluster-group-context-dialog.component';
@@ -38,7 +38,7 @@ export class DynamicComponentCreatorHelper {
     return componentRef.location.nativeElement;
   }
 
-  public createClusterGroupQuickReportsPopup(items: MapItemModel[]) {
+  public createClusterGroupQuickReportsPopup(items: MapClusterModel) {
     const componentRef = this.resolver
       .resolveComponentFactory(MapClusterGroupReportContextDialogComponent)
       .create(this.injector);

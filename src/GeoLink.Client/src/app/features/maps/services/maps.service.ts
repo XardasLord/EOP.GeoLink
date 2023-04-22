@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { MapClusterObjectModel, MapItemModel, MapObjectModel } from '../models/map-item.model';
+import { MapClusterObjectModel, MapObjectModel } from '../models/map-item.model';
 import { MapObjectFiltersModel } from '../models/map-object-filter.model';
 import { MapAreaFiltersModel } from '../models/map-area-filters.model';
-import { DeviceStatusEnum } from '../models/device-status.enum';
 import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
 import { environment } from '../../../../environments/environment';
 
@@ -46,54 +45,6 @@ export class MapsService extends RemoteServiceBase {
       .set('latMax', latMax);
 
     return this.httpClient.get<MapObjectModel[]>(`${this.apiUrl}/map/getObjects`, { params: params });
-  }
-
-  getAllObjects(): Observable<MapItemModel[]> {
-    const mapItems: MapItemModel[] = [];
-
-    for (let i = 0; i < 1000; i++) {
-      mapItems.push({
-        id: i,
-        name: 'Router',
-        status: this.randomEnum(DeviceStatusEnum),
-        coordinates: {
-          longitude: this.generatePolishLon(),
-          latitude: this.generatePolishLat(),
-        },
-        groupItems: [
-          {
-            name: 'TELCO',
-            deviceItems: [
-              { name: 'Szafa', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
-              { name: 'Router', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
-              { name: 'Switch', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
-              { name: 'Modem Tetra', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
-              { name: 'Modem GSM', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
-            ],
-          },
-          {
-            name: 'POMIARY',
-            deviceItems: [
-              { name: 'Koncentrator', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
-              { name: 'Licznik', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
-            ],
-          },
-          {
-            name: 'SCADA',
-            deviceItems: [{ name: 'Sterownik', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] }],
-          },
-          {
-            name: 'SIŁOWNIA',
-            deviceItems: [
-              { name: 'Zasilanie', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
-              { name: 'UPS', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
-            ],
-          },
-        ],
-      });
-    }
-
-    return of(mapItems);
   }
 
   getObjectFilters(): Observable<MapObjectFiltersModel[]> {

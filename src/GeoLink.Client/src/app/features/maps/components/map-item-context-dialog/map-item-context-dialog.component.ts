@@ -1,5 +1,5 @@
 import { AfterContentChecked, ChangeDetectorRef, Component } from '@angular/core';
-import { DeviceItemModel, MapObjectModel } from '../../models/map-item.model';
+import { MapObjectModel } from '../../models/map-item.model';
 
 @Component({
   selector: 'app-map-item-context-dialog',
@@ -18,34 +18,35 @@ export class MapItemContextDialogComponent implements AfterContentChecked {
 
   ngAfterContentChecked(): void {
     console.warn('call from ngAfterContentChecked');
+    console.log(this.mapItem);
   }
 
-  showStatusChart(deviceItem: DeviceItemModel) {
-    console.log('Showing device item chart...', deviceItem);
-  }
-
-  showDeviceSubMenu(deviceItem: DeviceItemModel, e: MouseEvent) {
-    console.log('Showing device item submenu...', deviceItem);
-    this.showSubMenu = true;
-
-    const popupHeight = 400,
-      popupWidth = 250;
-
-    let xPosition, yPosition;
-    if (e.clientX + popupWidth > window.innerWidth) {
-      xPosition = e.pageX - popupWidth;
-    } else {
-      xPosition = e.pageX;
-    }
-
-    if (e.clientY + popupHeight > window.innerHeight) {
-      yPosition = e.pageY - popupHeight;
-    } else {
-      yPosition = e.pageY;
-    }
-
-    this.topCssValue = yPosition + 'px';
-
-    this.changeDetectorRef.detectChanges();
-  }
+  // showStatusChart(deviceItem: DeviceItemModel) {
+  //   console.log('Showing device item chart...', deviceItem);
+  // }
+  //
+  // showDeviceSubMenu(deviceItem: DeviceItemModel, e: MouseEvent) {
+  //   console.log('Showing device item submenu...', deviceItem);
+  //   this.showSubMenu = true;
+  //
+  //   const popupHeight = 400,
+  //     popupWidth = 250;
+  //
+  //   let xPosition, yPosition;
+  //   if (e.clientX + popupWidth > window.innerWidth) {
+  //     xPosition = e.pageX - popupWidth;
+  //   } else {
+  //     xPosition = e.pageX;
+  //   }
+  //
+  //   if (e.clientY + popupHeight > window.innerHeight) {
+  //     yPosition = e.pageY - popupHeight;
+  //   } else {
+  //     yPosition = e.pageY;
+  //   }
+  //
+  //   this.topCssValue = yPosition + 'px';
+  //
+  //   this.changeDetectorRef.detectChanges();
+  // }
 }

@@ -1,5 +1,5 @@
 import { Marker } from 'leaflet';
-import { MapClusterModel, MapItemModel, MapObjectGroupModel } from '../models/map-item.model';
+import { MapClusterModel } from '../models/map-item.model';
 
 export class MarkerClusterHelper {
   public static getCssClassForClusterGroup(mapClusterModel: MapClusterModel): string {
@@ -92,11 +92,5 @@ export class MarkerClusterHelper {
 
       return sum;
     }
-  }
-
-  public static getMapItemModel(marker: Marker<MapItemModel>): MapItemModel {
-    const mapItem: MapItemModel = JSON.parse((marker as any).deviceData);
-
-    return mapItem;
   }
 }
