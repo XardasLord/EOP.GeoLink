@@ -24,6 +24,8 @@ export interface MapObjectModel {
   objType: number;
   idStatus: number;
   region: number;
+  name: string;
+  nrExpl: string;
   devices: DeviceModel[];
 }
 

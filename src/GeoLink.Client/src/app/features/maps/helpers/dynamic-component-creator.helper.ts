@@ -15,7 +15,7 @@ export class DynamicComponentCreatorHelper {
     // Another solution - https://stackoverflow.com/a/57773246/3921353
     const componentRef = this.resolver.resolveComponentFactory(MapItemContextDialogComponent).create(this.injector);
 
-    componentRef.instance.mapItem = item;
+    componentRef.instance.mapObject = item;
     componentRef.changeDetectorRef.detectChanges();
     return componentRef.location.nativeElement;
   }

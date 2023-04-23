@@ -1,9 +1,8 @@
 import { AfterContentChecked, ChangeDetectorRef, Component } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { MapObjectGroupModel } from '../../models/map-item.model';
-import { DictionaryState } from '../../../../shared/states/dictionary.state';
-import { EnumDescriptionModel } from '../../../../shared/models/enum-description.model';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
+import { MapObjectHelper } from '../../helpers/map-object-helper';
 
 @Component({
   selector: 'app-map-cluster-group-context-dialog',
@@ -12,9 +11,12 @@ import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-st
 })
 export class MapClusterGroupContextDialogComponent implements AfterContentChecked {
   public mapItems!: MapObjectGroupModel[];
-  public objectTypes: EnumDescriptionModel[] = this.store.selectSnapshot(DictionaryState.getMapObjectTypes);
 
-  constructor(private store: Store, private changeDetectorRef: ChangeDetectorRef) {
+  constructor(
+    private store: Store,
+    private changeDetectorRef: ChangeDetectorRef,
+    private mapObjectHelper: MapObjectHelper
+  ) {
     // https://indepth.dev/posts/1054/here-is-what-you-need-to-know-about-dynamic-components-in-angular#ngonchanges
     console.warn('call from constructor');
   }
@@ -32,7 +34,7 @@ export class MapClusterGroupContextDialogComponent implements AfterContentChecke
   }
 
   getObjectType(group: MapObjectGroupModel): string {
-    return this.objectTypes.filter(x => x.id === group.objType)[0]?.name;
+    return this.mapObjectHelper.getObjectTypeForMapClusterGroup(group);
   }
 
   getSuccessStatusDevicesCount(group: MapObjectGroupModel): number {

@@ -9,6 +9,7 @@ import { MapItemTooltipDialogComponent } from './components/map-item-tooltip-dia
 import { MapItemContextDialogComponent } from './components/map-item-context-dialog/map-item-context-dialog.component';
 import { MapClusterGroupContextDialogComponent } from './components/map-cluster-group-context-dialog/map-cluster-group-context-dialog.component';
 import { MapClusterGroupReportContextDialogComponent } from './components/map-cluster-group-report-context-dialog/map-cluster-group-report-context-dialog.component';
+import { MapObjectHelper } from './helpers/map-object-helper';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,6 @@ import { MapClusterGroupReportContextDialogComponent } from './components/map-cl
     MapClusterGroupReportContextDialogComponent,
   ],
   imports: [SharedModule, MapRoutingModule, LeafletModule, LeafletMarkerClusterModule],
-  providers: [],
+  providers: [MapObjectHelper],
 })
 export class MapsModule {}
