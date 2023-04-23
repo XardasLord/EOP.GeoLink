@@ -18,7 +18,7 @@ import {
   Marker,
   tileLayer,
 } from 'leaflet';
-import { Subscription, interval, tap, switchMap, Observable } from 'rxjs';
+import { Subscription, interval, tap, switchMap, Observable, debounceTime, pipe } from 'rxjs';
 
 import { LoadMapAreaFilters, LoadMapObjectFilters } from '../../states/maps.action';
 import '../../../../../../node_modules/leaflet.browser.print/dist/leaflet.browser.print.min.js';
@@ -44,7 +44,8 @@ export class MapComponent implements OnInit, OnDestroy {
   private clusterMarkers: L.LayerGroup = L.layerGroup();
   private objectMarkers: L.LayerGroup = L.layerGroup();
 
-  private lastRequestForCluster$!: Observable<any>;
+  private lastRequestForCluster$!: any;
+  private lastRequestForObjects$!: any;
 
   private refreshObjectsSubscription: Subscription = new Subscription();
   private getObjectsSubscriptions: Subscription = new Subscription();
@@ -155,18 +156,19 @@ export class MapComponent implements OnInit, OnDestroy {
       .addTo(map);
 
     this.map.on('zoomend', event => {
-      this.getObjectsSubscriptions.add(this.loadMapObjects());
+      this.loadMapObjects();
     });
   }
 
   private loadMapObjects() {
-    this.clusterMarkers.clearLayers();
-    this.objectMarkers.clearLayers();
-
     const bbox: LatLngBounds = this.map.getBounds();
     const mapZoom = this.map.getZoom();
 
     if (mapZoom <= 17) {
+      if (this.lastRequestForCluster$) {
+        this.lastRequestForCluster$.unsubscribe();
+      }
+
       const request$ = this.mapsService.getClustersAndObjects(
         bbox.getSouthWest().lng,
         bbox.getSouthWest().lat,
@@ -174,35 +176,55 @@ export class MapComponent implements OnInit, OnDestroy {
         bbox.getNorthEast().lat,
         mapZoom
       );
-      this.lastRequestForCluster$ = request$;
 
-      this.lastRequestForCluster$.pipe(switchMap(() => request$)).subscribe(response => {
-        this.clusterMarkers.clearLayers();
-        this.objectMarkers.clearLayers();
+      this.lastRequestForCluster$ = request$
+        .pipe(
+          switchMap(() => request$),
+          debounceTime(200)
+        )
+        .subscribe(response => {
+          this.clusterMarkers.clearLayers();
+          this.objectMarkers.clearLayers();
 
-        response.clusters.forEach(cluster => {
-          const markerCluster = this.createMapClusterMarker(cluster);
+          response.clusters.forEach(cluster => {
+            const markerCluster = this.createMapClusterMarker(cluster);
 
-          this.clusterMarkers.addLayer(markerCluster);
-        });
+            this.clusterMarkers.addLayer(markerCluster);
+          });
 
-        response.objects?.forEach(object => {
-          const markerObject = this.createMapObjectMarker(object);
-
-          this.objectMarkers.addLayer(markerObject);
-        });
-      });
-    } else {
-      // Zoom 18 (max)
-      this.mapsService
-        .getObjects(bbox.getSouthWest().lng, bbox.getSouthWest().lat, bbox.getNorthEast().lng, bbox.getNorthEast().lat)
-        .subscribe(objects => {
-          objects?.forEach(object => {
+          response.objects?.forEach(object => {
             const markerObject = this.createMapObjectMarker(object);
 
             this.objectMarkers.addLayer(markerObject);
           });
         });
+
+      this.getObjectsSubscriptions.add(this.lastRequestForCluster$);
+    } else {
+      // Zoom 18 (max)
+      if (this.lastRequestForCluster$) {
+        this.lastRequestForCluster$.unsubscribe();
+      }
+
+      const request$ = this.mapsService.getObjects(
+        bbox.getSouthWest().lng,
+        bbox.getSouthWest().lat,
+        bbox.getNorthEast().lng,
+        bbox.getNorthEast().lat
+      );
+
+      this.lastRequestForObjects$ = request$.pipe(switchMap(() => request$)).subscribe(objects => {
+        this.clusterMarkers.clearLayers();
+        this.objectMarkers.clearLayers();
+
+        objects?.forEach(object => {
+          const markerObject = this.createMapObjectMarker(object);
+
+          this.objectMarkers.addLayer(markerObject);
+        });
+      });
+
+      this.getObjectsSubscriptions.add(this.lastRequestForObjects$);
     }
   }
 
