@@ -1,64 +1,51 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { MapItemModel } from '../models/map-item.model';
+import { MapClusterObjectModel, MapObjectModel } from '../models/map-item.model';
 import { MapObjectFiltersModel } from '../models/map-object-filter.model';
 import { MapAreaFiltersModel } from '../models/map-area-filters.model';
-import { DeviceStatusEnum } from '../models/device-status.enum';
 import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
+import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class MapsService extends RemoteServiceBase {
+  private apiUrl = environment.apiEndpoint;
+
   constructor(httpClient: HttpClient) {
     super(httpClient);
   }
 
-  getAllObjects(): Observable<MapItemModel[]> {
-    const mapItems: MapItemModel[] = [];
+  getClustersAndObjects(
+    lonMin: number, // SW
+    latMin: number, // SW
+    lonMax: number, // NE
+    latMax: number, // NE
+    zoomLevel: number
+  ): Observable<MapClusterObjectModel> {
+    const params = new HttpParams()
+      .set('lonMin', lonMin)
+      .set('latMin', latMin)
+      .set('lonMax', lonMax)
+      .set('latMax', latMax)
+      .set('zoomLevel', zoomLevel)
+      .set('clustObjThreshold', 0);
 
-    for (let i = 0; i < 1000; i++) {
-      mapItems.push({
-        id: i,
-        name: 'Router',
-        status: this.randomEnum(DeviceStatusEnum),
-        coordinates: {
-          longitude: this.generatePolishLon(),
-          latitude: this.generatePolishLat(),
-        },
-        groupItems: [
-          {
-            name: 'TELCO',
-            deviceItems: [
-              { name: 'Szafa', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
-              { name: 'Router', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
-              { name: 'Switch', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
-              { name: 'Modem Tetra', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
-              { name: 'Modem GSM', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
-            ],
-          },
-          {
-            name: 'POMIARY',
-            deviceItems: [
-              { name: 'Koncentrator', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
-              { name: 'Licznik', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
-            ],
-          },
-          {
-            name: 'SCADA',
-            deviceItems: [{ name: 'Sterownik', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] }],
-          },
-          {
-            name: 'SIŁOWNIA',
-            deviceItems: [
-              { name: 'Zasilanie', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
-              { name: 'UPS', status: this.randomEnum(DeviceStatusEnum), deviceItems: [] },
-            ],
-          },
-        ],
-      });
-    }
+    return this.httpClient.get<MapClusterObjectModel>(`${this.apiUrl}/map/getClustersAndObjects`, { params: params });
+  }
 
-    return of(mapItems);
+  getObjects(
+    lonMin: number, // SW
+    latMin: number, // SW
+    lonMax: number, // NE
+    latMax: number // NE
+  ): Observable<MapObjectModel[]> {
+    const params = new HttpParams()
+      .set('lonMin', lonMin)
+      .set('latMin', latMin)
+      .set('lonMax', lonMax)
+      .set('latMax', latMax);
+
+    return this.httpClient.get<MapObjectModel[]>(`${this.apiUrl}/map/getObjects`, { params: params });
   }
 
   getObjectFilters(): Observable<MapObjectFiltersModel[]> {

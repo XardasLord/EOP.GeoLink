@@ -1,21 +1,15 @@
 import { Marker } from 'leaflet';
-import { MapItemModel } from '../models/map-item.model';
+import { MapClusterModel } from '../models/map-item.model';
 
 export class MarkerClusterHelper {
-  public static getCssClassForClusterGroup(childMarkers: Marker<MapItemModel>[]): string {
+  public static getCssClassForClusterGroup(mapClusterModel: MapClusterModel): string {
     let css = '';
 
-    const goodStatuses = childMarkers.filter(
-      x => (JSON.parse((x as any).deviceData) as MapItemModel).status === 2
-    ).length;
+    const goodStatuses = sumStCountForStatus(mapClusterModel, 1);
 
-    const warningStatuses = childMarkers.filter(
-      x => (JSON.parse((x as any).deviceData) as MapItemModel).status === 1
-    ).length;
+    const warningStatuses = sumStCountForStatus(mapClusterModel, 2);
 
-    const badStatuses = childMarkers.filter(
-      x => (JSON.parse((x as any).deviceData) as MapItemModel).status === 0
-    ).length;
+    const badStatuses = sumStCountForStatus(mapClusterModel, 3);
 
     const cssPrefix = 'marker-cluster-base marker-cluster';
 
@@ -85,20 +79,18 @@ export class MarkerClusterHelper {
     }
 
     return css;
-  }
 
-  public static getMapItemModels(markers: Marker<MapItemModel>[]): MapItemModel[] {
-    const mapItems: MapItemModel[] = [];
+    function sumStCountForStatus(cluster: MapClusterModel, statusToCount: number): number {
+      let sum = 0;
+      for (const objectGroup of cluster.objectGroups) {
+        for (const devStat of objectGroup.devStat) {
+          if (devStat.idStat === statusToCount) {
+            sum += devStat.stCount;
+          }
+        }
+      }
 
-    markers.forEach(marker => {
-      mapItems.push(JSON.parse((marker as any).deviceData));
-    });
-
-    return mapItems;
-  }
-  public static getMapItemModel(marker: Marker<MapItemModel>): MapItemModel {
-    const mapItem: MapItemModel = JSON.parse((marker as any).deviceData);
-
-    return mapItem;
+      return sum;
+    }
   }
 }

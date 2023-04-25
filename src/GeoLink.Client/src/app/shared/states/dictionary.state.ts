@@ -14,7 +14,15 @@ import { AuthRoles } from '../auth/models/auth.roles';
 import { DictionaryStateModel } from './dictionary.state.model';
 import { EnumDescriptionModel } from '../models/enum-description.model';
 import { DictionaryService } from '../services/dictionary.service';
-import { GetSystemGroups, GetSystemPermissions, GetSystemRegions, GetSystemRoles } from './dictionary.action';
+import {
+  GetMapDeviceTypes,
+  GetMapObjectStatusTypes,
+  GetMapObjectTypes,
+  GetSystemGroups,
+  GetSystemPermissions,
+  GetSystemRegions,
+  GetSystemRoles,
+} from './dictionary.action';
 import { EnumDescriptionWithScopesModel } from '../models/enum-description-with-scopes.model';
 import { EnumDescriptionRegionModel } from '../models/enum-description-region.model';
 
@@ -27,6 +35,9 @@ export const DICTIONARY_STATE_TOKEN = new StateToken<DictionaryStateModel>('dict
     systemRoles: [],
     systemRegions: [],
     systemPermissions: [],
+    mapObjectTypes: [],
+    mapDeviceTypes: [],
+    mapObjectStatusTypes: [],
   },
 })
 @Injectable()
@@ -51,6 +62,21 @@ export class DictionaryState {
   @Selector([DICTIONARY_STATE_TOKEN])
   static getSystemPermissions(state: DictionaryStateModel): EnumDescriptionModel[] {
     return state.systemPermissions;
+  }
+
+  @Selector([DICTIONARY_STATE_TOKEN])
+  static getMapObjectTypes(state: DictionaryStateModel): EnumDescriptionModel[] {
+    return state.mapObjectTypes;
+  }
+
+  @Selector([DICTIONARY_STATE_TOKEN])
+  static getMapDeviceTypes(state: DictionaryStateModel): EnumDescriptionModel[] {
+    return state.mapDeviceTypes;
+  }
+
+  @Selector([DICTIONARY_STATE_TOKEN])
+  static getMapObjectStatusTypes(state: DictionaryStateModel): EnumDescriptionModel[] {
+    return state.mapObjectStatusTypes;
   }
 
   @Action(GetSystemGroups)
@@ -101,6 +127,48 @@ export class DictionaryState {
       tap(response => {
         ctx.patchState({
           systemPermissions: response,
+        });
+      }),
+      catchError(error => {
+        return throwError(error);
+      })
+    );
+  }
+
+  @Action(GetMapObjectTypes)
+  getMapObjectTypes(ctx: StateContext<DictionaryStateModel>, _: GetMapObjectTypes) {
+    return this.dictionaryService.getMapObjectTypes().pipe(
+      tap(response => {
+        ctx.patchState({
+          mapObjectTypes: response,
+        });
+      }),
+      catchError(error => {
+        return throwError(error);
+      })
+    );
+  }
+
+  @Action(GetMapDeviceTypes)
+  getMapDeviceTypes(ctx: StateContext<DictionaryStateModel>, _: GetMapDeviceTypes) {
+    return this.dictionaryService.getMapDeviceTypes().pipe(
+      tap(response => {
+        ctx.patchState({
+          mapDeviceTypes: response,
+        });
+      }),
+      catchError(error => {
+        return throwError(error);
+      })
+    );
+  }
+
+  @Action(GetMapObjectStatusTypes)
+  getMapObjectStatusTypes(ctx: StateContext<DictionaryStateModel>, _: GetMapObjectStatusTypes) {
+    return this.dictionaryService.getMapObjectStatusTypes().pipe(
+      tap(response => {
+        ctx.patchState({
+          mapObjectStatusTypes: response,
         });
       }),
       catchError(error => {
