@@ -1,6 +1,3 @@
-import { Coordinates } from './coordinates.model';
-import { DeviceStatusEnum } from './device-status.enum';
-
 export interface MapClusterObjectModel {
   clusters: MapClusterModel[];
   objects: MapObjectModel[];
