@@ -40,7 +40,5 @@ export interface DeviceStatisticsModel {
 export interface DeviceModel {
   idDev: number;
   devType: number;
-  producer: string;
-  model: string;
   idStatus: number;
 }
