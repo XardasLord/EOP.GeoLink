@@ -38,12 +38,12 @@ export class DynamicComponentCreatorHelper {
     return componentRef.location.nativeElement;
   }
 
-  public createClusterGroupQuickReportsPopup(items: MapClusterModel) {
+  public createClusterGroupQuickReportsPopup(cluster: MapClusterModel) {
     const componentRef = this.resolver
       .resolveComponentFactory(MapClusterGroupReportContextDialogComponent)
       .create(this.injector);
 
-    componentRef.instance.mapItems = items;
+    componentRef.instance.cluster = cluster;
     componentRef.changeDetectorRef.detectChanges();
     return componentRef.location.nativeElement;
   }

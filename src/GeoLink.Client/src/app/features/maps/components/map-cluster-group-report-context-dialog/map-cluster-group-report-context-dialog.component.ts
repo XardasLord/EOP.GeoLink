@@ -7,7 +7,7 @@ import { MapClusterModel } from '../../models/map-item.model';
   styleUrls: ['./map-cluster-group-report-context-dialog.component.scss'],
 })
 export class MapClusterGroupReportContextDialogComponent implements AfterContentChecked {
-  public mapItems!: MapClusterModel;
+  public cluster!: MapClusterModel;
 
   constructor(private changeDetectorRef: ChangeDetectorRef) {
     // https://indepth.dev/posts/1054/here-is-what-you-need-to-know-about-dynamic-components-in-angular#ngonchanges

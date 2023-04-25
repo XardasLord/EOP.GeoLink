@@ -16,6 +16,7 @@ import {
   Map,
   MapOptions,
   Marker,
+  Polygon,
   tileLayer,
 } from 'leaflet';
 import { Subscription, interval, tap, switchMap, Observable, debounceTime, pipe } from 'rxjs';
@@ -294,32 +295,44 @@ export class MapComponent implements OnInit, OnDestroy {
   private createMapClusterMarker(cluster: MapClusterModel): Marker<MapClusterModel> {
     const clusterIcon = this.createMapClusterIcon(cluster);
 
-    const marker = new Marker<MapClusterModel>([cluster.pointLat, cluster.pointLon], {
+    const clusterMarker = new Marker<MapClusterModel>([cluster.pointLat, cluster.pointLon], {
       icon: clusterIcon,
     });
 
-    marker.on('click', ($event: LeafletMouseEvent) => {
+    clusterMarker.on('click', () => {
       const popupComponent = this.dynamicComponentCreator.createClusterGroupPopup(cluster.objectGroups);
 
-      marker.unbindPopup();
-      marker
+      clusterMarker.unbindPopup();
+      clusterMarker
         .bindPopup(popupComponent, {
           className: 'cluster-group-context-menu',
         })
         .openPopup();
     });
 
-    // marker.on('mouseover', ($event: LeafletMouseEvent) => {
-    //   const tooltipComponent = this.dynamicComponentCreator.createMapItemTooltip(mapItem);
-    //   marker.unbindTooltip();
-    //   marker
-    //     .bindTooltip(tooltipComponent, {
-    //       className: 'map-item-tooltip',
-    //     })
-    //     .openTooltip();
-    // });
+    clusterMarker.on('contextmenu', () => {
+      const popupComponent = this.dynamicComponentCreator.createClusterGroupQuickReportsPopup(cluster);
 
-    return marker;
+      clusterMarker.unbindPopup();
+      clusterMarker
+        .bindPopup(popupComponent, {
+          className: 'cluster-group-quick-reports-context-menu',
+        })
+        .openPopup();
+    });
+
+    let clusterBboxPolygon: Polygon;
+
+    clusterMarker.on('mouseover', () => {
+      clusterBboxPolygon = this.getClusterAreaPolygon(cluster.bBoxGeom);
+      clusterBboxPolygon.addTo(this.map);
+    });
+
+    clusterMarker.on('mouseout', () => {
+      this.map.removeLayer(clusterBboxPolygon);
+    });
+
+    return clusterMarker;
   }
 
   private createMapObjectMarker(mapObject: MapObjectModel): Marker<MapObjectModel> {
@@ -367,5 +380,16 @@ export class MapComponent implements OnInit, OnDestroy {
       iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
       shadowUrl: 'assets/leaflet/marker-shadow.png',
     });
+  }
+
+  private getClusterAreaPolygon(bbox: number[]): Polygon {
+    const bboxCoords = [
+      [L.latLng(bbox[1], bbox[0]), L.latLng(bbox[1], bbox[2])],
+      [L.latLng(bbox[1], bbox[2]), L.latLng(bbox[3], bbox[2])],
+      [L.latLng(bbox[3], bbox[2]), L.latLng(bbox[3], bbox[0])],
+      [L.latLng(bbox[3], bbox[0]), L.latLng(bbox[1], bbox[0])],
+    ];
+
+    return L.polygon(bboxCoords, { color: 'blue', fillOpacity: 0.2 });
   }
 }
