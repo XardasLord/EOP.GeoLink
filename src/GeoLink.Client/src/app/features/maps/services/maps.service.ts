@@ -28,7 +28,7 @@ export class MapsService extends RemoteServiceBase {
       .set('lonMax', lonMax)
       .set('latMax', latMax)
       .set('zoomLevel', zoomLevel)
-      .set('clustObjThreshold', 0);
+      .set('clustObjThreshold', 2);
 
     return this.httpClient.get<MapClusterObjectModel>(`${this.apiUrl}/map/getClustersAndObjects`, { params: params });
   }
