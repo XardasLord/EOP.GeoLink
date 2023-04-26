@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { MapClusterObjectModel, MapObjectModel } from '../models/map-item.model';
+import {
+  DeviceStatisticsModel,
+  MapClusterGroupDetails,
+  MapClusterObjectModel,
+  MapObjectModel,
+} from '../models/map-item.model';
 import { MapObjectFiltersModel } from '../models/map-object-filter.model';
 import { MapAreaFiltersModel } from '../models/map-area-filters.model';
 import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
 import { environment } from '../../../../environments/environment';
+import { MapObjectTypeEnum } from '../../../shared/models/map-object-type.enum';
 
 @Injectable()
 export class MapsService extends RemoteServiceBase {
@@ -46,6 +52,21 @@ export class MapsService extends RemoteServiceBase {
       .set('latMax', latMax);
 
     return this.httpClient.get<MapObjectModel[]>(`${this.apiUrl}/map/getObjects`, { params: params });
+  }
+
+  getDevices(deviceIds: number[]): Observable<DeviceStatisticsModel[]> {
+    let params = new HttpParams();
+    for (let i = 0; i < deviceIds.length; i++) {
+      params = params.append('deviceId', deviceIds[i].toString());
+    }
+
+    return this.httpClient.get<DeviceStatisticsModel[]>(`${this.apiUrl}/map/getDevices`, { params: params });
+  }
+
+  getClusterInfo(clustId: number, lvl: number, objType: MapObjectTypeEnum): Observable<MapClusterGroupDetails[]> {
+    const params = new HttpParams().set('clustId', clustId).set('lvl', lvl).set('objType', +objType);
+
+    return this.httpClient.get<MapClusterGroupDetails[]>(`${this.apiUrl}/map/getClusterInfo`, { params: params });
   }
 
   getObjectFilters(): Observable<MapObjectFiltersModel[]> {

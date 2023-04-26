@@ -55,7 +55,7 @@ export class AuthState implements NgxsOnInit {
     ctx.dispatch(new GetMapObjectTypes());
     ctx.dispatch(new GetMapDeviceTypes());
     ctx.dispatch(new GetMapObjectStatusTypes());
-    // ctx.dispatch(new GetDeviceGroupsRelation());
+    ctx.dispatch(new GetDeviceGroupsRelation());
   }
 
   @Selector([AUTH_STATE_TOKEN])
