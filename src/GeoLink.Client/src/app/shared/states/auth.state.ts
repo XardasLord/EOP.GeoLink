@@ -12,6 +12,7 @@ import { User } from 'oidc-client';
 import { UserAuthHelper } from '../auth/helpers/user-auth.helper';
 import { AuthRoles } from '../auth/models/auth.roles';
 import {
+  GetDeviceGroupsRelation,
   GetMapDeviceTypes,
   GetMapObjectStatusTypes,
   GetMapObjectTypes,
@@ -54,6 +55,7 @@ export class AuthState implements NgxsOnInit {
     ctx.dispatch(new GetMapObjectTypes());
     ctx.dispatch(new GetMapDeviceTypes());
     ctx.dispatch(new GetMapObjectStatusTypes());
+    // ctx.dispatch(new GetDeviceGroupsRelation());
   }
 
   @Selector([AUTH_STATE_TOKEN])

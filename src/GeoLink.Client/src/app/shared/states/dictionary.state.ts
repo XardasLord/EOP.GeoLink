@@ -15,6 +15,7 @@ import { DictionaryStateModel } from './dictionary.state.model';
 import { EnumDescriptionModel } from '../models/enum-description.model';
 import { DictionaryService } from '../services/dictionary.service';
 import {
+  GetDeviceGroupsRelation,
   GetMapDeviceTypes,
   GetMapObjectStatusTypes,
   GetMapObjectTypes,
@@ -25,6 +26,7 @@ import {
 } from './dictionary.action';
 import { EnumDescriptionWithScopesModel } from '../models/enum-description-with-scopes.model';
 import { EnumDescriptionRegionModel } from '../models/enum-description-region.model';
+import { DeviceGroupRelationModel } from '../models/device-group-relation.model';
 
 export const DICTIONARY_STATE_TOKEN = new StateToken<DictionaryStateModel>('dictionary');
 
@@ -38,6 +40,7 @@ export const DICTIONARY_STATE_TOKEN = new StateToken<DictionaryStateModel>('dict
     mapObjectTypes: [],
     mapDeviceTypes: [],
     mapObjectStatusTypes: [],
+    deviceGroupsRelation: [],
   },
 })
 @Injectable()
@@ -77,6 +80,11 @@ export class DictionaryState {
   @Selector([DICTIONARY_STATE_TOKEN])
   static getMapObjectStatusTypes(state: DictionaryStateModel): EnumDescriptionModel[] {
     return state.mapObjectStatusTypes;
+  }
+
+  @Selector([DICTIONARY_STATE_TOKEN])
+  static getDeviceGroupsRelation(state: DictionaryStateModel): DeviceGroupRelationModel[] {
+    return state.deviceGroupsRelation;
   }
 
   @Action(GetSystemGroups)
@@ -169,6 +177,20 @@ export class DictionaryState {
       tap(response => {
         ctx.patchState({
           mapObjectStatusTypes: response,
+        });
+      }),
+      catchError(error => {
+        return throwError(error);
+      })
+    );
+  }
+
+  @Action(GetDeviceGroupsRelation)
+  getDeviceGroupsRelation(ctx: StateContext<DictionaryStateModel>, _: GetDeviceGroupsRelation) {
+    return this.dictionaryService.getDeviceGroupsRelation().pipe(
+      tap(response => {
+        ctx.patchState({
+          deviceGroupsRelation: response,
         });
       }),
       catchError(error => {

@@ -6,6 +6,7 @@ import { RemoteServiceBase } from './remote-service.base';
 import { EnumDescriptionModel } from '../models/enum-description.model';
 import { EnumDescriptionWithScopesModel } from '../models/enum-description-with-scopes.model';
 import { EnumDescriptionRegionModel } from '../models/enum-description-region.model';
+import { DeviceGroupRelationModel } from '../models/device-group-relation.model';
 
 @Injectable()
 export class DictionaryService extends RemoteServiceBase {
@@ -41,5 +42,9 @@ export class DictionaryService extends RemoteServiceBase {
 
   getMapObjectStatusTypes(): Observable<EnumDescriptionModel[]> {
     return this.httpClient.get<EnumDescriptionModel[]>(`${this.apiUrl}/map/getStatusTypes`);
+  }
+
+  getDeviceGroupsRelation(): Observable<DeviceGroupRelationModel[]> {
+    return this.httpClient.get<DeviceGroupRelationModel[]>(`${this.apiUrl}/map/getDeviceGroups`);
   }
 }

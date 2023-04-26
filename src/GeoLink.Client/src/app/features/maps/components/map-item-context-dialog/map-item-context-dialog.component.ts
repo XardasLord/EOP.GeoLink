@@ -1,6 +1,8 @@
 import { AfterContentChecked, ChangeDetectorRef, Component } from '@angular/core';
+import { Store } from '@ngxs/store';
 import { MapObjectModel } from '../../models/map-item.model';
 import { MapObjectHelper } from '../../helpers/map-object-helper';
+import { DictionaryState } from '../../../../shared/states/dictionary.state';
 
 @Component({
   selector: 'app-map-item-context-dialog',
@@ -12,7 +14,13 @@ export class MapItemContextDialogComponent implements AfterContentChecked {
   public showSubMenu = false;
   public topCssValue = '';
 
-  constructor(private changeDetectorRef: ChangeDetectorRef, private mapObjectHelper: MapObjectHelper) {
+  private deviceGroupsRelation = this.store.selectSnapshot(DictionaryState.getDeviceGroupsRelation);
+
+  constructor(
+    private store: Store,
+    private changeDetectorRef: ChangeDetectorRef,
+    private mapObjectHelper: MapObjectHelper
+  ) {
     // https://indepth.dev/posts/1054/here-is-what-you-need-to-know-about-dynamic-components-in-angular#ngonchanges
     console.warn('call from constructor');
   }
