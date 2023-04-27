@@ -2,7 +2,6 @@ import { AfterContentChecked, ChangeDetectorRef, Component } from '@angular/core
 import { Store } from '@ngxs/store';
 import { DeviceModel, MapObjectModel } from '../../models/map-item.model';
 import { MapObjectHelper } from '../../helpers/map-object-helper';
-import { DictionaryState } from '../../../../shared/states/dictionary.state';
 import { MapDeviceTypeEnum } from '../../../../shared/models/map-device-type.enum';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
 
@@ -17,10 +16,6 @@ export class MapItemContextDialogComponent implements AfterContentChecked {
   public deviceStatus = MapObjectStatusTypeEnum;
   public showSubMenu = false;
   public topCssValue = '';
-
-  protected readonly MapDeviceTypeEnum = MapDeviceTypeEnum;
-
-  private deviceGroupsRelation = this.store.selectSnapshot(DictionaryState.getDeviceGroupsRelation);
 
   constructor(
     private store: Store,
@@ -46,21 +41,7 @@ export class MapItemContextDialogComponent implements AfterContentChecked {
   }
 
   private groupDeviceTypes(): Record<string, DeviceModel[]> {
-    type DeviceGroupMapping = Record<string, DeviceModel[]>;
-    const mapping: DeviceGroupMapping = {};
-
-    this.mapObject.devices.forEach(device => {
-      const matchingRelation = this.deviceGroupsRelation.find(relation => relation.devType === device.devType);
-      if (matchingRelation) {
-        const { devGroup } = matchingRelation;
-        if (!mapping[devGroup]) {
-          mapping[devGroup] = [];
-        }
-        mapping[devGroup].push(device);
-      }
-    });
-
-    return mapping;
+    return this.mapObjectHelper.getDeviceTypeGroup(this.mapObject.devices);
   }
 
   showStatusChart(deviceModel: DeviceModel) {
