@@ -1,8 +1,10 @@
 import { AfterContentChecked, ChangeDetectorRef, Component } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { MapObjectModel } from '../../models/map-item.model';
+import { DeviceModel, MapObjectModel } from '../../models/map-item.model';
 import { MapObjectHelper } from '../../helpers/map-object-helper';
 import { DictionaryState } from '../../../../shared/states/dictionary.state';
+import { MapDeviceTypeEnum } from '../../../../shared/models/map-device-type.enum';
+import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
 
 @Component({
   selector: 'app-map-item-context-dialog',
@@ -11,8 +13,12 @@ import { DictionaryState } from '../../../../shared/states/dictionary.state';
 })
 export class MapItemContextDialogComponent implements AfterContentChecked {
   public mapObject!: MapObjectModel;
+  public groupedDeviceTypes!: Record<string, DeviceModel[]>;
+  public deviceStatus = MapObjectStatusTypeEnum;
   public showSubMenu = false;
   public topCssValue = '';
+
+  protected readonly MapDeviceTypeEnum = MapDeviceTypeEnum;
 
   private deviceGroupsRelation = this.store.selectSnapshot(DictionaryState.getDeviceGroupsRelation);
 
@@ -28,38 +34,61 @@ export class MapItemContextDialogComponent implements AfterContentChecked {
   ngAfterContentChecked(): void {
     console.warn('call from ngAfterContentChecked');
     console.log(this.mapObject);
+    this.groupedDeviceTypes = this.groupDeviceTypes();
   }
 
   getObjectType(): string {
     return this.mapObjectHelper.getObjectTypeForMapObject(this.mapObject);
   }
 
-  // showStatusChart(deviceItem: DeviceItemModel) {
-  //   console.log('Showing device item chart...', deviceItem);
-  // }
-  //
-  // showDeviceSubMenu(deviceItem: DeviceItemModel, e: MouseEvent) {
-  //   console.log('Showing device item submenu...', deviceItem);
-  //   this.showSubMenu = true;
-  //
-  //   const popupHeight = 400,
-  //     popupWidth = 250;
-  //
-  //   let xPosition, yPosition;
-  //   if (e.clientX + popupWidth > window.innerWidth) {
-  //     xPosition = e.pageX - popupWidth;
-  //   } else {
-  //     xPosition = e.pageX;
-  //   }
-  //
-  //   if (e.clientY + popupHeight > window.innerHeight) {
-  //     yPosition = e.pageY - popupHeight;
-  //   } else {
-  //     yPosition = e.pageY;
-  //   }
-  //
-  //   this.topCssValue = yPosition + 'px';
-  //
-  //   this.changeDetectorRef.detectChanges();
-  // }
+  getDeviceType(deviceType: MapDeviceTypeEnum): string {
+    return this.mapObjectHelper.getDeviceTypeForMapObject(deviceType);
+  }
+
+  private groupDeviceTypes(): Record<string, DeviceModel[]> {
+    type DeviceGroupMapping = Record<string, DeviceModel[]>;
+    const mapping: DeviceGroupMapping = {};
+
+    this.mapObject.devices.forEach(device => {
+      const matchingRelation = this.deviceGroupsRelation.find(relation => relation.devType === device.devType);
+      if (matchingRelation) {
+        const { devGroup } = matchingRelation;
+        if (!mapping[devGroup]) {
+          mapping[devGroup] = [];
+        }
+        mapping[devGroup].push(device);
+      }
+    });
+
+    return mapping;
+  }
+
+  showStatusChart(deviceModel: DeviceModel) {
+    console.log('Showing device item chart...', deviceModel);
+  }
+
+  showDeviceSubMenu(deviceModel: DeviceModel, e: MouseEvent) {
+    //   console.log('Showing device item submenu...', deviceItem);
+    //   this.showSubMenu = true;
+    //
+    //   const popupHeight = 400,
+    //     popupWidth = 250;
+    //
+    //   let xPosition, yPosition;
+    //   if (e.clientX + popupWidth > window.innerWidth) {
+    //     xPosition = e.pageX - popupWidth;
+    //   } else {
+    //     xPosition = e.pageX;
+    //   }
+    //
+    //   if (e.clientY + popupHeight > window.innerHeight) {
+    //     yPosition = e.pageY - popupHeight;
+    //   } else {
+    //     yPosition = e.pageY;
+    //   }
+    //
+    //   this.topCssValue = yPosition + 'px';
+    //
+    //   this.changeDetectorRef.detectChanges();
+  }
 }

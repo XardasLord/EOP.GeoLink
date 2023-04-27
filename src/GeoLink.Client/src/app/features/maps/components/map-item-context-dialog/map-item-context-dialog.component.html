@@ -13,25 +13,25 @@
     <th>Link</th>
   </tr>
 
-  <ng-container *ngFor="let item of mapObject.devices; index as i; first as isFirst; last as isLast">
-    <td colspan="3" class="group-name">{{ item.idDev }}</td>
-    <!--    <ng-container *ngFor="let deviceItem of item.deviceItems">-->
-    <!--      <tr class="device-item-row">-->
-    <!--        <td>{{ deviceItem.name }}</td>-->
-    <!--        <td (click)="showStatusChart(deviceItem)">-->
-    <!--          <mat-icon-->
-    <!--            matTooltip="abc test 123"-->
-    <!--            [ngClass]="{-->
-    <!--              good: deviceItem.status === 2,-->
-    <!--              warning: deviceItem.status === 1,-->
-    <!--              bad: deviceItem.status === 0-->
-    <!--            }"-->
-    <!--            >circle</mat-icon-->
-    <!--          >-->
-    <!--        </td>-->
-    <!--        <td (click)="showDeviceSubMenu(deviceItem, $event)">>>></td>-->
-    <!--      </tr>-->
-    <!--    </ng-container>-->
+  <ng-container *ngFor="let deviceModelType of groupedDeviceTypes | keyvalue">
+    <td colspan="3" class="group-name">{{ deviceModelType.key }}</td>
+    <ng-container *ngFor="let deviceModel of deviceModelType.value">
+      <tr class="device-item-row">
+        <td>{{ getDeviceType(+deviceModel.devType) }}</td>
+        <td (click)="showStatusChart(deviceModel)">
+          <mat-icon
+            matTooltip="abc test 123"
+            [ngClass]="{
+              good: deviceModel?.idStatus === deviceStatus.OK,
+              warning: deviceModel?.idStatus === deviceStatus.Warning,
+              bad: deviceModel?.idStatus === deviceStatus.Error
+            }"
+            >circle</mat-icon
+          >
+        </td>
+        <td (click)="showDeviceSubMenu(deviceModel, $event)">>>></td>
+      </tr>
+    </ng-container>
   </ng-container>
 </table>
 
