@@ -1,4 +1,4 @@
-import { AfterContentChecked, ChangeDetectorRef, Component } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { DeviceModel, MapObjectModel } from '../../models/map-item.model';
 import { MapObjectHelper } from '../../helpers/map-object-helper';
@@ -16,6 +16,8 @@ export class MapItemContextDialogComponent implements AfterContentChecked {
   public deviceStatus = MapObjectStatusTypeEnum;
   public showSubMenu = false;
   public topCssValue = '';
+  public elementLeft = '';
+  public elementTop = '';
 
   constructor(
     private store: Store,
@@ -48,28 +50,23 @@ export class MapItemContextDialogComponent implements AfterContentChecked {
     console.log('Showing device item chart...', deviceModel);
   }
 
-  showDeviceSubMenu(deviceModel: DeviceModel, e: MouseEvent) {
-    //   console.log('Showing device item submenu...', deviceItem);
-    //   this.showSubMenu = true;
-    //
-    //   const popupHeight = 400,
-    //     popupWidth = 250;
-    //
-    //   let xPosition, yPosition;
-    //   if (e.clientX + popupWidth > window.innerWidth) {
-    //     xPosition = e.pageX - popupWidth;
-    //   } else {
-    //     xPosition = e.pageX;
-    //   }
-    //
-    //   if (e.clientY + popupHeight > window.innerHeight) {
-    //     yPosition = e.pageY - popupHeight;
-    //   } else {
-    //     yPosition = e.pageY;
-    //   }
-    //
-    //   this.topCssValue = yPosition + 'px';
-    //
-    //   this.changeDetectorRef.detectChanges();
+  @ViewChild('myTable') parentTable!: ElementRef;
+
+  showDeviceSubMenu(deviceModel: DeviceModel, event: MouseEvent) {
+    this.showSubMenu = true;
+    this.adjustDeviceSubMenuPosition(event);
+  }
+
+  private adjustDeviceSubMenuPosition(event: MouseEvent) {
+    const y = event.pageY;
+    const tableRect = this.parentTable.nativeElement.getBoundingClientRect();
+    const tableTop = tableRect.top + window.scrollY;
+    const windowHeight = window.innerHeight;
+    const maxY = windowHeight;
+    const top = y - tableTop > maxY ? maxY : y - tableTop;
+    this.elementLeft = `290px`;
+    this.elementTop = `${top}px`;
+
+    this.changeDetectorRef.detectChanges();
   }
 }
