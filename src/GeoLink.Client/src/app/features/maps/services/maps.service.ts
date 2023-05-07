@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import {
+  DeviceDetailsModel,
   DeviceStatisticsModel,
   MapClusterGroupDetails,
   MapClusterObjectModel,
@@ -54,13 +55,13 @@ export class MapsService extends RemoteServiceBase {
     return this.httpClient.get<MapObjectModel[]>(`${this.apiUrl}/map/getObjects`, { params: params });
   }
 
-  getDevices(deviceIds: number[]): Observable<DeviceStatisticsModel[]> {
+  getDevices(deviceIds: number[]): Observable<DeviceDetailsModel[]> {
     let params = new HttpParams();
     for (let i = 0; i < deviceIds.length; i++) {
       params = params.append('deviceId', deviceIds[i].toString());
     }
 
-    return this.httpClient.get<DeviceStatisticsModel[]>(`${this.apiUrl}/map/getDevices`, { params: params });
+    return this.httpClient.get<DeviceDetailsModel[]>(`${this.apiUrl}/map/getDevices`, { params: params });
   }
 
   getClusterInfo(clustId: number, lvl: number, objType: MapObjectTypeEnum): Observable<MapClusterGroupDetails[]> {

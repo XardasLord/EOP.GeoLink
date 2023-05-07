@@ -1,28 +1,43 @@
-import { AfterContentChecked, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { DeviceModel, MapObjectModel } from '../../models/map-item.model';
+import { Subscription } from 'rxjs';
+import { DeviceDetailsModel, DeviceModel, MapObjectModel } from '../../models/map-item.model';
 import { MapObjectHelper } from '../../helpers/map-object-helper';
 import { MapDeviceTypeEnum } from '../../../../shared/models/map-device-type.enum';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
+import { MapsService } from '../../services/maps.service';
 
 @Component({
   selector: 'app-map-item-context-dialog',
   templateUrl: './map-item-context-dialog.component.html',
   styleUrls: ['./map-item-context-dialog.component.scss'],
 })
-export class MapItemContextDialogComponent implements AfterContentChecked {
+export class MapItemContextDialogComponent implements AfterContentChecked, OnDestroy {
+  @ViewChild('myTable') parentTable!: ElementRef;
+
   public mapObject!: MapObjectModel;
+  public secondLevelDeviceDetailsModel: DeviceDetailsModel = {
+    devType: MapDeviceTypeEnum.Licznik,
+    model: '',
+    producer: '',
+    idDev: 0,
+    params: [],
+    subDevId: [],
+  };
+
   public groupedDeviceTypes!: Record<string, DeviceModel[]>;
   public deviceStatus = MapObjectStatusTypeEnum;
   public showSubMenu = false;
-  public topCssValue = '';
   public elementLeft = '';
   public elementTop = '';
+
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private store: Store,
     private changeDetectorRef: ChangeDetectorRef,
-    private mapObjectHelper: MapObjectHelper
+    private mapObjectHelper: MapObjectHelper,
+    private mapsService: MapsService
   ) {
     // https://indepth.dev/posts/1054/here-is-what-you-need-to-know-about-dynamic-components-in-angular#ngonchanges
     console.warn('call from constructor');
@@ -32,6 +47,10 @@ export class MapItemContextDialogComponent implements AfterContentChecked {
     console.warn('call from ngAfterContentChecked');
     console.log(this.mapObject);
     this.groupedDeviceTypes = this.groupDeviceTypes();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   getObjectType(): string {
@@ -50,11 +69,18 @@ export class MapItemContextDialogComponent implements AfterContentChecked {
     console.log('Showing device item chart...', deviceModel);
   }
 
-  @ViewChild('myTable') parentTable!: ElementRef;
-
   showDeviceSubMenu(deviceModel: DeviceModel, event: MouseEvent) {
     this.showSubMenu = true;
     this.adjustDeviceSubMenuPosition(event);
+
+    const deviceIds = [deviceModel.idDev];
+    this.subscriptions.add(
+      this.mapsService.getDevices(deviceIds).subscribe(deviceStatisticsModels => {
+        console.log(deviceStatisticsModels[0]);
+        this.secondLevelDeviceDetailsModel = deviceStatisticsModels[0];
+        this.changeDetectorRef.detectChanges();
+      })
+    );
   }
 
   private adjustDeviceSubMenuPosition(event: MouseEvent) {

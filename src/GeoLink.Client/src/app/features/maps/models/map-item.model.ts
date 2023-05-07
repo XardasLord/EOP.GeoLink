@@ -62,6 +62,13 @@ export interface DeviceDetailsParamsModel {
   name: string;
   value: string;
   status: MapObjectStatusTypeEnum;
+  subParams: DeviceDetailsSubParamsModel[];
+}
+
+export interface DeviceDetailsSubParamsModel {
+  name: string;
+  value: string;
+  status: MapObjectStatusTypeEnum;
 }
 
 export interface MapClusterGroupDetails {

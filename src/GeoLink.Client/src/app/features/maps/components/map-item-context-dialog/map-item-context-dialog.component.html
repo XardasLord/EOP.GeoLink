@@ -35,40 +35,39 @@
   </ng-container>
 </table>
 
-<!--Temporary hardcoded second level context menu-->
+<!-- Second level context menu -->
 <div class="second-level-table" [ngStyle]="{ left: elementLeft, top: elementTop }" *ngIf="showSubMenu">
   <tr class="header-summary-row">
-    <th>{{ getObjectType() }}</th>
-    <th colspan="2">{{ mapObject.nrExpl }}</th>
+    <th>{{ getDeviceType(secondLevelDeviceDetailsModel.devType) }}</th>
+    <th colspan="2">{{ secondLevelDeviceDetailsModel.producer }}</th>
   </tr>
   <tr class="header-summary-row">
-    <th>Nazwa</th>
-    <th colspan="2">{{ mapObject.name }}</th>
+    <th>Typ</th>
+    <th colspan="2">{{ secondLevelDeviceDetailsModel.model }}</th>
   </tr>
   <tr>
-    <th>Kategoria</th>
+    <th>Parametr</th>
+    <th>Wartość</th>
     <th>Status</th>
-    <th>Link</th>
   </tr>
 
-  <ng-container *ngFor="let deviceModelType of groupedDeviceTypes | keyvalue">
-    <td colspan="3" class="group-name">{{ deviceModelType.key }}</td>
-    <ng-container *ngFor="let deviceModel of deviceModelType.value">
-      <tr class="device-item-row">
-        <td>{{ getDeviceType(+deviceModel.devType) }}</td>
-        <td (click)="showStatusChart(deviceModel)">
-          <mat-icon
-            matTooltip="abc test 123"
-            [ngClass]="{
-              good: deviceModel?.idStatus === deviceStatus.OK,
-              warning: deviceModel?.idStatus === deviceStatus.Warning,
-              bad: deviceModel?.idStatus === deviceStatus.Error
-            }"
-            >circle</mat-icon
-          >
-        </td>
-        <td>>>></td>
-      </tr>
-    </ng-container>
+  <ng-container *ngFor="let deviceDetailsParam of secondLevelDeviceDetailsModel.params">
+    <tr class="device-item-row">
+      <td>{{ deviceDetailsParam.name }}</td>
+      <td>{{ deviceDetailsParam.value }}</td>
+      <td>
+        <mat-icon
+          *ngIf="deviceDetailsParam?.status"
+          matTooltip="abc test 123"
+          [ngClass]="{
+            good: deviceDetailsParam?.status === deviceStatus.OK,
+            warning: deviceDetailsParam?.status === deviceStatus.Warning,
+            bad: deviceDetailsParam?.status === deviceStatus.Error
+          }"
+          >circle</mat-icon
+        >
+        <span *ngIf="!deviceDetailsParam?.status">n.d.</span>
+      </td>
+    </tr>
   </ng-container>
 </div>
