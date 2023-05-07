@@ -28,11 +28,13 @@ export class DynamicComponentCreatorHelper {
     return componentRef.location.nativeElement;
   }
 
-  public createClusterGroupPopup(items: MapObjectGroupModel[]) {
+  public createClusterGroupPopup(clusterId: number, level: number, items: MapObjectGroupModel[]) {
     const componentRef = this.resolver
       .resolveComponentFactory(MapClusterGroupContextDialogComponent)
       .create(this.injector);
 
+    componentRef.instance.clusterId = clusterId;
+    componentRef.instance.level = level;
     componentRef.instance.mapItems = items;
     componentRef.changeDetectorRef.detectChanges();
     return componentRef.location.nativeElement;

@@ -1,10 +1,11 @@
 import { Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
-import { DeviceModel, MapObjectGroupModel, MapObjectModel } from '../models/map-item.model';
+import { DeviceModel, MapObjectModel } from '../models/map-item.model';
 import { EnumDescriptionModel } from '../../../shared/models/enum-description.model';
 import { DictionaryState } from '../../../shared/states/dictionary.state';
 import { MapDeviceTypeEnum } from '../../../shared/models/map-device-type.enum';
 import { DeviceGroupRelationModel } from '../../../shared/models/device-group-relation.model';
+import { MapObjectTypeEnum } from '../../../shared/models/map-object-type.enum';
 
 @Injectable({ providedIn: 'root' })
 export class MapObjectHelper {
@@ -16,8 +17,8 @@ export class MapObjectHelper {
 
   constructor(private store: Store) {}
 
-  getObjectTypeForMapClusterGroup(group: MapObjectGroupModel): string {
-    return this.objectTypes.filter(x => x.id === group.objType)[0]?.name;
+  getObjectType(objectType: MapObjectTypeEnum): string {
+    return this.objectTypes.filter(x => x.id === objectType)[0]?.name;
   }
 
   getObjectTypeForMapObject(object: MapObjectModel): string {

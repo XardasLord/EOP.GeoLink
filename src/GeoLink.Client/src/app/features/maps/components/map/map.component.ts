@@ -300,7 +300,11 @@ export class MapComponent implements OnInit, OnDestroy {
     });
 
     clusterMarker.on('click', () => {
-      const popupComponent = this.dynamicComponentCreator.createClusterGroupPopup(cluster.objectGroups);
+      const popupComponent = this.dynamicComponentCreator.createClusterGroupPopup(
+        cluster.idClust,
+        cluster.level,
+        cluster.objectGroups
+      );
 
       clusterMarker.unbindPopup();
       clusterMarker

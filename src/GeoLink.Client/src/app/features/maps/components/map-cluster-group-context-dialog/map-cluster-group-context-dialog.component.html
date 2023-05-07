@@ -1,4 +1,4 @@
-<table>
+<table #myTable>
   <tr class="header-summary-row">
     <th colspan="4">Grupa obiektów</th>
     <th colspan="2">{{ getAllObjectsInsideCluster() }}</th>
@@ -10,32 +10,41 @@
   </tr>
 
   <tr class="group-row" *ngFor="let group of mapItems">
-    <td>{{ getObjectType(group) }}</td>
+    <td>{{ getObjectType(group.objType) }}</td>
     <td>{{ group.objCount }}</td>
     <td><mat-icon class="good">circle</mat-icon>{{ getSuccessStatusDevicesCount(group) }}</td>
     <td><mat-icon class="warning">circle</mat-icon>{{ getWarningStatusDevicesCount(group) }}</td>
     <td><mat-icon class="bad">circle</mat-icon>{{ getBadStatusDevicesCount(group) }}</td>
-    <td>>>></td>
+    <td (click)="showClusterGroupSubMenu(group, $event)">>>></td>
   </tr>
 
-  <!--  <ng-container *ngFor="let item of mapItem.groupItems; index as i; first as isFirst; last as isLast">-->
-  <!--    <td colspan="3" class="group-name">{{ item.name }}</td>-->
-  <!--    <ng-container *ngFor="let deviceItem of item.deviceItems">-->
-  <!--      <tr class="device-item-row">-->
-  <!--        <td>{{ deviceItem.name }}</td>-->
-  <!--        <td (click)="showStatusChart(deviceItem)">-->
-  <!--          <mat-icon-->
-  <!--            matTooltip="abc test 123"-->
-  <!--            [ngClass]="{-->
-  <!--              good: deviceItem.status === 2,-->
-  <!--              warning: deviceItem.status === 1,-->
-  <!--              bad: deviceItem.status === 0-->
-  <!--            }"-->
-  <!--            >circle</mat-icon-->
-  <!--          >-->
-  <!--        </td>-->
-  <!--        <td (click)="showDeviceSubMenu(deviceItem, $event)">>>></td>-->
-  <!--      </tr>-->
-  <!--    </ng-container>-->
-  <!--  </ng-container>-->
+  <div class="second-level-table" [ngStyle]="{ left: elementLeft, top: elementTop }" *ngIf="showSubMenu">
+    <tr class="header-summary-row">
+      <th colspan="4">Grupa obiektów</th>
+      <th colspan="2">{{ getAllObjectsInsideCluster() }}</th>
+    </tr>
+    <tr>
+      <th>Typ urządzenia</th>
+      <th>Liczba urządzeń</th>
+      <th colspan="4">Status</th>
+    </tr>
+
+    <tr class="group-row" *ngIf="secondLevelClusterGroupDetailsModels">
+      <td>{{ getObjectType(secondLevelClusterGroupDetailsModels.objType) }}</td>
+      <td>{{ secondLevelClusterGroupDetailsModels.objCount }}</td>
+      <td>
+        <mat-icon class="good">circle</mat-icon
+        >{{ getSuccessStatusDevicesGroupCount(secondLevelClusterGroupDetailsModels.devGroups) }}
+      </td>
+      <td>
+        <mat-icon class="warning">circle</mat-icon
+        >{{ getWarningStatusDevicesGroupCount(secondLevelClusterGroupDetailsModels.devGroups) }}
+      </td>
+      <td>
+        <mat-icon class="bad">circle</mat-icon
+        >{{ getBadStatusDevicesGroupCount(secondLevelClusterGroupDetailsModels.devGroups) }}
+      </td>
+      <td>>>></td>
+    </tr>
+  </div>
 </table>

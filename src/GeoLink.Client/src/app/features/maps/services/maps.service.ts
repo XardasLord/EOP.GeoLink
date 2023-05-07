@@ -64,10 +64,10 @@ export class MapsService extends RemoteServiceBase {
     return this.httpClient.get<DeviceDetailsModel[]>(`${this.apiUrl}/map/getDevices`, { params: params });
   }
 
-  getClusterInfo(clustId: number, lvl: number, objType: MapObjectTypeEnum): Observable<MapClusterGroupDetails[]> {
+  getClusterInfo(clustId: number, lvl: number, objType: MapObjectTypeEnum): Observable<MapClusterGroupDetails> {
     const params = new HttpParams().set('clustId', clustId).set('lvl', lvl).set('objType', +objType);
 
-    return this.httpClient.get<MapClusterGroupDetails[]>(`${this.apiUrl}/map/getClusterInfo`, { params: params });
+    return this.httpClient.get<MapClusterGroupDetails>(`${this.apiUrl}/map/getClusterInfo`, { params: params });
   }
 
   getObjectFilters(): Observable<MapObjectFiltersModel[]> {
