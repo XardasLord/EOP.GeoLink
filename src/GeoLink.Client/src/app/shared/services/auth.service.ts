@@ -4,7 +4,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of, Subscription } from 'rxjs';
 import { User } from 'oidc-client';
 import { AuthState } from '../states/auth.state';
-import { AuthRoles } from '../auth/models/auth.roles';
 import { environment } from '../../../environments/environment';
 
 @Injectable()
@@ -38,13 +37,14 @@ export class AuthService implements OnDestroy {
   }
 
   login(login: string, password: string): Observable<User> {
-    let queryParams = new HttpParams();
-    queryParams = queryParams.append('Login', login);
-    queryParams = queryParams.append('Password', password);
+    const payload = {
+      login: login,
+      password: password,
+    };
 
     const apiEndpoint = environment.apiEndpoint;
 
-    return this.httpClient.get<User>(`${apiEndpoint}/auth/getToken`, { params: queryParams });
+    return this.httpClient.post<User>(`${apiEndpoint}/auth/login`, payload);
   }
 
   logout(): Observable<any> {
