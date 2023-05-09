@@ -21,7 +21,7 @@
   <div class="second-level-table" [ngStyle]="{ left: elementLeft, top: elementTop }" *ngIf="showSubMenu">
     <tr class="header-summary-row">
       <th colspan="4">Grupa obiektów</th>
-      <th colspan="2">{{ getAllObjectsInsideCluster() }}</th>
+      <th colspan="2">{{ getAllObjectsInsideGroup(secondLevelClusterGroupDetailsModels) }}</th>
     </tr>
     <tr>
       <th>Typ urządzenia</th>
@@ -29,22 +29,15 @@
       <th colspan="4">Status</th>
     </tr>
 
-    <tr class="group-row" *ngIf="secondLevelClusterGroupDetailsModels">
-      <td>{{ getObjectType(secondLevelClusterGroupDetailsModels.objType) }}</td>
-      <td>{{ secondLevelClusterGroupDetailsModels.objCount }}</td>
-      <td>
-        <mat-icon class="good">circle</mat-icon
-        >{{ getSuccessStatusDevicesGroupCount(secondLevelClusterGroupDetailsModels.devGroups) }}
-      </td>
-      <td>
-        <mat-icon class="warning">circle</mat-icon
-        >{{ getWarningStatusDevicesGroupCount(secondLevelClusterGroupDetailsModels.devGroups) }}
-      </td>
-      <td>
-        <mat-icon class="bad">circle</mat-icon
-        >{{ getBadStatusDevicesGroupCount(secondLevelClusterGroupDetailsModels.devGroups) }}
-      </td>
-      <td>>>></td>
-    </tr>
+    <ng-container *ngIf="secondLevelClusterGroupDetailsModels">
+      <tr class="group-row" *ngFor="let group of secondLevelClusterGroupDetailsModels.devGroups">
+        <td>{{ getDeviceType(group.devType) }}</td>
+        <td>{{ group.devCount }}</td>
+        <td><mat-icon class="good">circle</mat-icon>{{ getSuccessStatusDevicesGroupCount(group.devStat) }}</td>
+        <td><mat-icon class="warning">circle</mat-icon>{{ getWarningStatusDevicesGroupCount(group.devStat) }}</td>
+        <td><mat-icon class="bad">circle</mat-icon>{{ getBadStatusDevicesGroupCount(group.devStat) }}</td>
+        <td>>>></td>
+      </tr>
+    </ng-container>
   </div>
 </table>

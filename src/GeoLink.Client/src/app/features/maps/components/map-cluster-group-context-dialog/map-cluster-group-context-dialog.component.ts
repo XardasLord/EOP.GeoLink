@@ -1,11 +1,17 @@
 import { AfterContentChecked, ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
-import { MapClusterDeviceGroupDetails, MapClusterGroupDetails, MapObjectGroupModel } from '../../models/map-item.model';
+import {
+  DeviceStatisticsModel,
+  MapClusterDeviceGroupDetails,
+  MapClusterGroupDetails,
+  MapObjectGroupModel,
+} from '../../models/map-item.model';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
 import { MapObjectHelper } from '../../helpers/map-object-helper';
 import { MapsService } from '../../services/maps.service';
 import { MapObjectTypeEnum } from '../../../../shared/models/map-object-type.enum';
+import { MapDeviceTypeEnum } from '../../../../shared/models/map-device-type.enum';
 
 @Component({
   selector: 'app-map-cluster-group-context-dialog',
@@ -52,8 +58,22 @@ export class MapClusterGroupContextDialogComponent implements AfterContentChecke
     return totalObjCount;
   }
 
+  getAllObjectsInsideGroup(group: MapClusterGroupDetails): number {
+    if (!group) return 0;
+
+    const totalObjCount = group.devGroups.reduce((sum, mapObjectGroup) => {
+      return sum + mapObjectGroup.devCount;
+    }, 0);
+
+    return totalObjCount;
+  }
+
   getObjectType(objectType: MapObjectTypeEnum): string {
     return this.mapObjectHelper.getObjectType(objectType);
+  }
+
+  getDeviceType(deviceType: MapDeviceTypeEnum): string {
+    return this.mapObjectHelper.getDeviceTypeForMapObject(deviceType);
   }
 
   getSuccessStatusDevicesCount(group: MapObjectGroupModel): number {
@@ -64,17 +84,15 @@ export class MapClusterGroupContextDialogComponent implements AfterContentChecke
     return totalCount;
   }
 
-  getSuccessStatusDevicesGroupCount(group: MapClusterDeviceGroupDetails[]): number {
+  getSuccessStatusDevicesGroupCount(group: DeviceStatisticsModel[]): number {
     const totalCount = group.reduce((acc, cur) => {
-      const sumOfStCountInDeviceStatisticsModel = cur.devStat.reduce((acc2, cur2) => {
-        if (cur2.idStat === MapObjectStatusTypeEnum.OK) {
-          return acc2 + cur2.stCount;
-        } else {
-          return acc2;
-        }
-      }, 0);
+      if (cur.idStat === MapObjectStatusTypeEnum.OK) {
+        return acc + cur.stCount;
+      } else {
+        return acc;
+      }
 
-      return acc + sumOfStCountInDeviceStatisticsModel;
+      return acc;
     }, 0);
 
     return totalCount;
@@ -88,17 +106,15 @@ export class MapClusterGroupContextDialogComponent implements AfterContentChecke
     return totalCount;
   }
 
-  getWarningStatusDevicesGroupCount(group: MapClusterDeviceGroupDetails[]): number {
+  getWarningStatusDevicesGroupCount(group: DeviceStatisticsModel[]): number {
     const totalCount = group.reduce((acc, cur) => {
-      const sumOfStCountInDeviceStatisticsModel = cur.devStat.reduce((acc2, cur2) => {
-        if (cur2.idStat === MapObjectStatusTypeEnum.Warning) {
-          return acc2 + cur2.stCount;
-        } else {
-          return acc2;
-        }
-      }, 0);
+      if (cur.idStat === MapObjectStatusTypeEnum.Warning) {
+        return acc + cur.stCount;
+      } else {
+        return acc;
+      }
 
-      return acc + sumOfStCountInDeviceStatisticsModel;
+      return acc;
     }, 0);
 
     return totalCount;
@@ -112,17 +128,15 @@ export class MapClusterGroupContextDialogComponent implements AfterContentChecke
     return totalCount;
   }
 
-  getBadStatusDevicesGroupCount(group: MapClusterDeviceGroupDetails[]): number {
+  getBadStatusDevicesGroupCount(group: DeviceStatisticsModel[]): number {
     const totalCount = group.reduce((acc, cur) => {
-      const sumOfStCountInDeviceStatisticsModel = cur.devStat.reduce((acc2, cur2) => {
-        if (cur2.idStat === MapObjectStatusTypeEnum.Error) {
-          return acc2 + cur2.stCount;
-        } else {
-          return acc2;
-        }
-      }, 0);
+      if (cur.idStat === MapObjectStatusTypeEnum.Error) {
+        return acc + cur.stCount;
+      } else {
+        return acc;
+      }
 
-      return acc + sumOfStCountInDeviceStatisticsModel;
+      return acc;
     }, 0);
 
     return totalCount;
