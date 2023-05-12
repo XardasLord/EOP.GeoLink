@@ -52,10 +52,12 @@ export class AuthState implements NgxsOnInit {
       ctx.dispatch(new GetSystemPermissions());
     }
 
-    ctx.dispatch(new GetMapObjectTypes());
-    ctx.dispatch(new GetMapDeviceTypes());
-    ctx.dispatch(new GetMapObjectStatusTypes());
-    ctx.dispatch(new GetDeviceGroupsRelation());
+    if (user) {
+      ctx.dispatch(new GetMapObjectTypes());
+      ctx.dispatch(new GetMapDeviceTypes());
+      ctx.dispatch(new GetMapObjectStatusTypes());
+      ctx.dispatch(new GetDeviceGroupsRelation());
+    }
   }
 
   @Selector([AUTH_STATE_TOKEN])
@@ -107,6 +109,22 @@ export class AuthState implements NgxsOnInit {
     });
 
     ctx.dispatch(new Navigate(['/']));
+
+    const state = ctx.getState();
+
+    if (state.user) {
+      ctx.dispatch(new GetMapObjectTypes());
+      ctx.dispatch(new GetMapDeviceTypes());
+      ctx.dispatch(new GetMapObjectStatusTypes());
+      ctx.dispatch(new GetDeviceGroupsRelation());
+
+      if (state.user?.role === AuthRoles.Geolink_Admin) {
+        ctx.dispatch(new GetSystemGroups());
+        ctx.dispatch(new GetSystemRoles());
+        ctx.dispatch(new GetSystemRegions());
+        ctx.dispatch(new GetSystemPermissions());
+      }
+    }
   }
 
   @Action(Logout)
