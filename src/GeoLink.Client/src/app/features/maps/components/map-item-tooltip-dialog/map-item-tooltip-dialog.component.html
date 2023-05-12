@@ -1,32 +1,12 @@
 <mat-grid-list cols="2" rowHeight="50px">
-  <mat-grid-tile colspan="1" rowspan="1">
+  <mat-grid-tile colspan="1" rowspan="1" *ngFor="let deviceGroup of mapItem.devGroupStatus">
     <mat-icon
-      [ngClass]="{ good: mapItem.idStatus === 1, warning: mapItem.idStatus === 2, bad: mapItem.idStatus === 3 }"
-      svgIcon="router">
+      [ngClass]="{
+        good: deviceGroup.idStatus === 1,
+        warning: deviceGroup.idStatus === 2,
+        bad: deviceGroup.idStatus === 3
+      }"
+      [svgIcon]="deviceGroup.devGroup">
     </mat-icon>
   </mat-grid-tile>
-  <mat-grid-tile colspan="1" rowspan="1">
-    <mat-icon
-      [ngClass]="{ good: mapItem.idStatus === 1, warning: mapItem.idStatus === 2, bad: mapItem.idStatus === 3 }"
-      svgIcon="router">
-    </mat-icon>
-  </mat-grid-tile>
-  <mat-grid-tile colspan="1" rowspan="1">
-    <mat-icon
-      [ngClass]="{ good: mapItem.idStatus === 1, warning: mapItem.idStatus === 2, bad: mapItem.idStatus === 3 }"
-      svgIcon="router">
-    </mat-icon>
-  </mat-grid-tile>
-  <mat-grid-tile colspan="1" rowspan="1">
-    <mat-icon
-      [ngClass]="{ good: mapItem.idStatus === 1, warning: mapItem.idStatus === 2, bad: mapItem.idStatus === 3 }"
-      svgIcon="router">
-    </mat-icon
-  ></mat-grid-tile>
-  <mat-grid-tile colspan="2" rowspan="1">
-    <mat-icon
-      [ngClass]="{ good: mapItem.idStatus === 1, warning: mapItem.idStatus === 2, bad: mapItem.idStatus === 3 }"
-      svgIcon="router">
-    </mat-icon
-  ></mat-grid-tile>
 </mat-grid-list>
