@@ -286,6 +286,26 @@ export class MapComponent implements OnInit, OnDestroy {
           maxZoom: 18,
           attribution: '...',
         }),
+        'Uzbrojenie terenu - gesut': tileLayer.wms(
+          'https://integracja02.gugik.gov.pl/cgi-bin/KrajowaIntegracjaUzbrojeniaTerenu_14?',
+          {
+            layers: 'gesut',
+            opacity: 0.8,
+            minZoom: 6,
+            maxZoom: 19,
+            format: 'image/png',
+          }
+        ),
+        'Uzbrojenie terenu - kgesut': tileLayer.wms(
+          'https://integracja02.gugik.gov.pl/cgi-bin/KrajowaIntegracjaUzbrojeniaTerenu_14?',
+          {
+            layers: 'kgesut',
+            opacity: 0.8,
+            minZoom: 6,
+            maxZoom: 19,
+            format: 'image/png',
+          }
+        ),
       },
     };
 
