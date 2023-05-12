@@ -28,6 +28,7 @@ export interface MapObjectModel {
   name: string;
   nrExpl: string;
   devices: DeviceModel[];
+  devGroupStatus: DeviceGroupStatus[];
 }
 
 export interface MapObjectGroupModel {
@@ -83,4 +84,9 @@ export interface MapClusterDeviceGroupDetails {
   devType: MapDeviceTypeEnum;
   devCount: number;
   devStat: DeviceStatisticsModel[];
+}
+
+export interface DeviceGroupStatus {
+  devGroup: string;
+  idStatus: MapObjectStatusTypeEnum;
 }
