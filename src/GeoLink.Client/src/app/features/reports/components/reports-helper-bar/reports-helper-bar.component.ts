@@ -7,13 +7,13 @@ import { Component } from '@angular/core';
 })
 export class ReportsHelperBarComponent {
   showObjectFilters = false;
-  showAreaFilters = false;
+  showRegionFilters = false;
 
   toggleObjectFilters(): void {
     this.showObjectFilters = !this.showObjectFilters;
   }
 
-  toggleAreaFilters(): void {
-    this.showAreaFilters = !this.showAreaFilters;
+  toggleRegionFilters(): void {
+    this.showRegionFilters = !this.showRegionFilters;
   }
 }

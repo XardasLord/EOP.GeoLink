@@ -5,7 +5,7 @@
         <mat-icon>filter_alt</mat-icon>
         Filtry obiektów
       </button>
-      <button mat-fab extended color="primary" (click)="toggleAreaFilters()">
+      <button mat-fab extended color="primary" (click)="toggleRegionFilters()">
         <mat-icon>filter_alt</mat-icon>
         Filtry obszarów
       </button>
@@ -17,6 +17,6 @@
   <app-map-object-filters></app-map-object-filters>
 </ng-container>
 
-<ng-container *ngIf="showAreaFilters">
-  <app-map-area-filters></app-map-area-filters>
+<ng-container *ngIf="showRegionFilters">
+  <app-map-region-filters></app-map-region-filters>
 </ng-container>

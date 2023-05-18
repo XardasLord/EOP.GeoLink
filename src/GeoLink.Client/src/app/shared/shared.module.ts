@@ -8,7 +8,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { MaterialModule } from './modules/material.module';
 import { ModalState } from './states/modal.state';
 import { ErrorService } from './errors/error.service';
-import { MapAreaFiltersComponent } from './components/map-area-filters/map-area-filters.component';
+import { MapRegionFiltersComponent } from './components/map-region-filters/map-region-filters.component';
 import { MapObjectFiltersComponent } from './components/map-object-filters/map-object-filters.component';
 import { AuthService } from './services/auth.service';
 import { AuthScopeAllowDirective } from './auth/directives/auth-scope-allow.directive';
@@ -17,7 +17,12 @@ import { DictionaryState } from './states/dictionary.state';
 import { EnumDescriptionPipePipe } from './pipes/enum-description.pipe';
 
 @NgModule({
-  declarations: [EnumDescriptionPipePipe, MapAreaFiltersComponent, MapObjectFiltersComponent, AuthScopeAllowDirective],
+  declarations: [
+    EnumDescriptionPipePipe,
+    MapRegionFiltersComponent,
+    MapObjectFiltersComponent,
+    AuthScopeAllowDirective,
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -35,7 +40,7 @@ import { EnumDescriptionPipePipe } from './pipes/enum-description.pipe';
     HttpClientModule,
     EnumDescriptionPipePipe,
     ToastrModule,
-    MapAreaFiltersComponent,
+    MapRegionFiltersComponent,
     MapObjectFiltersComponent,
     AuthScopeAllowDirective,
   ],

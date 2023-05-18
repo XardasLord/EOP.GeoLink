@@ -1,5 +1,5 @@
 <section class="filter-container">
-  <ng-container *ngFor="let filterRoot of mapFilters?.objectFilters">
+  <ng-container *ngFor="let filterRoot of mapFilters?.regionFilters">
     <ul *ngFor="let parentFilter of filterRoot.filters">
       <mat-checkbox
         [checked]="parentFilter.allChildFiltersCompleted"

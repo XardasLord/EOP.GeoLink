@@ -1,6 +1,7 @@
+import { MapFilterModel } from './map-filter-model';
+
 export interface MapObjectFiltersModel {
-  name: string;
-  completed: boolean;
-  allNestedFiltersCompleted: boolean;
-  nestedFilters?: MapObjectFiltersModel[];
+  apiFilterType: 'ObjectTypeFilters' | 'DeviceFilters';
+  dictionaryEndpoint: '/api/map/getObjectTypes' | 'api/map/getDeviceTypes';
+  filters: MapFilterModel[];
 }
