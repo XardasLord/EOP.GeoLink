@@ -271,20 +271,20 @@ export class MapComponent implements OnInit, OnDestroy {
   private loadLayersFromWMS() {
     this.mapLayersControl = {
       baseLayers: {
-        'WMS Map': tileLayer.wms(environment.wmsMapBackground, {
-          layers: environment.wmsBaseLayerName,
-          opacity: 0.8,
-          minZoom: 6,
-          maxZoom: 19,
-          detectRetina: true,
-          format: 'image/png',
-        }),
-      },
-      overlays: {
-        Test: tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 18,
+        'Open Street Map': tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 20,
           attribution: '...',
         }),
+        // 'WMS Map': tileLayer.wms(environment.wmsMapBackground, {
+        //   layers: environment.wmsBaseLayerName,
+        //   opacity: 0.8,
+        //   minZoom: 6,
+        //   maxZoom: 20,
+        //   detectRetina: true,
+        //   format: 'image/png',
+        // }),
+      },
+      overlays: {
         'Uzbrojenie terenu - gesut': tileLayer.wms(
           'https://integracja02.gugik.gov.pl/cgi-bin/KrajowaIntegracjaUzbrojeniaTerenu_14?',
           {
@@ -308,7 +308,7 @@ export class MapComponent implements OnInit, OnDestroy {
       },
     };
 
-    this.mapLayers = [this.mapLayersControl.baseLayers['WMS Map']];
+    this.mapLayers = [this.mapLayersControl.baseLayers['Open Street Map']];
   }
 
   private createMapClusterMarker(cluster: MapClusterModel): Marker<MapClusterModel> {
