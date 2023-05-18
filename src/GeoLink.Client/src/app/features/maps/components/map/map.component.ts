@@ -60,7 +60,7 @@ export class MapComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.mapOptions = {
       zoom: 7,
-      maxZoom: 18,
+      maxZoom: 20,
       center: latLng(52.22779941887071, 19.764404296875),
       preferCanvas: true,
     };
