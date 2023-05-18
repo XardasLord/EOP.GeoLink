@@ -18,5 +18,5 @@
 </ng-container>
 
 <ng-container *ngIf="showAreaFilters">
-  <app-map-area-filters></app-map-area-filters>
+  <app-map-area-filters (filtersChanged)="onAreaFiltersChanged($event)"></app-map-area-filters>
 </ng-container>

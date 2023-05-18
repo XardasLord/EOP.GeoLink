@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { tap } from 'rxjs';
 import { MapsStateModel } from './maps.state.model';
-import { LoadMapAreaFilters, LoadMapObjectFilters } from './maps.action';
+import { LoadMapAreaFilters, LoadMapFilters, LoadMapObjectFilters } from './maps.action';
 import { MapFiltersModel } from '../models/map-filters.model';
 import { MapsService } from '../services/maps.service';
 
@@ -24,6 +24,17 @@ export class MapsState {
   @Selector([MAPS_STATE_TOKEN])
   static getMapFilters(state: MapsStateModel): MapFiltersModel {
     return state.mapFilters;
+  }
+
+  @Action(LoadMapFilters)
+  loadMapFilters(ctx: StateContext<MapsStateModel>, _: LoadMapFilters) {
+    return this.mapsService.getFilters().pipe(
+      tap(filters => {
+        ctx.patchState({
+          mapFilters: filters,
+        });
+      })
+    );
   }
 
   @Action(LoadMapObjectFilters)

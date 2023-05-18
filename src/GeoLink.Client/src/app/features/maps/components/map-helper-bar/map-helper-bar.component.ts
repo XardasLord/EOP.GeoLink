@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-map-helper-bar',
@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./map-helper-bar.component.scss'],
 })
 export class MapHelperBarComponent {
+  @Output() areaFiltersChanged = new EventEmitter<string[]>();
   showObjectFilters = false;
   showAreaFilters = false;
 
@@ -15,5 +16,9 @@ export class MapHelperBarComponent {
 
   toggleAreaFilters(): void {
     this.showAreaFilters = !this.showAreaFilters;
+  }
+
+  onAreaFiltersChanged($event: string[]) {
+    console.warn('MapHelperBarComponent' + $event);
   }
 }

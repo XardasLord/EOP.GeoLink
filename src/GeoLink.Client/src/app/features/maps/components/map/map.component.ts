@@ -21,7 +21,7 @@ import {
 } from 'leaflet';
 import { Subscription, interval, tap, switchMap, Observable, debounceTime, pipe } from 'rxjs';
 
-import { LoadMapAreaFilters, LoadMapObjectFilters } from '../../states/maps.action';
+import { LoadMapAreaFilters, LoadMapFilters, LoadMapObjectFilters } from '../../states/maps.action';
 import '../../../../../../node_modules/leaflet.browser.print/dist/leaflet.browser.print.min.js';
 import { environment } from '../../../../../environments/environment';
 import { MarkerClusterHelper } from '../../helpers/marker-cluster.helper';
@@ -74,6 +74,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(new LoadMapObjectFilters());
     this.store.dispatch(new LoadMapAreaFilters());
+    // this.store.dispatch(new LoadMapFilters());
 
     this.refreshObjectsSubscription = interval(environment.refreshMapObjectsIntervalInMilliseconds).subscribe(_ =>
       this.getObjectsSubscriptions.add(this.loadMapObjects())
@@ -415,5 +416,9 @@ export class MapComponent implements OnInit, OnDestroy {
     ];
 
     return L.polygon(bboxCoords, { color: 'blue', fillOpacity: 0.2 });
+  }
+
+  onAreaFiltersChanged($event: string[]) {
+    console.warn('MapComponent' + $event);
   }
 }

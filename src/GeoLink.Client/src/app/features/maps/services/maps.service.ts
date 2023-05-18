@@ -13,6 +13,7 @@ import { MapAreaFiltersModel } from '../models/map-area-filters.model';
 import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
 import { environment } from '../../../../environments/environment';
 import { MapObjectTypeEnum } from '../../../shared/models/map-object-type.enum';
+import { MapFiltersModel } from '../models/map-filters.model';
 
 @Injectable()
 export class MapsService extends RemoteServiceBase {
@@ -68,6 +69,10 @@ export class MapsService extends RemoteServiceBase {
     const params = new HttpParams().set('clustId', clustId).set('lvl', lvl).set('objType', +objType);
 
     return this.httpClient.get<MapClusterGroupDetails>(`${this.apiUrl}/map/getClusterInfo`, { params: params });
+  }
+
+  getFilters(): Observable<MapFiltersModel> {
+    return this.httpClient.get<MapFiltersModel>(`${this.apiUrl}/interface/getFilters`);
   }
 
   getObjectFilters(): Observable<MapObjectFiltersModel[]> {

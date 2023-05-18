@@ -30,7 +30,7 @@
       </ng-container>
 
       <ng-template #withoutChildren>
-        <mat-checkbox color="accent" [(ngModel)]="subFilter.completed" (ngModelChange)="updateAllComplete(filter)">
+        <mat-checkbox color="accent" [(ngModel)]="subFilter.completed" (change)="updateAllComplete(filter)">
           {{ subFilter.name }}
         </mat-checkbox>
       </ng-template>
