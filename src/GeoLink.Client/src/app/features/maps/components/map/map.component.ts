@@ -29,6 +29,7 @@ import { MapClusterModel, MapObjectModel } from '../../models/map-item.model';
 import { DynamicComponentCreatorHelper } from '../../helpers/dynamic-component-creator.helper';
 import Scale = Control.Scale;
 import { MapsService } from '../../services/maps.service';
+import { MapFilterModel } from '../../models/map-filter-model';
 
 @Component({
   selector: 'app-map',
@@ -416,7 +417,7 @@ export class MapComponent implements OnInit, OnDestroy {
     return L.polygon(bboxCoords, { color: 'blue', fillOpacity: 0.2 });
   }
 
-  onAreaFiltersChanged($event: string[]) {
-    console.warn('MapComponent' + $event);
+  onAreaFiltersChanged($event: MapFilterModel[]) {
+    console.warn('MapComponent', $event);
   }
 }

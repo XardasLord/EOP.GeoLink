@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { MapsState } from '../../../features/maps/states/maps.state';
 import { MapFilterModel } from '../../../features/maps/models/map-filter-model';
 import { MapFiltersModel } from '../../../features/maps/models/map-filters.model';
+import { getAllSelectedFilters } from '../../helpers/map-filters.helper';
 
 @Component({
   selector: 'app-map-object-filters',
@@ -10,6 +11,8 @@ import { MapFiltersModel } from '../../../features/maps/models/map-filters.model
   styleUrls: ['./map-object-filters.component.scss'],
 })
 export class MapObjectFiltersComponent {
+  @Output() filtersChanged = new EventEmitter<MapFilterModel[]>();
+
   private readonly mapOriginalFilters: MapFiltersModel;
   mapFilters: MapFiltersModel;
 
@@ -20,6 +23,8 @@ export class MapObjectFiltersComponent {
 
   updateAllComplete(parent: MapFilterModel) {
     parent.allChildFiltersCompleted = parent.filters != null && parent.filters.every(t => t.completed);
+
+    this.notifyFiltersChange();
   }
 
   someComplete(model: MapFilterModel): boolean {
@@ -30,17 +35,30 @@ export class MapObjectFiltersComponent {
     return model.filters.filter(t => t.completed).length > 0 && !model.allChildFiltersCompleted;
   }
 
-  setAll(completed: boolean, model: MapFilterModel) {
-    model.allChildFiltersCompleted = completed;
+  setAll(completed: boolean, parent: MapFilterModel) {
+    parent.allChildFiltersCompleted = completed;
+    parent.completed = completed;
 
-    if (model.filters == null) {
+    if (parent.filters == null) {
+      this.notifyFiltersChange();
+
       return;
     }
 
-    model.filters.forEach(filter => {
+    parent.filters.forEach(filter => {
       filter.completed = completed;
 
       this.setAll(completed, filter);
     });
+
+    this.notifyFiltersChange();
+  }
+
+  private notifyFiltersChange() {
+    const completedFilters = getAllSelectedFilters(
+      this.mapFilters.objectFilters.flatMap(regionFilter => regionFilter.filters)
+    );
+
+    this.filtersChanged.emit(completedFilters);
   }
 }

@@ -3,6 +3,7 @@ import { Store } from '@ngxs/store';
 import { MapsState } from '../../../features/maps/states/maps.state';
 import { MapFilterModel } from '../../../features/maps/models/map-filter-model';
 import { MapFiltersModel } from '../../../features/maps/models/map-filters.model';
+import { getAllSelectedFilters } from '../../helpers/map-filters.helper';
 
 @Component({
   selector: 'app-map-region-filters',
@@ -10,7 +11,7 @@ import { MapFiltersModel } from '../../../features/maps/models/map-filters.model
   styleUrls: ['./map-region-filters.component.scss'],
 })
 export class MapRegionFiltersComponent {
-  @Output() filtersChanged = new EventEmitter<string[]>();
+  @Output() filtersChanged = new EventEmitter<MapFilterModel[]>();
 
   private readonly mapOriginalFilters: MapFiltersModel;
 
@@ -22,11 +23,9 @@ export class MapRegionFiltersComponent {
   }
 
   updateAllComplete(parent: MapFilterModel) {
-    // this.getAllSelectedFilters().subscribe(filters => {
-    //   this.filtersChanged.emit(filters);
-    // })
-    console.warn(parent);
     parent.allChildFiltersCompleted = parent.filters != null && parent.filters.every(t => t.completed);
+
+    this.notifyFiltersChange();
   }
 
   someComplete(model: MapFilterModel): boolean {
@@ -37,26 +36,30 @@ export class MapRegionFiltersComponent {
     return model.filters.filter(t => t.completed).length > 0 && !model.allChildFiltersCompleted;
   }
 
-  setAll(completed: boolean, model: MapFilterModel) {
-    model.allChildFiltersCompleted = completed;
+  setAll(completed: boolean, parent: MapFilterModel) {
+    parent.allChildFiltersCompleted = completed;
+    parent.completed = completed;
 
-    if (model.filters == null) {
+    if (parent.filters == null) {
+      this.notifyFiltersChange();
+
       return;
     }
 
-    model.filters.forEach(filter => {
+    parent.filters.forEach(filter => {
       filter.completed = completed;
 
       this.setAll(completed, filter);
     });
+
+    this.notifyFiltersChange();
   }
 
-  // private getAllSelectedFilters(): Observable<string[]> {
-  //   return this.mapFilters$.pipe(
-  //     // Użyj operatora filter(), aby przefiltrować elementy, gdzie wartość `completed` w `areaFilters` jest ustawiona na `true`.
-  //     filter(filters => filters.areaFilters.some(areaFilter => areaFilter.completed)),
-  //     // Użyj operatora map(), aby zamienić elementy na ich właściwość `name`.
-  //     map(filters => filters.areaFilters.filter(areaFilter => areaFilter.completed).map(areaFilter => areaFilter))
-  //   );
-  // }
+  private notifyFiltersChange() {
+    const completedFilters = getAllSelectedFilters(
+      this.mapFilters.regionFilters.flatMap(regionFilter => regionFilter.filters)
+    );
+
+    this.filtersChanged.emit(completedFilters);
+  }
 }
