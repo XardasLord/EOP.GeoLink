@@ -14,9 +14,9 @@
 </mat-toolbar>
 
 <ng-container *ngIf="showObjectFilters">
-  <app-map-object-filters></app-map-object-filters>
+  <app-map-object-filters (filtersChanged)="onFiltersChanged($event)"></app-map-object-filters>
 </ng-container>
 
 <ng-container *ngIf="showAreaFilters">
-  <app-map-region-filters (filtersChanged)="onAreaFiltersChanged($event)"></app-map-region-filters>
+  <app-map-region-filters (filtersChanged)="onFiltersChanged($event)"></app-map-region-filters>
 </ng-container>

@@ -30,6 +30,7 @@ import { DynamicComponentCreatorHelper } from '../../helpers/dynamic-component-c
 import Scale = Control.Scale;
 import { MapsService } from '../../services/maps.service';
 import { MapFilterModel } from '../../models/map-filter-model';
+import { MapsState } from '../../states/maps.state';
 
 @Component({
   selector: 'app-map',
@@ -168,6 +169,8 @@ export class MapComponent implements OnInit, OnDestroy {
   private loadMapObjects() {
     const bbox: LatLngBounds = this.map.getBounds();
     const mapZoom = this.map.getZoom();
+    const selectedRegionMapFilters = this.store.selectSnapshot(MapsState.getRegionSelectedMapFilters);
+    const selectedObjectMapFilters = this.store.selectSnapshot(MapsState.getObjectSelectedMapFilters);
 
     if (mapZoom <= 17) {
       if (this.lastRequestForCluster$) {
@@ -179,7 +182,9 @@ export class MapComponent implements OnInit, OnDestroy {
         bbox.getSouthWest().lat,
         bbox.getNorthEast().lng,
         bbox.getNorthEast().lat,
-        mapZoom
+        mapZoom,
+        selectedObjectMapFilters,
+        selectedRegionMapFilters
       );
 
       this.lastRequestForCluster$ = request$
@@ -215,7 +220,9 @@ export class MapComponent implements OnInit, OnDestroy {
         bbox.getSouthWest().lng,
         bbox.getSouthWest().lat,
         bbox.getNorthEast().lng,
-        bbox.getNorthEast().lat
+        bbox.getNorthEast().lat,
+        selectedObjectMapFilters,
+        selectedRegionMapFilters
       );
 
       this.lastRequestForObjects$ = request$.pipe(switchMap(() => request$)).subscribe(objects => {
@@ -417,7 +424,7 @@ export class MapComponent implements OnInit, OnDestroy {
     return L.polygon(bboxCoords, { color: 'blue', fillOpacity: 0.2 });
   }
 
-  onAreaFiltersChanged($event: MapFilterModel[]) {
-    console.warn('MapComponent', $event);
+  onMapFiltersChanged($event: MapFilterModel[]) {
+    this.getObjectsSubscriptions.add(this.loadMapObjects());
   }
 }

@@ -4,6 +4,7 @@ import { MapsState } from '../../../features/maps/states/maps.state';
 import { MapFilterModel } from '../../../features/maps/models/map-filter-model';
 import { MapFiltersModel } from '../../../features/maps/models/map-filters.model';
 import { getAllSelectedFilters } from '../../helpers/map-filters.helper';
+import { RegionMapFiltersSelectionChange } from '../../../features/maps/states/maps.action';
 
 @Component({
   selector: 'app-map-region-filters',
@@ -60,6 +61,7 @@ export class MapRegionFiltersComponent {
       this.mapFilters.regionFilters.flatMap(regionFilter => regionFilter.filters)
     );
 
+    this.store.dispatch(new RegionMapFiltersSelectionChange(JSON.parse(JSON.stringify(completedFilters))));
     this.filtersChanged.emit(completedFilters);
   }
 }

@@ -1,5 +1,19 @@
+import { MapFilterModel } from '../models/map-filter-model';
+
 const prefix = '[Maps]';
 
 export class LoadMapFilters {
   static readonly type = `${prefix} ${LoadMapFilters.name}`;
+}
+
+export class ObjectMapFiltersSelectionChange {
+  static readonly type = `${prefix} ${ObjectMapFiltersSelectionChange.name}`;
+
+  constructor(public selectedMapFilters: MapFilterModel[]) {}
+}
+
+export class RegionMapFiltersSelectionChange {
+  static readonly type = `${prefix} ${RegionMapFiltersSelectionChange.name}`;
+
+  constructor(public selectedMapFilters: MapFilterModel[]) {}
 }

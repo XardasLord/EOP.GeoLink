@@ -4,6 +4,7 @@ import { MapsState } from '../../../features/maps/states/maps.state';
 import { MapFilterModel } from '../../../features/maps/models/map-filter-model';
 import { MapFiltersModel } from '../../../features/maps/models/map-filters.model';
 import { getAllSelectedFilters } from '../../helpers/map-filters.helper';
+import { ObjectMapFiltersSelectionChange } from '../../../features/maps/states/maps.action';
 
 @Component({
   selector: 'app-map-object-filters',
@@ -14,6 +15,7 @@ export class MapObjectFiltersComponent {
   @Output() filtersChanged = new EventEmitter<MapFilterModel[]>();
 
   private readonly mapOriginalFilters: MapFiltersModel;
+
   mapFilters: MapFiltersModel;
 
   constructor(private store: Store) {
@@ -59,6 +61,7 @@ export class MapObjectFiltersComponent {
       this.mapFilters.objectFilters.flatMap(regionFilter => regionFilter.filters)
     );
 
+    this.store.dispatch(new ObjectMapFiltersSelectionChange(JSON.parse(JSON.stringify(completedFilters))));
     this.filtersChanged.emit(completedFilters);
   }
 }

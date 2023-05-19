@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import {
   DeviceDetailsModel,
   MapClusterGroupDetails,
@@ -11,6 +11,7 @@ import { RemoteServiceBase } from '../../../shared/services/remote-service.base'
 import { environment } from '../../../../environments/environment';
 import { MapObjectTypeEnum } from '../../../shared/models/map-object-type.enum';
 import { MapFiltersModel } from '../models/map-filters.model';
+import { MapFilterModel } from '../models/map-filter-model';
 
 @Injectable()
 export class MapsService extends RemoteServiceBase {
@@ -25,15 +26,19 @@ export class MapsService extends RemoteServiceBase {
     latMin: number, // SW
     lonMax: number, // NE
     latMax: number, // NE
-    zoomLevel: number
+    zoomLevel: number,
+    selectedObjectMapFilters: MapFilterModel[],
+    selectedRegionMapFilters: MapFilterModel[]
   ): Observable<MapClusterObjectModel> {
-    const params = new HttpParams()
+    let params = new HttpParams()
       .set('lonMin', lonMin)
       .set('latMin', latMin)
       .set('lonMax', lonMax)
       .set('latMax', latMax)
       .set('zoomLevel', zoomLevel)
       .set('clustObjThreshold', 2);
+
+    params = this.setFilters(params, selectedObjectMapFilters, selectedRegionMapFilters);
 
     return this.httpClient.get<MapClusterObjectModel>(`${this.apiUrl}/map/getClustersAndObjects`, { params: params });
   }
@@ -42,15 +47,45 @@ export class MapsService extends RemoteServiceBase {
     lonMin: number, // SW
     latMin: number, // SW
     lonMax: number, // NE
-    latMax: number // NE
+    latMax: number, // NE
+    selectedObjectMapFilters: MapFilterModel[],
+    selectedRegionMapFilters: MapFilterModel[]
   ): Observable<MapObjectModel[]> {
-    const params = new HttpParams()
+    let params = new HttpParams()
       .set('lonMin', lonMin)
       .set('latMin', latMin)
       .set('lonMax', lonMax)
       .set('latMax', latMax);
 
+    params = this.setFilters(params, selectedObjectMapFilters, selectedRegionMapFilters);
+
     return this.httpClient.get<MapObjectModel[]>(`${this.apiUrl}/map/getObjects`, { params: params });
+  }
+
+  private setFilters(
+    httpParams: HttpParams,
+    selectedObjectMapFilters: MapFilterModel[],
+    selectedRegionMapFilters: MapFilterModel[]
+  ): HttpParams {
+    selectedRegionMapFilters
+      .filter(x => x.apiFilterType === 'RegionFilters' && x.id !== null)
+      .forEach(filter => {
+        httpParams = httpParams.append('regionFilters', filter.id);
+      });
+
+    selectedObjectMapFilters
+      .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.id !== null)
+      .forEach(filter => {
+        httpParams = httpParams.append('objectTypeFilters', filter.id);
+      });
+
+    selectedObjectMapFilters
+      .filter(x => x.apiFilterType === 'DeviceFilters' && x.id !== null)
+      .forEach(filter => {
+        httpParams = httpParams.append('deviceFilters', filter.id);
+      });
+
+    return httpParams;
   }
 
   getDevices(deviceIds: number[]): Observable<DeviceDetailsModel[]> {
