@@ -21,6 +21,7 @@ import {
   GetSystemRegions,
   GetSystemRoles,
 } from './dictionary.action';
+import { LoadMapFilters } from '../../features/maps/states/maps.action';
 
 export const AUTH_STATE_TOKEN = new StateToken<AuthStateModel>('auth');
 
@@ -57,6 +58,7 @@ export class AuthState implements NgxsOnInit {
       ctx.dispatch(new GetMapDeviceTypes());
       ctx.dispatch(new GetMapObjectStatusTypes());
       ctx.dispatch(new GetDeviceGroupsRelation());
+      ctx.dispatch(new LoadMapFilters());
     }
   }
 

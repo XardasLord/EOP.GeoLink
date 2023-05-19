@@ -74,8 +74,6 @@ export class MapComponent implements OnInit, OnDestroy {
       maxWidth: 200,
     });
 
-    this.store.dispatch(new LoadMapFilters());
-
     this.refreshObjectsSubscription = interval(environment.refreshMapObjectsIntervalInMilliseconds).subscribe(_ =>
       this.getObjectsSubscriptions.add(this.loadMapObjects())
     );
