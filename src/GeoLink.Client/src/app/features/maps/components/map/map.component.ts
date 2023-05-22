@@ -21,7 +21,6 @@ import {
 } from 'leaflet';
 import { Subscription, interval, switchMap, debounceTime } from 'rxjs';
 
-import { LoadMapFilters } from '../../states/maps.action';
 import '../../../../../../node_modules/leaflet.browser.print/dist/leaflet.browser.print.min.js';
 import { environment } from '../../../../../environments/environment';
 import { MarkerClusterHelper } from '../../helpers/marker-cluster.helper';
@@ -362,6 +361,10 @@ export class MapComponent implements OnInit, OnDestroy {
 
     clusterMarker.on('mouseout', () => {
       this.map.removeLayer(clusterBboxPolygon);
+    });
+
+    clusterMarker.on('remove', () => {
+      if (clusterBboxPolygon) this.map.removeLayer(clusterBboxPolygon);
     });
 
     return clusterMarker;
