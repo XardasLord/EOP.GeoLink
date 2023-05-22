@@ -156,11 +156,11 @@ export class MapComponent implements OnInit, OnDestroy {
       .addTo(map);
 
     this.map.on('zoomend', event => {
-      this.loadMapObjects();
+      this.getObjectsSubscriptions.add(this.loadMapObjects());
     });
 
     this.map.on('moveend', event => {
-      this.loadMapObjects();
+      this.getObjectsSubscriptions.add(this.loadMapObjects());
     });
   }
 
