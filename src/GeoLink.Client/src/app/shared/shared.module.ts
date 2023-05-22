@@ -15,12 +15,14 @@ import { AuthScopeAllowDirective } from './auth/directives/auth-scope-allow.dire
 import { DictionaryService } from './services/dictionary.service';
 import { DictionaryState } from './states/dictionary.state';
 import { EnumDescriptionPipePipe } from './pipes/enum-description.pipe';
+import { MapStatusFiltersComponent } from './components/map-status-filters/map-status-filters.component';
 
 @NgModule({
   declarations: [
     EnumDescriptionPipePipe,
     MapRegionFiltersComponent,
     MapObjectFiltersComponent,
+    MapStatusFiltersComponent,
     AuthScopeAllowDirective,
   ],
   imports: [
@@ -42,6 +44,7 @@ import { EnumDescriptionPipePipe } from './pipes/enum-description.pipe';
     ToastrModule,
     MapRegionFiltersComponent,
     MapObjectFiltersComponent,
+    MapStatusFiltersComponent,
     AuthScopeAllowDirective,
   ],
   providers: [

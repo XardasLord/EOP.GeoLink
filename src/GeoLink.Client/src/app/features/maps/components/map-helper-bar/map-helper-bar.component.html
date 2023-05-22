@@ -5,9 +5,13 @@
         <mat-icon>filter_alt</mat-icon>
         Filtry obiektów
       </button>
-      <button mat-fab extended color="primary" (click)="toggleAreaFilters()">
+      <button mat-fab extended color="primary" (click)="toggleRegionFilters()">
         <mat-icon>filter_alt</mat-icon>
         Filtry obszarów
+      </button>
+      <button mat-fab extended color="primary" (click)="toggleStatusFilters()">
+        <mat-icon>filter_alt</mat-icon>
+        Filtry statusów
       </button>
     </div>
   </mat-toolbar-row>
@@ -17,6 +21,10 @@
   <app-map-object-filters (filtersChanged)="onFiltersChanged($event)"></app-map-object-filters>
 </ng-container>
 
-<ng-container *ngIf="showAreaFilters">
+<ng-container *ngIf="showRegionFilters">
   <app-map-region-filters (filtersChanged)="onFiltersChanged($event)"></app-map-region-filters>
+</ng-container>
+
+<ng-container *ngIf="showStatusFilters">
+  <app-map-status-filters (filtersChanged)="onFiltersChanged($event)"></app-map-status-filters>
 </ng-container>

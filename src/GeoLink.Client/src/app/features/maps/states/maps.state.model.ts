@@ -3,6 +3,7 @@ import { MapFilterModel } from '../models/map-filter-model';
 
 export interface MapsStateModel {
   mapFilters: MapFiltersModel;
-  selectedRegionMapFilter: MapFilterModel[];
   selectedObjectsMapFilters: MapFilterModel[];
+  selectedRegionMapFilter: MapFilterModel[];
+  selectedStatusMapFilters: MapFilterModel[];
 }

@@ -17,3 +17,9 @@ export class RegionMapFiltersSelectionChange {
 
   constructor(public selectedMapFilters: MapFilterModel[]) {}
 }
+
+export class StatusMapFiltersSelectionChange {
+  static readonly type = `${prefix} ${StatusMapFiltersSelectionChange.name}`;
+
+  constructor(public selectedMapFilters: MapFilterModel[]) {}
+}

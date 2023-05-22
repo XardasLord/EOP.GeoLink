@@ -1,0 +1,44 @@
+<section class="filter-container">
+  <ng-container *ngFor="let filterRoot of mapFilters?.statusFilters">
+    <ul *ngFor="let parentFilter of filterRoot.filters">
+      <mat-checkbox
+        [checked]="parentFilter.completed"
+        color="accent"
+        [indeterminate]="someComplete(parentFilter)"
+        (change)="setAll($event.checked, parentFilter)">
+        <b>{{ parentFilter.name }}</b>
+      </mat-checkbox>
+      <li *ngFor="let subFilter of parentFilter.filters">
+        <ng-container *ngIf="subFilter.filters && subFilter.filters.length > 0; else withoutChildren">
+          <ul>
+            <mat-checkbox
+              color="accent"
+              [checked]="subFilter.allChildFiltersCompleted"
+              [indeterminate]="someComplete(subFilter)"
+              (change)="setAll($event.checked, subFilter)">
+              {{ subFilter.name }}
+            </mat-checkbox>
+
+            <li *ngFor="let childOfSubFilter of subFilter.filters">
+              <mat-checkbox
+                color="accent"
+                [(ngModel)]="childOfSubFilter.completed"
+                (ngModelChange)="updateAllComplete(subFilter)">
+                {{ childOfSubFilter.name }}
+              </mat-checkbox>
+            </li>
+          </ul>
+        </ng-container>
+
+        <ng-template #withoutChildren>
+          <mat-checkbox
+            color="accent"
+            [(ngModel)]="subFilter.completed"
+            (ngModelChange)="updateAllComplete(parentFilter)">
+            {{ subFilter.name }}
+          </mat-checkbox>
+        </ng-template>
+      </li>
+    </ul>
+  </ng-container>
+</section>

@@ -167,8 +167,9 @@ export class MapComponent implements OnInit, OnDestroy {
   private loadMapObjects() {
     const bbox: LatLngBounds = this.map.getBounds();
     const mapZoom = this.map.getZoom();
-    const selectedRegionMapFilters = this.store.selectSnapshot(MapsState.getRegionSelectedMapFilters);
     const selectedObjectMapFilters = this.store.selectSnapshot(MapsState.getObjectSelectedMapFilters);
+    const selectedRegionMapFilters = this.store.selectSnapshot(MapsState.getRegionSelectedMapFilters);
+    const selectedStatusMapFilters = this.store.selectSnapshot(MapsState.getStatusSelectedMapFilters);
 
     if (mapZoom <= 17) {
       if (this.lastRequestForCluster$) {
@@ -182,7 +183,8 @@ export class MapComponent implements OnInit, OnDestroy {
         bbox.getNorthEast().lat,
         mapZoom,
         selectedObjectMapFilters,
-        selectedRegionMapFilters
+        selectedRegionMapFilters,
+        selectedStatusMapFilters
       );
 
       this.lastRequestForCluster$ = request$
@@ -220,7 +222,8 @@ export class MapComponent implements OnInit, OnDestroy {
         bbox.getNorthEast().lng,
         bbox.getNorthEast().lat,
         selectedObjectMapFilters,
-        selectedRegionMapFilters
+        selectedRegionMapFilters,
+        selectedStatusMapFilters
       );
 
       this.lastRequestForObjects$ = request$.pipe(switchMap(() => request$)).subscribe(objects => {

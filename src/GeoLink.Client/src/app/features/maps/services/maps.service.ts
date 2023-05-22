@@ -28,7 +28,8 @@ export class MapsService extends RemoteServiceBase {
     latMax: number, // NE
     zoomLevel: number,
     selectedObjectMapFilters: MapFilterModel[],
-    selectedRegionMapFilters: MapFilterModel[]
+    selectedRegionMapFilters: MapFilterModel[],
+    selectedStatusMapFilters: MapFilterModel[]
   ): Observable<MapClusterObjectModel> {
     let params = new HttpParams()
       .set('lonMin', lonMin)
@@ -38,7 +39,7 @@ export class MapsService extends RemoteServiceBase {
       .set('zoomLevel', zoomLevel)
       .set('clustObjThreshold', 2);
 
-    params = this.setFilters(params, selectedObjectMapFilters, selectedRegionMapFilters);
+    params = this.setFilters(params, selectedObjectMapFilters, selectedRegionMapFilters, selectedStatusMapFilters);
 
     return this.httpClient.get<MapClusterObjectModel>(`${this.apiUrl}/map/getClustersAndObjects`, { params: params });
   }
@@ -49,7 +50,8 @@ export class MapsService extends RemoteServiceBase {
     lonMax: number, // NE
     latMax: number, // NE
     selectedObjectMapFilters: MapFilterModel[],
-    selectedRegionMapFilters: MapFilterModel[]
+    selectedRegionMapFilters: MapFilterModel[],
+    selectedStatusMapFilters: MapFilterModel[]
   ): Observable<MapObjectModel[]> {
     let params = new HttpParams()
       .set('lonMin', lonMin)
@@ -57,7 +59,7 @@ export class MapsService extends RemoteServiceBase {
       .set('lonMax', lonMax)
       .set('latMax', latMax);
 
-    params = this.setFilters(params, selectedObjectMapFilters, selectedRegionMapFilters);
+    params = this.setFilters(params, selectedObjectMapFilters, selectedRegionMapFilters, selectedStatusMapFilters);
 
     return this.httpClient.get<MapObjectModel[]>(`${this.apiUrl}/map/getObjects`, { params: params });
   }
@@ -65,14 +67,9 @@ export class MapsService extends RemoteServiceBase {
   private setFilters(
     httpParams: HttpParams,
     selectedObjectMapFilters: MapFilterModel[],
-    selectedRegionMapFilters: MapFilterModel[]
+    selectedRegionMapFilters: MapFilterModel[],
+    selectedStatusMapFilters: MapFilterModel[]
   ): HttpParams {
-    selectedRegionMapFilters
-      .filter(x => x.apiFilterType === 'RegionFilters' && x.id !== null)
-      .forEach(filter => {
-        httpParams = httpParams.append('regionFilters', filter.id);
-      });
-
     selectedObjectMapFilters
       .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.id !== null)
       .forEach(filter => {
@@ -83,6 +80,18 @@ export class MapsService extends RemoteServiceBase {
       .filter(x => x.apiFilterType === 'DeviceFilters' && x.id !== null)
       .forEach(filter => {
         httpParams = httpParams.append('deviceFilters', filter.id);
+      });
+
+    selectedRegionMapFilters
+      .filter(x => x.apiFilterType === 'RegionFilters' && x.id !== null)
+      .forEach(filter => {
+        httpParams = httpParams.append('regionFilters', filter.id);
+      });
+
+    selectedStatusMapFilters
+      .filter(x => x.apiFilterType === 'StatusFilters' && x.id !== null)
+      .forEach(filter => {
+        httpParams = httpParams.append('statusFilters', filter.id);
       });
 
     return httpParams;

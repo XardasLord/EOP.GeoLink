@@ -4,8 +4,8 @@
   position: fixed;
   background: #fff;
   top: $toolbar-height + $toolbar-helper-bar-height;
-  left: $navbar-width + $object-filter-width;
-  width: $region-filter-width;
+  left: $navbar-width + $object-filter-width + $region-filter-width;
+  width: $status-filter-width;
   z-index: 10000;
-  border: $object-filter-border;
+  border: $status-filter-border;
 }

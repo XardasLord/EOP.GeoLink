@@ -21,7 +21,8 @@ $toolbar-height: 64px;
 $toolbar-helper-bar-height: 64px;
 $navbar-width: 195px;
 $object-filter-width: 220px;
-$area-filter-width: 220px;
+$region-filter-width: 220px;
+$status-filter-width: 220px;
 
 // Paddings
 $main-content-padding: 40px;
@@ -33,4 +34,5 @@ $margins-between-map-filter-buttons: 0 28px 0 0;
 // Borders
 $object-filter-border: 3px solid lightgray;
 $area-filter-border: $object-filter-border;
+$status-filter-border: $object-filter-border;
 $map-item-context-menu-table-border: 2px solid lightgray;

@@ -2,7 +2,12 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { Observable, tap } from 'rxjs';
 import { MapsStateModel } from './maps.state.model';
-import { LoadMapFilters, ObjectMapFiltersSelectionChange, RegionMapFiltersSelectionChange } from './maps.action';
+import {
+  LoadMapFilters,
+  ObjectMapFiltersSelectionChange,
+  RegionMapFiltersSelectionChange,
+  StatusMapFiltersSelectionChange,
+} from './maps.action';
 import { MapFiltersModel } from '../models/map-filters.model';
 import { MapsService } from '../services/maps.service';
 import { MapFilterModel } from '../models/map-filter-model';
@@ -15,9 +20,11 @@ const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
     mapFilters: {
       objectFilters: [],
       regionFilters: [],
+      statusFilters: [],
     },
-    selectedRegionMapFilter: [],
     selectedObjectsMapFilters: [],
+    selectedRegionMapFilter: [],
+    selectedStatusMapFilters: [],
   },
 })
 @Injectable()
@@ -30,13 +37,18 @@ export class MapsState {
   }
 
   @Selector([MAPS_STATE_TOKEN])
+  static getObjectSelectedMapFilters(state: MapsStateModel): MapFilterModel[] {
+    return state.selectedObjectsMapFilters;
+  }
+
+  @Selector([MAPS_STATE_TOKEN])
   static getRegionSelectedMapFilters(state: MapsStateModel): MapFilterModel[] {
     return state.selectedRegionMapFilter;
   }
 
   @Selector([MAPS_STATE_TOKEN])
-  static getObjectSelectedMapFilters(state: MapsStateModel): MapFilterModel[] {
-    return state.selectedObjectsMapFilters;
+  static getStatusSelectedMapFilters(state: MapsStateModel): MapFilterModel[] {
+    return state.selectedStatusMapFilters;
   }
 
   @Action(LoadMapFilters)
@@ -48,6 +60,46 @@ export class MapsState {
         });
       })
     );
+  }
+
+  @Action(ObjectMapFiltersSelectionChange)
+  objectMapFiltersSelectionChange(ctx: StateContext<MapsStateModel>, action: ObjectMapFiltersSelectionChange) {
+    const filters = ctx.getState().mapFilters;
+
+    function updateFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
+      return filters.map(filter => {
+        const updatedFilter: MapFilterModel = { ...filter };
+
+        if (
+          action.selectedMapFilters.some(
+            f => f.id === filter.id && f.apiFilterType === filter.apiFilterType && f.name === filter.name
+          )
+        ) {
+          updatedFilter.completed = true;
+        } else {
+          updatedFilter.completed = false;
+        }
+
+        if (filter.filters) {
+          updatedFilter.filters = updateFiltersCompleted(filter.filters);
+        }
+
+        return updatedFilter;
+      });
+    }
+
+    const updatedFilters: MapFiltersModel = {
+      ...filters,
+      objectFilters: filters.objectFilters.map(objectFilter => ({
+        ...objectFilter,
+        filters: updateFiltersCompleted(objectFilter.filters),
+      })),
+    };
+
+    ctx.patchState({
+      selectedObjectsMapFilters: action.selectedMapFilters,
+      mapFilters: updatedFilters,
+    });
   }
 
   @Action(RegionMapFiltersSelectionChange)
@@ -90,8 +142,8 @@ export class MapsState {
     });
   }
 
-  @Action(ObjectMapFiltersSelectionChange)
-  objectMapFiltersSelectionChange(ctx: StateContext<MapsStateModel>, action: ObjectMapFiltersSelectionChange) {
+  @Action(StatusMapFiltersSelectionChange)
+  statusMapFiltersSelectionChange(ctx: StateContext<MapsStateModel>, action: StatusMapFiltersSelectionChange) {
     const filters = ctx.getState().mapFilters;
 
     function updateFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
@@ -118,14 +170,14 @@ export class MapsState {
 
     const updatedFilters: MapFiltersModel = {
       ...filters,
-      objectFilters: filters.objectFilters.map(regionFilter => ({
-        ...regionFilter,
-        filters: updateFiltersCompleted(regionFilter.filters),
+      statusFilters: filters.statusFilters.map(statusFilter => ({
+        ...statusFilter,
+        filters: updateFiltersCompleted(statusFilter.filters),
       })),
     };
 
     ctx.patchState({
-      selectedObjectsMapFilters: action.selectedMapFilters,
+      selectedStatusMapFilters: action.selectedMapFilters,
       mapFilters: updatedFilters,
     });
   }

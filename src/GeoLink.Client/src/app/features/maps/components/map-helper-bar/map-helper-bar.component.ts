@@ -9,14 +9,19 @@ import { MapFilterModel } from '../../models/map-filter-model';
 export class MapHelperBarComponent {
   @Output() mapFiltersChanged = new EventEmitter<MapFilterModel[]>();
   showObjectFilters = false;
-  showAreaFilters = false;
+  showRegionFilters = false;
+  showStatusFilters = false;
 
   toggleObjectFilters(): void {
     this.showObjectFilters = !this.showObjectFilters;
   }
 
-  toggleAreaFilters(): void {
-    this.showAreaFilters = !this.showAreaFilters;
+  toggleRegionFilters(): void {
+    this.showRegionFilters = !this.showRegionFilters;
+  }
+
+  toggleStatusFilters(): void {
+    this.showStatusFilters = !this.showStatusFilters;
   }
 
   onFiltersChanged($event: MapFilterModel[]) {
