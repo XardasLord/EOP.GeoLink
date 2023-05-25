@@ -64,14 +64,8 @@ export class MapComponent implements OnInit, OnDestroy {
       maxZoom: 20,
       center: latLng(52.22779941887071, 19.764404296875),
       preferCanvas: true,
+      zoomControl: false,
     };
-
-    this.mapScale = new Scale({
-      position: 'bottomleft',
-      metric: true,
-      imperial: false,
-      maxWidth: 200,
-    });
 
     this.refreshObjectsSubscription = interval(environment.refreshMapObjectsIntervalInMilliseconds).subscribe(_ =>
       this.getObjectsSubscriptions.add(this.loadMapObjects())
@@ -139,7 +133,15 @@ export class MapComponent implements OnInit, OnDestroy {
       this.loadLayersFromWMS();
     }
 
+    this.mapScale = new Scale({
+      position: 'bottomleft',
+      metric: true,
+      imperial: false,
+      maxWidth: 200,
+    });
     map.addControl(this.mapScale);
+
+    L.control.zoom({ position: 'topright' }).addTo(map);
 
     // https://github.com/Igor-Vladyka/leaflet.browser.print
     L.control
@@ -151,6 +153,7 @@ export class MapComponent implements OnInit, OnDestroy {
           Auto: 'Auto',
           Custom: 'Wybierz obszar',
         },
+        position: 'topright',
       })
       .addTo(map);
 
