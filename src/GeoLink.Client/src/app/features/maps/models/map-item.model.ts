@@ -11,7 +11,6 @@ export interface MapClusterObjectModel {
 export interface MapClusterModel {
   idClust: number;
   level: number;
-  regions: number[];
   objCount: number;
   pointLon: number;
   pointLat: number;
