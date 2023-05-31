@@ -21,7 +21,7 @@ import {
   GetSystemRegions,
   GetSystemRoles,
 } from './dictionary.action';
-import { LoadMapFilters } from '../../features/maps/states/maps.action';
+import { LoadMapFilters, SetInitialMapFilters } from '../../features/maps/states/maps.action';
 
 export const AUTH_STATE_TOKEN = new StateToken<AuthStateModel>('auth');
 
@@ -47,18 +47,19 @@ export class AuthState implements NgxsOnInit {
     });
 
     if (user?.role === AuthRoles.Geolink_Admin) {
-      ctx.dispatch(new GetSystemGroups());
-      ctx.dispatch(new GetSystemRoles());
-      ctx.dispatch(new GetSystemRegions());
-      ctx.dispatch(new GetSystemPermissions());
+      ctx.dispatch([new GetSystemGroups(), new GetSystemRoles(), new GetSystemRegions(), new GetSystemPermissions()]);
     }
 
     if (user) {
-      ctx.dispatch(new GetMapObjectTypes());
-      ctx.dispatch(new GetMapDeviceTypes());
-      ctx.dispatch(new GetMapObjectStatusTypes());
-      ctx.dispatch(new GetDeviceGroupsRelation());
-      ctx.dispatch(new LoadMapFilters());
+      ctx.dispatch([
+        new Navigate([RoutePaths.Map]),
+        new GetMapObjectTypes(),
+        new GetMapDeviceTypes(),
+        new GetMapObjectStatusTypes(),
+        new GetDeviceGroupsRelation(),
+        new LoadMapFilters(),
+        new SetInitialMapFilters(),
+      ]);
     }
   }
 
@@ -110,21 +111,21 @@ export class AuthState implements NgxsOnInit {
       user: action.response,
     });
 
-    ctx.dispatch(new Navigate(['/']));
+    ctx.dispatch(new Navigate([RoutePaths.Map]));
 
     const state = ctx.getState();
 
     if (state.user) {
-      ctx.dispatch(new GetMapObjectTypes());
-      ctx.dispatch(new GetMapDeviceTypes());
-      ctx.dispatch(new GetMapObjectStatusTypes());
-      ctx.dispatch(new GetDeviceGroupsRelation());
+      ctx.dispatch([
+        new GetMapObjectTypes(),
+        new GetMapDeviceTypes(),
+        new GetMapObjectStatusTypes(),
+        new GetDeviceGroupsRelation(),
+        new SetInitialMapFilters(),
+      ]);
 
       if (state.user?.role === AuthRoles.Geolink_Admin) {
-        ctx.dispatch(new GetSystemGroups());
-        ctx.dispatch(new GetSystemRoles());
-        ctx.dispatch(new GetSystemRegions());
-        ctx.dispatch(new GetSystemPermissions());
+        ctx.dispatch([new GetSystemGroups(), new GetSystemRoles(), new GetSystemRegions(), new GetSystemPermissions()]);
       }
     }
   }

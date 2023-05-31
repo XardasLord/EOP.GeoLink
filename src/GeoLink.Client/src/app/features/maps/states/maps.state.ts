@@ -6,6 +6,7 @@ import {
   LoadMapFilters,
   ObjectMapFiltersSelectionChange,
   RegionMapFiltersSelectionChange,
+  SetInitialMapFilters,
   StatusMapFiltersSelectionChange,
 } from './maps.action';
 import { MapFiltersModel } from '../models/map-filters.model';
@@ -180,5 +181,12 @@ export class MapsState {
       selectedStatusMapFilters: action.selectedMapFilters,
       mapFilters: updatedFilters,
     });
+  }
+
+  @Action(SetInitialMapFilters)
+  setInitialMapFilters(ctx: StateContext<MapsStateModel>, action: SetInitialMapFilters) {
+    const filters = ctx.getState().mapFilters;
+
+    console.warn('qwewqeqewqewwqe');
   }
 }

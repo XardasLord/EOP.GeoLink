@@ -23,3 +23,9 @@ export class StatusMapFiltersSelectionChange {
 
   constructor(public selectedMapFilters: MapFilterModel[]) {}
 }
+
+export class SetInitialMapFilters {
+  static readonly type = `${prefix} ${SetInitialMapFilters.name}`;
+
+  constructor() {}
+}
