@@ -1,6 +1,7 @@
 import { MapObjectStatusTypeEnum } from '../../../shared/models/map-object-status-type.enum';
 import { MapObjectTypeEnum } from '../../../shared/models/map-object-type.enum';
 import { MapDeviceTypeEnum } from '../../../shared/models/map-device-type.enum';
+import { GeoJsonObject } from 'geojson';
 
 export interface MapClusterObjectModel {
   clusters: MapClusterModel[];
@@ -15,6 +16,7 @@ export interface MapClusterModel {
   pointLon: number;
   pointLat: number;
   bBoxGeom: number[];
+  geom: GeoJsonObject;
   objectGroups: MapObjectGroupModel[];
 }
 

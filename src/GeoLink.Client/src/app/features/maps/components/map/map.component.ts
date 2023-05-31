@@ -8,6 +8,7 @@ import { vectorTileLayer } from 'esri-leaflet-vector';
 import {
   Control,
   DivIcon,
+  GeoJSON,
   Icon,
   latLng,
   LatLngBounds,
@@ -30,6 +31,7 @@ import Scale = Control.Scale;
 import { MapsService } from '../../services/maps.service';
 import { MapFilterModel } from '../../models/map-filter-model';
 import { MapsState } from '../../states/maps.state';
+import { GeoJsonObject } from 'geojson';
 
 @Component({
   selector: 'app-map',
@@ -355,19 +357,25 @@ export class MapComponent implements OnInit, OnDestroy {
         .openPopup();
     });
 
-    let clusterBboxPolygon: Polygon;
+    // let clusterBboxPolygon: Polygon;
+    let clusterGeoJsonPolygon: GeoJSON;
 
     clusterMarker.on('mouseover', () => {
-      clusterBboxPolygon = this.getClusterAreaPolygon(cluster.bBoxGeom);
-      clusterBboxPolygon.addTo(this.map);
+      // clusterBboxPolygon = this.getClusterAreaPolygon(cluster.bBoxGeom);
+      // clusterBboxPolygon.addTo(this.map);
+
+      clusterGeoJsonPolygon = this.getClusterAreaGeoJsonPolygon(cluster.geom);
+      clusterGeoJsonPolygon.addTo(this.map);
     });
 
     clusterMarker.on('mouseout', () => {
-      this.map.removeLayer(clusterBboxPolygon);
+      // this.map.removeLayer(clusterBboxPolygon);
+      this.map.removeLayer(clusterGeoJsonPolygon);
     });
 
     clusterMarker.on('remove', () => {
-      if (clusterBboxPolygon) this.map.removeLayer(clusterBboxPolygon);
+      // if (clusterBboxPolygon) this.map.removeLayer(clusterBboxPolygon);
+      if (clusterGeoJsonPolygon) this.map.removeLayer(clusterGeoJsonPolygon);
     });
 
     return clusterMarker;
@@ -429,6 +437,11 @@ export class MapComponent implements OnInit, OnDestroy {
     ];
 
     return L.polygon(bboxCoords, { color: 'blue', fillOpacity: 0.2 });
+  }
+
+  private getClusterAreaGeoJsonPolygon(geoJson: GeoJsonObject): GeoJSON {
+    return new L.GeoJSON(geoJson);
+    // return L.polygon(bboxCoords, { color: 'blue', fillOpacity: 0.2 });
   }
 
   onMapFiltersChanged($event: MapFilterModel[]) {
