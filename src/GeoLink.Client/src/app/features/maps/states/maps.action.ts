@@ -27,5 +27,10 @@ export class StatusMapFiltersSelectionChange {
 export class SetInitialMapFilters {
   static readonly type = `${prefix} ${SetInitialMapFilters.name}`;
 
-  constructor() {}
+  constructor(
+    public objectTypeFilters: number,
+    public deviceFilters: number[],
+    public regionFilters: number[],
+    public statusFilters: number[]
+  ) {}
 }

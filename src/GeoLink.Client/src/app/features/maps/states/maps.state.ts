@@ -186,7 +186,91 @@ export class MapsState {
   @Action(SetInitialMapFilters)
   setInitialMapFilters(ctx: StateContext<MapsStateModel>, action: SetInitialMapFilters) {
     const filters = ctx.getState().mapFilters;
+    const selectedObjectAndDeviceMapFilters: MapFilterModel[] = [];
+    const selectedRegionMapFilters: MapFilterModel[] = [];
+    const selectedStatusMapFilters: MapFilterModel[] = [];
 
-    console.warn('qwewqeqewqewwqe');
+    function updateObjectAndDeviceFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
+      return filters.map(filter => {
+        const updatedFilter: MapFilterModel = { ...filter };
+
+        if (
+          action.deviceFilters.some(f => f === filter.id && filter.apiFilterType === 'DeviceFilters') ||
+          (filter.id === action.objectTypeFilters && filter.apiFilterType === 'ObjectTypeFilters')
+        ) {
+          updatedFilter.completed = true;
+          selectedObjectAndDeviceMapFilters.push(updatedFilter);
+        } else {
+          updatedFilter.completed = false;
+        }
+
+        if (filter.filters) {
+          updatedFilter.filters = updateObjectAndDeviceFiltersCompleted(filter.filters);
+        }
+
+        return updatedFilter;
+      });
+    }
+
+    function updateRegionFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
+      return filters.map(filter => {
+        const updatedFilter: MapFilterModel = { ...filter };
+
+        if (action.regionFilters.includes(filter.id)) {
+          updatedFilter.completed = true;
+          selectedRegionMapFilters.push(updatedFilter);
+        } else {
+          updatedFilter.completed = false;
+        }
+
+        if (filter.filters) {
+          updatedFilter.filters = updateRegionFiltersCompleted(filter.filters);
+        }
+
+        return updatedFilter;
+      });
+    }
+
+    function updateStatusFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
+      return filters.map(filter => {
+        const updatedFilter: MapFilterModel = { ...filter };
+
+        if (action.statusFilters.includes(filter.id)) {
+          updatedFilter.completed = true;
+          selectedStatusMapFilters.push(updatedFilter);
+        } else {
+          updatedFilter.completed = false;
+        }
+
+        if (filter.filters) {
+          updatedFilter.filters = updateStatusFiltersCompleted(filter.filters);
+        }
+
+        return updatedFilter;
+      });
+    }
+
+    const updatedFilters: MapFiltersModel = {
+      ...filters,
+      objectFilters: filters.objectFilters.map(objectFilters => ({
+        ...objectFilters,
+        filters: updateObjectAndDeviceFiltersCompleted(objectFilters.filters),
+      })),
+      regionFilters: filters.regionFilters.map(regionFilters => ({
+        ...regionFilters,
+        filters: updateRegionFiltersCompleted(regionFilters.filters),
+      })),
+      statusFilters: filters.statusFilters.map(statusFilter => ({
+        ...statusFilter,
+        filters: updateStatusFiltersCompleted(statusFilter.filters),
+      })),
+    };
+
+    ctx.patchState({
+      selectedObjectsMapFilters: selectedObjectAndDeviceMapFilters,
+      selectedRegionMapFilter: selectedRegionMapFilters,
+      selectedStatusMapFilters: selectedStatusMapFilters,
+      mapFilters: updatedFilters,
+    });
   }
 }

@@ -9,10 +9,10 @@ export class UserAuthModel {
   auth_scopes: AuthScopes[] | undefined;
   regions: number[] | undefined;
   groups: number | undefined;
-  init_objecttypefilters: number | undefined;
-  init_devicefilters: number[] | undefined;
-  init_regionfilters: number[] | undefined;
-  init_statusfilters: number[] | undefined;
+  init_objecttypefilters!: number;
+  init_devicefilters!: number[];
+  init_regionfilters!: number[];
+  init_statusfilters!: number[];
 
   constructor(init?: Partial<UserAuthModel>) {
     Object.assign(this, { ...init });

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Action, NgxsOnInit, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
-import { map, tap } from 'rxjs';
+import { concatMap, map, Observable, of, reduce, switchMap, tap, toArray } from 'rxjs';
 import { UserAuthModel } from '../auth/models/user-auth.model';
 import { AuthScopes } from '../auth/models/auth.scopes';
 import { Login, LoginCompleted, Logout } from './auth.action';
@@ -46,21 +46,38 @@ export class AuthState implements NgxsOnInit {
       user: user,
     });
 
+    const actions: any[] = [];
+
     if (user?.role === AuthRoles.Geolink_Admin) {
-      ctx.dispatch([new GetSystemGroups(), new GetSystemRoles(), new GetSystemRegions(), new GetSystemPermissions()]);
+      actions.push(new GetSystemGroups());
+      actions.push(new GetSystemRoles());
+      actions.push(new GetSystemRegions());
+      actions.push(new GetSystemPermissions());
     }
 
     if (user) {
-      ctx.dispatch([
-        new Navigate([RoutePaths.Map]),
-        new GetMapObjectTypes(),
-        new GetMapDeviceTypes(),
-        new GetMapObjectStatusTypes(),
-        new GetDeviceGroupsRelation(),
-        new LoadMapFilters(),
-        new SetInitialMapFilters(),
-      ]);
+      actions.push(new GetMapObjectTypes());
+      actions.push(new GetMapDeviceTypes());
+      actions.push(new GetMapObjectStatusTypes());
+      actions.push(new GetDeviceGroupsRelation());
+      actions.push(new LoadMapFilters());
+      actions.push(
+        new SetInitialMapFilters(
+          user.init_objecttypefilters,
+          user.init_devicefilters,
+          user.init_regionfilters,
+          user.init_statusfilters
+        )
+      );
+      actions.push(new Navigate([RoutePaths.Map]));
     }
+
+    of(actions)
+      .pipe(
+        concatMap(actionsArray => actionsArray),
+        concatMap(action => ctx.dispatch(action))
+      )
+      .subscribe();
   }
 
   @Selector([AUTH_STATE_TOKEN])
@@ -121,7 +138,12 @@ export class AuthState implements NgxsOnInit {
         new GetMapDeviceTypes(),
         new GetMapObjectStatusTypes(),
         new GetDeviceGroupsRelation(),
-        new SetInitialMapFilters(),
+        new SetInitialMapFilters(
+          state.user.init_objecttypefilters,
+          state.user.init_devicefilters,
+          state.user.init_regionfilters,
+          state.user.init_statusfilters
+        ),
       ]);
 
       if (state.user?.role === AuthRoles.Geolink_Admin) {
