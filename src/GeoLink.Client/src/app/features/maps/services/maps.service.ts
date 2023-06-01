@@ -106,8 +106,17 @@ export class MapsService extends RemoteServiceBase {
     return this.httpClient.get<DeviceDetailsModel[]>(`${this.apiUrl}/map/getDevices`, { params: params });
   }
 
-  getClusterInfo(clustId: number, lvl: number, objType: MapObjectTypeEnum): Observable<MapClusterGroupDetails> {
-    const params = new HttpParams().set('clustId', clustId).set('lvl', lvl).set('objType', +objType);
+  getClusterInfo(
+    clustId: number,
+    lvl: number,
+    objType: MapObjectTypeEnum,
+    selectedObjectMapFilters: MapFilterModel[],
+    selectedRegionMapFilters: MapFilterModel[],
+    selectedStatusMapFilters: MapFilterModel[]
+  ): Observable<MapClusterGroupDetails> {
+    let params = new HttpParams().set('clustId', clustId).set('lvl', lvl).set('objType', +objType);
+
+    params = this.setFilters(params, selectedObjectMapFilters, selectedRegionMapFilters, selectedStatusMapFilters);
 
     return this.httpClient.get<MapClusterGroupDetails>(`${this.apiUrl}/map/getClusterInfo`, { params: params });
   }

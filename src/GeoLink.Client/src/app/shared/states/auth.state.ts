@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Action, NgxsOnInit, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
-import { concatMap, map, Observable, of, reduce, switchMap, tap, toArray } from 'rxjs';
+import { concatMap, map, of, tap } from 'rxjs';
 import { UserAuthModel } from '../auth/models/user-auth.model';
 import { AuthScopes } from '../auth/models/auth.scopes';
 import { Login, LoginCompleted, Logout } from './auth.action';
@@ -69,7 +69,7 @@ export class AuthState implements NgxsOnInit {
           user.init_statusfilters
         )
       );
-      actions.push(new Navigate([RoutePaths.Map]));
+      // actions.push(new Navigate([RoutePaths.Map]));
     }
 
     of(actions)

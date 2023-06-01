@@ -23,6 +23,11 @@ const routes: Routes = [
     component: NavigationComponent,
     children: [
       {
+        path: '',
+        redirectTo: RoutePaths.Map,
+        pathMatch: 'full',
+      },
+      {
         path: RoutePaths.Map,
         loadChildren: () => import('../../features/maps/maps.module').then(m => m.MapsModule),
         canActivate: [AuthGuard],

@@ -12,6 +12,7 @@ import { MapObjectHelper } from '../../helpers/map-object-helper';
 import { MapsService } from '../../services/maps.service';
 import { MapObjectTypeEnum } from '../../../../shared/models/map-object-type.enum';
 import { MapDeviceTypeEnum } from '../../../../shared/models/map-device-type.enum';
+import { MapsState } from '../../states/maps.state';
 
 @Component({
   selector: 'app-map-cluster-group-context-dialog',
@@ -146,12 +147,25 @@ export class MapClusterGroupContextDialogComponent implements AfterContentChecke
     this.showSubMenu = true;
     this.adjustDeviceSubMenuPosition(event);
 
+    const selectedObjectMapFilters = this.store.selectSnapshot(MapsState.getObjectSelectedMapFilters);
+    const selectedRegionMapFilters = this.store.selectSnapshot(MapsState.getRegionSelectedMapFilters);
+    const selectedStatusMapFilters = this.store.selectSnapshot(MapsState.getStatusSelectedMapFilters);
+
     this.subscriptions.add(
-      this.mapsService.getClusterInfo(this.clusterId, this.level, groupModel.objType).subscribe(clusterGroupModels => {
-        console.log(clusterGroupModels);
-        this.secondLevelClusterGroupDetailsModels = clusterGroupModels;
-        this.changeDetectorRef.detectChanges();
-      })
+      this.mapsService
+        .getClusterInfo(
+          this.clusterId,
+          this.level,
+          groupModel.objType,
+          selectedObjectMapFilters,
+          selectedRegionMapFilters,
+          selectedStatusMapFilters
+        )
+        .subscribe(clusterGroupModels => {
+          console.log(clusterGroupModels);
+          this.secondLevelClusterGroupDetailsModels = clusterGroupModels;
+          this.changeDetectorRef.detectChanges();
+        })
     );
   }
 
