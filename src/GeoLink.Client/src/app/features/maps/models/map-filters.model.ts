@@ -1,8 +1,7 @@
-import { MapObjectFiltersModel } from './map-object-filter.model';
-import { MapRegionFiltersModel } from './map-region-filters.model';
+import { MapFilterModel } from './map-filter-model';
 
 export interface MapFiltersModel {
-  objectFilters: MapObjectFiltersModel[];
-  regionFilters: MapRegionFiltersModel[];
-  statusFilters: MapRegionFiltersModel[];
+  objectFilters: MapFilterModel[];
+  regionFilters: MapFilterModel[];
+  statusFilters: MapFilterModel[];
 }

@@ -121,8 +121,8 @@ export class MapsService extends RemoteServiceBase {
     return this.httpClient.get<MapClusterGroupDetails>(`${this.apiUrl}/map/getClusterInfo`, { params: params });
   }
 
-  getFilters(): Observable<MapFiltersModel> {
-    return this.httpClient.get<MapFiltersModel>(`${this.apiUrl}/interface/getFilters`);
+  getFilters(): Observable<MapFilterModel[]> {
+    return this.httpClient.get<MapFilterModel[]>(`${this.apiUrl}/interface/getFiltersDef`);
   }
 
   private generatePolishLat() {

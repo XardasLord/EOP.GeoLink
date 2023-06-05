@@ -53,9 +53,15 @@ export class MapsState {
   }
 
   @Action(LoadMapFilters)
-  loadMapFilters(ctx: StateContext<MapsStateModel>, _: LoadMapFilters): Observable<MapFiltersModel> {
+  loadMapFilters(ctx: StateContext<MapsStateModel>, _: LoadMapFilters): Observable<MapFilterModel[]> {
     return this.mapsService.getFilters().pipe(
-      tap(filters => {
+      tap(response => {
+        const filters: MapFiltersModel = {
+          objectFilters: response.filter(x => x.name === 'Obiekty'),
+          regionFilters: response.filter(x => x.name === 'Obszary'),
+          statusFilters: response.filter(x => x.name === 'Statusy obiektów'),
+        };
+
         ctx.patchState({
           mapFilters: filters,
         });
