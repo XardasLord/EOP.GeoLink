@@ -45,6 +45,8 @@ export class MapComponent implements OnInit, OnDestroy {
   mapLayersControl!: LeafletControlLayersConfig;
   mapScale!: Scale;
 
+  private mapMovingWhileOpeningPopup = false;
+
   private clusterMarkers: L.LayerGroup = L.layerGroup();
   private objectMarkers: L.LayerGroup = L.layerGroup();
 
@@ -160,10 +162,20 @@ export class MapComponent implements OnInit, OnDestroy {
       .addTo(map);
 
     this.map.on('zoomend', event => {
+      if (this.mapMovingWhileOpeningPopup) {
+        this.mapMovingWhileOpeningPopup = false;
+        return;
+      }
+
       this.getObjectsSubscriptions.add(this.loadMapObjects());
     });
 
     this.map.on('moveend', event => {
+      if (this.mapMovingWhileOpeningPopup) {
+        this.mapMovingWhileOpeningPopup = false;
+        return;
+      }
+
       this.getObjectsSubscriptions.add(this.loadMapObjects());
     });
   }
@@ -332,6 +344,8 @@ export class MapComponent implements OnInit, OnDestroy {
     });
 
     clusterMarker.on('click', () => {
+      this.mapMovingWhileOpeningPopup = true;
+
       const popupComponent = this.dynamicComponentCreator.createClusterGroupPopup(
         cluster.idClust,
         cluster.level,
@@ -342,11 +356,14 @@ export class MapComponent implements OnInit, OnDestroy {
       clusterMarker
         .bindPopup(popupComponent, {
           className: 'cluster-group-context-menu',
+          closeOnClick: false,
         })
         .openPopup();
     });
 
     clusterMarker.on('contextmenu', () => {
+      this.mapMovingWhileOpeningPopup = true;
+
       const popupComponent = this.dynamicComponentCreator.createClusterGroupQuickReportsPopup(cluster);
 
       clusterMarker.unbindPopup();
@@ -390,6 +407,8 @@ export class MapComponent implements OnInit, OnDestroy {
 
     // Different approach to attach component as a popup - https://stackoverflow.com/a/44686112/3921353
     marker.on('click', ($event: LeafletMouseEvent) => {
+      this.mapMovingWhileOpeningPopup = true;
+
       const popupComponent = this.dynamicComponentCreator.createMapItemPopup(mapObject);
       marker.unbindPopup();
       marker.bindPopup(popupComponent, {}).openPopup();
