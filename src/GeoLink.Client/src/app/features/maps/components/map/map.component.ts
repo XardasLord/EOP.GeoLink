@@ -2,9 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { LeafletControlLayersConfig } from '@asymmetrik/ngx-leaflet';
 import * as L from 'leaflet';
-import * as esri from 'esri-leaflet';
-import 'esri-leaflet-renderers';
-import { vectorTileLayer } from 'esri-leaflet-vector';
 import {
   Control,
   DivIcon,
@@ -20,18 +17,22 @@ import {
   Polygon,
   tileLayer,
 } from 'leaflet';
-import { Subscription, interval, switchMap, debounceTime } from 'rxjs';
+import * as esri from 'esri-leaflet';
+import 'esri-leaflet-renderers';
+import { vectorTileLayer } from 'esri-leaflet-vector';
+import { debounceTime, interval, Subscription, switchMap } from 'rxjs';
 
 import '../../../../../../node_modules/leaflet.browser.print/dist/leaflet.browser.print.min.js';
 import { environment } from '../../../../../environments/environment';
 import { MarkerClusterHelper } from '../../helpers/marker-cluster.helper';
 import { MapClusterModel, MapObjectModel } from '../../models/map-item.model';
 import { DynamicComponentCreatorHelper } from '../../helpers/dynamic-component-creator.helper';
-import Scale = Control.Scale;
 import { MapsService } from '../../services/maps.service';
 import { MapFilterModel } from '../../models/map-filter-model';
 import { MapsState } from '../../states/maps.state';
 import { GeoJsonObject } from 'geojson';
+import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
+import Scale = Control.Scale;
 
 @Component({
   selector: 'app-map',
@@ -438,11 +439,18 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private createMapObjectIcon(mapItem: MapObjectModel): Icon {
+    const iconUrl =
+      mapItem.idStatus === MapObjectStatusTypeEnum.OK
+        ? 'assets/leaflet/marker-icon-good.png'
+        : mapItem.idStatus === MapObjectStatusTypeEnum.Warning
+        ? 'assets/leaflet/marker-icon-warning.png'
+        : 'assets/leaflet/marker-icon-bad.png';
+
     return new Icon({
-      iconSize: [25, 41],
+      iconSize: [37.5, 61.5],
       iconAnchor: [13, 41],
-      iconUrl: 'assets/leaflet/marker-icon.png',
-      iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
+      iconUrl: iconUrl,
+      // iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
       shadowUrl: 'assets/leaflet/marker-shadow.png',
     });
   }
