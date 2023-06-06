@@ -130,7 +130,9 @@ export class MapComponent implements OnInit, OnDestroy {
     this.clusterMarkers.addTo(this.map);
     this.objectMarkers.addTo(this.map);
 
-    this.getObjectsSubscriptions.add(this.loadMapObjects());
+    setTimeout(() => {
+      this.getObjectsSubscriptions.add(this.loadMapObjects());
+    }, 1000);
 
     if (environment.arcGisMapBackground.length > 0) {
       this.loadLayersFromArcGIS(map);

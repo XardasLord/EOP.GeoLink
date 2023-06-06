@@ -56,11 +56,11 @@ export class AuthState implements NgxsOnInit {
     }
 
     if (user) {
+      actions.push(new LoadMapFilters());
       actions.push(new GetMapObjectTypes());
       actions.push(new GetMapDeviceTypes());
       actions.push(new GetMapObjectStatusTypes());
       actions.push(new GetDeviceGroupsRelation());
-      actions.push(new LoadMapFilters());
       actions.push(
         new SetInitialMapFilters(
           user.init_objecttypefilters,
@@ -69,7 +69,6 @@ export class AuthState implements NgxsOnInit {
           user.init_statusfilters
         )
       );
-      // actions.push(new Navigate([RoutePaths.Map]));
     }
 
     of(actions)
