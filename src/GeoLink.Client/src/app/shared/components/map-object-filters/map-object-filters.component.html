@@ -6,7 +6,8 @@
         [checked]="parentFilter.allChildFiltersCompleted"
         color="accent"
         [indeterminate]="someComplete(parentFilter)"
-        (change)="setAll($event.checked, parentFilter)">
+        (change)="setAll($event.checked, parentFilter)"
+        [disabled]="!parentFilter.enabled">
         <b>{{ parentFilter.name }}</b>
       </mat-checkbox>
       <li *ngFor="let subFilter of parentFilter.filters">
@@ -16,7 +17,8 @@
               color="accent"
               [checked]="subFilter.allChildFiltersCompleted"
               [indeterminate]="someComplete(subFilter)"
-              (change)="setAll($event.checked, subFilter)">
+              (change)="setAll($event.checked, subFilter)"
+              [disabled]="!subFilter.enabled">
               {{ subFilter.name }}
             </mat-checkbox>
 
@@ -24,7 +26,8 @@
               <mat-checkbox
                 color="accent"
                 [(ngModel)]="childOfSubFilter.completed"
-                (ngModelChange)="updateAllComplete(subFilter)">
+                (ngModelChange)="updateAllComplete(subFilter)"
+                [disabled]="!childOfSubFilter.enabled">
                 {{ childOfSubFilter.name }}
               </mat-checkbox>
             </li>
@@ -35,7 +38,8 @@
           <mat-checkbox
             color="accent"
             [(ngModel)]="subFilter.completed"
-            (ngModelChange)="updateAllComplete(parentFilter)">
+            (ngModelChange)="updateAllComplete(parentFilter)"
+            [disabled]="!subFilter.enabled">
             {{ subFilter.name }}
           </mat-checkbox>
         </ng-template>
