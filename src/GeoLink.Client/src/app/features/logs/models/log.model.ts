@@ -1,5 +1,5 @@
 export interface LogModel {
-  date: Date;
-  category: string;
-  message: string;
+  timestamp: Date;
+  type: string;
+  eventInfo: string;
 }

@@ -11,7 +11,7 @@ import { Load } from '../../states/logs.action';
   styleUrls: ['./logs-list.component.scss'],
 })
 export class LogsListComponent implements OnInit {
-  displayedColumns: string[] = [nameof<LogModel>('date'), nameof<LogModel>('category'), nameof<LogModel>('message')];
+  displayedColumns: string[] = [nameof<LogModel>('timestamp'), nameof<LogModel>('type'), nameof<LogModel>('eventInfo')];
   logs$ = this.store.select(LogsState.getLogs);
 
   constructor(private store: Store) {}

@@ -1,19 +1,21 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { LogModel } from '../models/log.model';
+import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
+import { environment } from '../../../../environments/environment';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable()
-export class LogsService {
-  load(): Observable<LogModel[]> {
-    const logs: LogModel[] = [
-      { date: new Date(), category: 'System', message: 'Utrata komunikacji z System Ekspercki MindMade' },
-      { date: new Date(), category: 'System', message: 'Przywrócenie komunikacji z System Ekspercki MindMade' },
-      { date: new Date(), category: 'System', message: 'Wolny odczyt danych z Baza ORACLE GeoLink' },
-      { date: new Date(), category: 'System', message: 'Utrata komunikacji z Baza ORACLE GeoLink' },
-      { date: new Date(), category: 'System', message: 'Przywrócenie komunikacji z Baza ORACLE GeoLink' },
-      { date: new Date(), category: 'User', message: 'Dodano pozycję do menu filtra obiekty' },
-    ];
+export class LogsService extends RemoteServiceBase {
+  private apiUrl = environment.apiEndpoint;
 
-    return of(logs);
+  constructor(httpClient: HttpClient) {
+    super(httpClient);
+  }
+
+  load(): Observable<LogModel[]> {
+    const params = new HttpParams().set('offset', 0).set('count', 50);
+
+    return this.httpClient.get<LogModel[]>(`${this.apiUrl}/logs/getLogs`, { params });
   }
 }
