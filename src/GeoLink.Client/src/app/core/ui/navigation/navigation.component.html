@@ -31,10 +31,10 @@
         <mat-icon matListItemIcon>settings</mat-icon>
         <span matListItemTitle *ngIf="sidenav.opened">Administracja</span>
       </mat-list-item>
-      <!--      <mat-list-item [routerLink]="RoutePaths.Configuration" routerLinkActive="active-route">-->
-      <!--        <mat-icon matListItemIcon>construction</mat-icon>-->
-      <!--        <span matListItemTitle *ngIf="sidenav.opened">Konfiguracja</span>-->
-      <!--      </mat-list-item>-->
+      <mat-list-item [routerLink]="RoutePaths.Configuration" routerLinkActive="active-route">
+        <mat-icon matListItemIcon>construction</mat-icon>
+        <span matListItemTitle *ngIf="sidenav.opened">Konfiguracja</span>
+      </mat-list-item>
       <mat-list-item
         [routerLink]="RoutePaths.Filters"
         routerLinkActive="active-route"
