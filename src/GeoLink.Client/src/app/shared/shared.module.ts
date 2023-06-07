@@ -16,6 +16,8 @@ import { DictionaryService } from './services/dictionary.service';
 import { DictionaryState } from './states/dictionary.state';
 import { EnumDescriptionPipePipe } from './pipes/enum-description.pipe';
 import { MapStatusFiltersComponent } from './components/map-status-filters/map-status-filters.component';
+import { AlertState } from './states/alert.state';
+import { AlertService } from './services/alert.service';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,7 @@ import { MapStatusFiltersComponent } from './components/map-status-filters/map-s
     ReactiveFormsModule,
     MaterialModule,
     HttpClientModule,
-    NgxsModule.forFeature([ModalState, DictionaryState]),
+    NgxsModule.forFeature([ModalState, DictionaryState, AlertState]),
     ToastrModule.forRoot(),
   ],
   exports: [
@@ -51,6 +53,7 @@ import { MapStatusFiltersComponent } from './components/map-status-filters/map-s
     ErrorService,
     AuthService,
     DictionaryService,
+    AlertService,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
   ],
 })

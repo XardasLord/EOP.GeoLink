@@ -10,4 +10,25 @@
   }
 }
 
+.alerts-panel {
+  position: fixed;
+  width: 600px;
+  top: 70px;
+  right: 0;
+  z-index: 10;
+  border-radius: 15px;
+  background: white; // TODO: Move definitions to variables.scss file
+  border: 1px solid blue;
 
+  .mat-icon.good {
+    color: green;
+  }
+
+  .mat-icon.warning {
+    color: orange;
+  }
+
+  .mat-icon.error {
+    color: red;
+  }
+}

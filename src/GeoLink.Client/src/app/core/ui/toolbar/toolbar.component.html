@@ -9,21 +9,39 @@
 
     <span class="right-section">
       <span class="section alerts">
-        <button mat-icon-button matTooltip="Alarmy">
-          <mat-icon matListIcon>notifications</mat-icon>
+        <button mat-icon-button matTooltip="Alarmy" (click)="toggleAlerts()">
+          <mat-icon [matBadge]="alertsCount$ | async" matBadgeColor="warn">notifications</mat-icon>
         </button>
       </span>
 
       <span class="section user-info">
         <span class="name">{{ (user$ | async)?.unique_name }} ({{ (user$ | async)?.role }})</span>
         <button mat-icon-button>
-          <mat-icon matListIcon>face</mat-icon>
+          <mat-icon>face</mat-icon>
         </button>
       </span>
 
       <button mat-icon-button matTooltip="Wyloguj" (click)="logout()">
-        <mat-icon class="material-icons-outlined" matListIcon>logout</mat-icon>
+        <mat-icon class="material-icons-outlined">logout</mat-icon>
       </button>
     </span>
   </mat-toolbar-row>
 </mat-toolbar>
+
+<div class="alerts-panel" *ngIf="showAlerts">
+  <mat-list>
+    <mat-list-item *ngFor="let alert of alerts$ | async">
+      <mat-icon
+        matListItemIcon
+        [ngClass]="{
+          good: alert?.status === AlertStatus.OK,
+          warning: alert?.status === AlertStatus.Warning,
+          error: alert?.status === AlertStatus.Error
+        }"
+        >flag</mat-icon
+      >
+      <div matListItemTitle [matTooltip]="alert.details">{{ alert.message }}</div>
+      <div matListItemLine>{{ alert.serviceName }} - {{ alert.timestamp | date : 'dd/MM/yyyy, hh:mm:ss' }}</div>
+    </mat-list-item>
+  </mat-list>
+</div>
