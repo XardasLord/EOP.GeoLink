@@ -12,9 +12,17 @@
   <tr class="group-row" *ngFor="let group of mapItems">
     <td>{{ getObjectType(group.objType) }}</td>
     <td>{{ group.objCount }}</td>
-    <td><mat-icon class="good">circle</mat-icon>{{ getSuccessStatusDevicesCount(group) }}</td>
-    <td><mat-icon class="warning">circle</mat-icon>{{ getWarningStatusDevicesCount(group) }}</td>
-    <td><mat-icon class="bad">circle</mat-icon>{{ getBadStatusDevicesCount(group) }}</td>
+    <td>
+      <mat-icon class="good">circle</mat-icon
+      ><span class="status-count">{{ getSuccessStatusDevicesCount(group) }}</span>
+    </td>
+    <td>
+      <mat-icon class="warning">circle</mat-icon
+      ><span class="status-count">{{ getWarningStatusDevicesCount(group) }}</span>
+    </td>
+    <td>
+      <mat-icon class="bad">circle</mat-icon><span class="status-count">{{ getBadStatusDevicesCount(group) }}</span>
+    </td>
     <td (click)="showClusterGroupSubMenu(group, $event)">>>></td>
   </tr>
 
@@ -33,9 +41,18 @@
       <tr class="group-row" *ngFor="let group of secondLevelClusterGroupDetailsModels.devGroups">
         <td>{{ getDeviceType(group.devType) }}</td>
         <td>{{ group.devCount }}</td>
-        <td><mat-icon class="good">circle</mat-icon>{{ getSuccessStatusDevicesGroupCount(group.devStat) }}</td>
-        <td><mat-icon class="warning">circle</mat-icon>{{ getWarningStatusDevicesGroupCount(group.devStat) }}</td>
-        <td><mat-icon class="bad">circle</mat-icon>{{ getBadStatusDevicesGroupCount(group.devStat) }}</td>
+        <td>
+          <mat-icon class="good">circle</mat-icon
+          ><span class="status-count">{{ getSuccessStatusDevicesGroupCount(group.devStat) }}</span>
+        </td>
+        <td>
+          <mat-icon class="warning">circle</mat-icon
+          ><span class="status-count">{{ getWarningStatusDevicesGroupCount(group.devStat) }}</span>
+        </td>
+        <td>
+          <mat-icon class="bad">circle</mat-icon
+          ><span class="status-count">{{ getBadStatusDevicesGroupCount(group.devStat) }}</span>
+        </td>
         <td>>>></td>
       </tr>
     </ng-container>

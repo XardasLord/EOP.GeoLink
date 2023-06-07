@@ -17,10 +17,15 @@ tr.header-summary-row {
 tr.group-row {
   cursor: pointer;
   font-weight: bold;
-  height: 30px;
+  height: 40px;
+  border: $map-item-context-menu-table-row-border;
 
   td {
     border: none;
+  }
+
+  .status-count {
+    display: block;
   }
 }
 
