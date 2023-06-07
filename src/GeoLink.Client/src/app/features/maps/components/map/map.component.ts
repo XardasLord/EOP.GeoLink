@@ -359,7 +359,6 @@ export class MapComponent implements OnInit, OnDestroy {
       clusterMarker
         .bindPopup(popupComponent, {
           className: 'cluster-group-context-menu',
-          closeOnClick: false,
         })
         .openPopup();
     });
