@@ -47,11 +47,13 @@ export class MapObjectFiltersComponent {
       return;
     }
 
-    parent.filters.forEach(filter => {
-      filter.completed = completed;
+    parent.filters
+      .filter(x => x.enabled)
+      .forEach(filter => {
+        filter.completed = completed;
 
-      this.setAll(completed, filter);
-    });
+        this.setAll(completed, filter);
+      });
 
     this.notifyFiltersChange();
   }
