@@ -26,7 +26,8 @@
                 color="accent"
                 [(ngModel)]="childOfSubFilter.completed"
                 (ngModelChange)="updateAllComplete(subFilter)"
-                [disabled]="!childOfSubFilter.enabled">
+                [disabled]="!childOfSubFilter.enabled"
+                *ngIf="subFilter.enabled && subFilter.completed">
                 {{ childOfSubFilter.name }}
               </mat-checkbox>
             </li>
