@@ -83,6 +83,11 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     );
   }
 
+  closeSubMenu() {
+    this.showSubMenu = false;
+    this.changeDetectorRef.detectChanges();
+  }
+
   private adjustDeviceSubMenuPosition(event: MouseEvent) {
     const y = event.pageY;
     const tableRect = this.parentTable.nativeElement.getBoundingClientRect();

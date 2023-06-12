@@ -63,4 +63,8 @@ td {
   background-color: white;
   width: 390px;
   padding: 20px;
+
+  .leaflet-popup-close-button {
+    cursor: pointer;
+  }
 }

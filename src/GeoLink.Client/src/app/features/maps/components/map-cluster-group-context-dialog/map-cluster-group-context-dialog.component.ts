@@ -1,12 +1,7 @@
 import { AfterContentChecked, ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
-import {
-  DeviceStatisticsModel,
-  MapClusterDeviceGroupDetails,
-  MapClusterGroupDetails,
-  MapObjectGroupModel,
-} from '../../models/map-item.model';
+import { DeviceStatisticsModel, MapClusterGroupDetails, MapObjectGroupModel } from '../../models/map-item.model';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
 import { MapObjectHelper } from '../../helpers/map-object-helper';
 import { MapsService } from '../../services/maps.service';
@@ -167,6 +162,11 @@ export class MapClusterGroupContextDialogComponent implements AfterContentChecke
           this.changeDetectorRef.detectChanges();
         })
     );
+  }
+
+  closeSubMenu() {
+    this.showSubMenu = false;
+    this.changeDetectorRef.detectChanges();
   }
 
   private adjustDeviceSubMenuPosition(event: MouseEvent) {

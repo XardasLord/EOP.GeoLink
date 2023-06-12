@@ -50,4 +50,8 @@ td {
   background-color: white;
   width: 260px;
   padding: 20px;
+
+  .leaflet-popup-close-button {
+    cursor: pointer;
+  }
 }

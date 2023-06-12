@@ -27,6 +27,7 @@
   </tr>
 
   <div class="second-level-table" [ngStyle]="{ left: elementLeft, top: elementTop }" *ngIf="showSubMenu">
+    <a class="leaflet-popup-close-button" (click)="closeSubMenu()">×</a>
     <tr class="header-summary-row">
       <th colspan="4">Grupa urządzeń</th>
       <th colspan="2">{{ getAllObjectsInsideGroup(secondLevelClusterGroupDetailsModels) }}</th>

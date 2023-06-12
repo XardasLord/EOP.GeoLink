@@ -37,6 +37,14 @@ export class MapRegionFiltersComponent {
     return model.filters.filter(t => t.completed).length > 0 && !model.allChildFiltersCompleted;
   }
 
+  allChildCompleted(model: MapFilterModel): boolean {
+    if (model.filters == null) {
+      return false;
+    }
+
+    return model.filters.filter(t => t.completed).length > model.filters.length;
+  }
+
   setAll(completed: boolean, parent: MapFilterModel) {
     parent.allChildFiltersCompleted = completed;
     parent.completed = completed;

@@ -359,6 +359,8 @@ export class MapComponent implements OnInit, OnDestroy {
       clusterMarker
         .bindPopup(popupComponent, {
           className: 'cluster-group-context-menu',
+          closeButton: true,
+          closeOnClick: false,
         })
         .openPopup();
     });
@@ -413,7 +415,12 @@ export class MapComponent implements OnInit, OnDestroy {
 
       const popupComponent = this.dynamicComponentCreator.createMapItemPopup(mapObject);
       marker.unbindPopup();
-      marker.bindPopup(popupComponent, {}).openPopup();
+      marker
+        .bindPopup(popupComponent, {
+          closeButton: true,
+          closeOnClick: false,
+        })
+        .openPopup();
     });
 
     marker.on('mouseover', ($event: LeafletMouseEvent) => {
