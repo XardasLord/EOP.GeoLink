@@ -1,5 +1,5 @@
-import { LogModel } from '../../logs/models/log.model';
+import { ReportModel } from '../models/report.model';
 
 export interface ReportsStateModel {
-  logs: LogModel[]; // TODO
+  reports: ReportModel[];
 }

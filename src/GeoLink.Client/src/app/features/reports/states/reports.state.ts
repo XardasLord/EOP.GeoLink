@@ -2,33 +2,33 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { catchError, tap, throwError } from 'rxjs';
 import { ReportsStateModel } from './reports.state.model';
-import { LogModel } from '../../logs/models/log.model';
 import { Load } from './reports.action';
-import { LogsService } from '../../logs/services/logs.service';
+import { ReportsService } from '../services/reports.service';
+import { ReportModel } from '../models/report.model';
 
 const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
 
 @State<ReportsStateModel>({
   name: REPORTS_STATE_TOKEN,
   defaults: {
-    logs: [],
+    reports: [],
   },
 })
 @Injectable()
 export class ReportsState {
-  constructor(private logsService: LogsService) {}
+  constructor(private reportsService: ReportsService) {}
 
   @Selector([REPORTS_STATE_TOKEN])
-  static getReports(state: ReportsStateModel): LogModel[] {
-    return state.logs;
+  static getReports(state: ReportsStateModel): ReportModel[] {
+    return state.reports;
   }
 
   @Action(Load)
   loadLogs(ctx: StateContext<ReportsStateModel>, _: Load) {
-    return this.logsService.load().pipe(
+    return this.reportsService.load().pipe(
       tap(response => {
         ctx.patchState({
-          logs: response,
+          reports: response,
         });
       }),
       catchError(error => {
