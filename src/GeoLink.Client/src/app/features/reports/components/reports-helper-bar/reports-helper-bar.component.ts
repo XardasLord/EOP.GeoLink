@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { MapFilterModel } from '../../../maps/models/map-filter-model';
 
 @Component({
   selector: 'app-reports-helper-bar',
@@ -6,8 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./reports-helper-bar.component.scss'],
 })
 export class ReportsHelperBarComponent {
+  @Output() mapFiltersChanged = new EventEmitter<MapFilterModel[]>();
   showObjectFilters = false;
   showRegionFilters = false;
+  showStatusFilters = false;
 
   toggleObjectFilters(): void {
     this.showObjectFilters = !this.showObjectFilters;
@@ -15,5 +18,13 @@ export class ReportsHelperBarComponent {
 
   toggleRegionFilters(): void {
     this.showRegionFilters = !this.showRegionFilters;
+  }
+
+  toggleStatusFilters(): void {
+    this.showStatusFilters = !this.showStatusFilters;
+  }
+
+  onFiltersChanged($event: MapFilterModel[]) {
+    this.mapFiltersChanged.emit($event);
   }
 }
