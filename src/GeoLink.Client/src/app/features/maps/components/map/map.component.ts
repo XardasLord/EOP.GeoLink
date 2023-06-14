@@ -457,7 +457,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     return new Icon({
       iconSize: [37.5, 61.5],
-      iconAnchor: [13, 41],
+      iconAnchor: [18.75, 61.5],
       iconUrl: iconUrl,
       shadowUrl: 'assets/leaflet/marker-shadow.png',
     });
