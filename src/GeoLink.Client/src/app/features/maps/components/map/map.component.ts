@@ -359,6 +359,8 @@ export class MapComponent implements OnInit, OnDestroy {
       clusterMarker
         .bindPopup(popupComponent, {
           className: 'cluster-group-context-menu',
+          closeButton: true,
+          closeOnClick: false,
         })
         .openPopup();
     });
@@ -413,7 +415,12 @@ export class MapComponent implements OnInit, OnDestroy {
 
       const popupComponent = this.dynamicComponentCreator.createMapItemPopup(mapObject);
       marker.unbindPopup();
-      marker.bindPopup(popupComponent, {}).openPopup();
+      marker
+        .bindPopup(popupComponent, {
+          closeButton: true,
+          closeOnClick: false,
+        })
+        .openPopup();
     });
 
     marker.on('mouseover', ($event: LeafletMouseEvent) => {
@@ -440,6 +447,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private createMapObjectIcon(mapItem: MapObjectModel): Icon {
+    // TODO: Create icon based on mapItem type (objType)
     const iconUrl =
       mapItem.idStatus === MapObjectStatusTypeEnum.OK
         ? 'assets/leaflet/marker-icon-good.png'
@@ -451,7 +459,6 @@ export class MapComponent implements OnInit, OnDestroy {
       iconSize: [37.5, 61.5],
       iconAnchor: [13, 41],
       iconUrl: iconUrl,
-      // iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
       shadowUrl: 'assets/leaflet/marker-shadow.png',
     });
   }

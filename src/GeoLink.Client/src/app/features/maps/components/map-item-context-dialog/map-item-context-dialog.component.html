@@ -37,6 +37,7 @@
 
 <!-- Second level context menu -->
 <div class="second-level-table" [ngStyle]="{ left: elementLeft, top: elementTop }" *ngIf="showSubMenu">
+  <a class="leaflet-popup-close-button" (click)="closeSubMenu()">×</a>
   <tr class="header-summary-row">
     <th>{{ getDeviceType(secondLevelDeviceDetailsModel.devType) }}</th>
     <th colspan="2">{{ secondLevelDeviceDetailsModel.producer }}</th>
