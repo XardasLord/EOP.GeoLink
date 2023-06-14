@@ -26,7 +26,31 @@ export class ReportsService extends RemoteServiceBase {
       region: 'Gdańsk',
       tan: 'TAN A',
       status: MapObjectStatusTypeEnum.OK,
-      availability: 95,
+      availability: 100,
+    });
+
+    examples.push({
+      object: 'GPZ',
+      device: 'Licznik',
+      ipAddress: '127.0.0.1',
+      stationNumber: 1234,
+      stationName: 'Test',
+      region: 'Gdańsk',
+      tan: 'TAN A',
+      status: MapObjectStatusTypeEnum.Warning,
+      availability: 70,
+    });
+
+    examples.push({
+      object: 'GPZ',
+      device: 'Licznik',
+      ipAddress: '127.0.0.1',
+      stationNumber: 1234,
+      stationName: 'Test',
+      region: 'Gdańsk',
+      tan: 'TAN A',
+      status: MapObjectStatusTypeEnum.Error,
+      availability: 30,
     });
 
     return of(examples);
