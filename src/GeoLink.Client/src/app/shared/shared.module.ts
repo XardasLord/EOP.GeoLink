@@ -18,6 +18,7 @@ import { EnumDescriptionPipePipe } from './pipes/enum-description.pipe';
 import { MapStatusFiltersComponent } from './components/map-status-filters/map-status-filters.component';
 import { AlertState } from './states/alert.state';
 import { AlertService } from './services/alert.service';
+import { SingleDeviceChartComponent } from './components/single-device-chart/single-device-chart.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { AlertService } from './services/alert.service';
     MapObjectFiltersComponent,
     MapStatusFiltersComponent,
     AuthScopeAllowDirective,
+    SingleDeviceChartComponent,
   ],
   imports: [
     CommonModule,
@@ -44,10 +46,11 @@ import { AlertService } from './services/alert.service';
     HttpClientModule,
     EnumDescriptionPipePipe,
     ToastrModule,
+    AuthScopeAllowDirective,
     MapRegionFiltersComponent,
     MapObjectFiltersComponent,
     MapStatusFiltersComponent,
-    AuthScopeAllowDirective,
+    SingleDeviceChartComponent,
   ],
   providers: [
     ErrorService,

@@ -18,7 +18,7 @@
     <ng-container *ngFor="let deviceModel of deviceModelType.value">
       <tr class="device-item-row">
         <td>{{ getDeviceType(+deviceModel.devType) }}</td>
-        <td (click)="showStatusChart(deviceModel)">
+        <td (click)="showStatusChart(deviceModel, $event)">
           <mat-icon
             matTooltip="abc test 123"
             [ngClass]="{
@@ -36,7 +36,7 @@
 </table>
 
 <!-- Second level context menu -->
-<div class="second-level-table" [ngStyle]="{ left: elementLeft, top: elementTop }" *ngIf="showSubMenu">
+<div class="second-level-table" [ngStyle]="{ left: subMenuElementLeft, top: subMenuElementTop }" *ngIf="showSubMenu">
   <a class="leaflet-popup-close-button" (click)="closeSubMenu()">×</a>
   <tr class="header-summary-row">
     <th>{{ getDeviceType(secondLevelDeviceDetailsModel.devType) }}</th>
@@ -71,4 +71,11 @@
       </td>
     </tr>
   </ng-container>
+</div>
+
+<div
+  class="status-chart-content"
+  [ngStyle]="{ left: statusChartElementLeft, top: statusChartElementTop }"
+  *ngIf="showChartMenu">
+  <app-single-device-chart [chartType]="SingleDeviceChartTypeEnum.Availability"></app-single-device-chart>
 </div>
