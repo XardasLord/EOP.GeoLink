@@ -19,6 +19,7 @@ import { MapStatusFiltersComponent } from './components/map-status-filters/map-s
 import { AlertState } from './states/alert.state';
 import { AlertService } from './services/alert.service';
 import { SingleDeviceChartComponent } from './components/single-device-chart/single-device-chart.component';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,9 @@ import { SingleDeviceChartComponent } from './components/single-device-chart/sin
     HttpClientModule,
     NgxsModule.forFeature([ModalState, DictionaryState, AlertState]),
     ToastrModule.forRoot(),
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
+    }),
   ],
   exports: [
     CommonModule,
