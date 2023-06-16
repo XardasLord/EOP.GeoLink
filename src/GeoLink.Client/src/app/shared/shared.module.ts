@@ -20,6 +20,7 @@ import { AlertState } from './states/alert.state';
 import { AlertService } from './services/alert.service';
 import { SingleDeviceChartComponent } from './components/single-device-chart/single-device-chart.component';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { DeviceChartService } from './services/device-chart.service';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
     AuthService,
     DictionaryService,
     AlertService,
+    DeviceChartService,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
   ],
 })
