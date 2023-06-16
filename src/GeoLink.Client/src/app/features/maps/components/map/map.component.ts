@@ -7,13 +7,16 @@ import {
   DivIcon,
   GeoJSON,
   Icon,
+  LatLng,
   latLng,
   LatLngBounds,
   Layer,
+  LayerGroup,
   LeafletMouseEvent,
   Map,
   MapOptions,
   Marker,
+  Point,
   Polygon,
   tileLayer,
 } from 'leaflet';
@@ -40,7 +43,7 @@ import Scale = Control.Scale;
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit, OnDestroy {
-  map!: L.Map;
+  map!: Map;
   mapOptions!: MapOptions;
   mapLayers!: Layer[];
   mapLayersControl!: LeafletControlLayersConfig;
@@ -48,8 +51,8 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private mapMovingWhileOpeningPopup = false;
 
-  private clusterMarkers: L.LayerGroup = L.layerGroup();
-  private objectMarkers: L.LayerGroup = L.layerGroup();
+  private clusterMarkers: LayerGroup = new LayerGroup();
+  private objectMarkers: LayerGroup = new LayerGroup();
 
   private lastRequestForCluster$!: any;
   private lastRequestForObjects$!: any;
@@ -442,7 +445,7 @@ export class MapComponent implements OnInit, OnDestroy {
     return new DivIcon({
       html: '<div><span>' + cluster.objCount + '</span></div>',
       className: cssName,
-      iconSize: new L.Point(40, 40),
+      iconSize: new Point(40, 40),
     });
   }
 
@@ -465,18 +468,18 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private getClusterAreaPolygon(bbox: number[]): Polygon {
     const bboxCoords = [
-      [L.latLng(bbox[1], bbox[0]), L.latLng(bbox[1], bbox[2])],
-      [L.latLng(bbox[1], bbox[2]), L.latLng(bbox[3], bbox[2])],
-      [L.latLng(bbox[3], bbox[2]), L.latLng(bbox[3], bbox[0])],
-      [L.latLng(bbox[3], bbox[0]), L.latLng(bbox[1], bbox[0])],
+      [new LatLng(bbox[1], bbox[0]), new LatLng(bbox[1], bbox[2])],
+      [new LatLng(bbox[1], bbox[2]), new LatLng(bbox[3], bbox[2])],
+      [new LatLng(bbox[3], bbox[2]), new LatLng(bbox[3], bbox[0])],
+      [new LatLng(bbox[3], bbox[0]), new LatLng(bbox[1], bbox[0])],
     ];
 
-    return L.polygon(bboxCoords, { color: 'blue', fillOpacity: 0.2 });
+    return new Polygon(bboxCoords, { color: 'blue', fillOpacity: 0.2 });
   }
 
   private getClusterAreaGeoJsonPolygon(geoJson: GeoJsonObject): GeoJSON {
-    return new L.GeoJSON(geoJson);
-    // return L.polygon(bboxCoords, { color: 'blue', fillOpacity: 0.2 });
+    return new GeoJSON(geoJson);
+    // return new Polygon(bboxCoords, { color: 'blue', fillOpacity: 0.2 });
   }
 
   onMapFiltersChanged($event: MapFilterModel[]) {
