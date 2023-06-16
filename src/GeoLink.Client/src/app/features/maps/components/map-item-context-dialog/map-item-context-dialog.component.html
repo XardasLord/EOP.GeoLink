@@ -73,11 +73,19 @@
   </ng-container>
 </div>
 
-<div
-  class="status-chart-content"
-  [ngStyle]="{ left: statusChartElementLeft, top: statusChartElementTop }"
-  *ngIf="showChartMenu">
-  <app-single-device-chart
-    [chartType]="SingleDeviceChartTypeEnum.Availability"
-    [deviceId]="selectedDeviceId"></app-single-device-chart>
-</div>
+<ng-container *ngIf="showChartMenu">
+  <div
+    class="status-chart-content first"
+    [ngStyle]="{ left: statusChartFirstElementLeft, top: statusChartFirstElementTop }">
+    <app-single-device-chart
+      [chartType]="ChartTypeEnum.Availability"
+      [deviceId]="selectedDeviceId"></app-single-device-chart>
+  </div>
+  <div
+    class="status-chart-content second"
+    [ngStyle]="{ left: statusChartSecondElementLeft, top: statusChartSecondElementTop }">
+    <app-single-device-chart
+      [chartType]="ChartTypeEnum.MovingAverage"
+      [deviceId]="selectedDeviceId"></app-single-device-chart>
+  </div>
+</ng-container>

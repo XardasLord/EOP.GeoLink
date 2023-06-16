@@ -1,0 +1,46 @@
+@import '../../../../styles/variables.scss';
+
+.header-info {
+  padding: 5px 5px 25px 5px;
+
+  > span {
+    float: left;
+    display: inline;
+    font-weight: bold;
+  }
+
+  span.date {
+    width: 25%;
+  }
+
+  span.time-extent {
+    width: 5%;
+  }
+
+  span.period {
+    width: 45%;
+    text-align: center;
+  }
+
+  span.main-label {
+    width: 15%;
+    text-align: right;
+  }
+
+  span.main-value {
+    width: 10%;
+    text-align: right;
+  }
+
+  span.main-value.good {
+    background: $marker-cluster-group-good-status-color;
+  }
+
+  span.main-value.warning {
+    background: orange;
+  }
+
+  span.main-value.bad {
+    background: red;
+  }
+}

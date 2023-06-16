@@ -6,7 +6,7 @@ import { MapObjectHelper } from '../../helpers/map-object-helper';
 import { MapDeviceTypeEnum } from '../../../../shared/models/map-device-type.enum';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
 import { MapsService } from '../../services/maps.service';
-import { SingleDeviceChartTypeEnum } from '../../../../shared/models/single-device-chart-type.enum';
+import { ChartTypeEnum } from '../../../../shared/models/charts/chart-type.enum';
 
 @Component({
   selector: 'app-map-item-context-dialog',
@@ -32,13 +32,15 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
   public showChartMenu = false;
   public subMenuElementLeft = '';
   public subMenuElementTop = '';
-  public statusChartElementLeft = '';
-  public statusChartElementTop = '';
+  public statusChartFirstElementLeft = '';
+  public statusChartFirstElementTop = '';
+  public statusChartSecondElementLeft = '';
+  public statusChartSecondElementTop = '';
   public selectedDeviceId = 0;
 
   private subscriptions: Subscription = new Subscription();
 
-  protected readonly SingleDeviceChartTypeEnum = SingleDeviceChartTypeEnum;
+  protected readonly ChartTypeEnum = ChartTypeEnum;
 
   constructor(
     private store: Store,
@@ -118,8 +120,10 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     const windowHeight = window.innerHeight;
     const maxY = windowHeight;
     const top = y - tableTop > maxY ? maxY : y - tableTop;
-    this.statusChartElementLeft = `-590px`;
-    this.statusChartElementTop = `${top}px`;
+    this.statusChartFirstElementLeft = `-790px`;
+    this.statusChartFirstElementTop = `${top}px`;
+    this.statusChartSecondElementLeft = `-790px`;
+    this.statusChartSecondElementTop = `${top + 440}px`;
 
     this.changeDetectorRef.detectChanges();
   }

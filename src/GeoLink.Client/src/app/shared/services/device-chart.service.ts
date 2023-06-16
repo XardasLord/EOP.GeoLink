@@ -16,6 +16,7 @@ export class DeviceChartService extends RemoteServiceBase {
 
   getChart(
     deviceId: number,
+    chartType: ChartTypeEnum,
     timeExtentHours = 24,
     intervalMinutes = 30,
     dateEnd: Date | undefined = undefined
@@ -24,9 +25,7 @@ export class DeviceChartService extends RemoteServiceBase {
       .set('deviceId', deviceId)
       .set('timeExtentHours', 24) // Okno czasowe (h)
       .set('intervalMinutes', 30) // Interwał (min) między odczytami, wpływających na zagęszczenie szeregu czasowego
-      .set('chartTypes', ChartTypeEnum.Avail)
-      .set('chartTypes', ChartTypeEnum.MovingAvg)
-      .set('chartTypes', ChartTypeEnum.MovingGeomAvg);
+      .set('chartTypes', chartType);
 
     if (dateEnd) {
       params = params.append('dateEnd', dateEnd.toDateString()); // [opcjonalne] data końcowa, domyślnie SYSDATE. Od niej odejmowane są kolejne interwały, aż do wypełnienia okna czasowego. Może się przydać, jeśli wykresy będzie można np przewijać
