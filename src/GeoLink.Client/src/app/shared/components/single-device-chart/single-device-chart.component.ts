@@ -104,12 +104,11 @@ export class SingleDeviceChartComponent implements OnInit, OnDestroy {
 
     model.chartsData[0].data.forEach(chartData => {
       const date = new Date(chartData.timestamp);
-      xAxisData.push(`${date.getHours().toString()}:${date.getMinutes().toString()}`);
-      data1.push(chartData.avail);
-    });
+      const formattedDate = `${date.getHours().toString()}:${date.getMinutes().toString()}`;
 
-    model.chartsData[0].trendLineCoeffs.forEach(chartData => {
-      data2.push(chartData);
+      xAxisData.push(formattedDate);
+      data1.push(chartData.avail);
+      data2.push(chartData.trAvail);
     });
 
     this.chartOptions = {

@@ -285,6 +285,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   transform: rotate(30deg);
 }
 
+// Context menu for single map object
+.map-object-context-menu {
+  width: 420px;
+}
+
 // Tooltip for single map item
 .map-item-tooltip {
   width: 200px;

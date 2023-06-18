@@ -421,6 +421,7 @@ export class MapComponent implements OnInit, OnDestroy {
       marker.unbindPopup();
       marker
         .bindPopup(popupComponent, {
+          className: 'map-object-context-menu',
           closeButton: true,
           closeOnClick: false,
         })

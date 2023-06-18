@@ -107,7 +107,7 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     const windowHeight = window.innerHeight;
     const maxY = windowHeight;
     const top = y - tableTop > maxY ? maxY : y - tableTop;
-    this.subMenuElementLeft = `290px`;
+    this.subMenuElementLeft = `425px`;
     this.subMenuElementTop = `${top}px`;
 
     this.changeDetectorRef.detectChanges();
