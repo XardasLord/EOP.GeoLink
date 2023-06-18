@@ -13,10 +13,10 @@
   }
 
   .mat-icon.warning {
-    color: $marker-cluster-group-good-warning-color;
+    color: $marker-cluster-group-warning-status-color;
   }
 
   .mat-icon.error {
-    color: $marker-cluster-group-good-bad-color;
+    color: $marker-cluster-group-bad-status-color;
   }
 }

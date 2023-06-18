@@ -41,7 +41,7 @@
         >flag</mat-icon
       >
       <div matListItemTitle [matTooltip]="alert.details">{{ alert.message }}</div>
-      <div matListItemLine>{{ alert.serviceName }} - {{ alert.timestamp | date : 'dd/MM/yyyy, hh:mm:ss' }}</div>
+      <div matListItemLine>{{ alert.serviceName }} - {{ alert.timestamp | date : 'dd.MM.yyyy, HH:mm:ss' }}</div>
     </mat-list-item>
   </mat-list>
 </div>

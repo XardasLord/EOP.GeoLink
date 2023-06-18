@@ -35,6 +35,7 @@ import { MapFilterModel } from '../../models/map-filter-model';
 import { MapsState } from '../../states/maps.state';
 import { GeoJsonObject } from 'geojson';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
+import { MapObjectTypeEnum } from '../../../../shared/models/map-object-type.enum';
 import Scale = Control.Scale;
 
 @Component({
@@ -451,12 +452,24 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private createMapObjectIcon(mapItem: MapObjectModel): Icon {
     // TODO: Create icon based on mapItem type (objType)
-    const iconUrl =
+
+    const iconSuffix =
       mapItem.idStatus === MapObjectStatusTypeEnum.OK
-        ? 'assets/leaflet/marker-icon-good.png'
+        ? 'good'
         : mapItem.idStatus === MapObjectStatusTypeEnum.Warning
-        ? 'assets/leaflet/marker-icon-warning.png'
-        : 'assets/leaflet/marker-icon-bad.png';
+        ? 'warning'
+        : 'bad';
+    let iconUrl = 'assets/leaflet/marker-icon.png';
+
+    if (mapItem.objType === MapObjectTypeEnum.Gpz) {
+      iconUrl = `assets/leaflet/GPZ/marker-icon-${iconSuffix}.png`;
+    } else if (mapItem.objType === MapObjectTypeEnum.Stacja) {
+      iconUrl = `assets/leaflet/SN/marker-icon-${iconSuffix}.png`;
+    } else if (mapItem.objType === MapObjectTypeEnum.Szafka) {
+      iconUrl = `assets/leaflet/PPE/marker-icon-${iconSuffix}.png`;
+    } else if (mapItem.objType === MapObjectTypeEnum.Mde) {
+      iconUrl = `assets/leaflet/MDE/marker-icon-${iconSuffix}.png`;
+    }
 
     return new Icon({
       iconSize: [37.5, 61.5],

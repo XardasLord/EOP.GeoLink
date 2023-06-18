@@ -93,12 +93,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .marker-cluster-warning-100 {
-  border: 16px solid $marker-cluster-group-good-warning-color;
+  border: 16px solid $marker-cluster-group-warning-status-color;
   background-color: white;
 }
 
 .marker-cluster-bad-100 {
-  border: 16px solid $marker-cluster-group-good-bad-color;
+  border: 16px solid $marker-cluster-group-bad-status-color;
   background-color: white;
 }
 
@@ -107,7 +107,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-repeat: no-repeat;
   background-image: linear-gradient(white, white),
   linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
-  linear-gradient(120deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-warning-status-color 100%, lightgrey 0%),
   linear-gradient(210deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
   linear-gradient(300deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%);
   background-position: center center, left top, right top, left bottom, right bottom;
@@ -121,9 +121,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-repeat: no-repeat;
   background-image: linear-gradient(white, white),
   linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
-  linear-gradient(120deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-warning-status-color 100%, lightgrey 0%),
   linear-gradient(210deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
-  linear-gradient(300deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%);
+  linear-gradient(300deg, $marker-cluster-group-warning-status-color 100%, lightgrey 0%);
   background-position: center center, left top, right top, left bottom, right bottom;
   background-origin: content-box, border-box, border-box, border-box, border-box;
   background-clip: content-box, border-box, border-box, border-box, border-box;
@@ -135,9 +135,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
    background-repeat: no-repeat;
    background-image: linear-gradient(white, white),
    linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
-   linear-gradient(120deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
-   linear-gradient(210deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
-   linear-gradient(300deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%);
+   linear-gradient(120deg, $marker-cluster-group-warning-status-color 100%, lightgrey 0%),
+   linear-gradient(210deg, $marker-cluster-group-warning-status-color 100%, lightgrey 0%),
+   linear-gradient(300deg, $marker-cluster-group-warning-status-color 100%, lightgrey 0%);
    background-position: center center, left top, right top, left bottom, right bottom;
    background-origin: content-box, border-box, border-box, border-box, border-box;
    background-clip: content-box, border-box, border-box, border-box, border-box;
@@ -149,7 +149,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-repeat: no-repeat;
   background-image: linear-gradient(white, white),
   linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
-  linear-gradient(120deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-bad-status-color 100%, lightgrey 0%),
   linear-gradient(210deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
   linear-gradient(300deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%);
   background-position: center center, left top, right top, left bottom, right bottom;
@@ -163,9 +163,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-repeat: no-repeat;
   background-image: linear-gradient(white, white),
   linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
-  linear-gradient(120deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-bad-status-color 100%, lightgrey 0%),
   linear-gradient(210deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
-  linear-gradient(300deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%);
+  linear-gradient(300deg, $marker-cluster-group-bad-status-color 100%, lightgrey 0%);
   background-position: center center, left top, right top, left bottom, right bottom;
   background-origin: content-box, border-box, border-box, border-box, border-box;
   background-clip: content-box, border-box, border-box, border-box, border-box;
@@ -177,9 +177,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-repeat: no-repeat;
   background-image: linear-gradient(white, white),
   linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
-  linear-gradient(120deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
-  linear-gradient(210deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
-  linear-gradient(300deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%);
+  linear-gradient(120deg, $marker-cluster-group-bad-status-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-bad-status-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-bad-status-color 100%, lightgrey 0%);
   background-position: center center, left top, right top, left bottom, right bottom;
   background-origin: content-box, border-box, border-box, border-box, border-box;
   background-clip: content-box, border-box, border-box, border-box, border-box;
@@ -190,10 +190,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
   background-repeat: no-repeat;
   background-image: linear-gradient(white, white),
-  linear-gradient(0deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
-  linear-gradient(120deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
-  linear-gradient(210deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
-  linear-gradient(300deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%);
+  linear-gradient(0deg, $marker-cluster-group-bad-status-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-warning-status-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-warning-status-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-warning-status-color 100%, lightgrey 0%);
   background-position: center center, left top, right top, left bottom, right bottom;
   background-origin: content-box, border-box, border-box, border-box, border-box;
   background-clip: content-box, border-box, border-box, border-box, border-box;
@@ -204,10 +204,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
   background-repeat: no-repeat;
   background-image: linear-gradient(white, white),
-  linear-gradient(0deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
-  linear-gradient(120deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
-  linear-gradient(210deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
-  linear-gradient(300deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%);
+  linear-gradient(0deg, $marker-cluster-group-warning-status-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-bad-status-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-warning-status-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-bad-status-color 100%, lightgrey 0%);
   background-position: center center, left top, right top, left bottom, right bottom;
   background-origin: content-box, border-box, border-box, border-box, border-box;
   background-clip: content-box, border-box, border-box, border-box, border-box;
@@ -218,10 +218,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-size: 100% 100%, 50% 50%, 50% 50%, 50% 50%, 50% 50%;
   background-repeat: no-repeat;
   background-image: linear-gradient(white, white),
-  linear-gradient(0deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
-  linear-gradient(120deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
-  linear-gradient(210deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
-  linear-gradient(300deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%);
+  linear-gradient(0deg, $marker-cluster-group-warning-status-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-bad-status-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-bad-status-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-bad-status-color 100%, lightgrey 0%);
   background-position: center center, left top, right top, left bottom, right bottom;
   background-origin: content-box, border-box, border-box, border-box, border-box;
   background-clip: content-box, border-box, border-box, border-box, border-box;
@@ -233,9 +233,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-repeat: no-repeat;
   background-image: linear-gradient(white, white),
   linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
-  linear-gradient(120deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
+  linear-gradient(120deg, $marker-cluster-group-warning-status-color 100%, lightgrey 0%),
   linear-gradient(210deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
-  linear-gradient(300deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%);
+  linear-gradient(300deg, $marker-cluster-group-bad-status-color 100%, lightgrey 0%);
   background-position: center center, left top, right top, left bottom, right bottom;
   background-origin: content-box, border-box, border-box, border-box, border-box;
   background-clip: content-box, border-box, border-box, border-box, border-box;
@@ -248,9 +248,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-repeat: no-repeat;
   background-image: linear-gradient(white, white),
   linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
-  linear-gradient(120deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
-  linear-gradient(210deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
-  linear-gradient(300deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%);
+  linear-gradient(120deg, $marker-cluster-group-warning-status-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-bad-status-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-warning-status-color 100%, lightgrey 0%);
   background-position: center center, left top, right top, left bottom, right bottom;
   background-origin: content-box, border-box, border-box, border-box, border-box;
   background-clip: content-box, border-box, border-box, border-box, border-box;
@@ -262,9 +262,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-repeat: no-repeat;
   background-image: linear-gradient(white, white),
   linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
-  linear-gradient(120deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
-  linear-gradient(210deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
-  linear-gradient(300deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%);
+  linear-gradient(120deg, $marker-cluster-group-warning-status-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-bad-status-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-warning-status-color 100%, lightgrey 0%);
   background-position: center center, left top, right top, left bottom, right bottom;
   background-origin: content-box, border-box, border-box, border-box, border-box;
   background-clip: content-box, border-box, border-box, border-box, border-box;
@@ -276,9 +276,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-repeat: no-repeat;
   background-image: linear-gradient(white, white),
   linear-gradient(0deg, $marker-cluster-group-good-status-color 100%, lightgrey 0%),
-  linear-gradient(120deg, $marker-cluster-group-good-warning-color 100%, lightgrey 0%),
-  linear-gradient(210deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%),
-  linear-gradient(300deg, $marker-cluster-group-good-bad-color 100%, lightgrey 0%);
+  linear-gradient(120deg, $marker-cluster-group-warning-status-color 100%, lightgrey 0%),
+  linear-gradient(210deg, $marker-cluster-group-bad-status-color 100%, lightgrey 0%),
+  linear-gradient(300deg, $marker-cluster-group-bad-status-color 100%, lightgrey 0%);
   background-position: center center, left top, right top, left bottom, right bottom;
   background-origin: content-box, border-box, border-box, border-box, border-box;
   background-clip: content-box, border-box, border-box, border-box, border-box;
