@@ -41,3 +41,7 @@ $status-filter-border: $object-filter-border;
 $map-item-context-menu-table-border: 2px solid lightgray;
 $map-item-context-menu-table-row-border: 1px solid lightgray;
 $alert-panel-border: 1px solid $navbar-background-color;
+$context-menu-border-radius: 15px;
+
+// Box shadows
+$context-menu-box-shadow: 0 3px 14px rgba(0,0,0,0.4);

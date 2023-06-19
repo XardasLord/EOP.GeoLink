@@ -63,6 +63,8 @@ td {
   background-color: white;
   width: 390px;
   padding: 20px;
+  border-radius: $context-menu-border-radius;
+  box-shadow: $context-menu-box-shadow;
 
   .leaflet-popup-close-button {
     cursor: pointer;

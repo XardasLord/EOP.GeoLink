@@ -1,7 +1,12 @@
 @import '../../../../styles/variables.scss';
 
+.map-object-context-menu-chart {
+  height: 200px;
+}
+
 .header-info {
-  padding: 5px 5px 25px 5px;
+  padding: 5px 5px 30px 5px;
+  font-size: 11px;
 
   > span {
     float: left;
@@ -13,12 +18,8 @@
     width: 25%;
   }
 
-  span.time-extent {
-    width: 5%;
-  }
-
   span.period {
-    width: 45%;
+    width: 50%;
     text-align: center;
   }
 

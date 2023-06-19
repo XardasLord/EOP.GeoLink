@@ -120,10 +120,10 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     const windowHeight = window.innerHeight;
     const maxY = windowHeight;
     const top = y - tableTop > maxY ? maxY : y - tableTop;
-    this.statusChartFirstElementLeft = `-790px`;
+    this.statusChartFirstElementLeft = `-490px`;
     this.statusChartFirstElementTop = `${top}px`;
-    this.statusChartSecondElementLeft = `-790px`;
-    this.statusChartSecondElementTop = `${top + 440}px`;
+    this.statusChartSecondElementLeft = `-490px`;
+    this.statusChartSecondElementTop = `${top + 240}px`;
 
     this.changeDetectorRef.detectChanges();
   }

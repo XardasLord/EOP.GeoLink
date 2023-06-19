@@ -1,6 +1,5 @@
 <div class="header-info">
   <span class="date">Data: {{ deviceChartModel.dateNow | date : 'dd.MM.yyyy HH:mm:ss' }}</span>
-  <span class="time-extent">{{ deviceChartModel.timeExtent }}</span>
   <span class="period"
     >Okres: {{ deviceChartModel.dateBegin | date : 'dd.MM.yyyy HH:mm:ss' }} -
     {{ deviceChartModel.dateEnd | date : 'dd.MM.yyyy HH:mm:ss' }}</span
@@ -23,4 +22,9 @@
   </ng-container>
 </div>
 
-<div echarts [options]="chartOptions" [loading]="isLoading" [autoResize]="true"></div>
+<div
+  class="map-object-context-menu-chart"
+  echarts
+  [options]="chartOptions"
+  [loading]="isLoading"
+  [autoResize]="true"></div>
