@@ -55,18 +55,16 @@ export class SingleDeviceChartComponent implements OnInit, OnDestroy {
 
   prepareChartMock() {
     const xAxisData = [];
-    const data1 = [];
-    const data2 = [];
+    const standardChartData = [];
 
     for (let i = 0; i < 100; i++) {
       xAxisData.push('category' + i);
-      data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
-      data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5);
+      standardChartData.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
     }
 
     this.chartOptions = {
       legend: {
-        data: ['bar', 'bar2'],
+        data: ['bar'],
         align: 'left',
       },
       tooltip: {},
@@ -82,14 +80,8 @@ export class SingleDeviceChartComponent implements OnInit, OnDestroy {
         {
           name: 'bar',
           type: 'line',
-          data: data1,
+          data: standardChartData,
           animationDelay: idx => idx * 10,
-        },
-        {
-          name: 'bar2',
-          type: 'bar',
-          data: data2,
-          animationDelay: idx => idx * 10 + 100,
         },
       ],
       animationEasing: 'elasticOut',
@@ -99,16 +91,16 @@ export class SingleDeviceChartComponent implements OnInit, OnDestroy {
 
   prepareChart(model: DeviceChartModel) {
     const xAxisData: string[] = [];
-    const data1: number[] = [];
-    const data2: number[] = [];
+    const standardChartData: number[] = [];
+    const polynomialChartData: number[] = [];
 
     model.chartsData[0].data.forEach(chartData => {
       const date = new Date(chartData.timestamp);
       const formattedDate = `${date.getHours().toString()}:${date.getMinutes().toString()}`;
 
       xAxisData.push(formattedDate);
-      data1.push(chartData.avail);
-      data2.push(chartData.trAvail);
+      standardChartData.push(chartData.avail);
+      polynomialChartData.push(chartData.trAvail);
     });
 
     this.chartOptions = {
@@ -129,7 +121,7 @@ export class SingleDeviceChartComponent implements OnInit, OnDestroy {
         {
           name: model.chartsData[0].chartName,
           type: 'line',
-          data: data1,
+          data: standardChartData,
           animationDelay: idx => idx * 10,
         },
         {
@@ -140,7 +132,7 @@ export class SingleDeviceChartComponent implements OnInit, OnDestroy {
           },
           color: 'red',
           smooth: true,
-          data: data2,
+          data: polynomialChartData,
           animationDelay: idx => idx * 10 + 100,
         },
       ],
