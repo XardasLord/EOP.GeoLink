@@ -12,6 +12,7 @@ import {
   LatLngBounds,
   Layer,
   LayerGroup,
+  LeafletEventHandlerFn,
   LeafletMouseEvent,
   Map,
   MapOptions,
@@ -50,8 +51,6 @@ export class MapComponent implements OnInit, OnDestroy {
   mapLayersControl!: LeafletControlLayersConfig;
   mapScale!: Scale;
 
-  private mapMovingWhileOpeningPopup = false;
-
   private clusterMarkers: LayerGroup = new LayerGroup();
   private objectMarkers: LayerGroup = new LayerGroup();
 
@@ -60,6 +59,8 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private refreshObjectsSubscription: Subscription = new Subscription();
   private getObjectsSubscriptions: Subscription = new Subscription();
+
+  private mapMoveEndAndZoomEndEventHandler!: LeafletEventHandlerFn;
 
   constructor(
     private store: Store,
@@ -79,54 +80,17 @@ export class MapComponent implements OnInit, OnDestroy {
     this.refreshObjectsSubscription = interval(environment.refreshMapObjectsIntervalInMilliseconds).subscribe(_ =>
       this.getObjectsSubscriptions.add(this.loadMapObjects())
     );
+
+    this.mapMoveEndAndZoomEndEventHandler = event => {
+      this.getObjectsSubscriptions.add(this.loadMapObjects());
+    };
   }
 
   ngOnDestroy(): void {
     this.refreshObjectsSubscription.unsubscribe();
     this.getObjectsSubscriptions.unsubscribe();
+    this.unregisterMapEvents();
   }
-
-  // onMarkerClusterReady(group: L.MarkerClusterGroup) {
-  //   this.markerClusterGroup = group;
-  //
-  //   (this.markerClusterGroup as any).options.iconCreateFunction = (cluster: L.MarkerCluster) => {
-  //     const childMarkers: Marker<MapItemModel>[] = cluster.getAllChildMarkers();
-  //
-  //     cluster.on('click', () => {
-  //       const mapItem = MarkerClusterHelper.getMapItemModels(childMarkers);
-  //       const popupComponent = this.dynamicComponentCreator.createClusterGroupPopup(mapItem);
-  //
-  //       cluster.unbindPopup();
-  //       cluster
-  //         .bindPopup(popupComponent, {
-  //           className: 'cluster-group-context-menu',
-  //         })
-  //         .openPopup();
-  //     });
-  //
-  //     cluster.on('contextmenu', () => {
-  //       const mapItem = MarkerClusterHelper.getMapItemModels(childMarkers);
-  //       const popupComponent = this.dynamicComponentCreator.createClusterGroupQuickReportsPopup(mapItem);
-  //
-  //       cluster.unbindPopup();
-  //       cluster
-  //         .bindPopup(popupComponent, {
-  //           className: 'cluster-group-quick-reports-context-menu',
-  //         })
-  //         .openPopup();
-  //     });
-  //
-  //     const cssName = MarkerClusterHelper.getCssClassForClusterGroup(childMarkers);
-  //
-  //     return new L.DivIcon({
-  //       html: '<div><span>' + childMarkers.length + '</span></div>',
-  //       className: cssName,
-  //       iconSize: new L.Point(40, 40),
-  //     });
-  //   };
-  //
-  //   this.markerClusterGroup.refreshClusters();
-  // }
 
   onMapReady(map: Map) {
     this.map = map;
@@ -168,23 +132,17 @@ export class MapComponent implements OnInit, OnDestroy {
       })
       .addTo(map);
 
-    this.map.on('zoomend', event => {
-      if (this.mapMovingWhileOpeningPopup) {
-        this.mapMovingWhileOpeningPopup = false;
-        return;
-      }
+    this.registerMapEvents();
+  }
 
-      this.getObjectsSubscriptions.add(this.loadMapObjects());
-    });
+  private registerMapEvents() {
+    this.map.on('moveend', this.mapMoveEndAndZoomEndEventHandler);
+    this.map.on('zoomend', this.mapMoveEndAndZoomEndEventHandler);
+  }
 
-    this.map.on('moveend', event => {
-      if (this.mapMovingWhileOpeningPopup) {
-        this.mapMovingWhileOpeningPopup = false;
-        return;
-      }
-
-      this.getObjectsSubscriptions.add(this.loadMapObjects());
-    });
+  private unregisterMapEvents() {
+    this.map.off('moveend', this.mapMoveEndAndZoomEndEventHandler);
+    this.map.off('zoomend', this.mapMoveEndAndZoomEndEventHandler);
   }
 
   private loadMapObjects() {
@@ -351,8 +309,6 @@ export class MapComponent implements OnInit, OnDestroy {
     });
 
     clusterMarker.on('click', () => {
-      this.mapMovingWhileOpeningPopup = true;
-
       const popupComponent = this.dynamicComponentCreator.createClusterGroupPopup(
         cluster.idClust,
         cluster.level,
@@ -370,8 +326,6 @@ export class MapComponent implements OnInit, OnDestroy {
     });
 
     clusterMarker.on('contextmenu', () => {
-      this.mapMovingWhileOpeningPopup = true;
-
       const popupComponent = this.dynamicComponentCreator.createClusterGroupQuickReportsPopup(cluster);
 
       clusterMarker.unbindPopup();
@@ -415,7 +369,9 @@ export class MapComponent implements OnInit, OnDestroy {
 
     // Different approach to attach component as a popup - https://stackoverflow.com/a/44686112/3921353
     marker.on('click', ($event: LeafletMouseEvent) => {
-      this.mapMovingWhileOpeningPopup = true;
+      this.unregisterMapEvents();
+
+      this.map.flyTo(new LatLng(marker.getLatLng().lat - 0.2, marker.getLatLng().lng), this.map.getZoom());
 
       const popupComponent = this.dynamicComponentCreator.createMapItemPopup(mapObject);
       marker.unbindPopup();
@@ -426,6 +382,11 @@ export class MapComponent implements OnInit, OnDestroy {
           closeOnClick: false,
         })
         .openPopup();
+
+      // This is to prevent from loading map objects while map's flying to the marker
+      setTimeout(() => {
+        this.registerMapEvents();
+      }, 1000);
     });
 
     marker.on('mouseover', ($event: LeafletMouseEvent) => {
