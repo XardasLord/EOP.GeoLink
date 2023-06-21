@@ -371,7 +371,12 @@ export class MapComponent implements OnInit, OnDestroy {
     marker.on('click', ($event: LeafletMouseEvent) => {
       this.unregisterMapEvents();
 
-      this.map.flyTo(new LatLng(marker.getLatLng().lat - 0.2, marker.getLatLng().lng), this.map.getZoom());
+      const markerLatLng = marker.getLatLng();
+
+      // We move the point to flyTo to move 100px down
+      const latLngToFlyTo = this.map.layerPointToLatLng(this.map.latLngToLayerPoint(markerLatLng).add([0, 100]));
+
+      this.map.flyTo(latLngToFlyTo, this.map.getZoom());
 
       const popupComponent = this.dynamicComponentCreator.createMapItemPopup(mapObject);
       marker.unbindPopup();
