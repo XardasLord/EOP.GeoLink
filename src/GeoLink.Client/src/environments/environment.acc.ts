@@ -10,4 +10,5 @@ export const environment = {
   arcGisMapLayer4: 'http://localhost:5002/server/rest/services/siec/MapServer/4',
   wmsMapBackground: '',
   wmsBaseLayerName: 'WMS- geoportal',
+  markerTooltipEnabled: false,
 };

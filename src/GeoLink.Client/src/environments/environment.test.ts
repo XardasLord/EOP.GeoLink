@@ -10,4 +10,5 @@ export const environment = {
   arcGisMapLayer4: '',
   wmsMapBackground: 'http://10.0.2.71:8381/wms?',
   wmsBaseLayerName: 'WMS- geoportal',
+  markerTooltipEnabled: false,
 };

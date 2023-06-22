@@ -394,15 +394,17 @@ export class MapComponent implements OnInit, OnDestroy {
       }, 1000);
     });
 
-    marker.on('mouseover', ($event: LeafletMouseEvent) => {
-      const tooltipComponent = this.dynamicComponentCreator.createMapItemTooltip(mapObject);
-      marker.unbindTooltip();
-      marker
-        .bindTooltip(tooltipComponent, {
-          className: 'map-item-tooltip',
-        })
-        .openTooltip();
-    });
+    if (environment.markerTooltipEnabled) {
+      marker.on('mouseover', ($event: LeafletMouseEvent) => {
+        const tooltipComponent = this.dynamicComponentCreator.createMapItemTooltip(mapObject);
+        marker.unbindTooltip();
+        marker
+          .bindTooltip(tooltipComponent, {
+            className: 'map-item-tooltip',
+          })
+          .openTooltip();
+      });
+    }
 
     return marker;
   }
