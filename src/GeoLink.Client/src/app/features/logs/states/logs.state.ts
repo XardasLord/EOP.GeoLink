@@ -12,6 +12,8 @@ const LOGS_STATE_TOKEN = new StateToken<LogsStateModel>('logs');
   name: LOGS_STATE_TOKEN,
   defaults: {
     logs: [],
+    logsCount: 0,
+    logsOffset: 0,
   },
 })
 @Injectable()
@@ -23,12 +25,19 @@ export class LogsState {
     return state.logs;
   }
 
+  @Selector([LOGS_STATE_TOKEN])
+  static getLogsCount(state: LogsStateModel): number {
+    return state.logsCount;
+  }
+
   @Action(Load)
   loadLogs(ctx: StateContext<LogsStateModel>, _: Load) {
     return this.logsService.load().pipe(
       tap(response => {
         ctx.patchState({
-          logs: response,
+          logs: response.logs,
+          logsCount: response.logCount,
+          logsOffset: response.logOffset,
         });
       }),
       catchError(error => {
