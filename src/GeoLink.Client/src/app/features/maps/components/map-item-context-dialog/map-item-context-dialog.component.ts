@@ -76,6 +76,8 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
 
   showStatusChart(deviceModel: DeviceModel, event: MouseEvent) {
     this.selectedDeviceId = deviceModel.idDev;
+    this.showChartMenu = false;
+    this.changeDetectorRef.detectChanges();
     this.showChartMenu = true;
     this.adjustDeviceStatusChartMenuPosition(event);
 
