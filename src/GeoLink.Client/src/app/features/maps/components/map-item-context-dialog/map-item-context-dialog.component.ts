@@ -21,6 +21,7 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     devType: MapDeviceTypeEnum.Licznik,
     model: '',
     producer: '',
+    ppe: '',
     idDev: 0,
     params: [],
     subDevId: [],

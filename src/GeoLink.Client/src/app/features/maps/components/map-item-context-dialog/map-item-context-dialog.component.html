@@ -46,6 +46,10 @@
     <th>Typ</th>
     <th colspan="2">{{ secondLevelDeviceDetailsModel.model }}</th>
   </tr>
+  <tr class="header-summary-row" *ngIf='secondLevelDeviceDetailsModel.ppe'>
+    <th>PPE</th>
+    <th colspan="2">{{ secondLevelDeviceDetailsModel.ppe }}</th>
+  </tr>
   <tr>
     <th>Parametr</th>
     <th>Wartość</th>
