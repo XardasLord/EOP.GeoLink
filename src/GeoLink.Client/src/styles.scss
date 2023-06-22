@@ -7,6 +7,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   flex: 1 1 auto;
 }
 
+span[disabled] {
+  color: $disabled-text-color;
+}
+
 #main-content {
   min-height: calc(100vh - $toolbar-height);
   background: $main-content-background-color;

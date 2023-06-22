@@ -10,14 +10,14 @@
   <tr>
     <th>Kategoria</th>
     <th>Status</th>
-    <th>Link</th>
+    <th>Narzędzia</th>
   </tr>
 
   <ng-container *ngFor="let deviceModelType of groupedDeviceTypes | keyvalue">
     <td colspan="3" class="group-name">{{ deviceModelType.key }}</td>
     <ng-container *ngFor="let deviceModel of deviceModelType.value">
       <tr class="device-item-row">
-        <td>{{ getDeviceType(+deviceModel.devType) }}</td>
+        <td (click)="showDeviceSubMenu(deviceModel, $event)">{{ getDeviceType(+deviceModel.devType) }}</td>
         <td (click)="showStatusChart(deviceModel, $event)">
           <mat-icon
             matTooltip="abc test 123"
@@ -29,7 +29,7 @@
             >circle</mat-icon
           >
         </td>
-        <td (click)="showDeviceSubMenu(deviceModel, $event)">>>></td>
+        <td><span disabled>>>></span></td>
       </tr>
     </ng-container>
   </ng-container>
