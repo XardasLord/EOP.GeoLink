@@ -420,9 +420,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private createMapObjectIcon(mapItem: MapObjectModel): Icon {
-    // TODO: Create icon based on mapItem type (objType)
-
-    const iconSuffix =
+    const iconSuffix: 'good' | 'warning' | 'bad' =
       mapItem.idStatus === MapObjectStatusTypeEnum.OK
         ? 'good'
         : mapItem.idStatus === MapObjectStatusTypeEnum.Warning
@@ -445,6 +443,7 @@ export class MapComponent implements OnInit, OnDestroy {
       iconAnchor: [18.75, 61.5],
       iconUrl: iconUrl,
       shadowUrl: 'assets/leaflet/marker-shadow.png',
+      className: iconSuffix,
     });
   }
 

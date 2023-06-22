@@ -289,6 +289,18 @@ span[disabled] {
   transform: rotate(30deg);
 }
 
+img.leaflet-marker-icon.good {
+  z-index: 100 !important;
+}
+
+img.leaflet-marker-icon.warning {
+  z-index: 101 !important;
+}
+
+img.leaflet-marker-icon.bad {
+  z-index: 102 !important;
+}
+
 // Context menu for single map object
 .map-object-context-menu {
   width: 420px;
