@@ -105,7 +105,7 @@ export class SingleDeviceChartComponent implements OnInit, OnDestroy {
 
     this.chartOptions = {
       legend: {
-        data: [model.chartsData[0].chartName, 'Wielomian'],
+        data: [model.chartsData[0].chartName, 'Trend'],
         align: 'left',
       },
       tooltip: {},
@@ -125,7 +125,7 @@ export class SingleDeviceChartComponent implements OnInit, OnDestroy {
           animationDelay: idx => idx * 10,
         },
         {
-          name: 'Wielomian',
+          name: 'Trend',
           type: 'line',
           lineStyle: {
             type: 'dotted',
