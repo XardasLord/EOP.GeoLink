@@ -6,6 +6,7 @@ import { MapObjectHelper } from '../../helpers/map-object-helper';
 import { MapDeviceTypeEnum } from '../../../../shared/models/map-device-type.enum';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
 import { MapsService } from '../../services/maps.service';
+import { ChartTypeEnum } from '../../../../shared/models/charts/chart-type.enum';
 
 @Component({
   selector: 'app-map-item-context-dialog',
@@ -28,10 +29,18 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
   public groupedDeviceTypes!: Record<string, DeviceModel[]>;
   public deviceStatus = MapObjectStatusTypeEnum;
   public showSubMenu = false;
-  public elementLeft = '';
-  public elementTop = '';
+  public showChartMenu = false;
+  public subMenuElementLeft = '';
+  public subMenuElementTop = '';
+  public statusChartFirstElementLeft = '';
+  public statusChartFirstElementTop = '';
+  public statusChartSecondElementLeft = '';
+  public statusChartSecondElementTop = '';
+  public selectedDeviceId = 0;
 
   private subscriptions: Subscription = new Subscription();
+
+  protected readonly ChartTypeEnum = ChartTypeEnum;
 
   constructor(
     private store: Store,
@@ -65,8 +74,14 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     return this.mapObjectHelper.getDeviceTypeGroup(this.mapObject.devices);
   }
 
-  showStatusChart(deviceModel: DeviceModel) {
-    console.log('Showing device item chart...', deviceModel);
+  showStatusChart(deviceModel: DeviceModel, event: MouseEvent) {
+    this.selectedDeviceId = deviceModel.idDev;
+    this.showChartMenu = false;
+    this.changeDetectorRef.detectChanges();
+    this.showChartMenu = true;
+    this.adjustDeviceStatusChartMenuPosition(event);
+
+    this.changeDetectorRef.detectChanges();
   }
 
   showDeviceSubMenu(deviceModel: DeviceModel, event: MouseEvent) {
@@ -76,7 +91,6 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     const deviceIds = [deviceModel.idDev];
     this.subscriptions.add(
       this.mapsService.getDevices(deviceIds).subscribe(deviceStatisticsModels => {
-        console.log(deviceStatisticsModels[0]);
         this.secondLevelDeviceDetailsModel = deviceStatisticsModels[0];
         this.changeDetectorRef.detectChanges();
       })
@@ -95,8 +109,23 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     const windowHeight = window.innerHeight;
     const maxY = windowHeight;
     const top = y - tableTop > maxY ? maxY : y - tableTop;
-    this.elementLeft = `290px`;
-    this.elementTop = `${top}px`;
+    this.subMenuElementLeft = `425px`;
+    this.subMenuElementTop = `${top}px`;
+
+    this.changeDetectorRef.detectChanges();
+  }
+
+  private adjustDeviceStatusChartMenuPosition(event: MouseEvent) {
+    const y = event.pageY;
+    const tableRect = this.parentTable.nativeElement.getBoundingClientRect();
+    const tableTop = tableRect.top + window.scrollY;
+    const windowHeight = window.innerHeight;
+    const maxY = windowHeight;
+    const top = y - tableTop > maxY ? maxY : y - tableTop;
+    this.statusChartFirstElementLeft = `-490px`;
+    this.statusChartFirstElementTop = `${top}px`;
+    this.statusChartSecondElementLeft = `-490px`;
+    this.statusChartSecondElementTop = `${top + 240}px`;
 
     this.changeDetectorRef.detectChanges();
   }

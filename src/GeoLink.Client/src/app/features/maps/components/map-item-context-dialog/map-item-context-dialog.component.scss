@@ -4,7 +4,7 @@ table, th, td {
   border: $map-item-context-menu-table-border;
   border-collapse: collapse;
   text-align: center;
-  width: 240px;
+  width: 375px;
 }
 
 tr.header-summary-row {
@@ -50,8 +50,18 @@ td {
   background-color: white;
   width: 260px;
   padding: 20px;
+  border-radius: $context-menu-border-radius;
+  box-shadow: $context-menu-box-shadow;
 
   .leaflet-popup-close-button {
     cursor: pointer;
   }
+}
+
+.status-chart-content {
+  position: fixed;
+  background-color: white;
+  width: 480px;
+  border-radius: $context-menu-border-radius;
+  box-shadow: $context-menu-box-shadow;
 }

@@ -18,6 +18,9 @@ import { EnumDescriptionPipePipe } from './pipes/enum-description.pipe';
 import { MapStatusFiltersComponent } from './components/map-status-filters/map-status-filters.component';
 import { AlertState } from './states/alert.state';
 import { AlertService } from './services/alert.service';
+import { SingleDeviceChartComponent } from './components/single-device-chart/single-device-chart.component';
+import { NgxEchartsModule } from 'ngx-echarts';
+import { DeviceChartService } from './services/device-chart.service';
 
 @NgModule({
   declarations: [
@@ -26,6 +29,7 @@ import { AlertService } from './services/alert.service';
     MapObjectFiltersComponent,
     MapStatusFiltersComponent,
     AuthScopeAllowDirective,
+    SingleDeviceChartComponent,
   ],
   imports: [
     CommonModule,
@@ -35,6 +39,9 @@ import { AlertService } from './services/alert.service';
     HttpClientModule,
     NgxsModule.forFeature([ModalState, DictionaryState, AlertState]),
     ToastrModule.forRoot(),
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
+    }),
   ],
   exports: [
     CommonModule,
@@ -44,16 +51,18 @@ import { AlertService } from './services/alert.service';
     HttpClientModule,
     EnumDescriptionPipePipe,
     ToastrModule,
+    AuthScopeAllowDirective,
     MapRegionFiltersComponent,
     MapObjectFiltersComponent,
     MapStatusFiltersComponent,
-    AuthScopeAllowDirective,
+    SingleDeviceChartComponent,
   ],
   providers: [
     ErrorService,
     AuthService,
     DictionaryService,
     AlertService,
+    DeviceChartService,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
   ],
 })

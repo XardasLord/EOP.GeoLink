@@ -31,4 +31,6 @@ export class ReportsListComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(new Load());
   }
+
+  protected readonly MapObjectStatusTypeEnum = MapObjectStatusTypeEnum;
 }

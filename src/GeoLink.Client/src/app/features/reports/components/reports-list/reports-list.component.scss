@@ -1,0 +1,22 @@
+@import "../../../../../styles/variables.scss";
+
+.mat-column-status {
+  .mat-icon {
+
+    font-size: $report-status-icon-size;
+    text-align: end;
+    padding-top: 14px;
+  }
+
+  .mat-icon.good {
+    color: $marker-cluster-group-good-status-color;
+  }
+
+  .mat-icon.warning {
+    color: $marker-cluster-group-warning-status-color;
+  }
+
+  .mat-icon.error {
+    color: $marker-cluster-group-bad-status-color;
+  }
+}
