@@ -404,6 +404,11 @@ export class MapComponent implements OnInit, OnDestroy {
           })
           .openTooltip();
       });
+    } else {
+      marker.on('mouseover', ($event: LeafletMouseEvent) => {
+        marker.unbindTooltip();
+        marker.bindTooltip(mapObject.nrExpl).openTooltip();
+      });
     }
 
     return marker;
