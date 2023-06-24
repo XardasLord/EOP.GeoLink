@@ -8,7 +8,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 span[disabled] {
-  color: $disabled-text-color;
+  color: $disabled-color;
 }
 
 #main-content {
@@ -304,6 +304,11 @@ img.leaflet-marker-icon.bad {
 // Context menu for single map object
 .map-object-context-menu {
   width: 420px;
+
+  .leaflet-popup-content-wrapper {
+    max-height: 300px;
+    overflow-y: auto;
+  }
 }
 
 // Tooltip for single map item

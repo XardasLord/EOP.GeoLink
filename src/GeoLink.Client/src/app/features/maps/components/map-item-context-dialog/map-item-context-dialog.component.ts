@@ -104,6 +104,7 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
   }
 
   private adjustDeviceSubMenuPosition(event: MouseEvent) {
+    // TODO: Get scrollY from the scrolled component instead of 'window.scrollY'
     const y = event.pageY;
     const tableRect = this.parentTable.nativeElement.getBoundingClientRect();
     const tableTop = tableRect.top + window.scrollY;
