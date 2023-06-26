@@ -7,7 +7,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -34,6 +34,7 @@ import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDialogModule } from '@angular/material/dialog';
+import { CustomPaginator } from '../models/pagination/custom-paginator.model';
 
 // TODO: Add Angular Materials modules that GeoLink uses
 @NgModule({
@@ -114,5 +115,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     CdkTreeModule,
     MatBadgeModule,
   ],
+  providers: [{ provide: MatPaginatorIntl, useValue: CustomPaginator() }],
 })
 export class MaterialModule {}

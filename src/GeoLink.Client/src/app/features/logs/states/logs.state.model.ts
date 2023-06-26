@@ -1,7 +1,8 @@
 import { LogModel } from '../models/log.model';
+import { RestQueryVo } from '../../../shared/models/pagination/rest.query';
+import { RestQueryResponse } from '../../../shared/models/pagination/rest.response';
 
 export interface LogsStateModel {
-  logs: LogModel[];
-  logsCount: number;
-  logsOffset: number;
+  restQuery: RestQueryVo;
+  restQueryResponse: RestQueryResponse<LogModel[]>;
 }

@@ -4,6 +4,7 @@ import { RemoteServiceBase } from '../../../shared/services/remote-service.base'
 import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { GetLogsResponseModel } from '../models/get-logs-response.model';
+import { PageEvent } from '@angular/material/paginator';
 
 @Injectable()
 export class LogsService extends RemoteServiceBase {
@@ -13,8 +14,10 @@ export class LogsService extends RemoteServiceBase {
     super(httpClient);
   }
 
-  load(): Observable<GetLogsResponseModel> {
-    const params = new HttpParams().set('offset', 0).set('count', 50);
+  load(pageInfo: PageEvent): Observable<GetLogsResponseModel> {
+    const params = new HttpParams()
+      .set('offset', pageInfo.pageIndex * pageInfo.pageSize)
+      .set('count', pageInfo.pageSize);
 
     return this.httpClient.get<GetLogsResponseModel>(`${this.apiUrl}/logs/getLogs`, { params });
   }
