@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { Observable } from 'rxjs';
 import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
 import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { GetLogsResponseModel } from '../models/get-logs-response.model';
-import { PageEvent } from '@angular/material/paginator';
 
 @Injectable()
 export class LogsService extends RemoteServiceBase {
