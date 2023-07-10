@@ -394,15 +394,22 @@ export class MapComponent implements OnInit, OnDestroy {
       }, 1000);
     });
 
-    marker.on('mouseover', ($event: LeafletMouseEvent) => {
-      const tooltipComponent = this.dynamicComponentCreator.createMapItemTooltip(mapObject);
-      marker.unbindTooltip();
-      marker
-        .bindTooltip(tooltipComponent, {
-          className: 'map-item-tooltip',
-        })
-        .openTooltip();
-    });
+    if (environment.markerTooltipEnabled) {
+      marker.on('mouseover', ($event: LeafletMouseEvent) => {
+        const tooltipComponent = this.dynamicComponentCreator.createMapItemTooltip(mapObject);
+        marker.unbindTooltip();
+        marker
+          .bindTooltip(tooltipComponent, {
+            className: 'map-item-tooltip',
+          })
+          .openTooltip();
+      });
+    } else {
+      marker.on('mouseover', ($event: LeafletMouseEvent) => {
+        marker.unbindTooltip();
+        marker.bindTooltip(mapObject.nrExpl).openTooltip();
+      });
+    }
 
     return marker;
   }
@@ -418,9 +425,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private createMapObjectIcon(mapItem: MapObjectModel): Icon {
-    // TODO: Create icon based on mapItem type (objType)
-
-    const iconSuffix =
+    const iconSuffix: 'good' | 'warning' | 'bad' =
       mapItem.idStatus === MapObjectStatusTypeEnum.OK
         ? 'good'
         : mapItem.idStatus === MapObjectStatusTypeEnum.Warning
@@ -443,6 +448,7 @@ export class MapComponent implements OnInit, OnDestroy {
       iconAnchor: [18.75, 61.5],
       iconUrl: iconUrl,
       shadowUrl: 'assets/leaflet/marker-shadow.png',
+      className: iconSuffix,
     });
   }
 

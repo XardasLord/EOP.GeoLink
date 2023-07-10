@@ -55,6 +55,7 @@ export interface DeviceDetailsModel {
   idDev: number;
   devType: MapDeviceTypeEnum;
   producer: string;
+  ppe: string;
   model: string;
   params: DeviceDetailsParamsModel[];
   subDevId: number[];

@@ -10,26 +10,27 @@
   <tr>
     <th>Kategoria</th>
     <th>Status</th>
-    <th>Link</th>
+    <th>Narzędzia</th>
   </tr>
 
   <ng-container *ngFor="let deviceModelType of groupedDeviceTypes | keyvalue">
     <td colspan="3" class="group-name">{{ deviceModelType.key }}</td>
     <ng-container *ngFor="let deviceModel of deviceModelType.value">
       <tr class="device-item-row">
-        <td>{{ getDeviceType(+deviceModel.devType) }}</td>
+        <td (click)="showDeviceSubMenu(deviceModel, $event)">{{ getDeviceType(+deviceModel.devType) }}</td>
         <td (click)="showStatusChart(deviceModel, $event)">
           <mat-icon
             matTooltip="abc test 123"
             [ngClass]="{
               good: deviceModel?.idStatus === deviceStatus.OK,
               warning: deviceModel?.idStatus === deviceStatus.Warning,
-              bad: deviceModel?.idStatus === deviceStatus.Error
+              bad: deviceModel?.idStatus === deviceStatus.Error,
+              'not-available': deviceModel?.idStatus === deviceStatus.NotAvailable
             }"
             >circle</mat-icon
           >
         </td>
-        <td (click)="showDeviceSubMenu(deviceModel, $event)">>>></td>
+        <td><span disabled>>>></span></td>
       </tr>
     </ng-container>
   </ng-container>
@@ -37,6 +38,7 @@
 
 <!-- Second level context menu -->
 <div class="second-level-table" [ngStyle]="{ left: subMenuElementLeft, top: subMenuElementTop }" *ngIf="showSubMenu">
+  <table>
   <a class="leaflet-popup-close-button" (click)="closeSubMenu()">×</a>
   <tr class="header-summary-row">
     <th>{{ getDeviceType(secondLevelDeviceDetailsModel.devType) }}</th>
@@ -45,6 +47,10 @@
   <tr class="header-summary-row">
     <th>Typ</th>
     <th colspan="2">{{ secondLevelDeviceDetailsModel.model }}</th>
+  </tr>
+  <tr class="header-summary-row" *ngIf='secondLevelDeviceDetailsModel.ppe'>
+    <th>PPE</th>
+    <th colspan="2">{{ secondLevelDeviceDetailsModel.ppe }}</th>
   </tr>
   <tr>
     <th>Parametr</th>
@@ -63,7 +69,8 @@
           [ngClass]="{
             good: deviceDetailsParam?.status === deviceStatus.OK,
             warning: deviceDetailsParam?.status === deviceStatus.Warning,
-            bad: deviceDetailsParam?.status === deviceStatus.Error
+            bad: deviceDetailsParam?.status === deviceStatus.Error,
+            'not-available': deviceDetailsParam?.status === deviceStatus.NotAvailable
           }"
           >circle</mat-icon
         >
@@ -71,6 +78,7 @@
       </td>
     </tr>
   </ng-container>
+  </table>
 </div>
 
 <ng-container *ngIf="showChartMenu">

@@ -33,28 +33,38 @@ td {
   }
 
   .mat-icon.good {
-    color: green;
+    color: $good-status-color;
   }
 
   .mat-icon.warning {
-    color: yellow;
+    color: $warning-status-color;
   }
 
   .mat-icon.bad {
-    color: red;
+    color: $bad-status-color;
+  }
+
+  .mat-icon.not-available {
+    color: $disabled-color;
   }
 }
 
 .second-level-table {
   position: fixed;
   background-color: white;
-  width: 260px;
+  width: 325px;
   padding: 20px;
   border-radius: $context-menu-border-radius;
   box-shadow: $context-menu-box-shadow;
+  max-height: 400px;
+  overflow-y: auto;
 
   .leaflet-popup-close-button {
     cursor: pointer;
+  }
+
+  table {
+    width: 305px;
   }
 }
 

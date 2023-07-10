@@ -9,9 +9,14 @@
 
     <span class="right-section">
       <span class="section alerts">
-        <button mat-icon-button matTooltip="Alarmy" (click)="toggleAlerts()">
-          <mat-icon [matBadge]="alertsCount$ | async" matBadgeColor="warn">notifications</mat-icon>
-        </button>
+        <ng-container *ngIf="(alertsCount$ | async)! > 0; else withoutAlert">
+           <button mat-icon-button matTooltip="Alarmy" (click)="toggleAlerts()">
+             <mat-icon [matBadge]="alertsCount$ | async" matBadgeColor="warn">notifications</mat-icon>
+           </button>
+          </ng-container>
+        <ng-template #withoutAlert>
+          <mat-icon matTooltip='Brak alarmów'>notifications</mat-icon>
+        </ng-template>
       </span>
 
       <span class="section user-info">
