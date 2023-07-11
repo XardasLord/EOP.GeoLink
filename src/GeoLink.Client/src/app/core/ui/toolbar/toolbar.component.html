@@ -10,12 +10,12 @@
     <span class="right-section">
       <span class="section alerts">
         <ng-container *ngIf="(alertsCount$ | async)! > 0; else withoutAlert">
-           <button mat-icon-button matTooltip="Alarmy" (click)="toggleAlerts()">
-             <mat-icon [matBadge]="alertsCount$ | async" matBadgeColor="warn">notifications</mat-icon>
-           </button>
-          </ng-container>
+          <button mat-icon-button matTooltip="Alarmy" (click)="toggleAlerts()">
+            <mat-icon [matBadge]="alertsCount$ | async" matBadgeColor="warn">notifications</mat-icon>
+          </button>
+        </ng-container>
         <ng-template #withoutAlert>
-          <mat-icon matTooltip='Brak alarmów'>notifications</mat-icon>
+          <mat-icon matTooltip="Brak alarmów">notifications</mat-icon>
         </ng-template>
       </span>
 
@@ -46,7 +46,7 @@
         >flag</mat-icon
       >
       <div matListItemTitle [matTooltip]="alert.details">{{ alert.message }}</div>
-      <div matListItemLine>{{ alert.serviceName }} - {{ alert.timestamp | date : 'dd.MM.yyyy, HH:mm:ss' }}</div>
+      <div matListItemLine>{{ alert.serviceName }} - {{ alert.timestamp | date: 'dd.MM.yyyy, HH:mm:ss' }}</div>
     </mat-list-item>
   </mat-list>
 </div>

@@ -10,9 +10,7 @@
         <mat-icon matListItemIcon>map</mat-icon>
         <span matListItemTitle *ngIf="sidenav.opened">Mapa</span>
       </mat-list-item>
-      <mat-list-item
-        routerLinkActive="active-route"
-        *appScopeAllow="[AuthScopes.MenuCharts]">
+      <mat-list-item routerLinkActive="active-route" *appScopeAllow="[AuthScopes.MenuCharts]">
         <mat-icon matListItemIcon>bar_chart</mat-icon>
         <span matListItemTitle *ngIf="sidenav.opened">Wykresy</span>
       </mat-list-item>
@@ -41,9 +39,7 @@
         <mat-icon matListItemIcon>construction</mat-icon>
         <span matListItemTitle *ngIf="sidenav.opened">Konfiguracja</span>
       </mat-list-item>
-      <mat-list-item
-        routerLinkActive="active-route"
-        *appScopeAllow="[AuthScopes.MenuIntegrations]">
+      <mat-list-item routerLinkActive="active-route" *appScopeAllow="[AuthScopes.MenuIntegrations]">
         <mat-icon matListItemIcon>lan</mat-icon>
         <span matListItemTitle *ngIf="sidenav.opened">Integracja</span>
       </mat-list-item>
