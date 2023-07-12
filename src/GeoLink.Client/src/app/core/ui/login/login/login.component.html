@@ -1,7 +1,10 @@
 <mat-card>
+  <mat-card-header>
+    <mat-card-title>Proszę wprowadzić login i hasło</mat-card-title>
+    <mat-card-subtitle>v.{{ appVersion }}</mat-card-subtitle>
+  </mat-card-header>
   <mat-card-content>
     <form [formGroup]="form" #loginForm="ngForm" (ngSubmit)="login()">
-      <h2>Proszę wprowadzić login i hasło</h2>
       <!--      <mat-error *ngIf="!loginValid"> The username and password were not recognized </mat-error>-->
       <mat-form-field>
         <input matInput placeholder="Login" formControlName="login" />
@@ -11,7 +14,9 @@
         <input matInput type="password" placeholder="Password" formControlName="password" />
         <mat-error> Proszę wprowadzić hasło </mat-error>
       </mat-form-field>
-      <button mat-raised-button color="primary" [disabled]="!loginForm.form.valid">Zaloguj</button>
+      <mat-card-actions align="start">
+        <button mat-raised-button color="primary" [disabled]="!loginForm.form.valid">Zaloguj</button>
+      </mat-card-actions>
     </form>
   </mat-card-content>
 </mat-card>

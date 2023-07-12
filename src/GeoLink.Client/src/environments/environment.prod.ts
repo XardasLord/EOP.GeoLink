@@ -1,6 +1,8 @@
+import { APP_VERSION } from '../app/version';
+
 export const environment = {
+  version: `${APP_VERSION}`,
   apiEndpoint: '',
-  environmentName: 'prod',
   refreshMapObjectsIntervalInMilliseconds: 60 * 15 * 1000,
   arcGisMapBackground: '',
   arcGisMapLayer0: '',

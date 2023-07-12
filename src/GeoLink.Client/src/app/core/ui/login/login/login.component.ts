@@ -11,10 +11,10 @@ import { environment } from '../../../../../environments/environment';
 })
 export class LoginComponent {
   form: FormGroup;
-  environmentName = environment.environmentName;
-
-  constructor(private fb: FormBuilder, private store: Store) {
-    console.log('environment - ', this.environmentName);
+  constructor(
+    private fb: FormBuilder,
+    private store: Store
+  ) {
     this.form = this.fb.group({
       login: ['', Validators.required],
       password: ['', Validators.required],
@@ -27,5 +27,9 @@ export class LoginComponent {
     if (val.login && val.password) {
       this.store.dispatch(new Login(val.login, val.password));
     }
+  }
+
+  get appVersion() {
+    return environment.version;
   }
 }
