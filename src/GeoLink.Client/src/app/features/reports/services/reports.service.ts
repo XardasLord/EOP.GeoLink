@@ -5,6 +5,7 @@ import { RemoteServiceBase } from '../../../shared/services/remote-service.base'
 import { environment } from '../../../../environments/environment';
 import { ReportModel } from '../models/report.model';
 import { MapObjectStatusTypeEnum } from '../../../shared/models/map-object-status-type.enum';
+import { GetReportsResponseModel } from '../models/get-reports-response.model';
 
 @Injectable()
 export class ReportsService extends RemoteServiceBase {
@@ -14,7 +15,7 @@ export class ReportsService extends RemoteServiceBase {
     super(httpClient);
   }
 
-  load(): Observable<ReportModel[]> {
+  load(): Observable<GetReportsResponseModel> {
     const examples: ReportModel[] = [];
 
     examples.push({
@@ -53,7 +54,12 @@ export class ReportsService extends RemoteServiceBase {
       availability: 30,
     });
 
-    return of(examples);
+    const response: GetReportsResponseModel = {
+      reports: examples,
+      reportCount: examples.length,
+    };
+
+    return of(response);
     // return this.httpClient.get<LogModel[]>(`${this.apiUrl}/logs/getLogs`, { params });
   }
 }
