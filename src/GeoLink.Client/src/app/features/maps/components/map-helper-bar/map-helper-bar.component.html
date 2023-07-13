@@ -22,17 +22,17 @@
 </mat-toolbar>
 
 <ng-container *ngIf="showObjectFilters">
-  <app-map-object-filters (filtersChanged)="onFiltersChanged($event)"></app-map-object-filters>
+  <app-map-object-filters class="object-filters" (filtersChanged)="onFiltersChanged($event)"></app-map-object-filters>
 </ng-container>
 
 <ng-container *ngIf="showRegionFilters">
-  <app-map-region-filters (filtersChanged)="onFiltersChanged($event)"></app-map-region-filters>
+  <app-map-region-filters class="region-filters" (filtersChanged)="onFiltersChanged($event)"></app-map-region-filters>
 </ng-container>
 
 <ng-container *ngIf="showStatusFilters">
-  <app-map-status-filters (filtersChanged)="onFiltersChanged($event)"></app-map-status-filters>
+  <app-map-status-filters class="status-filters" (filtersChanged)="onFiltersChanged($event)"></app-map-status-filters>
 </ng-container>
 
 <ng-container *ngIf="showIpFilters">
-  <app-map-ip-filters (filtersChanged)="onFiltersChanged($event)"></app-map-ip-filters>
+  <app-map-ip-filters class="ip-filters" (filtersChanged)="onFiltersChanged($event)"></app-map-ip-filters>
 </ng-container>
