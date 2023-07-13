@@ -4,4 +4,5 @@ export interface MapFiltersModel {
   objectFilters: MapFilterModel[];
   regionFilters: MapFilterModel[];
   statusFilters: MapFilterModel[];
+  ipFilters: MapFilterModel[];
 }
