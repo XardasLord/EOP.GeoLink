@@ -81,7 +81,7 @@ export class MapComponent implements OnInit, OnDestroy {
       this.getObjectsSubscriptions.add(this.loadMapObjects())
     );
 
-    this.mapMoveEndAndZoomEndEventHandler = event => {
+    this.mapMoveEndAndZoomEndEventHandler = () => {
       this.getObjectsSubscriptions.add(this.loadMapObjects());
     };
   }
@@ -103,7 +103,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }, 1000);
 
     if (environment.arcGisMapBackground.length > 0) {
-      this.loadLayersFromArcGIS(map);
+      this.loadLayersFromArcGIS();
     } else if (environment.wmsMapBackground.length > 0) {
       this.loadLayersFromWMS();
     }
@@ -151,6 +151,7 @@ export class MapComponent implements OnInit, OnDestroy {
     const selectedObjectMapFilters = this.store.selectSnapshot(MapsState.getObjectSelectedMapFilters);
     const selectedRegionMapFilters = this.store.selectSnapshot(MapsState.getRegionSelectedMapFilters);
     const selectedStatusMapFilters = this.store.selectSnapshot(MapsState.getStatusSelectedMapFilters);
+    const selectedIpMapFilters = this.store.selectSnapshot(MapsState.getIpSelectedMapFilters);
 
     if (mapZoom <= 17) {
       if (this.lastRequestForCluster$) {
@@ -165,7 +166,8 @@ export class MapComponent implements OnInit, OnDestroy {
         mapZoom,
         selectedObjectMapFilters,
         selectedRegionMapFilters,
-        selectedStatusMapFilters
+        selectedStatusMapFilters,
+        selectedIpMapFilters
       );
 
       this.lastRequestForCluster$ = request$
@@ -204,7 +206,8 @@ export class MapComponent implements OnInit, OnDestroy {
         bbox.getNorthEast().lat,
         selectedObjectMapFilters,
         selectedRegionMapFilters,
-        selectedStatusMapFilters
+        selectedStatusMapFilters,
+        selectedIpMapFilters
       );
 
       this.lastRequestForObjects$ = request$.pipe(switchMap(() => request$)).subscribe(objects => {
@@ -222,7 +225,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  private loadLayersFromArcGIS(map: Map) {
+  private loadLayersFromArcGIS() {
     // ArcGIS Vector Tile Server
     const objectIdField = 'OBJECTID';
 
@@ -368,7 +371,7 @@ export class MapComponent implements OnInit, OnDestroy {
     });
 
     // Different approach to attach component as a popup - https://stackoverflow.com/a/44686112/3921353
-    marker.on('click', ($event: LeafletMouseEvent) => {
+    marker.on('click', () => {
       this.unregisterMapEvents();
 
       const markerLatLng = marker.getLatLng();
@@ -395,7 +398,7 @@ export class MapComponent implements OnInit, OnDestroy {
     });
 
     if (environment.markerTooltipEnabled) {
-      marker.on('mouseover', ($event: LeafletMouseEvent) => {
+      marker.on('mouseover', () => {
         const tooltipComponent = this.dynamicComponentCreator.createMapItemTooltip(mapObject);
         marker.unbindTooltip();
         marker
@@ -405,7 +408,7 @@ export class MapComponent implements OnInit, OnDestroy {
           .openTooltip();
       });
     } else {
-      marker.on('mouseover', ($event: LeafletMouseEvent) => {
+      marker.on('mouseover', () => {
         marker.unbindTooltip();
         marker.bindTooltip(mapObject.nrExpl).openTooltip();
       });
@@ -468,6 +471,7 @@ export class MapComponent implements OnInit, OnDestroy {
     // return new Polygon(bboxCoords, { color: 'blue', fillOpacity: 0.2 });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onMapFiltersChanged($event: MapFilterModel[]) {
     this.getObjectsSubscriptions.add(this.loadMapObjects());
   }
