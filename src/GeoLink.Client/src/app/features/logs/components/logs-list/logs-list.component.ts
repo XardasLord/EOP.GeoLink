@@ -5,6 +5,7 @@ import { nameof } from '../../../../shared/helpers/name-of.helper';
 import { LogModel } from '../../models/log.model';
 import { LogsState } from '../../states/logs.state';
 import { ChangePage, Load } from '../../states/logs.action';
+import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
 
 @Component({
   selector: 'app-logs-list',
@@ -12,11 +13,18 @@ import { ChangePage, Load } from '../../states/logs.action';
   styleUrls: ['./logs-list.component.scss'],
 })
 export class LogsListComponent implements OnInit {
-  displayedColumns: string[] = [nameof<LogModel>('timestamp'), nameof<LogModel>('type'), nameof<LogModel>('eventInfo')];
+  displayedColumns: string[] = [
+    nameof<LogModel>('status'),
+    nameof<LogModel>('timestamp'),
+    nameof<LogModel>('type'),
+    nameof<LogModel>('eventInfo'),
+  ];
   logs$ = this.store.select(LogsState.getLogs);
   totalItems$ = this.store.select(LogsState.getLogsCount);
   currentPage$ = this.store.select(LogsState.getCurrentPage);
   pageSize$ = this.store.select(LogsState.getPageSize);
+
+  protected readonly DeviceStatus = MapObjectStatusTypeEnum;
 
   constructor(private store: Store) {}
 
@@ -27,4 +35,6 @@ export class LogsListComponent implements OnInit {
   pageChanged(event: PageEvent): void {
     this.store.dispatch(new ChangePage(event));
   }
+
+  protected readonly MapObjectStatusTypeEnum = MapObjectStatusTypeEnum;
 }
