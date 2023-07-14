@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { Store } from '@ngxs/store';
 import { nameof } from '../../../../shared/helpers/name-of.helper';
 import { ReportsState } from '../../states/reports.state';
-import { Load } from '../../states/reports.action';
+import { ChangePage, Load } from '../../states/reports.action';
 import { ReportModel } from '../../models/report.model';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
 
@@ -22,9 +23,15 @@ export class ReportsListComponent implements OnInit {
     nameof<ReportModel>('tan'),
     nameof<ReportModel>('status'),
     nameof<ReportModel>('availability'),
+    'actions',
   ];
   reports$ = this.store.select(ReportsState.getReports);
-  DeviceStatus = MapObjectStatusTypeEnum;
+  totalItems$ = this.store.select(ReportsState.getReportsCount);
+  currentPage$ = this.store.select(ReportsState.getCurrentPage);
+  pageSize$ = this.store.select(ReportsState.getPageSize);
+
+  protected readonly DeviceStatus = MapObjectStatusTypeEnum;
+  protected readonly MapObjectStatusTypeEnum = MapObjectStatusTypeEnum;
 
   constructor(private store: Store) {}
 
@@ -32,5 +39,7 @@ export class ReportsListComponent implements OnInit {
     this.store.dispatch(new Load());
   }
 
-  protected readonly MapObjectStatusTypeEnum = MapObjectStatusTypeEnum;
+  pageChanged(event: PageEvent): void {
+    this.store.dispatch(new ChangePage(event));
+  }
 }

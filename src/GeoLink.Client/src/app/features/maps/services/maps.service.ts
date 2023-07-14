@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { filter, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
   DeviceDetailsModel,
   MapClusterGroupDetails,
@@ -10,7 +10,6 @@ import {
 import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
 import { environment } from '../../../../environments/environment';
 import { MapObjectTypeEnum } from '../../../shared/models/map-object-type.enum';
-import { MapFiltersModel } from '../models/map-filters.model';
 import { MapFilterModel } from '../models/map-filter-model';
 
 @Injectable()
@@ -29,7 +28,8 @@ export class MapsService extends RemoteServiceBase {
     zoomLevel: number,
     selectedObjectMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
-    selectedStatusMapFilters: MapFilterModel[]
+    selectedStatusMapFilters: MapFilterModel[],
+    selectedIpMapFilters: MapFilterModel[]
   ): Observable<MapClusterObjectModel> {
     let params = new HttpParams()
       .set('lonMin', lonMin)
@@ -39,7 +39,13 @@ export class MapsService extends RemoteServiceBase {
       .set('zoomLevel', zoomLevel)
       .set('clustObjThreshold', 2);
 
-    params = this.setFilters(params, selectedObjectMapFilters, selectedRegionMapFilters, selectedStatusMapFilters);
+    params = this.setFilters(
+      params,
+      selectedObjectMapFilters,
+      selectedRegionMapFilters,
+      selectedStatusMapFilters,
+      selectedIpMapFilters
+    );
 
     return this.httpClient.get<MapClusterObjectModel>(`${this.apiUrl}/map/getClustersAndObjects`, { params: params });
   }
@@ -51,7 +57,8 @@ export class MapsService extends RemoteServiceBase {
     latMax: number, // NE
     selectedObjectMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
-    selectedStatusMapFilters: MapFilterModel[]
+    selectedStatusMapFilters: MapFilterModel[],
+    selectedIpMapFilters: MapFilterModel[]
   ): Observable<MapObjectModel[]> {
     let params = new HttpParams()
       .set('lonMin', lonMin)
@@ -59,7 +66,13 @@ export class MapsService extends RemoteServiceBase {
       .set('lonMax', lonMax)
       .set('latMax', latMax);
 
-    params = this.setFilters(params, selectedObjectMapFilters, selectedRegionMapFilters, selectedStatusMapFilters);
+    params = this.setFilters(
+      params,
+      selectedObjectMapFilters,
+      selectedRegionMapFilters,
+      selectedStatusMapFilters,
+      selectedIpMapFilters
+    );
 
     return this.httpClient.get<MapObjectModel[]>(`${this.apiUrl}/map/getObjects`, { params: params });
   }
@@ -68,7 +81,8 @@ export class MapsService extends RemoteServiceBase {
     httpParams: HttpParams,
     selectedObjectMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
-    selectedStatusMapFilters: MapFilterModel[]
+    selectedStatusMapFilters: MapFilterModel[],
+    selectedIpMapFilters: MapFilterModel[]
   ): HttpParams {
     selectedObjectMapFilters
       .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.id !== null)
@@ -94,6 +108,12 @@ export class MapsService extends RemoteServiceBase {
         httpParams = httpParams.append('statusFilters', filter.id);
       });
 
+    selectedIpMapFilters
+      .filter(x => x.apiFilterType === 'IpFilters' && x.id !== null)
+      .forEach(filter => {
+        httpParams = httpParams.append('ipFilters', filter.id);
+      });
+
     return httpParams;
   }
 
@@ -112,11 +132,18 @@ export class MapsService extends RemoteServiceBase {
     objType: MapObjectTypeEnum,
     selectedObjectMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
-    selectedStatusMapFilters: MapFilterModel[]
+    selectedStatusMapFilters: MapFilterModel[],
+    selectedIpMapFilters: MapFilterModel[]
   ): Observable<MapClusterGroupDetails> {
     let params = new HttpParams().set('clustId', clustId).set('lvl', lvl).set('objType', +objType);
 
-    params = this.setFilters(params, selectedObjectMapFilters, selectedRegionMapFilters, selectedStatusMapFilters);
+    params = this.setFilters(
+      params,
+      selectedObjectMapFilters,
+      selectedRegionMapFilters,
+      selectedStatusMapFilters,
+      selectedIpMapFilters
+    );
 
     return this.httpClient.get<MapClusterGroupDetails>(`${this.apiUrl}/map/getClusterInfo`, { params: params });
   }

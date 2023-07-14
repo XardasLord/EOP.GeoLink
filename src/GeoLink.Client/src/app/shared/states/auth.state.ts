@@ -66,7 +66,8 @@ export class AuthState implements NgxsOnInit {
           user.init_objecttypefilters,
           user.init_devicefilters,
           user.init_regionfilters,
-          user.init_statusfilters
+          user.init_statusfilters,
+          user.init_ipfilters
         )
       );
     }
@@ -141,7 +142,8 @@ export class AuthState implements NgxsOnInit {
           state.user.init_objecttypefilters,
           state.user.init_devicefilters,
           state.user.init_regionfilters,
-          state.user.init_statusfilters
+          state.user.init_statusfilters,
+          state.user.init_ipfilters
         ),
       ]);
 

@@ -1,11 +1,7 @@
 @import '../../../../styles/variables';
 
 :host {
-  position: fixed;
   background: #fff;
-  top: $toolbar-height + $toolbar-helper-bar-height;
-  left: $navbar-width + $object-filter-width;
-  width: $region-filter-width;
   z-index: 10000;
   border: $object-filter-border;
 }

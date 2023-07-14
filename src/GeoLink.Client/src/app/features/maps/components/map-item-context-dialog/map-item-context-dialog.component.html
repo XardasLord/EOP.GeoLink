@@ -39,45 +39,45 @@
 <!-- Second level context menu -->
 <div class="second-level-table" [ngStyle]="{ left: subMenuElementLeft, top: subMenuElementTop }" *ngIf="showSubMenu">
   <table>
-  <a class="leaflet-popup-close-button" (click)="closeSubMenu()">×</a>
-  <tr class="header-summary-row">
-    <th>{{ getDeviceType(secondLevelDeviceDetailsModel.devType) }}</th>
-    <th colspan="2">{{ secondLevelDeviceDetailsModel.producer }}</th>
-  </tr>
-  <tr class="header-summary-row">
-    <th>Typ</th>
-    <th colspan="2">{{ secondLevelDeviceDetailsModel.model }}</th>
-  </tr>
-  <tr class="header-summary-row" *ngIf='secondLevelDeviceDetailsModel.ppe'>
-    <th>PPE</th>
-    <th colspan="2">{{ secondLevelDeviceDetailsModel.ppe }}</th>
-  </tr>
-  <tr>
-    <th>Parametr</th>
-    <th>Wartość</th>
-    <th>Status</th>
-  </tr>
-
-  <ng-container *ngFor="let deviceDetailsParam of secondLevelDeviceDetailsModel.params">
-    <tr class="device-item-row">
-      <td>{{ deviceDetailsParam.name }}</td>
-      <td>{{ deviceDetailsParam.value }}</td>
-      <td>
-        <mat-icon
-          *ngIf="deviceDetailsParam?.status"
-          matTooltip="abc test 123"
-          [ngClass]="{
-            good: deviceDetailsParam?.status === deviceStatus.OK,
-            warning: deviceDetailsParam?.status === deviceStatus.Warning,
-            bad: deviceDetailsParam?.status === deviceStatus.Error,
-            'not-available': deviceDetailsParam?.status === deviceStatus.NotAvailable
-          }"
-          >circle</mat-icon
-        >
-        <span *ngIf="!deviceDetailsParam?.status">n.d.</span>
-      </td>
+    <a class="leaflet-popup-close-button" (click)="closeSubMenu()">×</a>
+    <tr class="header-summary-row">
+      <th>{{ getDeviceType(secondLevelDeviceDetailsModel.devType) }}</th>
+      <th colspan="2">{{ secondLevelDeviceDetailsModel.producer }}</th>
     </tr>
-  </ng-container>
+    <tr class="header-summary-row">
+      <th>Typ</th>
+      <th colspan="2">{{ secondLevelDeviceDetailsModel.model }}</th>
+    </tr>
+    <tr class="header-summary-row" *ngIf="secondLevelDeviceDetailsModel.ppe">
+      <th>PPE</th>
+      <th colspan="2">{{ secondLevelDeviceDetailsModel.ppe }}</th>
+    </tr>
+    <tr>
+      <th>Parametr</th>
+      <th>Wartość</th>
+      <th>Status</th>
+    </tr>
+
+    <ng-container *ngFor="let deviceDetailsParam of secondLevelDeviceDetailsModel.params">
+      <tr class="device-item-row">
+        <td>{{ deviceDetailsParam.name }}</td>
+        <td>{{ deviceDetailsParam.value }}</td>
+        <td>
+          <mat-icon
+            *ngIf="deviceDetailsParam?.status"
+            matTooltip="abc test 123"
+            [ngClass]="{
+              good: deviceDetailsParam?.status === deviceStatus.OK,
+              warning: deviceDetailsParam?.status === deviceStatus.Warning,
+              bad: deviceDetailsParam?.status === deviceStatus.Error,
+              'not-available': deviceDetailsParam?.status === deviceStatus.NotAvailable
+            }"
+            >circle</mat-icon
+          >
+          <span *ngIf="!deviceDetailsParam?.status">n.d.</span>
+        </td>
+      </tr>
+    </ng-container>
   </table>
 </div>
 

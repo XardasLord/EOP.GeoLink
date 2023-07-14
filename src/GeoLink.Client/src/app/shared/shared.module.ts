@@ -21,6 +21,7 @@ import { AlertService } from './services/alert.service';
 import { SingleDeviceChartComponent } from './components/single-device-chart/single-device-chart.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { DeviceChartService } from './services/device-chart.service';
+import { MapIpFiltersComponent } from './components/map-ip-filters/map-ip-filters.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { DeviceChartService } from './services/device-chart.service';
     MapRegionFiltersComponent,
     MapObjectFiltersComponent,
     MapStatusFiltersComponent,
+    MapIpFiltersComponent,
     AuthScopeAllowDirective,
     SingleDeviceChartComponent,
   ],
@@ -55,6 +57,7 @@ import { DeviceChartService } from './services/device-chart.service';
     MapRegionFiltersComponent,
     MapObjectFiltersComponent,
     MapStatusFiltersComponent,
+    MapIpFiltersComponent,
     SingleDeviceChartComponent,
   ],
   providers: [

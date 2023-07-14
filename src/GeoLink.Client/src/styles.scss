@@ -79,6 +79,31 @@ span[disabled] {
   }
 }
 
+.mat-column-status {
+  .mat-icon {
+
+    font-size: $report-status-icon-size;
+    text-align: end;
+    padding-top: 14px;
+  }
+
+  .mat-icon.good {
+    color: $good-status-color;
+  }
+
+  .mat-icon.warning {
+    color: $warning-status-color;
+  }
+
+  .mat-icon.error {
+    color: $bad-status-color;
+  }
+
+  .mat-icon.not-available {
+    color: $disabled-color;
+  }
+}
+
 // ================================ Marker cluster groups ================================
 .marker-cluster-base {
   line-height: 40px;

@@ -45,12 +45,12 @@ export class LogsState {
   loadLogs(ctx: StateContext<LogsStateModel>, _: Load) {
     return this.logsService.load(ctx.getState().restQuery.currentPage).pipe(
       tap(response => {
-        const customLogResponse = new RestQueryResponse<LogModel[]>();
-        customLogResponse.result = response.logs;
-        customLogResponse.totalCount = response.logCount;
+        const customResponse = new RestQueryResponse<LogModel[]>();
+        customResponse.result = response.logs;
+        customResponse.totalCount = response.logCount;
 
         ctx.patchState({
-          restQueryResponse: customLogResponse,
+          restQueryResponse: customResponse,
         });
       }),
       catchError(error => {

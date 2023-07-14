@@ -25,6 +25,7 @@ $navbar-width: 195px;
 $object-filter-width: 220px;
 $region-filter-width: 220px;
 $status-filter-width: 220px;
+$status-ip-width: 220px;
 $report-status-icon-size: 15px;
 
 // Colors
@@ -42,8 +43,9 @@ $margins-between-map-filter-buttons: 0 86px 0 0;
 
 // Borders
 $object-filter-border: 3px solid lightgray;
-$area-filter-border: $object-filter-border;
+$region-filter-border: $object-filter-border;
 $status-filter-border: $object-filter-border;
+$ip-filter-border: $object-filter-border;
 $map-item-context-menu-table-border: 2px solid lightgray;
 $map-item-context-menu-table-row-border: 1px solid lightgray;
 $alert-panel-border: 1px solid $navbar-background-color;

@@ -13,6 +13,7 @@ export class UserAuthModel {
   init_devicefilters!: number[];
   init_regionfilters!: number[];
   init_statusfilters!: number[];
+  init_ipfilters!: number[];
 
   constructor(init?: Partial<UserAuthModel>) {
     Object.assign(this, { ...init });
