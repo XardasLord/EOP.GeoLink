@@ -4,8 +4,8 @@ export interface ReportModel {
   object: string;
   device: string;
   ipAddress: string;
-  stationNumber: number;
-  stationName: string;
+  objectNumber: number;
+  objectName: string;
   region: string;
   tan: string;
   status: MapObjectStatusTypeEnum;
