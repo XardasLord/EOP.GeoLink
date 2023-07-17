@@ -43,10 +43,10 @@ export class ReportsState {
 
   @Action(Load)
   loadLogs(ctx: StateContext<ReportsStateModel>, _: Load) {
-    return this.reportsService.load().pipe(
+    return this.reportsService.load(ctx.getState().restQuery.currentPage).pipe(
       tap(response => {
         const customResponse = new RestQueryResponse<ReportModel[]>();
-        customResponse.result = response.reports;
+        customResponse.result = response.data;
         customResponse.totalCount = response.reportCount;
 
         ctx.patchState({

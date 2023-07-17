@@ -14,14 +14,13 @@ import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-st
 })
 export class ReportsListComponent implements OnInit {
   displayedColumns: string[] = [
-    nameof<ReportModel>('object'),
-    nameof<ReportModel>('device'),
+    nameof<ReportModel>('objType'),
+    nameof<ReportModel>('devType'),
     nameof<ReportModel>('ipAddress'),
-    nameof<ReportModel>('objectNumber'),
-    nameof<ReportModel>('objectName'),
-    nameof<ReportModel>('region'),
-    nameof<ReportModel>('tan'),
-    nameof<ReportModel>('status'),
+    nameof<ReportModel>('objNr'),
+    nameof<ReportModel>('objName'),
+    nameof<ReportModel>('objRegion'),
+    nameof<ReportModel>('objStatus'),
     nameof<ReportModel>('availability'),
     'actions',
   ];

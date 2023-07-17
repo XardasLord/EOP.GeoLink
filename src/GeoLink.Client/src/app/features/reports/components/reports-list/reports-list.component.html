@@ -1,14 +1,14 @@
 <div class="warning-panel">Implementacja raportów w trakcie...</div>
 
 <table mat-table [dataSource]="(reports$ | async)!" class="mat-elevation-z3">
-  <ng-container matColumnDef="object">
+  <ng-container matColumnDef="objType">
     <th mat-header-cell *matHeaderCellDef>Obiekt</th>
-    <td mat-cell *matCellDef="let report">{{ report.object }}</td>
+    <td mat-cell *matCellDef="let report">{{ report.objType }}</td>
   </ng-container>
 
-  <ng-container matColumnDef="device">
+  <ng-container matColumnDef="devType">
     <th mat-header-cell *matHeaderCellDef>Urządzenie</th>
-    <td mat-cell *matCellDef="let report">{{ report.device }}</td>
+    <td mat-cell *matCellDef="let report">{{ report.devType }}</td>
   </ng-container>
 
   <ng-container matColumnDef="ipAddress">
@@ -16,34 +16,29 @@
     <td mat-cell *matCellDef="let report">{{ report.ipAddress }}</td>
   </ng-container>
 
-  <ng-container matColumnDef="stationNumber">
+  <ng-container matColumnDef="objNr">
     <th mat-header-cell *matHeaderCellDef>Nr obiektu</th>
-    <td mat-cell *matCellDef="let report">{{ report.stationNumber }}</td>
+    <td mat-cell *matCellDef="let report">{{ report.objNr }}</td>
   </ng-container>
 
-  <ng-container matColumnDef="stationName">
+  <ng-container matColumnDef="objName">
     <th mat-header-cell *matHeaderCellDef>Nazwa obiektu</th>
-    <td mat-cell *matCellDef="let report">{{ report.stationName }}</td>
+    <td mat-cell *matCellDef="let report">{{ report.objName }}</td>
   </ng-container>
 
-  <ng-container matColumnDef="region">
+  <ng-container matColumnDef="objRegion">
     <th mat-header-cell *matHeaderCellDef>Oddział</th>
-    <td mat-cell *matCellDef="let report">{{ report.region }}</td>
+    <td mat-cell *matCellDef="let report">{{ report.objRegion }}</td>
   </ng-container>
 
-  <ng-container matColumnDef="tan">
-    <th mat-header-cell *matHeaderCellDef>TAN</th>
-    <td mat-cell *matCellDef="let report">{{ report.tan }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="status">
+  <ng-container matColumnDef="objStatus">
     <th mat-header-cell *matHeaderCellDef>Status</th>
     <td mat-cell *matCellDef="let report">
       <mat-icon
         [ngClass]="{
-          good: report.status === DeviceStatus.OK,
-          warning: report.status === DeviceStatus.Warning,
-          error: report.status === DeviceStatus.Error
+          good: report.objStatus === DeviceStatus.OK,
+          warning: report.objStatus === DeviceStatus.Warning,
+          error: report.objStatus === DeviceStatus.Error
         }"
         >circle</mat-icon
       >
@@ -52,7 +47,7 @@
 
   <ng-container matColumnDef="availability">
     <th mat-header-cell *matHeaderCellDef>Dostępność</th>
-    <td mat-cell *matCellDef="let report">{{ report.availability }}%</td>
+    <td mat-cell *matCellDef="let report">{{ report.availability }}</td>
   </ng-container>
 
   <ng-container matColumnDef="actions">
