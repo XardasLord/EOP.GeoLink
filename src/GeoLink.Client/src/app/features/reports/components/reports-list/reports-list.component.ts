@@ -6,6 +6,7 @@ import { ReportsState } from '../../states/reports.state';
 import { ChangePage, Load } from '../../states/reports.action';
 import { ReportModel } from '../../models/report.model';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
+import { MapsState } from '../../../maps/states/maps.state';
 
 @Component({
   selector: 'app-reports-list',

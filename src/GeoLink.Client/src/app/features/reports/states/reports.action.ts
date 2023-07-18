@@ -1,4 +1,5 @@
 import { PageEvent } from '@angular/material/paginator';
+import { MapFilterModel } from '../../maps/models/map-filter-model';
 
 const prefix = '[Reports]';
 
@@ -10,4 +11,15 @@ export class ChangePage {
   static readonly type = `${prefix} ${ChangePage.name}`;
 
   constructor(public event: PageEvent) {}
+}
+
+export class ChangeFilters {
+  static readonly type = `${prefix} ${ChangeFilters.name}`;
+
+  constructor(
+    public selectedObjectMapFilters: MapFilterModel[],
+    public selectedRegionMapFilters: MapFilterModel[],
+    public selectedStatusMapFilters: MapFilterModel[],
+    public selectedIpMapFilters: MapFilterModel[]
+  ) {}
 }

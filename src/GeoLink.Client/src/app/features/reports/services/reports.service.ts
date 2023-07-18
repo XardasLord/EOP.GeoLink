@@ -20,12 +20,13 @@ export class ReportsService extends RemoteServiceBase {
     super(httpClient);
   }
 
-  load(pageInfo: PageEvent): Observable<GetReportsResponseModel> {
-    const selectedObjectMapFilters = this.store.selectSnapshot(MapsState.getObjectSelectedMapFilters);
-    const selectedRegionMapFilters = this.store.selectSnapshot(MapsState.getRegionSelectedMapFilters);
-    const selectedStatusMapFilters = this.store.selectSnapshot(MapsState.getStatusSelectedMapFilters);
-    const selectedIpMapFilters = this.store.selectSnapshot(MapsState.getIpSelectedMapFilters);
-
+  load(
+    selectedObjectMapFilters: MapFilterModel[],
+    selectedRegionMapFilters: MapFilterModel[],
+    selectedStatusMapFilters: MapFilterModel[],
+    selectedIpMapFilters: MapFilterModel[],
+    pageInfo: PageEvent
+  ): Observable<GetReportsResponseModel> {
     let params = new HttpParams().set('offset', pageInfo.pageIndex * pageInfo.pageSize).set('count', pageInfo.pageSize);
 
     params = this.setFilters(
