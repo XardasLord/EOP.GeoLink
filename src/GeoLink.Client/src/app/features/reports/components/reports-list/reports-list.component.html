@@ -1,5 +1,7 @@
 <div class="warning-panel">Implementacja raportów w trakcie...</div>
 
+<app-progress-spinner *ngIf="loading$ | async"></app-progress-spinner>
+
 <table mat-table [dataSource]="(reports$ | async)!" class="mat-elevation-z3">
   <ng-container matColumnDef="objType">
     <th mat-header-cell *matHeaderCellDef>Obiekt</th>

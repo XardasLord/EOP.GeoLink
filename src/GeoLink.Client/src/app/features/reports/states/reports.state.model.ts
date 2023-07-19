@@ -4,6 +4,7 @@ import { RestQueryResponse } from '../../../shared/models/pagination/rest.respon
 import { MapFilterModel } from '../../maps/models/map-filter-model';
 
 export interface ReportsStateModel {
+  loading: boolean;
   restQuery: RestQueryVo;
   restQueryResponse: RestQueryResponse<ReportModel[]>;
   selectedObjectMapFilters: MapFilterModel[];

@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
-import { catchError, tap, throwError } from 'rxjs';
+import { catchError, finalize, tap, throwError } from 'rxjs';
 import { ReportsStateModel } from './reports.state.model';
 import { ChangeFilters, ChangePage, Load } from './reports.action';
 import { ReportsService } from '../services/reports.service';
 import { ReportModel } from '../models/report.model';
 import { RestQueryVo } from '../../../shared/models/pagination/rest.query';
 import { RestQueryResponse } from '../../../shared/models/pagination/rest.response';
+import { ProgressSpinnerService } from '../../../shared/services/progress-spinner.service';
 
 const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
 
 @State<ReportsStateModel>({
   name: REPORTS_STATE_TOKEN,
   defaults: {
+    loading: false,
     restQuery: new RestQueryVo(),
     restQueryResponse: new RestQueryResponse<ReportModel[]>(),
     selectedObjectMapFilters: [],
@@ -23,7 +25,15 @@ const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
 })
 @Injectable()
 export class ReportsState {
-  constructor(private reportsService: ReportsService) {}
+  constructor(
+    private reportsService: ReportsService,
+    private progressSpinnerService: ProgressSpinnerService
+  ) {}
+
+  @Selector([REPORTS_STATE_TOKEN])
+  static getIsLoading(state: ReportsStateModel): boolean {
+    return state.loading;
+  }
 
   @Selector([REPORTS_STATE_TOKEN])
   static getReports(state: ReportsStateModel): ReportModel[] {
@@ -49,6 +59,12 @@ export class ReportsState {
   loadReports(ctx: StateContext<ReportsStateModel>, action: Load) {
     const state = ctx.getState();
 
+    ctx.patchState({
+      loading: true,
+    });
+
+    // this.progressSpinnerService.showProgressSpinner();
+
     return this.reportsService
       .load(
         state.selectedObjectMapFilters,
@@ -69,6 +85,12 @@ export class ReportsState {
         }),
         catchError(error => {
           return throwError(error);
+        }),
+        finalize(() => {
+          ctx.patchState({
+            loading: false,
+          });
+          // this.progressSpinnerService.hideProgressSpinner();
         })
       );
   }

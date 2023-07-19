@@ -25,6 +25,7 @@ export class ReportsListComponent implements OnInit {
     nameof<ReportModel>('availability'),
     'actions',
   ];
+  loading$ = this.store.select(ReportsState.getIsLoading);
   reports$ = this.store.select(ReportsState.getReports);
   totalItems$ = this.store.select(ReportsState.getReportsCount);
   currentPage$ = this.store.select(ReportsState.getCurrentPage);
