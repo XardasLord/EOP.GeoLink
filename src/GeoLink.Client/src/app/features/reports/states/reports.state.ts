@@ -7,7 +7,6 @@ import { ReportsService } from '../services/reports.service';
 import { ReportModel } from '../models/report.model';
 import { RestQueryVo } from '../../../shared/models/pagination/rest.query';
 import { RestQueryResponse } from '../../../shared/models/pagination/rest.response';
-import { ProgressSpinnerService } from '../../../shared/services/progress-spinner.service';
 
 const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
 
@@ -25,10 +24,7 @@ const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
 })
 @Injectable()
 export class ReportsState {
-  constructor(
-    private reportsService: ReportsService,
-    private progressSpinnerService: ProgressSpinnerService
-  ) {}
+  constructor(private reportsService: ReportsService) {}
 
   @Selector([REPORTS_STATE_TOKEN])
   static getIsLoading(state: ReportsStateModel): boolean {
@@ -63,21 +59,25 @@ export class ReportsState {
       loading: true,
     });
 
-    // this.progressSpinnerService.showProgressSpinner();
-
     return this.reportsService
       .load(
         state.selectedObjectMapFilters,
         state.selectedRegionMapFilters,
         state.selectedStatusMapFilters,
         state.selectedIpMapFilters,
-        state.restQuery.currentPage
+        state.restQuery.currentPage,
+        action.includeReportsCount
       )
       .pipe(
         tap(response => {
           const customResponse = new RestQueryResponse<ReportModel[]>();
           customResponse.result = response.data;
-          customResponse.totalCount = response.reportCount;
+
+          if (action.includeReportsCount) {
+            customResponse.totalCount = response.reportCount;
+          } else {
+            customResponse.totalCount = state.restQueryResponse.totalCount;
+          }
 
           ctx.patchState({
             restQueryResponse: customResponse,
@@ -90,7 +90,6 @@ export class ReportsState {
           ctx.patchState({
             loading: false,
           });
-          // this.progressSpinnerService.hideProgressSpinner();
         })
       );
   }
@@ -104,7 +103,7 @@ export class ReportsState {
       restQuery: customQuery,
     });
 
-    return ctx.dispatch(new Load());
+    return ctx.dispatch(new Load(false));
   }
 
   @Action(ChangeFilters)

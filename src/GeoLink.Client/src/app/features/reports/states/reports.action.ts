@@ -5,6 +5,8 @@ const prefix = '[Reports]';
 
 export class Load {
   static readonly type = `${prefix} ${Load.name}`;
+
+  constructor(public includeReportsCount = true) {}
 }
 
 export class ChangePage {

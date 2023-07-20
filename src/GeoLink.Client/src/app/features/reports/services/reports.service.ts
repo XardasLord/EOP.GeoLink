@@ -25,9 +25,13 @@ export class ReportsService extends RemoteServiceBase {
     selectedRegionMapFilters: MapFilterModel[],
     selectedStatusMapFilters: MapFilterModel[],
     selectedIpMapFilters: MapFilterModel[],
-    pageInfo: PageEvent
+    pageInfo: PageEvent,
+    includeCount: boolean
   ): Observable<GetReportsResponseModel> {
-    let params = new HttpParams().set('offset', pageInfo.pageIndex * pageInfo.pageSize).set('count', pageInfo.pageSize);
+    let params = new HttpParams()
+      .set('offset', pageInfo.pageIndex * pageInfo.pageSize)
+      .set('count', pageInfo.pageSize)
+      .set('doCount', includeCount ? 1 : 0);
 
     params = this.setFilters(
       params,
