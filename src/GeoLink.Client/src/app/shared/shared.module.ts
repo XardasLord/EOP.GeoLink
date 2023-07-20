@@ -22,6 +22,8 @@ import { SingleDeviceChartComponent } from './components/single-device-chart/sin
 import { NgxEchartsModule } from 'ngx-echarts';
 import { DeviceChartService } from './services/device-chart.service';
 import { MapIpFiltersComponent } from './components/map-ip-filters/map-ip-filters.component';
+import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
+import { ProgressSpinnerService } from './services/progress-spinner.service';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import { MapIpFiltersComponent } from './components/map-ip-filters/map-ip-filter
     MapIpFiltersComponent,
     AuthScopeAllowDirective,
     SingleDeviceChartComponent,
+    ProgressSpinnerComponent,
   ],
   imports: [
     CommonModule,
@@ -59,6 +62,7 @@ import { MapIpFiltersComponent } from './components/map-ip-filters/map-ip-filter
     MapStatusFiltersComponent,
     MapIpFiltersComponent,
     SingleDeviceChartComponent,
+    ProgressSpinnerComponent,
   ],
   providers: [
     ErrorService,
@@ -66,6 +70,7 @@ import { MapIpFiltersComponent } from './components/map-ip-filters/map-ip-filter
     DictionaryService,
     AlertService,
     DeviceChartService,
+    ProgressSpinnerService,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
   ],
 })

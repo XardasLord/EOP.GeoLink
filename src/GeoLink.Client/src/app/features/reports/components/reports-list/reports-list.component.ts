@@ -6,6 +6,7 @@ import { ReportsState } from '../../states/reports.state';
 import { ChangePage, Load } from '../../states/reports.action';
 import { ReportModel } from '../../models/report.model';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
+import { MapsState } from '../../../maps/states/maps.state';
 
 @Component({
   selector: 'app-reports-list',
@@ -14,17 +15,17 @@ import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-st
 })
 export class ReportsListComponent implements OnInit {
   displayedColumns: string[] = [
-    nameof<ReportModel>('object'),
-    nameof<ReportModel>('device'),
+    nameof<ReportModel>('objType'),
+    nameof<ReportModel>('devType'),
     nameof<ReportModel>('ipAddress'),
-    nameof<ReportModel>('stationNumber'),
-    nameof<ReportModel>('stationName'),
-    nameof<ReportModel>('region'),
-    nameof<ReportModel>('tan'),
-    nameof<ReportModel>('status'),
+    nameof<ReportModel>('objNr'),
+    nameof<ReportModel>('objName'),
+    nameof<ReportModel>('objRegion'),
+    nameof<ReportModel>('objStatus'),
     nameof<ReportModel>('availability'),
     'actions',
   ];
+  loading$ = this.store.select(ReportsState.getIsLoading);
   reports$ = this.store.select(ReportsState.getReports);
   totalItems$ = this.store.select(ReportsState.getReportsCount);
   currentPage$ = this.store.select(ReportsState.getCurrentPage);
