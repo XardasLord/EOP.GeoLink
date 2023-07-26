@@ -23,8 +23,8 @@ export class DeviceChartService extends RemoteServiceBase {
   ): Observable<DeviceChartModel> {
     let params = new HttpParams()
       .set('deviceId', deviceId)
-      .set('timeExtentHours', 24) // Okno czasowe (h)
-      .set('intervalMinutes', 30) // Interwał (min) między odczytami, wpływających na zagęszczenie szeregu czasowego
+      .set('timeExtentHours', timeExtentHours) // Okno czasowe (h)
+      .set('intervalMinutes', intervalMinutes) // Interwał (min) między odczytami, wpływających na zagęszczenie szeregu czasowego
       .set('chartTypes', chartType);
 
     if (dateEnd) {
