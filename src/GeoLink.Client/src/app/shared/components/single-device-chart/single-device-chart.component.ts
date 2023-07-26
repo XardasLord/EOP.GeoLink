@@ -30,7 +30,10 @@ export class SingleDeviceChartComponent implements OnInit, OnDestroy {
 
   private getChartSubscription: Subscription = new Subscription();
 
-  constructor(private deviceChartService: DeviceChartService, private changeDetectorRef: ChangeDetectorRef) {}
+  constructor(
+    private deviceChartService: DeviceChartService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.prepareChartMock();
@@ -99,8 +102,8 @@ export class SingleDeviceChartComponent implements OnInit, OnDestroy {
       const formattedDate = `${date.getHours().toString()}:${date.getMinutes().toString()}`;
 
       xAxisData.push(formattedDate);
-      standardChartData.push(chartData.avail);
-      polynomialChartData.push(chartData.trAvail);
+      standardChartData.push(chartData.values[0]);
+      polynomialChartData.push(chartData.values[1]);
     });
 
     this.chartOptions = {

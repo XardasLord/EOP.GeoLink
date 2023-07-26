@@ -15,6 +15,5 @@ export interface ChartGeneralData {
 
 export interface ChartData {
   timestamp: Date;
-  avail: number; // Wartości dla standardowego wykresu dostępności
-  trAvail: number; // Wartości dla wykresu wielomiany
+  values: number[]; // ['Wartości dla standardowego wykresu dostępności', 'Wartości dla wykresu wielomiany (trendu)']
 }

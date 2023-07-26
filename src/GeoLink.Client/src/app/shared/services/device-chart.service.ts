@@ -31,6 +31,6 @@ export class DeviceChartService extends RemoteServiceBase {
       params = params.append('dateEnd', dateEnd.toDateString()); // [opcjonalne] data końcowa, domyślnie SYSDATE. Od niej odejmowane są kolejne interwały, aż do wypełnienia okna czasowego. Może się przydać, jeśli wykresy będzie można np przewijać
     }
 
-    return this.httpClient.get<DeviceChartModel>(`${this.apiUrl}/analytics/getDeviceCharts`, { params });
+    return this.httpClient.get<DeviceChartModel>(`${this.apiUrl}/charts/getDeviceCharts`, { params });
   }
 }
