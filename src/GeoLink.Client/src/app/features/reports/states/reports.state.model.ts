@@ -8,6 +8,7 @@ export interface ReportsStateModel {
   restQuery: RestQueryVo;
   restQueryResponse: RestQueryResponse<ReportModel[]>;
   selectedObjectMapFilters: MapFilterModel[];
+  selectedDeviceMapFilters: MapFilterModel[];
   selectedRegionMapFilters: MapFilterModel[];
   selectedStatusMapFilters: MapFilterModel[];
   selectedIpMapFilters: MapFilterModel[];

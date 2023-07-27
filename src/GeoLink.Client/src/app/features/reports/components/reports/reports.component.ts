@@ -22,6 +22,7 @@ export class ReportsComponent implements OnInit {
 
   private changeFilters() {
     const selectedObjectMapFilters = this.store.selectSnapshot(MapsState.getObjectSelectedMapFilters);
+    const selectedDeviceMapFilters = this.store.selectSnapshot(MapsState.getDeviceSelectedMapFilters);
     const selectedRegionMapFilters = this.store.selectSnapshot(MapsState.getRegionSelectedMapFilters);
     const selectedStatusMapFilters = this.store.selectSnapshot(MapsState.getStatusSelectedMapFilters);
     const selectedIpMapFilters = this.store.selectSnapshot(MapsState.getIpSelectedMapFilters);
@@ -29,6 +30,7 @@ export class ReportsComponent implements OnInit {
     this.store.dispatch(
       new ChangeFilters(
         selectedObjectMapFilters,
+        selectedDeviceMapFilters,
         selectedRegionMapFilters,
         selectedStatusMapFilters,
         selectedIpMapFilters

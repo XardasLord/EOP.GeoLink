@@ -17,6 +17,7 @@ const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
     restQuery: new RestQueryVo(),
     restQueryResponse: new RestQueryResponse<ReportModel[]>(),
     selectedObjectMapFilters: [],
+    selectedDeviceMapFilters: [],
     selectedRegionMapFilters: [],
     selectedStatusMapFilters: [],
     selectedIpMapFilters: [],
@@ -62,6 +63,7 @@ export class ReportsState {
     return this.reportsService
       .load(
         state.selectedObjectMapFilters,
+        state.selectedDeviceMapFilters,
         state.selectedRegionMapFilters,
         state.selectedStatusMapFilters,
         state.selectedIpMapFilters,
@@ -110,6 +112,7 @@ export class ReportsState {
   changeFilters(ctx: StateContext<ReportsStateModel>, action: ChangeFilters) {
     ctx.patchState({
       selectedObjectMapFilters: action.selectedObjectMapFilters,
+      selectedDeviceMapFilters: action.selectedDeviceMapFilters,
       selectedRegionMapFilters: action.selectedRegionMapFilters,
       selectedStatusMapFilters: action.selectedStatusMapFilters,
       selectedIpMapFilters: action.selectedIpMapFilters,

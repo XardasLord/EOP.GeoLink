@@ -4,6 +4,7 @@ import { MapFilterModel } from '../models/map-filter-model';
 export interface MapsStateModel {
   mapFilters: MapFiltersModel;
   selectedObjectsMapFilters: MapFilterModel[];
+  selectedDeviceMapFilters: MapFilterModel[];
   selectedRegionMapFilter: MapFilterModel[];
   selectedStatusMapFilters: MapFilterModel[];
   selectedIpMapFilters: MapFilterModel[];

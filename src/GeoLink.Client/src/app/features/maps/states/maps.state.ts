@@ -3,6 +3,7 @@ import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { Observable, tap } from 'rxjs';
 import { MapsStateModel } from './maps.state.model';
 import {
+  DeviceMapFiltersSelectionChange,
   IpMapFiltersSelectionChange,
   LoadMapFilters,
   ObjectMapFiltersSelectionChange,
@@ -21,11 +22,13 @@ const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
   defaults: {
     mapFilters: {
       objectFilters: [],
+      deviceFilters: [],
       regionFilters: [],
       statusFilters: [],
       ipFilters: [],
     },
     selectedObjectsMapFilters: [],
+    selectedDeviceMapFilters: [],
     selectedRegionMapFilter: [],
     selectedStatusMapFilters: [],
     selectedIpMapFilters: [],
@@ -43,6 +46,11 @@ export class MapsState {
   @Selector([MAPS_STATE_TOKEN])
   static getObjectSelectedMapFilters(state: MapsStateModel): MapFilterModel[] {
     return state.selectedObjectsMapFilters;
+  }
+
+  @Selector([MAPS_STATE_TOKEN])
+  static getDeviceSelectedMapFilters(state: MapsStateModel): MapFilterModel[] {
+    return state.selectedDeviceMapFilters;
   }
 
   @Selector([MAPS_STATE_TOKEN])
@@ -66,6 +74,7 @@ export class MapsState {
       tap(response => {
         const filters: MapFiltersModel = {
           objectFilters: response.filter(x => x.name === 'Obiekty'),
+          deviceFilters: response.filter(x => x.name === 'Urządzenia'),
           regionFilters: response.filter(x => x.name === 'Obszary'),
           statusFilters: response.filter(x => x.name === 'Statusy obiektów'),
           ipFilters: response.filter(x => x.name === 'Adresy IP'),
@@ -114,6 +123,46 @@ export class MapsState {
 
     ctx.patchState({
       selectedObjectsMapFilters: action.selectedMapFilters,
+      mapFilters: updatedFilters,
+    });
+  }
+
+  @Action(DeviceMapFiltersSelectionChange)
+  deviceMapFiltersSelectionChange(ctx: StateContext<MapsStateModel>, action: DeviceMapFiltersSelectionChange) {
+    const filters = ctx.getState().mapFilters;
+
+    function updateFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
+      return filters.map(filter => {
+        const updatedFilter: MapFilterModel = { ...filter };
+
+        if (
+          action.selectedMapFilters.some(
+            f => f.id === filter.id && f.apiFilterType === filter.apiFilterType && f.name === filter.name
+          )
+        ) {
+          updatedFilter.completed = true;
+        } else {
+          updatedFilter.completed = false;
+        }
+
+        if (filter.filters) {
+          updatedFilter.filters = updateFiltersCompleted(filter.filters);
+        }
+
+        return updatedFilter;
+      });
+    }
+
+    const updatedFilters: MapFiltersModel = {
+      ...filters,
+      deviceFilters: filters.deviceFilters.map(deviceFilter => ({
+        ...deviceFilter,
+        filters: updateFiltersCompleted(deviceFilter.filters),
+      })),
+    };
+
+    ctx.patchState({
+      selectedDeviceMapFilters: action.selectedMapFilters,
       mapFilters: updatedFilters,
     });
   }
@@ -241,27 +290,44 @@ export class MapsState {
   @Action(SetInitialMapFilters)
   setInitialMapFilters(ctx: StateContext<MapsStateModel>, action: SetInitialMapFilters) {
     const filters = ctx.getState().mapFilters;
-    const selectedObjectAndDeviceMapFilters: MapFilterModel[] = [];
+    const selectedObjectMapFilters: MapFilterModel[] = [];
+    const selectedDeviceMapFilters: MapFilterModel[] = [];
     const selectedRegionMapFilters: MapFilterModel[] = [];
     const selectedStatusMapFilters: MapFilterModel[] = [];
     const selectedIpMapFilters: MapFilterModel[] = [];
 
-    function updateObjectAndDeviceFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
+    function updateObjectFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
       return filters.map(filter => {
         const updatedFilter: MapFilterModel = { ...filter };
 
-        if (
-          action.deviceFilters.some(f => f === filter.id && filter.apiFilterType === 'DeviceFilters') ||
-          (filter.id === action.objectTypeFilters && filter.apiFilterType === 'ObjectTypeFilters')
-        ) {
+        if (filter.id === action.objectTypeFilters && filter.apiFilterType === 'ObjectTypeFilters') {
           updatedFilter.completed = true;
-          selectedObjectAndDeviceMapFilters.push(updatedFilter);
+          selectedObjectMapFilters.push(updatedFilter);
         } else {
           updatedFilter.completed = false;
         }
 
         if (filter.filters) {
-          updatedFilter.filters = updateObjectAndDeviceFiltersCompleted(filter.filters);
+          updatedFilter.filters = updateObjectFiltersCompleted(filter.filters);
+        }
+
+        return updatedFilter;
+      });
+    }
+
+    function updateDeviceFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
+      return filters.map(filter => {
+        const updatedFilter: MapFilterModel = { ...filter };
+
+        if (action.deviceFilters.some(f => f === filter.id && filter.apiFilterType === 'DeviceFilters')) {
+          updatedFilter.completed = true;
+          selectedObjectMapFilters.push(updatedFilter);
+        } else {
+          updatedFilter.completed = false;
+        }
+
+        if (filter.filters) {
+          updatedFilter.filters = updateDeviceFiltersCompleted(filter.filters);
         }
 
         return updatedFilter;
@@ -329,7 +395,11 @@ export class MapsState {
       ...filters,
       objectFilters: filters.objectFilters.map(objectFilters => ({
         ...objectFilters,
-        filters: updateObjectAndDeviceFiltersCompleted(objectFilters.filters),
+        filters: updateObjectFiltersCompleted(objectFilters.filters),
+      })),
+      deviceFilters: filters.deviceFilters.map(deviceFilters => ({
+        ...deviceFilters,
+        filters: updateDeviceFiltersCompleted(deviceFilters.filters),
       })),
       regionFilters: filters.regionFilters.map(regionFilters => ({
         ...regionFilters,
@@ -346,7 +416,8 @@ export class MapsState {
     };
 
     ctx.patchState({
-      selectedObjectsMapFilters: selectedObjectAndDeviceMapFilters,
+      selectedObjectsMapFilters: selectedObjectMapFilters,
+      selectedDeviceMapFilters: selectedDeviceMapFilters,
       selectedRegionMapFilter: selectedRegionMapFilters,
       selectedStatusMapFilters: selectedStatusMapFilters,
       selectedIpMapFilters: selectedIpMapFilters,

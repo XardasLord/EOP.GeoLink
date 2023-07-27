@@ -148,6 +148,7 @@ export class MapComponent implements OnInit, OnDestroy {
     const bbox: LatLngBounds = this.map.getBounds();
     const mapZoom = this.map.getZoom();
     const selectedObjectMapFilters = this.store.selectSnapshot(MapsState.getObjectSelectedMapFilters);
+    const selectedDeviceMapFilters = this.store.selectSnapshot(MapsState.getDeviceSelectedMapFilters);
     const selectedRegionMapFilters = this.store.selectSnapshot(MapsState.getRegionSelectedMapFilters);
     const selectedStatusMapFilters = this.store.selectSnapshot(MapsState.getStatusSelectedMapFilters);
     const selectedIpMapFilters = this.store.selectSnapshot(MapsState.getIpSelectedMapFilters);
@@ -164,6 +165,7 @@ export class MapComponent implements OnInit, OnDestroy {
         bbox.getNorthEast().lat,
         mapZoom,
         selectedObjectMapFilters,
+        selectedDeviceMapFilters,
         selectedRegionMapFilters,
         selectedStatusMapFilters,
         selectedIpMapFilters
@@ -204,6 +206,7 @@ export class MapComponent implements OnInit, OnDestroy {
         bbox.getNorthEast().lng,
         bbox.getNorthEast().lat,
         selectedObjectMapFilters,
+        selectedDeviceMapFilters,
         selectedRegionMapFilters,
         selectedStatusMapFilters,
         selectedIpMapFilters

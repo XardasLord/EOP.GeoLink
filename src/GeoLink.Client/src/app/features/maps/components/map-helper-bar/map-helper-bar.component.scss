@@ -11,23 +11,30 @@
   width: $object-filter-width;
 }
 
-.region-filters {
+.device-filters {
   position: fixed;
   top: $toolbar-height + $toolbar-helper-bar-height;
   left: $navbar-width + $object-filter-width;
+  width: $device-filter-width;
+}
+
+.region-filters {
+  position: fixed;
+  top: $toolbar-height + $toolbar-helper-bar-height;
+  left: $navbar-width + $object-filter-width + $device-filter-width;
   width: $region-filter-width;
 }
 
 .status-filters {
   position: fixed;
   top: $toolbar-height + $toolbar-helper-bar-height;
-  left: $navbar-width + $object-filter-width + $region-filter-width;
+  left: $navbar-width + $object-filter-width + $device-filter-width + $region-filter-width;
   width: $status-filter-width;
 }
 
 .ip-filters {
   position: fixed;
   top: $toolbar-height + $toolbar-helper-bar-height;
-  left: $navbar-width + $object-filter-width + $region-filter-width + $status-filter-width;
-  width: $status-ip-width;
+  left: $navbar-width + $object-filter-width + $device-filter-width + $region-filter-width + $status-filter-width;
+  width: $ip-filter-width;
 }

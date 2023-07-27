@@ -22,6 +22,7 @@ export class ReportsService extends RemoteServiceBase {
 
   load(
     selectedObjectMapFilters: MapFilterModel[],
+    selectedDeviceMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
     selectedStatusMapFilters: MapFilterModel[],
     selectedIpMapFilters: MapFilterModel[],
@@ -36,6 +37,7 @@ export class ReportsService extends RemoteServiceBase {
     params = this.setFilters(
       params,
       selectedObjectMapFilters,
+      selectedDeviceMapFilters,
       selectedRegionMapFilters,
       selectedStatusMapFilters,
       selectedIpMapFilters
@@ -47,6 +49,7 @@ export class ReportsService extends RemoteServiceBase {
   private setFilters(
     httpParams: HttpParams,
     selectedObjectMapFilters: MapFilterModel[],
+    selectedDeviceMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
     selectedStatusMapFilters: MapFilterModel[],
     selectedIpMapFilters: MapFilterModel[]
@@ -57,7 +60,7 @@ export class ReportsService extends RemoteServiceBase {
         httpParams = httpParams.append('objectTypeFilters', filter.id);
       });
 
-    selectedObjectMapFilters
+    selectedDeviceMapFilters
       .filter(x => x.apiFilterType === 'DeviceFilters' && x.id !== null)
       .forEach(filter => {
         httpParams = httpParams.append('deviceFilters', filter.id);

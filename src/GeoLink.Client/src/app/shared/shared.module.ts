@@ -25,12 +25,14 @@ import { MapIpFiltersComponent } from './components/map-ip-filters/map-ip-filter
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 import { ProgressSpinnerService } from './services/progress-spinner.service';
 import { SingleDeviceChartDialogComponent } from './components/single-device-chart-dialog/single-device-chart-dialog.component';
+import { MapDeviceFiltersComponent } from './components/map-device-filters/map-device-filters.component';
 
 @NgModule({
   declarations: [
     EnumDescriptionPipePipe,
     MapRegionFiltersComponent,
     MapObjectFiltersComponent,
+    MapDeviceFiltersComponent,
     MapStatusFiltersComponent,
     MapIpFiltersComponent,
     AuthScopeAllowDirective,
@@ -61,6 +63,7 @@ import { SingleDeviceChartDialogComponent } from './components/single-device-cha
     AuthScopeAllowDirective,
     MapRegionFiltersComponent,
     MapObjectFiltersComponent,
+    MapDeviceFiltersComponent,
     MapStatusFiltersComponent,
     MapIpFiltersComponent,
     SingleDeviceChartComponent,

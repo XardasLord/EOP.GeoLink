@@ -9,12 +9,17 @@ import { MapFilterModel } from '../../../maps/models/map-filter-model';
 export class ReportsHelperBarComponent {
   @Output() mapFiltersChanged = new EventEmitter<MapFilterModel[]>();
   showObjectFilters = false;
+  showDeviceFilters = false;
   showRegionFilters = false;
   showStatusFilters = false;
   showIpFilters = false;
 
   toggleObjectFilters(): void {
     this.showObjectFilters = !this.showObjectFilters;
+  }
+
+  toggleDeviceFilters(): void {
+    this.showDeviceFilters = !this.showDeviceFilters;
   }
 
   toggleRegionFilters(): void {

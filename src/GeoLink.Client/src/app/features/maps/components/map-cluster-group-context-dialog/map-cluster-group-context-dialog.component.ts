@@ -143,6 +143,7 @@ export class MapClusterGroupContextDialogComponent implements AfterContentChecke
     this.adjustDeviceSubMenuPosition(event);
 
     const selectedObjectMapFilters = this.store.selectSnapshot(MapsState.getObjectSelectedMapFilters);
+    const selectedDeviceMapFilters = this.store.selectSnapshot(MapsState.getDeviceSelectedMapFilters);
     const selectedRegionMapFilters = this.store.selectSnapshot(MapsState.getRegionSelectedMapFilters);
     const selectedStatusMapFilters = this.store.selectSnapshot(MapsState.getStatusSelectedMapFilters);
     const selectedIpMapFilters = this.store.selectSnapshot(MapsState.getIpSelectedMapFilters);
@@ -154,6 +155,7 @@ export class MapClusterGroupContextDialogComponent implements AfterContentChecke
           this.level,
           groupModel.objType,
           selectedObjectMapFilters,
+          selectedDeviceMapFilters,
           selectedRegionMapFilters,
           selectedStatusMapFilters,
           selectedIpMapFilters

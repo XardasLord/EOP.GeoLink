@@ -20,6 +20,7 @@ export class ChangeFilters {
 
   constructor(
     public selectedObjectMapFilters: MapFilterModel[],
+    public selectedDeviceMapFilters: MapFilterModel[],
     public selectedRegionMapFilters: MapFilterModel[],
     public selectedStatusMapFilters: MapFilterModel[],
     public selectedIpMapFilters: MapFilterModel[]

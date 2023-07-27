@@ -12,6 +12,12 @@ export class ObjectMapFiltersSelectionChange {
   constructor(public selectedMapFilters: MapFilterModel[]) {}
 }
 
+export class DeviceMapFiltersSelectionChange {
+  static readonly type = `${prefix} ${DeviceMapFiltersSelectionChange.name}`;
+
+  constructor(public selectedMapFilters: MapFilterModel[]) {}
+}
+
 export class RegionMapFiltersSelectionChange {
   static readonly type = `${prefix} ${RegionMapFiltersSelectionChange.name}`;
 

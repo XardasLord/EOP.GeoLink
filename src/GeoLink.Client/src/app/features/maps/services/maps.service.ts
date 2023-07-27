@@ -27,6 +27,7 @@ export class MapsService extends RemoteServiceBase {
     latMax: number, // NE
     zoomLevel: number,
     selectedObjectMapFilters: MapFilterModel[],
+    selectedDeviceMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
     selectedStatusMapFilters: MapFilterModel[],
     selectedIpMapFilters: MapFilterModel[]
@@ -42,6 +43,7 @@ export class MapsService extends RemoteServiceBase {
     params = this.setFilters(
       params,
       selectedObjectMapFilters,
+      selectedDeviceMapFilters,
       selectedRegionMapFilters,
       selectedStatusMapFilters,
       selectedIpMapFilters
@@ -56,6 +58,7 @@ export class MapsService extends RemoteServiceBase {
     lonMax: number, // NE
     latMax: number, // NE
     selectedObjectMapFilters: MapFilterModel[],
+    selectedDeviceMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
     selectedStatusMapFilters: MapFilterModel[],
     selectedIpMapFilters: MapFilterModel[]
@@ -69,6 +72,7 @@ export class MapsService extends RemoteServiceBase {
     params = this.setFilters(
       params,
       selectedObjectMapFilters,
+      selectedDeviceMapFilters,
       selectedRegionMapFilters,
       selectedStatusMapFilters,
       selectedIpMapFilters
@@ -80,6 +84,7 @@ export class MapsService extends RemoteServiceBase {
   private setFilters(
     httpParams: HttpParams,
     selectedObjectMapFilters: MapFilterModel[],
+    selectedDeviceMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
     selectedStatusMapFilters: MapFilterModel[],
     selectedIpMapFilters: MapFilterModel[]
@@ -90,7 +95,7 @@ export class MapsService extends RemoteServiceBase {
         httpParams = httpParams.append('objectTypeFilters', filter.id);
       });
 
-    selectedObjectMapFilters
+    selectedDeviceMapFilters
       .filter(x => x.apiFilterType === 'DeviceFilters' && x.id !== null)
       .forEach(filter => {
         httpParams = httpParams.append('deviceFilters', filter.id);
@@ -131,6 +136,7 @@ export class MapsService extends RemoteServiceBase {
     lvl: number,
     objType: MapObjectTypeEnum,
     selectedObjectMapFilters: MapFilterModel[],
+    selectedDeviceMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
     selectedStatusMapFilters: MapFilterModel[],
     selectedIpMapFilters: MapFilterModel[]
@@ -140,6 +146,7 @@ export class MapsService extends RemoteServiceBase {
     params = this.setFilters(
       params,
       selectedObjectMapFilters,
+      selectedDeviceMapFilters,
       selectedRegionMapFilters,
       selectedStatusMapFilters,
       selectedIpMapFilters

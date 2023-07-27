@@ -5,6 +5,10 @@
         <mat-icon>filter_alt</mat-icon>
         Obiekty
       </button>
+      <button mat-fab extended color="primary" (click)="toggleDeviceFilters()">
+        <mat-icon>filter_alt</mat-icon>
+        Urządzenia
+      </button>
       <button mat-fab extended color="primary" (click)="toggleRegionFilters()">
         <mat-icon>filter_alt</mat-icon>
         Obszary
@@ -23,6 +27,10 @@
 
 <ng-container *ngIf="showObjectFilters">
   <app-map-object-filters class="object-filters" (filtersChanged)="onFiltersChanged($event)"></app-map-object-filters>
+</ng-container>
+
+<ng-container *ngIf="showDeviceFilters">
+  <app-map-device-filters class="device-filters" (filtersChanged)="onFiltersChanged($event)"></app-map-device-filters>
 </ng-container>
 
 <ng-container *ngIf="showRegionFilters">
