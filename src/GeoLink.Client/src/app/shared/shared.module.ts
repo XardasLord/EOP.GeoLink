@@ -24,6 +24,7 @@ import { DeviceChartService } from './services/device-chart.service';
 import { MapIpFiltersComponent } from './components/map-ip-filters/map-ip-filters.component';
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 import { ProgressSpinnerService } from './services/progress-spinner.service';
+import { SingleDeviceChartDialogComponent } from './components/single-device-chart-dialog/single-device-chart-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { ProgressSpinnerService } from './services/progress-spinner.service';
     MapIpFiltersComponent,
     AuthScopeAllowDirective,
     SingleDeviceChartComponent,
+    SingleDeviceChartDialogComponent,
     ProgressSpinnerComponent,
   ],
   imports: [
@@ -62,6 +64,7 @@ import { ProgressSpinnerService } from './services/progress-spinner.service';
     MapStatusFiltersComponent,
     MapIpFiltersComponent,
     SingleDeviceChartComponent,
+    SingleDeviceChartDialogComponent,
     ProgressSpinnerComponent,
   ],
   providers: [

@@ -13,7 +13,6 @@ import {
   Layer,
   LayerGroup,
   LeafletEventHandlerFn,
-  LeafletMouseEvent,
   Map,
   MapOptions,
   Marker,

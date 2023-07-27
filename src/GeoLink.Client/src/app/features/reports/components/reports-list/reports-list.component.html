@@ -54,7 +54,16 @@
 
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef>Akcje</th>
-    <td mat-cell *matCellDef="let report"></td>
+    <td mat-cell *matCellDef="let report">
+      <div class="table-action-buttons">
+        <button
+          mat-icon-button
+          matTooltip="Pokaż wykres dostępności"
+          (click)="displayChart(report); $event.stopPropagation()">
+          <mat-icon class="material-icons-outlined" matListItemIcon>bar_chart</mat-icon>
+        </button>
+      </div>
+    </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

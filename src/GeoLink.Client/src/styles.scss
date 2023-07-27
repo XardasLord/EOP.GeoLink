@@ -79,9 +79,8 @@ span[disabled] {
   }
 }
 
-.mat-column-status {
+.mat-column-status, .mat-column-objStatus {
   .mat-icon {
-
     font-size: $report-status-icon-size;
     text-align: end;
     padding-top: 14px;

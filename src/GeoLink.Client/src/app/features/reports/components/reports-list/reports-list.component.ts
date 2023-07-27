@@ -6,7 +6,10 @@ import { ReportsState } from '../../states/reports.state';
 import { ChangePage, Load } from '../../states/reports.action';
 import { ReportModel } from '../../models/report.model';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
-import { MapsState } from '../../../maps/states/maps.state';
+import { ChartTypeEnum } from '../../../../shared/models/charts/chart-type.enum';
+import { MatDialog } from '@angular/material/dialog';
+import { SingleDeviceChartDialogComponent } from '../../../../shared/components/single-device-chart-dialog/single-device-chart-dialog.component';
+import { SingleDeviceChartDialogModel } from '../../../../shared/models/charts/single-device-chart-dialog.model';
 
 @Component({
   selector: 'app-reports-list',
@@ -34,7 +37,10 @@ export class ReportsListComponent implements OnInit {
   protected readonly DeviceStatus = MapObjectStatusTypeEnum;
   protected readonly MapObjectStatusTypeEnum = MapObjectStatusTypeEnum;
 
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    private matDialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.store.dispatch(new Load());
@@ -42,5 +48,15 @@ export class ReportsListComponent implements OnInit {
 
   pageChanged(event: PageEvent): void {
     this.store.dispatch(new ChangePage(event));
+  }
+
+  displayChart(report: ReportModel) {
+    // TODO: Move it to the separate store (dispatch action)
+    this.matDialog.open(SingleDeviceChartDialogComponent, {
+      data: <SingleDeviceChartDialogModel>{
+        deviceId: report.actions.chartIdDev,
+        chartType: ChartTypeEnum.Availability,
+      },
+    });
   }
 }
