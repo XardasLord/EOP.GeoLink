@@ -37,6 +37,8 @@ import { GeoJsonObject } from 'geojson';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
 import { MapObjectTypeEnum } from '../../../../shared/models/map-object-type.enum';
 import Scale = Control.Scale;
+import { ActivatedRoute } from '@angular/router';
+import { RouterState } from '@ngxs/router-plugin';
 
 @Component({
   selector: 'app-map',
@@ -64,7 +66,8 @@ export class MapComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store,
     private dynamicComponentCreator: DynamicComponentCreatorHelper,
-    private mapsService: MapsService
+    private mapsService: MapsService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -106,7 +109,15 @@ export class MapComponent implements OnInit, OnDestroy {
     } else if (environment.wmsMapBackground.length > 0) {
       this.loadLayersFromWMS();
     }
-    this.map.invalidateSize();
+
+    if (this.route.snapshot.queryParams['lat'] && this.route.snapshot.queryParams['lon']) {
+      this.map.flyTo(new LatLng(this.route.snapshot.queryParams['lat'], this.route.snapshot.queryParams['lon']), 18, {
+        animate: true,
+        duration: 0.5,
+      });
+    } else {
+      this.map.invalidateSize();
+    }
 
     this.mapScale = new Scale({
       position: 'bottomleft',

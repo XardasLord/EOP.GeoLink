@@ -10,6 +10,8 @@ import { ChartTypeEnum } from '../../../../shared/models/charts/chart-type.enum'
 import { MatDialog } from '@angular/material/dialog';
 import { SingleDeviceChartDialogComponent } from '../../../../shared/components/single-device-chart-dialog/single-device-chart-dialog.component';
 import { SingleDeviceChartDialogModel } from '../../../../shared/models/charts/single-device-chart-dialog.model';
+import { Navigate } from '@ngxs/router-plugin';
+import { RoutePaths } from '../../../../core/modules/app-routing.module';
 
 @Component({
   selector: 'app-reports-list',
@@ -61,6 +63,11 @@ export class ReportsListComponent implements OnInit {
   }
 
   showOnMap(report: ReportModel) {
-    alert(`${report.actions.mapLat} ${report.actions.mapLon}`);
+    this.store.dispatch(
+      new Navigate([RoutePaths.Map], {
+        lat: report.actions.mapLat,
+        lon: report.actions.mapLon,
+      })
+    );
   }
 }
