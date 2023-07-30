@@ -70,7 +70,7 @@ export class MapComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.mapOptions = {
       zoom: 7,
-      maxZoom: 20,
+      maxZoom: 25,
       center: latLng(52.22779941887071, 19.764404296875),
       preferCanvas: true,
       zoomControl: false,
@@ -267,7 +267,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.mapLayersControl = {
       baseLayers: {
         'Open Street Map': tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 20,
+          maxZoom: 25,
           attribution: '...',
         }),
         // 'WMS Map': tileLayer.wms(environment.wmsMapBackground, {
@@ -286,7 +286,7 @@ export class MapComponent implements OnInit, OnDestroy {
             layers: 'gesut',
             opacity: 0.8,
             minZoom: 6,
-            maxZoom: 19,
+            maxZoom: 25,
             format: 'image/png',
           }
         ),
@@ -296,7 +296,7 @@ export class MapComponent implements OnInit, OnDestroy {
             layers: 'kgesut',
             opacity: 0.8,
             minZoom: 6,
-            maxZoom: 19,
+            maxZoom: 25,
             format: 'image/png',
           }
         ),
