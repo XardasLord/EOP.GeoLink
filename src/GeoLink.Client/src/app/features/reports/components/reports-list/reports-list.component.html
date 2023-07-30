@@ -62,6 +62,9 @@
           (click)="displayChart(report); $event.stopPropagation()">
           <mat-icon class="material-icons-outlined" matListItemIcon>bar_chart</mat-icon>
         </button>
+        <button mat-icon-button matTooltip="Pokaż na mapie" (click)="showOnMap(report); $event.stopPropagation()">
+          <mat-icon class="material-icons-outlined" matListItemIcon>map</mat-icon>
+        </button>
       </div>
     </td>
   </ng-container>

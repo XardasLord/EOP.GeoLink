@@ -59,4 +59,8 @@ export class ReportsListComponent implements OnInit {
       },
     });
   }
+
+  showOnMap(report: ReportModel) {
+    alert(`${report.actions.mapLat} ${report.actions.mapLon}`);
+  }
 }

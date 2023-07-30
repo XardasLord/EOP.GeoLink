@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of, Subscription } from 'rxjs';
 import { User } from 'oidc-client';
 import { AuthState } from '../states/auth.state';
@@ -14,7 +14,10 @@ export class AuthService implements OnDestroy {
 
   user$ = this.store.select(AuthState.getUser);
 
-  constructor(private store: Store, private httpClient: HttpClient) {
+  constructor(
+    private store: Store,
+    private httpClient: HttpClient
+  ) {
     this.roleSubscription = this.user$?.subscribe(user => {
       if (!user) {
         this.userRole = undefined;

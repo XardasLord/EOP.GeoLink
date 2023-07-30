@@ -106,6 +106,7 @@ export class MapComponent implements OnInit, OnDestroy {
     } else if (environment.wmsMapBackground.length > 0) {
       this.loadLayersFromWMS();
     }
+    this.map.invalidateSize();
 
     this.mapScale = new Scale({
       position: 'bottomleft',
@@ -113,9 +114,10 @@ export class MapComponent implements OnInit, OnDestroy {
       imperial: false,
       maxWidth: 200,
     });
-    map.addControl(this.mapScale);
 
-    L.control.zoom({ position: 'topright' }).addTo(map);
+    this.map.addControl(this.mapScale);
+
+    L.control.zoom({ position: 'topright' }).addTo(this.map);
 
     // https://github.com/Igor-Vladyka/leaflet.browser.print
     L.control
@@ -129,7 +131,7 @@ export class MapComponent implements OnInit, OnDestroy {
         },
         position: 'topright',
       })
-      .addTo(map);
+      .addTo(this.map);
 
     this.registerMapEvents();
   }
