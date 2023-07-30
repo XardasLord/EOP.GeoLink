@@ -321,7 +321,7 @@ export class MapsState {
 
         if (action.deviceFilters.some(f => f === filter.id && filter.apiFilterType === 'DeviceFilters')) {
           updatedFilter.completed = true;
-          selectedObjectMapFilters.push(updatedFilter);
+          selectedDeviceMapFilters.push(updatedFilter);
         } else {
           updatedFilter.completed = false;
         }
