@@ -1,0 +1,15 @@
+import { NgModule } from '@angular/core';
+import { NgxsModule } from '@ngxs/store';
+import { SharedModule } from '../../shared/shared.module';
+import { IntegrationsComponent } from './components/integrations/integrations.component';
+import { IntegrationsRoutingModule } from './integrations-routing.module';
+import { SystemsAvailabilityListComponent } from './components/systems-availability-list/systems-availability-list.component';
+import { SystemsAvailabilityService } from './services/systems-availability.service';
+import { SystemsAvailabilityState } from './states/systems-availability.state';
+
+@NgModule({
+  declarations: [IntegrationsComponent, SystemsAvailabilityListComponent],
+  imports: [SharedModule, IntegrationsRoutingModule, NgxsModule.forFeature([SystemsAvailabilityState])],
+  providers: [SystemsAvailabilityService],
+})
+export class IntegrationsModule {}

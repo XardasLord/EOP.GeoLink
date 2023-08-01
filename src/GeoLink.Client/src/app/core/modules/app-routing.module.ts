@@ -15,6 +15,7 @@ export const RoutePaths = {
   Logs: 'logs',
   Analytics: 'analytics',
   Reports: 'reports',
+  Integrations: 'integrations',
 };
 
 const routes: Routes = [
@@ -63,6 +64,11 @@ const routes: Routes = [
       {
         path: RoutePaths.Analytics,
         loadChildren: () => import('../../features/analytics/analytics.module').then(m => m.AnalyticsModule),
+        canActivate: [AuthGuard],
+      },
+      {
+        path: RoutePaths.Integrations,
+        loadChildren: () => import('../../features/integrations/integrations.module').then(m => m.IntegrationsModule),
         canActivate: [AuthGuard],
       },
     ],
