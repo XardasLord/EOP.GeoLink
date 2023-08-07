@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
@@ -51,6 +51,7 @@ import { MapDeviceFiltersComponent } from './components/map-device-filters/map-d
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
     }),
+    NgOptimizedImage,
   ],
   exports: [
     CommonModule,
@@ -69,6 +70,7 @@ import { MapDeviceFiltersComponent } from './components/map-device-filters/map-d
     SingleDeviceChartComponent,
     SingleDeviceChartDialogComponent,
     ProgressSpinnerComponent,
+    NgOptimizedImage,
   ],
   providers: [
     ErrorService,
