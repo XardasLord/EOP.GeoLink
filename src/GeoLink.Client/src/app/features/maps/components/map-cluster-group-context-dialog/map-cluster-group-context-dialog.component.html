@@ -6,11 +6,11 @@
   <tr>
     <th>Typ obiektu</th>
     <th>Liczba obiektów</th>
-    <th colspan="4">Status</th>
+    <th colspan="3">Status</th>
   </tr>
 
   <tr class="group-row" *ngFor="let group of mapItems">
-    <td>{{ getObjectType(group.objType) }}</td>
+    <td (click)="showClusterGroupSubMenu(group, $event)">{{ getObjectType(group.objType) }}</td>
     <td>{{ group.objCount }}</td>
     <td>
       <mat-icon class="good">circle</mat-icon
@@ -23,7 +23,6 @@
     <td>
       <mat-icon class="bad">circle</mat-icon><span class="status-count">{{ getBadStatusDevicesCount(group) }}</span>
     </td>
-    <td (click)="showClusterGroupSubMenu(group, $event)">>>></td>
   </tr>
 
   <div class="second-level-table" [ngStyle]="{ left: elementLeft, top: elementTop }" *ngIf="showSubMenu">
@@ -35,7 +34,8 @@
     <tr>
       <th>Typ urządzenia</th>
       <th>Liczba urządzeń</th>
-      <th colspan="4">Status</th>
+      <th colspan="3">Status</th>
+      <th colspan>Narzędzia</th>
     </tr>
 
     <ng-container *ngIf="secondLevelClusterGroupDetailsModels">
@@ -54,7 +54,7 @@
           <mat-icon class="bad">circle</mat-icon
           ><span class="status-count">{{ getBadStatusDevicesGroupCount(group.devStat) }}</span>
         </td>
-        <td>>>></td>
+        <td><span disabled>>>></span></td>
       </tr>
     </ng-container>
   </div>
