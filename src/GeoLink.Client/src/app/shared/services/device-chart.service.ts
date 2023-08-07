@@ -17,7 +17,7 @@ export class DeviceChartService extends RemoteServiceBase {
   getChart(
     deviceId: number,
     chartType: ChartTypeEnum,
-    timeExtent = 0,
+    timeExtent = 1,
     intervalMinutes = 30,
     dateEnd: Date | undefined = undefined
   ): Observable<DeviceChartModel> {
