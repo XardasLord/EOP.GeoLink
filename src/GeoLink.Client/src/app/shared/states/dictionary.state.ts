@@ -1,16 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Action, NgxsOnInit, Selector, State, StateContext, StateToken } from '@ngxs/store';
-import { Navigate } from '@ngxs/router-plugin';
-import { catchError, map, tap, throwError } from 'rxjs';
-import { UserAuthModel } from '../auth/models/user-auth.model';
-import { AuthScopes } from '../auth/models/auth.scopes';
-import { Login, LoginCompleted, Logout } from './auth.action';
-import { RoutePaths } from '../../core/modules/app-routing.module';
-import { AuthService } from '../services/auth.service';
-import { AuthStateModel } from './auth.state.model';
-import { User } from 'oidc-client';
-import { UserAuthHelper } from '../auth/helpers/user-auth.helper';
-import { AuthRoles } from '../auth/models/auth.roles';
+import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
+import { catchError, tap, throwError } from 'rxjs';
 import { DictionaryStateModel } from './dictionary.state.model';
 import { EnumDescriptionModel } from '../models/enum-description.model';
 import { DictionaryService } from '../services/dictionary.service';
@@ -23,6 +13,7 @@ import {
   GetSystemPermissions,
   GetSystemRegions,
   GetSystemRoles,
+  GetTimeExtentDefinitions,
 } from './dictionary.action';
 import { EnumDescriptionWithScopesModel } from '../models/enum-description-with-scopes.model';
 import { EnumDescriptionRegionModel } from '../models/enum-description-region.model';
@@ -41,6 +32,7 @@ export const DICTIONARY_STATE_TOKEN = new StateToken<DictionaryStateModel>('dict
     mapDeviceTypes: [],
     mapObjectStatusTypes: [],
     deviceGroupsRelation: [],
+    timeExtentDefinitions: [],
   },
 })
 @Injectable()
@@ -85,6 +77,11 @@ export class DictionaryState {
   @Selector([DICTIONARY_STATE_TOKEN])
   static getDeviceGroupsRelation(state: DictionaryStateModel): DeviceGroupRelationModel[] {
     return state.deviceGroupsRelation;
+  }
+
+  @Selector([DICTIONARY_STATE_TOKEN])
+  static getTimeExtentDefinitions(state: DictionaryStateModel): EnumDescriptionModel[] {
+    return state.timeExtentDefinitions;
   }
 
   @Action(GetSystemGroups)
@@ -191,6 +188,20 @@ export class DictionaryState {
       tap(response => {
         ctx.patchState({
           deviceGroupsRelation: response,
+        });
+      }),
+      catchError(error => {
+        return throwError(error);
+      })
+    );
+  }
+
+  @Action(GetTimeExtentDefinitions)
+  getTimeExtentDefinitions(ctx: StateContext<DictionaryStateModel>, _: GetTimeExtentDefinitions) {
+    return this.dictionaryService.getTimeExtentParameterDefinitions().pipe(
+      tap(response => {
+        ctx.patchState({
+          timeExtentDefinitions: response,
         });
       }),
       catchError(error => {

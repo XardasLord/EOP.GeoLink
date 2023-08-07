@@ -17,13 +17,13 @@ export class DeviceChartService extends RemoteServiceBase {
   getChart(
     deviceId: number,
     chartType: ChartTypeEnum,
-    timeExtentHours = 24,
+    timeExtent = 0,
     intervalMinutes = 30,
     dateEnd: Date | undefined = undefined
   ): Observable<DeviceChartModel> {
     let params = new HttpParams()
       .set('deviceId', deviceId)
-      .set('timeExtentHours', timeExtentHours) // Okno czasowe (h)
+      .set('timeExtent', timeExtent) // Okno czasowe (wartość słownikowa)
       .set('intervalMinutes', intervalMinutes) // Interwał (min) między odczytami, wpływających na zagęszczenie szeregu czasowego
       .set('chartTypes', chartType);
 

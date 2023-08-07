@@ -31,3 +31,7 @@ export class GetMapObjectStatusTypes {
 export class GetDeviceGroupsRelation {
   static readonly type = `${prefix} ${GetDeviceGroupsRelation.name}`;
 }
+
+export class GetTimeExtentDefinitions {
+  static readonly type = `${prefix} ${GetTimeExtentDefinitions.name}`;
+}
