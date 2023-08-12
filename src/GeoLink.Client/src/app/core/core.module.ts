@@ -11,6 +11,7 @@ import { DynamicComponentCreatorHelper } from '../features/maps/helpers/dynamic-
 import { LoginComponent } from './ui/login/login/login.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { AuthGuard } from './guards/auth.guard';
+import { NoCacheInterceptor } from './interceptor/no-cache.interceptor';
 
 @NgModule({
   declarations: [NavigationComponent, ToolbarComponent, LoginComponent],
@@ -24,6 +25,11 @@ import { AuthGuard } from './guards/auth.guard';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: NoCacheInterceptor,
       multi: true,
     },
     MapsService,
