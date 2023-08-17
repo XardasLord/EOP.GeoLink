@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { mapToCanActivate, RouterModule, Routes } from '@angular/router';
 import { NavigationComponent } from '../ui/navigation/navigation.component';
 import { AuthGuard } from '../guards/auth.guard';
 import { LoginComponent } from '../ui/login/login/login.component';
@@ -31,52 +31,52 @@ const routes: Routes = [
       {
         path: RoutePaths.Map,
         loadChildren: () => import('../../features/maps/maps.module').then(m => m.MapsModule),
-        canActivate: [AuthGuard],
+        canActivate: mapToCanActivate([AuthGuard]),
       },
       {
         path: RoutePaths.Reports,
         loadChildren: () => import('../../features/reports/reports.module').then(m => m.ReportsModule),
-        canActivate: [AuthGuard],
+        canActivate: mapToCanActivate([AuthGuard]),
       },
       {
         path: RoutePaths.Administration,
         loadChildren: () =>
           import('../../features/administrations/administrations.module').then(m => m.AdministrationsModule),
-        canActivate: [AuthGuard],
+        canActivate: mapToCanActivate([AuthGuard]),
       },
       {
         path: RoutePaths.Configuration,
         loadChildren: () =>
           import('../../features/configurations/configurations.module').then(m => m.ConfigurationsModule),
-        canActivate: [AuthGuard],
+        canActivate: mapToCanActivate([AuthGuard]),
       },
       {
         path: RoutePaths.Filters,
         loadChildren: () =>
           import('../../features/filter-settings/filter-settings.module').then(m => m.FilterSettingsModule),
-        canActivate: [AuthGuard],
+        canActivate: mapToCanActivate([AuthGuard]),
       },
       {
         path: RoutePaths.Logs,
         loadChildren: () => import('../../features/logs/logs.module').then(m => m.LogsModule),
-        canActivate: [AuthGuard],
+        canActivate: mapToCanActivate([AuthGuard]),
       },
       {
         path: RoutePaths.Analytics,
         loadChildren: () => import('../../features/analytics/analytics.module').then(m => m.AnalyticsModule),
-        canActivate: [AuthGuard],
+        canActivate: mapToCanActivate([AuthGuard]),
       },
       {
         path: RoutePaths.Integrations,
         loadChildren: () => import('../../features/integrations/integrations.module').then(m => m.IntegrationsModule),
-        canActivate: [AuthGuard],
+        canActivate: mapToCanActivate([AuthGuard]),
       },
     ],
   },
   {
     path: RoutePaths.Login,
     component: LoginComponent,
-    canActivate: [LoginScreenGuard],
+    canActivate: mapToCanActivate([LoginScreenGuard]),
   },
   {
     path: '**',
