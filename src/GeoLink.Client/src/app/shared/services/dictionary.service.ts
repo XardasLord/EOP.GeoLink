@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { forkJoin, mergeMap, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { RemoteServiceBase } from './remote-service.base';
 import { EnumDescriptionModel } from '../models/enum-description.model';
 import { EnumDescriptionWithScopesModel } from '../models/enum-description-with-scopes.model';
 import { EnumDescriptionRegionModel } from '../models/enum-description-region.model';
 import { DeviceGroupRelationModel } from '../models/device-group-relation.model';
+import { ConfigDefinitionModel } from '../models/config-definitions/config-definition.model';
 
 @Injectable()
 export class DictionaryService extends RemoteServiceBase {
@@ -50,5 +51,19 @@ export class DictionaryService extends RemoteServiceBase {
 
   getTimeExtentParameterDefinitions(): Observable<EnumDescriptionModel[]> {
     return this.httpClient.get<EnumDescriptionModel[]>(`${this.apiUrl}/interface/getTimeExtentDef`);
+  }
+
+  getConfigDefinitions(): Observable<ConfigDefinitionModel[]> {
+    const apiUrls = [
+      `${this.apiUrl}/settings/getConfigHysteresisDef`,
+      `${this.apiUrl}/settings/getConfigRetentionDef`,
+      // `${this.apiUrl}/settings/getConfigDiagToolsDef`, // This definition has a different model
+    ];
+
+    const observables: Observable<ConfigDefinitionModel[]>[] = apiUrls.map(url =>
+      this.httpClient.get<ConfigDefinitionModel[]>(url)
+    );
+
+    return forkJoin(observables).pipe(mergeMap(results => results));
   }
 }

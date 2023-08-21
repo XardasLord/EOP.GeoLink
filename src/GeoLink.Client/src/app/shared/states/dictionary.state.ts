@@ -5,6 +5,7 @@ import { DictionaryStateModel } from './dictionary.state.model';
 import { EnumDescriptionModel } from '../models/enum-description.model';
 import { DictionaryService } from '../services/dictionary.service';
 import {
+  GetConfigDefinitions,
   GetDeviceGroupsRelation,
   GetMapDeviceTypes,
   GetMapObjectStatusTypes,
@@ -18,6 +19,8 @@ import {
 import { EnumDescriptionWithScopesModel } from '../models/enum-description-with-scopes.model';
 import { EnumDescriptionRegionModel } from '../models/enum-description-region.model';
 import { DeviceGroupRelationModel } from '../models/device-group-relation.model';
+import { append, patch } from '@ngxs/store/operators';
+import { ConfigDefinitionModel } from '../models/config-definitions/config-definition.model';
 
 export const DICTIONARY_STATE_TOKEN = new StateToken<DictionaryStateModel>('dictionary');
 
@@ -33,6 +36,7 @@ export const DICTIONARY_STATE_TOKEN = new StateToken<DictionaryStateModel>('dict
     mapObjectStatusTypes: [],
     deviceGroupsRelation: [],
     timeExtentDefinitions: [],
+    configDefinitions: [],
   },
 })
 @Injectable()
@@ -203,6 +207,23 @@ export class DictionaryState {
         ctx.patchState({
           timeExtentDefinitions: response,
         });
+      }),
+      catchError(error => {
+        return throwError(error);
+      })
+    );
+  }
+
+  @Action(GetConfigDefinitions)
+  getConfigDefinitions(ctx: StateContext<DictionaryStateModel>, _: GetConfigDefinitions) {
+    return this.dictionaryService.getConfigDefinitions().pipe(
+      tap(response => {
+        console.warn(response);
+        ctx.setState(
+          patch<DictionaryStateModel>({
+            configDefinitions: append<ConfigDefinitionModel>(response),
+          })
+        );
       }),
       catchError(error => {
         return throwError(error);

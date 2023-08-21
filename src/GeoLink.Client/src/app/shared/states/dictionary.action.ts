@@ -35,3 +35,7 @@ export class GetDeviceGroupsRelation {
 export class GetTimeExtentDefinitions {
   static readonly type = `${prefix} ${GetTimeExtentDefinitions.name}`;
 }
+
+export class GetConfigDefinitions {
+  static readonly type = `${prefix} ${GetConfigDefinitions.name}`;
+}

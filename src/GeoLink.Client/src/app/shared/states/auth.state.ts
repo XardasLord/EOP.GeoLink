@@ -12,6 +12,7 @@ import { User } from 'oidc-client';
 import { UserAuthHelper } from '../auth/helpers/user-auth.helper';
 import { AuthRoles } from '../auth/models/auth.roles';
 import {
+  GetConfigDefinitions,
   GetDeviceGroupsRelation,
   GetMapDeviceTypes,
   GetMapObjectStatusTypes,
@@ -63,6 +64,7 @@ export class AuthState implements NgxsOnInit {
       actions.push(new GetMapObjectStatusTypes());
       actions.push(new GetDeviceGroupsRelation());
       actions.push(new GetTimeExtentDefinitions());
+      actions.push(new GetConfigDefinitions());
       actions.push(
         new SetInitialMapFilters(
           user.init_objecttypefilters,
@@ -141,6 +143,7 @@ export class AuthState implements NgxsOnInit {
         new GetMapObjectStatusTypes(),
         new GetDeviceGroupsRelation(),
         new GetTimeExtentDefinitions(),
+        new GetConfigDefinitions(),
         new SetInitialMapFilters(
           state.user.init_objecttypefilters,
           state.user.init_devicefilters,
