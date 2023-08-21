@@ -20,7 +20,7 @@ import { EnumDescriptionWithScopesModel } from '../models/enum-description-with-
 import { EnumDescriptionRegionModel } from '../models/enum-description-region.model';
 import { DeviceGroupRelationModel } from '../models/device-group-relation.model';
 import { append, patch } from '@ngxs/store/operators';
-import { ConfigDefinitionModel } from '../models/config-definitions/config-definition.model';
+import { ConfigDefinitionModel } from '../models/config/config-definition.model';
 
 export const DICTIONARY_STATE_TOKEN = new StateToken<DictionaryStateModel>('dictionary');
 
@@ -86,6 +86,11 @@ export class DictionaryState {
   @Selector([DICTIONARY_STATE_TOKEN])
   static getTimeExtentDefinitions(state: DictionaryStateModel): EnumDescriptionModel[] {
     return state.timeExtentDefinitions;
+  }
+
+  @Selector([DICTIONARY_STATE_TOKEN])
+  static getConfigDefinitions(state: DictionaryStateModel): ConfigDefinitionModel[] {
+    return state.configDefinitions;
   }
 
   @Action(GetSystemGroups)

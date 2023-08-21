@@ -23,7 +23,10 @@ const HYSTERESIS_CONFIG_STATE_TOKEN = new StateToken<HysteresisConfigStateModel>
 })
 @Injectable()
 export class HysteresisConfigState {
-  constructor(private hysteresisConfigService: HysteresisConfigService, private toastrService: ToastrService) {}
+  constructor(
+    private hysteresisConfigService: HysteresisConfigService,
+    private toastrService: ToastrService
+  ) {}
 
   @Selector([HYSTERESIS_CONFIG_STATE_TOKEN])
   static getConfig(state: HysteresisConfigStateModel): HysteresisConfigModel {

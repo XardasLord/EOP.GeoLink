@@ -1,6 +1,6 @@
 export interface ConfigDefinitionModel {
   id: number;
-  name: string;
+  name: 'HYSTERESIS_THRESHOLD' | 'HYSTERESIS_SENSITIVITY';
   title: string;
   dataType: 'dict' | 'number' | 'text';
   isEditable: boolean;

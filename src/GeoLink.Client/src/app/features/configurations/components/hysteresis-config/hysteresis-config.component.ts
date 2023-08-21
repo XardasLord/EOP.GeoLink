@@ -21,8 +21,11 @@ export class HysteresisConfigComponent implements OnInit, OnDestroy {
   hysteresisForm: FormGroup<HysteresisConfigFormGroup>;
   subscriptions: Subscription = new Subscription();
 
-  constructor(private fb: FormBuilder, private store: Store) {
-    this.hysteresisForm = fb.group<HysteresisConfigFormGroup>({
+  constructor(
+    private fb: FormBuilder,
+    private store: Store
+  ) {
+    this.hysteresisForm = this.fb.group<HysteresisConfigFormGroup>({
       availabilityThresholdPercentage: new FormControl<number>(0, {
         nonNullable: true,
         validators: [Validators.required, Validators.min(0), Validators.max(100)],
