@@ -20,13 +20,16 @@ export class RetentionTimeConfigComponent implements OnInit, OnDestroy {
   retentionTimeConfigForm: FormGroup<RetentionTimeConfigFormGroup>;
   subscriptions: Subscription = new Subscription();
 
-  constructor(private fb: FormBuilder, private store: Store) {
-    this.retentionTimeConfigForm = fb.group<RetentionTimeConfigFormGroup>({
-      historicalDataStoragePeriod: new FormControl<number>(3, {
+  constructor(
+    private fb: FormBuilder,
+    private store: Store
+  ) {
+    this.retentionTimeConfigForm = this.fb.group<RetentionTimeConfigFormGroup>({
+      historicalDataStoragePeriod: new FormControl<number>(7, {
         nonNullable: true,
         validators: [Validators.required],
       }),
-      actionAfterRetentionTimePassed: new FormControl<number>(2, {
+      actionAfterRetentionTimePassed: new FormControl<number>(1, {
         nonNullable: true,
         validators: [Validators.required],
       }),

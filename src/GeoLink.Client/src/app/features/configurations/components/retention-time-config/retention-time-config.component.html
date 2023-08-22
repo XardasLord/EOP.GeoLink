@@ -1,17 +1,17 @@
 <form [formGroup]="retentionTimeConfigForm" (ngSubmit)="onSubmit()" ngxsForm="retentionTimeConfig.configFormGroup">
   <label>Czas przechowywania danych historycznych:</label>
   <mat-radio-group formControlName="historicalDataStoragePeriod">
-    <mat-radio-button [value]="1">1 tydzień</mat-radio-button>
-    <mat-radio-button [value]="2">1 miesiąc kalendarzowy</mat-radio-button>
-    <mat-radio-button [value]="3">2 miesiące</mat-radio-button>
+    <mat-radio-button [value]="7">1 tydzień</mat-radio-button>
+    <mat-radio-button [value]="30">1 miesiąc kalendarzowy</mat-radio-button>
+    <mat-radio-button [value]="60">2 miesiące</mat-radio-button>
   </mat-radio-group>
 
   <mat-divider></mat-divider>
 
   <label>Działanie po przekroczeniu czasu retencji:</label>
   <mat-radio-group formControlName="actionAfterRetentionTimePassed">
-    <mat-radio-button [value]="1">Nadpisuj dane</mat-radio-button>
-    <mat-radio-button [value]="2">Zapisuj do wyczerpania dysku</mat-radio-button>
+    <mat-radio-button [value]="0">Nadpisuj dane</mat-radio-button>
+    <mat-radio-button [value]="1">Zapisuj do wyczerpania dysku</mat-radio-button>
   </mat-radio-group>
 
   <p>

@@ -15,15 +15,18 @@ const RETENTION_TIME_CONFIG_STATE_TOKEN = new StateToken<RetentionTimeConfigStat
   name: RETENTION_TIME_CONFIG_STATE_TOKEN,
   defaults: {
     config: {
-      historicalDataStoragePeriod: 2,
-      actionAfterRetentionTimePassed: 2,
+      historicalDataStoragePeriod: 7,
+      actionAfterRetentionTimePassed: 1,
     },
     configFormGroup: DefaultFormStateValue,
   },
 })
 @Injectable()
 export class RetentionTimeConfigState {
-  constructor(private retentionTimeConfigService: RetentionTimeConfigService, private toastrService: ToastrService) {}
+  constructor(
+    private retentionTimeConfigService: RetentionTimeConfigService,
+    private toastrService: ToastrService
+  ) {}
 
   @Selector([RETENTION_TIME_CONFIG_STATE_TOKEN])
   static getConfig(state: RetentionTimeConfigStateModel): RetentionTimeConfigModel {
@@ -47,7 +50,7 @@ export class RetentionTimeConfigState {
   @Action(Save)
   saveConfig(ctx: StateContext<RetentionTimeConfigStateModel>, action: Save) {
     return this.retentionTimeConfigService.saveConfig(action.command).pipe(
-      tap(groupId => {
+      tap(() => {
         ctx.setState(
           patch({
             config: {

@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { map, Observable, of } from 'rxjs';
+import { Store } from '@ngxs/store';
+import { map, Observable } from 'rxjs';
 import { SaveHysteresisConfigCommand } from '../models/commands/save-hysteresis-config.command';
 import { HysteresisConfigModel } from '../models/hysteresis-config.model';
 import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
 import { environment } from '../../../../environments/environment';
 import { ConfigResponseModel } from '../../../shared/models/config/config-response.model';
 import { ConfigUpdateModel } from '../../../shared/models/config/config-update.model';
-import { Store } from '@ngxs/store';
 import { DictionaryState } from '../../../shared/states/dictionary.state';
 
 @Injectable()
@@ -60,6 +60,6 @@ export class HysteresisConfigService extends RemoteServiceBase {
       textVal: undefined,
     });
 
-    return this.httpClient.post<void>(`${this.apiUrl}/settings/setConfig`, updateModel);
+    return this.httpClient.put<void>(`${this.apiUrl}/settings/setConfig`, updateModel);
   }
 }

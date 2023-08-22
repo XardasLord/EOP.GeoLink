@@ -50,7 +50,7 @@ export class HysteresisConfigState {
   @Action(Save)
   saveConfig(ctx: StateContext<HysteresisConfigStateModel>, action: Save) {
     return this.hysteresisConfigService.saveConfig(action.command).pipe(
-      tap(groupId => {
+      tap(() => {
         ctx.setState(
           patch({
             config: {
