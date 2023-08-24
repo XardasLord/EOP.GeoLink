@@ -14,6 +14,18 @@
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon class="tab-icon" svgIcon="hourglass_bottom"></mat-icon>
+      Czas przechowywania logu
+    </ng-template>
+    <ng-template matTabContent>
+      <div class="padding-content">
+        <app-logs-storage-config></app-logs-storage-config>
+      </div>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon" svgIcon="hourglass_bottom"></mat-icon>
       Czas retencji
     </ng-template>
     <ng-template matTabContent>

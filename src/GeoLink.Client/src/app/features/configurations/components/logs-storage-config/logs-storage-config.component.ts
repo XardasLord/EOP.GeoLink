@@ -20,7 +20,10 @@ export class LogsStorageConfigComponent implements OnInit, OnDestroy {
   logsStoragePeriodConfigForm: FormGroup<LogsStorageConfigFormGroup>;
   subscriptions: Subscription = new Subscription();
 
-  constructor(private fb: FormBuilder, private store: Store) {
+  constructor(
+    private fb: FormBuilder,
+    private store: Store
+  ) {
     this.logsStoragePeriodConfigForm = fb.group<LogsStorageConfigFormGroup>({
       storagePeriod: new FormControl<number>(2, {
         nonNullable: true,
