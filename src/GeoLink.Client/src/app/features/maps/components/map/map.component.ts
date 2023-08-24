@@ -38,7 +38,6 @@ import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-st
 import { MapObjectTypeEnum } from '../../../../shared/models/map-object-type.enum';
 import Scale = Control.Scale;
 import { ActivatedRoute } from '@angular/router';
-import { RouterState } from '@ngxs/router-plugin';
 
 @Component({
   selector: 'app-map',

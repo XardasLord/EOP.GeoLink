@@ -22,7 +22,10 @@ const LOGS_STORAGE_CONFIG_STATE_TOKEN = new StateToken<LogsStorageConfigStateMod
 })
 @Injectable()
 export class LogsStorageConfigState {
-  constructor(private logsStorageConfigService: LogsStorageConfigService, private toastrService: ToastrService) {}
+  constructor(
+    private logsStorageConfigService: LogsStorageConfigService,
+    private toastrService: ToastrService
+  ) {}
 
   @Selector([LOGS_STORAGE_CONFIG_STATE_TOKEN])
   static getConfig(state: LogsStorageConfigStateModel): LogsStorageConfigModel {

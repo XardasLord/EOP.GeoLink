@@ -42,8 +42,7 @@
           warning: report.objStatus === DeviceStatus.Warning,
           error: report.objStatus === DeviceStatus.Error
         }"
-        >circle</mat-icon
-      >
+        svgIcon="circle"></mat-icon>
     </td>
   </ng-container>
 
@@ -60,10 +59,10 @@
           mat-icon-button
           matTooltip="Pokaż wykres dostępności"
           (click)="displayChart(report); $event.stopPropagation()">
-          <mat-icon class="material-icons-outlined" matListItemIcon>bar_chart</mat-icon>
+          <mat-icon class="material-icons-outlined" matListItemIcon svgIcon="bar_chart"></mat-icon>
         </button>
         <button mat-icon-button matTooltip="Pokaż na mapie" (click)="showOnMap(report); $event.stopPropagation()">
-          <mat-icon class="material-icons-outlined" matListItemIcon>map</mat-icon>
+          <mat-icon class="material-icons-outlined" matListItemIcon svgIcon="map"></mat-icon>
         </button>
       </div>
     </td>

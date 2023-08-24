@@ -13,15 +13,16 @@
     <td (click)="showClusterGroupSubMenu(group, $event)">{{ getObjectType(group.objType) }}</td>
     <td>{{ group.objCount }}</td>
     <td>
-      <mat-icon class="good">circle</mat-icon
+      <mat-icon class="good" svgIcon="circle"></mat-icon
       ><span class="status-count">{{ getSuccessStatusDevicesCount(group) }}</span>
     </td>
     <td>
-      <mat-icon class="warning">circle</mat-icon
+      <mat-icon class="warning" svgIcon="circle"></mat-icon
       ><span class="status-count">{{ getWarningStatusDevicesCount(group) }}</span>
     </td>
     <td>
-      <mat-icon class="bad">circle</mat-icon><span class="status-count">{{ getBadStatusDevicesCount(group) }}</span>
+      <mat-icon class="bad" svgIcon="circle"></mat-icon
+      ><span class="status-count">{{ getBadStatusDevicesCount(group) }}</span>
     </td>
   </tr>
 
@@ -43,15 +44,15 @@
         <td>{{ getDeviceType(group.devType) }}</td>
         <td>{{ group.devCount }}</td>
         <td>
-          <mat-icon class="good">circle</mat-icon
+          <mat-icon class="good" svgIcon="circle"></mat-icon
           ><span class="status-count">{{ getSuccessStatusDevicesGroupCount(group.devStat) }}</span>
         </td>
         <td>
-          <mat-icon class="warning">circle</mat-icon
+          <mat-icon class="warning" svgIcon="circle"></mat-icon
           ><span class="status-count">{{ getWarningStatusDevicesGroupCount(group.devStat) }}</span>
         </td>
         <td>
-          <mat-icon class="bad">circle</mat-icon
+          <mat-icon class="bad" svgIcon="circle"></mat-icon
           ><span class="status-count">{{ getBadStatusDevicesGroupCount(group.devStat) }}</span>
         </td>
         <td><span disabled>>>></span></td>

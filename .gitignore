@@ -24,3 +24,4 @@ VersionInfo.cs
 #logs
 **/App_Data/logs/*
 #**/logs/*
+_scripts/

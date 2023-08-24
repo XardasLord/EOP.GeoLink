@@ -1,19 +1,19 @@
 <mat-tab-group mat-stretch-tabs="false">
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon class="tab-icon">timer</mat-icon>
-      Okna czasowe
+      <mat-icon class="tab-icon" svgIcon="hourglass_bottom"></mat-icon>
+      Czas przechowywania logów
     </ng-template>
     <ng-template matTabContent>
       <div class="padding-content">
-        <app-time-windows-config></app-time-windows-config>
+        <app-logs-storage-config></app-logs-storage-config>
       </div>
     </ng-template>
   </mat-tab>
 
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon class="tab-icon">hourglass_bottom</mat-icon>
+      <mat-icon class="tab-icon" svgIcon="hourglass_bottom"></mat-icon>
       Czas retencji
     </ng-template>
     <ng-template matTabContent>
@@ -25,7 +25,7 @@
 
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon class="tab-icon">show_chart</mat-icon>
+      <mat-icon class="tab-icon" svgIcon="show_chart"></mat-icon>
       Histereza
     </ng-template>
     <ng-template matTabContent>
@@ -37,7 +37,7 @@
 
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon class="tab-icon">stethoscope</mat-icon>
+      <mat-icon class="tab-icon" svgIcon="stethoscope"></mat-icon>
       Narzędzia diagnostyczne
     </ng-template>
     <ng-template matTabContent>
