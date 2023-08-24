@@ -121,6 +121,7 @@ export class SharedModule {
       'circle',
       'shuffle',
       'calculate',
+      'menu_book',
     ];
 
     svgIconFiles.forEach(iconFileName => {
