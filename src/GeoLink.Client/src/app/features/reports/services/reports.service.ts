@@ -32,7 +32,8 @@ export class ReportsService extends RemoteServiceBase {
     let params = new HttpParams()
       .set('offset', pageInfo.pageIndex * pageInfo.pageSize)
       .set('count', pageInfo.pageSize)
-      .set('doCount', includeCount ? 1 : 0);
+      .set('doCount', includeCount ? 1 : 0)
+      .set('timeExtent', 1);
 
     params = this.setFilters(
       params,
