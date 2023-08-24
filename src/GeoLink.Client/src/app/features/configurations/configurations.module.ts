@@ -10,7 +10,6 @@ import { HysteresisConfigService } from './services/hysteresis-config.service';
 import { RetentionTimeConfigComponent } from './components/retention-time-config/retention-time-config.component';
 import { RetentionTimeConfigService } from './services/retention-time-config.service';
 import { RetentionTimeConfigState } from './states/retention-time-config.state';
-import { TimeWindowsConfigComponent } from './components/time-windows-config/time-windows-config.component';
 import { LogsStorageConfigComponent } from './components/logs-storage-config/logs-storage-config.component';
 import { LogsStorageConfigState } from './states/logs-storage-config.state';
 import { LogsStorageConfigService } from './services/logs-storage-config.service';
@@ -20,7 +19,6 @@ import { LogsStorageConfigService } from './services/logs-storage-config.service
     ConfigurationsComponent,
     HysteresisConfigComponent,
     RetentionTimeConfigComponent,
-    TimeWindowsConfigComponent,
     LogsStorageConfigComponent,
   ],
   imports: [
