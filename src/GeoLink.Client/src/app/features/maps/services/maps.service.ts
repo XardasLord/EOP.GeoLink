@@ -38,7 +38,7 @@ export class MapsService extends RemoteServiceBase {
       .set('lonMax', lonMax)
       .set('latMax', latMax)
       .set('zoomLevel', zoomLevel)
-      .set('clustObjThreshold', 2);
+      .set('clustObjThreshold', 5);
 
     params = this.setFilters(
       params,
