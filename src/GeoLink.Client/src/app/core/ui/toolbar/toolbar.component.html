@@ -1,7 +1,7 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
     <button mat-icon-button (click)="toggleMenu()">
-      <mat-icon>menu</mat-icon>
+      <mat-icon svgIcon="menu"></mat-icon>
     </button>
     <span>GeoLink</span>
 
@@ -11,23 +11,23 @@
       <span class="section alerts">
         <ng-container *ngIf="(alertsCount$ | async)! > 0; else withoutAlert">
           <button mat-icon-button matTooltip="Alarmy" (click)="toggleAlerts()">
-            <mat-icon [matBadge]="alertsCount$ | async" matBadgeColor="warn">notifications</mat-icon>
+            <mat-icon [matBadge]="alertsCount$ | async" matBadgeColor="warn" svgIcon="notifications"></mat-icon>
           </button>
         </ng-container>
         <ng-template #withoutAlert>
-          <mat-icon matTooltip="Brak alarmów">notifications</mat-icon>
+          <mat-icon matTooltip="Brak alarmów" svgIcon="notifications"></mat-icon>
         </ng-template>
       </span>
 
       <span class="section user-info">
         <span class="name">{{ (user$ | async)?.unique_name }} ({{ (user$ | async)?.role }})</span>
         <button mat-icon-button>
-          <mat-icon>face</mat-icon>
+          <mat-icon svgIcon="face"></mat-icon>
         </button>
       </span>
 
       <button mat-icon-button matTooltip="Wyloguj" (click)="logout()">
-        <mat-icon class="material-icons-outlined">logout</mat-icon>
+        <mat-icon class="material-icons-outlined" svgIcon="logout"></mat-icon>
       </button>
     </span>
   </mat-toolbar-row>
@@ -43,8 +43,7 @@
           warning: alert?.status === AlertStatus.Warning,
           error: alert?.status === AlertStatus.Error
         }"
-        >flag</mat-icon
-      >
+        svgIcon="flag"></mat-icon>
       <div matListItemTitle [matTooltip]="alert.details">{{ alert.message }}</div>
       <div matListItemLine>{{ alert.serviceName }} - {{ alert.timestamp | date: 'dd.MM.yyyy, HH:mm:ss' }}</div>
     </mat-list-item>

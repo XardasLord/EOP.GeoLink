@@ -26,6 +26,8 @@ import { ProgressSpinnerComponent } from './components/progress-spinner/progress
 import { ProgressSpinnerService } from './services/progress-spinner.service';
 import { SingleDeviceChartDialogComponent } from './components/single-device-chart-dialog/single-device-chart-dialog.component';
 import { MapDeviceFiltersComponent } from './components/map-device-filters/map-device-filters.component';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
@@ -82,4 +84,48 @@ import { MapDeviceFiltersComponent } from './components/map-device-filters/map-d
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
   ],
 })
-export class SharedModule {}
+export class SharedModule {
+  constructor(
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer
+  ) {
+    this.registerSvgIcons('assets/icons');
+  }
+
+  private registerSvgIcons(directoryPath: string) {
+    const svgIconFiles = [
+      'map',
+      'menu',
+      'face',
+      'flag',
+      'filter_alt',
+      'logout',
+      'notifications',
+      'bar_chart',
+      'description',
+      'psychology',
+      'settings',
+      'construction',
+      'lan',
+      'desktop_windows',
+      'manage_accounts',
+      'groups',
+      'edit',
+      'timer',
+      'hourglass_bottom',
+      'show_chart',
+      'stethoscope',
+      'home',
+      'traffic',
+      'layers',
+      'circle',
+      'shuffle',
+      'calculate',
+    ];
+
+    svgIconFiles.forEach(iconFileName => {
+      const iconPath = `${directoryPath}/${iconFileName}.svg`;
+      this.matIconRegistry.addSvgIcon(iconFileName, this.domSanitizer.bypassSecurityTrustResourceUrl(iconPath));
+    });
+  }
+}

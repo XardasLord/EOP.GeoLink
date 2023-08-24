@@ -8,7 +8,7 @@ import { SystemAvailabilityModel } from '../models/system-availability.model';
 import { Load } from './systems-availability.action';
 import { SystemsAvailabilityService } from '../services/systems-availability.service';
 
-const SYSTEMS_AVAILABILITY_STATE_TOKEN = new StateToken<SystemsAvailabilityStateModel>('logs');
+const SYSTEMS_AVAILABILITY_STATE_TOKEN = new StateToken<SystemsAvailabilityStateModel>('systemsAvailability');
 
 @State<SystemsAvailabilityStateModel>({
   name: SYSTEMS_AVAILABILITY_STATE_TOKEN,

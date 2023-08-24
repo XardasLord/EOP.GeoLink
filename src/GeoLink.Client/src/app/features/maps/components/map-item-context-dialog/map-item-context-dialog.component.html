@@ -27,8 +27,7 @@
               bad: deviceModel?.idStatus === deviceStatus.Error,
               'not-available': deviceModel?.idStatus === deviceStatus.NotAvailable
             }"
-            >circle</mat-icon
-          >
+            svgIcon="circle"></mat-icon>
         </td>
         <td><span disabled>>>></span></td>
       </tr>
@@ -72,8 +71,7 @@
               bad: deviceDetailsParam?.status === deviceStatus.Error,
               'not-available': deviceDetailsParam?.status === deviceStatus.NotAvailable
             }"
-            >circle</mat-icon
-          >
+            svgIcon="circle"></mat-icon>
           <span *ngIf="!deviceDetailsParam?.status">n.d.</span>
         </td>
       </tr>

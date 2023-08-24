@@ -88,6 +88,7 @@ export class MapItemTooltipDialogComponent {
   public mapItem!: MapObjectModel;
 
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+    // TODO: Move it to some startup project component (app component maybe as other icons registration?)
     iconRegistry.addSvgIconLiteral('TELCO', sanitizer.bypassSecurityTrustHtml(TELCO_SVG_ICON));
     iconRegistry.addSvgIconLiteral('POMIARY', sanitizer.bypassSecurityTrustHtml(POMIARY_SVG_ICON));
     iconRegistry.addSvgIconLiteral('FW', sanitizer.bypassSecurityTrustHtml(FW_SVG_ICON));
