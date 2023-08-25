@@ -15,8 +15,7 @@ const RETENTION_TIME_CONFIG_STATE_TOKEN = new StateToken<RetentionTimeConfigStat
   name: RETENTION_TIME_CONFIG_STATE_TOKEN,
   defaults: {
     config: {
-      historicalDataStoragePeriod: 7,
-      actionAfterRetentionTimePassed: 1,
+      historicalDataStoragePeriod: 4,
     },
     configFormGroup: DefaultFormStateValue,
   },
@@ -55,7 +54,6 @@ export class RetentionTimeConfigState {
           patch({
             config: {
               historicalDataStoragePeriod: action.command.historicalDataStoragePeriod,
-              actionAfterRetentionTimePassed: action.command.actionAfterRetentionTimePassed,
             },
           })
         );

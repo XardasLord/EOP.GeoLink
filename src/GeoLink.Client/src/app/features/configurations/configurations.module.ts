@@ -13,6 +13,9 @@ import { RetentionTimeConfigState } from './states/retention-time-config.state';
 import { LogsStorageConfigComponent } from './components/logs-storage-config/logs-storage-config.component';
 import { LogsStorageConfigState } from './states/logs-storage-config.state';
 import { LogsStorageConfigService } from './services/logs-storage-config.service';
+import { DiagnosticToolsConfigComponent } from './components/diagnostic-tools-config/diagnostic-tools-config.component';
+import { DiagnosticToolsConfigService } from './services/diagnostic-tools-config.service';
+import { DiagnosticToolsConfigState } from './states/diagnostic-tools-config.state';
 
 @NgModule({
   declarations: [
@@ -20,13 +23,24 @@ import { LogsStorageConfigService } from './services/logs-storage-config.service
     HysteresisConfigComponent,
     RetentionTimeConfigComponent,
     LogsStorageConfigComponent,
+    DiagnosticToolsConfigComponent,
   ],
   imports: [
     SharedModule,
     ConfigurationRoutingModule,
-    NgxsModule.forFeature([HysteresisConfigState, RetentionTimeConfigState, LogsStorageConfigState]),
+    NgxsModule.forFeature([
+      HysteresisConfigState,
+      RetentionTimeConfigState,
+      LogsStorageConfigState,
+      DiagnosticToolsConfigState,
+    ]),
     NgxsFormPluginModule,
   ],
-  providers: [HysteresisConfigService, RetentionTimeConfigService, LogsStorageConfigService],
+  providers: [
+    HysteresisConfigService,
+    RetentionTimeConfigService,
+    LogsStorageConfigService,
+    DiagnosticToolsConfigService,
+  ],
 })
 export class ConfigurationsModule {}
