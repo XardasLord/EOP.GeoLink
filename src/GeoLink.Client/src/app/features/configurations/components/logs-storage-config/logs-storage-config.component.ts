@@ -24,7 +24,7 @@ export class LogsStorageConfigComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private store: Store
   ) {
-    this.logsStoragePeriodConfigForm = fb.group<LogsStorageConfigFormGroup>({
+    this.logsStoragePeriodConfigForm = this.fb.group<LogsStorageConfigFormGroup>({
       storagePeriod: new FormControl<number>(2, {
         nonNullable: true,
         validators: [Validators.required],
@@ -36,12 +36,12 @@ export class LogsStorageConfigComponent implements OnInit, OnDestroy {
     this.store.dispatch(new Load());
 
     this.subscriptions.add(
-      this.config$.subscribe(retentionTimeConfig => {
+      this.config$.subscribe(storageRetentionConfig => {
         this.store.dispatch(
           new UpdateFormValue({
             path: `logsStorageConfig.${nameof<LogsStorageConfigStateModel>('configFormGroup')}`,
             value: {
-              storagePeriod: retentionTimeConfig.storagePeriod,
+              storagePeriod: storageRetentionConfig.storagePeriod,
             },
           })
         );

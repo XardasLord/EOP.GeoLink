@@ -1,6 +1,7 @@
 export interface ConfigDefinitionModel {
   id: number;
   name:
+    | 'LOGS_RETENTION_DAYS'
     | 'HYSTERESIS_THRESHOLD'
     | 'HYSTERESIS_SENSITIVITY'
     | 'DATA_RETENTION_DAYS'

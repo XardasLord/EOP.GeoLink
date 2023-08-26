@@ -56,6 +56,7 @@ export class DictionaryService extends RemoteServiceBase {
 
   getConfigDefinitions(): Observable<ConfigDefinitionModel[]> {
     const apiUrls = [
+      `${this.apiUrl}/settings/getConfigLogsDef`,
       `${this.apiUrl}/settings/getConfigHysteresisDef`,
       `${this.apiUrl}/settings/getConfigRetentionDef`,
       `${this.apiUrl}/settings/getConfigDiagToolsDef`,
