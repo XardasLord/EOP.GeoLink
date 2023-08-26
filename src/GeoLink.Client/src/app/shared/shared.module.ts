@@ -20,11 +20,11 @@ import { AlertState } from './states/alert.state';
 import { AlertService } from './services/alert.service';
 import { SingleDeviceChartComponent } from './components/single-device-chart/single-device-chart.component';
 import { NgxEchartsModule } from 'ngx-echarts';
-import { DeviceChartService } from './services/device-chart.service';
+import { ChartService } from './services/chart.service';
 import { MapIpFiltersComponent } from './components/map-ip-filters/map-ip-filters.component';
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 import { ProgressSpinnerService } from './services/progress-spinner.service';
-import { SingleDeviceChartDialogComponent } from './components/single-device-chart-dialog/single-device-chart-dialog.component';
+import { SingleChartDialogComponent } from './components/single-chart-dialog/single-chart-dialog.component';
 import { MapDeviceFiltersComponent } from './components/map-device-filters/map-device-filters.component';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -39,7 +39,7 @@ import { DomSanitizer } from '@angular/platform-browser';
     MapIpFiltersComponent,
     AuthScopeAllowDirective,
     SingleDeviceChartComponent,
-    SingleDeviceChartDialogComponent,
+    SingleChartDialogComponent,
     ProgressSpinnerComponent,
   ],
   imports: [
@@ -70,7 +70,7 @@ import { DomSanitizer } from '@angular/platform-browser';
     MapStatusFiltersComponent,
     MapIpFiltersComponent,
     SingleDeviceChartComponent,
-    SingleDeviceChartDialogComponent,
+    SingleChartDialogComponent,
     ProgressSpinnerComponent,
     NgOptimizedImage,
   ],
@@ -79,7 +79,7 @@ import { DomSanitizer } from '@angular/platform-browser';
     AuthService,
     DictionaryService,
     AlertService,
-    DeviceChartService,
+    ChartService,
     ProgressSpinnerService,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
   ],

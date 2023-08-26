@@ -1,4 +1,4 @@
-export interface DeviceChartModel {
+export interface ChartModel {
   dateNow: Date;
   dateBegin: Date;
   dateEnd: Date;
