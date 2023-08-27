@@ -49,7 +49,7 @@ export class LogsStorageConfigState {
   @Action(Save)
   saveConfig(ctx: StateContext<LogsStorageConfigStateModel>, action: Save) {
     return this.logsStorageConfigService.saveConfig(action.command).pipe(
-      tap(groupId => {
+      tap(() => {
         ctx.setState(
           patch({
             config: {

@@ -1,25 +1,26 @@
 import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EChartsOption } from 'echarts';
-import { DeviceChartService } from '../../services/device-chart.service';
-import { DeviceChartModel } from '../../models/charts/device-chart.model';
+import { ChartService } from '../../services/chart.service';
+import { ChartModel } from '../../models/charts/chart.model';
 import { ChartTypeEnum } from '../../models/charts/chart-type.enum';
 import { MapObjectStatusTypeEnum } from '../../models/map-object-status-type.enum';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SingleDeviceChartDialogModel } from '../../models/charts/single-device-chart-dialog.model';
 
 @Component({
-  selector: 'app-single-device-chart-dialog',
-  templateUrl: './single-device-chart-dialog.component.html',
-  styleUrls: ['./single-device-chart-dialog.component.scss'],
+  selector: 'app-single-chart-dialog',
+  templateUrl: './single-chart-dialog.component.html',
+  styleUrls: ['./single-chart-dialog.component.scss'],
 })
-export class SingleDeviceChartDialogComponent implements OnInit, OnDestroy {
+export class SingleChartDialogComponent implements OnInit, OnDestroy {
   private chartType!: ChartTypeEnum;
-  private deviceId!: number;
+  private readonly deviceId: number | undefined;
+  private readonly systemId: number | undefined;
 
   protected readonly MapObjectStatusTypeEnum = MapObjectStatusTypeEnum;
 
-  public deviceChartModel: DeviceChartModel = {
+  public chartModel: ChartModel = {
     chartsData: [],
     dateNow: new Date(),
     dateBegin: new Date(),
@@ -33,29 +34,45 @@ export class SingleDeviceChartDialogComponent implements OnInit, OnDestroy {
   private getChartSubscription: Subscription = new Subscription();
 
   constructor(
-    private deviceChartService: DeviceChartService,
+    private deviceChartService: ChartService,
     private changeDetectorRef: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) public data: SingleDeviceChartDialogModel
   ) {
     this.deviceId = data.deviceId;
+    this.systemId = data.systemId;
     this.chartType = data.chartType;
   }
 
   ngOnInit(): void {
     this.prepareChartMock();
 
-    this.getChartSubscription.add(
-      this.deviceChartService.getChart(this.deviceId, this.chartType).subscribe(deviceChartModel => {
-        this.isLoading = false;
-        this.deviceChartModel = deviceChartModel;
+    if (this.deviceId) {
+      this.getChartSubscription.add(
+        this.deviceChartService.getDeviceChart(this.deviceId, this.chartType).subscribe(deviceChartModel => {
+          this.isLoading = false;
+          this.chartModel = deviceChartModel;
 
-        console.warn(deviceChartModel);
+          console.warn(deviceChartModel);
 
-        this.prepareChart(deviceChartModel);
+          this.prepareChart(deviceChartModel);
 
-        this.changeDetectorRef.detectChanges();
-      })
-    );
+          this.changeDetectorRef.detectChanges();
+        })
+      );
+    } else if (this.systemId) {
+      this.getChartSubscription.add(
+        this.deviceChartService.getSystemChart(this.systemId).subscribe(chartModel => {
+          this.isLoading = false;
+          this.chartModel = chartModel;
+
+          console.warn(chartModel);
+
+          this.prepareChart(chartModel);
+
+          this.changeDetectorRef.detectChanges();
+        })
+      );
+    }
   }
 
   ngOnDestroy(): void {
@@ -98,7 +115,7 @@ export class SingleDeviceChartDialogComponent implements OnInit, OnDestroy {
     };
   }
 
-  prepareChart(model: DeviceChartModel) {
+  prepareChart(model: ChartModel) {
     const xAxisData: string[] = [];
     const standardChartData: number[] = [];
     const polynomialChartData: number[] = [];

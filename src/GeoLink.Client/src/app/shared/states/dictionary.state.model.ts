@@ -3,6 +3,7 @@ import { EnumDescriptionWithScopesModel } from '../models/enum-description-with-
 import { EnumDescriptionRegionModel } from '../models/enum-description-region.model';
 import { DeviceGroupRelationModel } from '../models/device-group-relation.model';
 import { ConfigDefinitionModel } from '../models/config/config-definition.model';
+import { DiagnosticToolsConfigModel } from '../../features/configurations/models/diagnostic-tools-config.model';
 
 export interface DictionaryStateModel {
   systemGroups: EnumDescriptionWithScopesModel[];

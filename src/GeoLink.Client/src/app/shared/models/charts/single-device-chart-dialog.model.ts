@@ -2,5 +2,6 @@ import { ChartTypeEnum } from './chart-type.enum';
 
 export interface SingleDeviceChartDialogModel {
   chartType: ChartTypeEnum;
-  deviceId: number;
+  deviceId: number | undefined;
+  systemId: number | undefined;
 }

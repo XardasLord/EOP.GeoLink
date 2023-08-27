@@ -29,10 +29,6 @@ export class RetentionTimeConfigComponent implements OnInit, OnDestroy {
         nonNullable: true,
         validators: [Validators.required],
       }),
-      actionAfterRetentionTimePassed: new FormControl<number>(1, {
-        nonNullable: true,
-        validators: [Validators.required],
-      }),
     });
   }
 
@@ -46,7 +42,6 @@ export class RetentionTimeConfigComponent implements OnInit, OnDestroy {
             path: `retentionTimeConfig.${nameof<RetentionTimeConfigStateModel>('configFormGroup')}`,
             value: {
               historicalDataStoragePeriod: retentionTimeConfig.historicalDataStoragePeriod,
-              actionAfterRetentionTimePassed: retentionTimeConfig.actionAfterRetentionTimePassed,
             },
           })
         );

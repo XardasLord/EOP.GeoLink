@@ -8,6 +8,7 @@ import { EnumDescriptionWithScopesModel } from '../models/enum-description-with-
 import { EnumDescriptionRegionModel } from '../models/enum-description-region.model';
 import { DeviceGroupRelationModel } from '../models/device-group-relation.model';
 import { ConfigDefinitionModel } from '../models/config/config-definition.model';
+import { DiagnosticToolsConfigModel } from '../../features/configurations/models/diagnostic-tools-config.model';
 
 @Injectable()
 export class DictionaryService extends RemoteServiceBase {
@@ -55,9 +56,10 @@ export class DictionaryService extends RemoteServiceBase {
 
   getConfigDefinitions(): Observable<ConfigDefinitionModel[]> {
     const apiUrls = [
+      `${this.apiUrl}/settings/getConfigLogsDef`,
       `${this.apiUrl}/settings/getConfigHysteresisDef`,
       `${this.apiUrl}/settings/getConfigRetentionDef`,
-      // `${this.apiUrl}/settings/getConfigDiagToolsDef`, // This definition has a different model
+      `${this.apiUrl}/settings/getConfigDiagToolsDef`,
     ];
 
     const observables: Observable<ConfigDefinitionModel[]>[] = apiUrls.map(url =>

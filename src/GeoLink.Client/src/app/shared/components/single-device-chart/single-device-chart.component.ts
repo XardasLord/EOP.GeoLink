@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EChartsOption } from 'echarts';
-import { DeviceChartService } from '../../services/device-chart.service';
-import { DeviceChartModel } from '../../models/charts/device-chart.model';
+import { ChartService } from '../../services/chart.service';
+import { ChartModel } from '../../models/charts/chart.model';
 import { ChartTypeEnum } from '../../models/charts/chart-type.enum';
 import { MapObjectStatusTypeEnum } from '../../models/map-object-status-type.enum';
 
@@ -17,7 +17,7 @@ export class SingleDeviceChartComponent implements OnInit, OnDestroy {
 
   protected readonly MapObjectStatusTypeEnum = MapObjectStatusTypeEnum;
 
-  public deviceChartModel: DeviceChartModel = {
+  public deviceChartModel: ChartModel = {
     chartsData: [],
     dateNow: new Date(),
     dateBegin: new Date(),
@@ -31,7 +31,7 @@ export class SingleDeviceChartComponent implements OnInit, OnDestroy {
   private getChartSubscription: Subscription = new Subscription();
 
   constructor(
-    private deviceChartService: DeviceChartService,
+    private deviceChartService: ChartService,
     private changeDetectorRef: ChangeDetectorRef
   ) {}
 
@@ -39,7 +39,7 @@ export class SingleDeviceChartComponent implements OnInit, OnDestroy {
     this.prepareChartMock();
 
     this.getChartSubscription.add(
-      this.deviceChartService.getChart(this.deviceId, this.chartType).subscribe(deviceChartModel => {
+      this.deviceChartService.getDeviceChart(this.deviceId, this.chartType).subscribe(deviceChartModel => {
         this.isLoading = false;
         this.deviceChartModel = deviceChartModel;
 
@@ -92,7 +92,7 @@ export class SingleDeviceChartComponent implements OnInit, OnDestroy {
     };
   }
 
-  prepareChart(model: DeviceChartModel) {
+  prepareChart(model: ChartModel) {
     const xAxisData: string[] = [];
     const standardChartData: number[] = [];
     const polynomialChartData: number[] = [];
