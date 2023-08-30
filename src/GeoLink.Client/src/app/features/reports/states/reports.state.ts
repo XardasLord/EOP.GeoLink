@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { catchError, finalize, tap, throwError } from 'rxjs';
 import { ReportsStateModel } from './reports.state.model';
-import { ChangeFilters, ChangePage, Load } from './reports.action';
+import { ChangeFilters, ChangePage, Load, SetOpenMode } from './reports.action';
 import { ReportsService } from '../services/reports.service';
 import { ReportModel } from '../models/report.model';
 import { RestQueryVo } from '../../../shared/models/pagination/rest.query';
 import { RestQueryResponse } from '../../../shared/models/pagination/rest.response';
+import { patch } from '@ngxs/store/operators';
+import { ReportOpenMode } from '../models/open-mode.enum';
 
 const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
 
@@ -14,6 +16,7 @@ const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
   name: REPORTS_STATE_TOKEN,
   defaults: {
     loading: false,
+    openMode: ReportOpenMode.ForCustomSearch,
     restQuery: new RestQueryVo(),
     restQueryResponse: new RestQueryResponse<ReportModel[]>(),
     selectedObjectMapFilters: [],
@@ -50,6 +53,11 @@ export class ReportsState {
   @Selector([REPORTS_STATE_TOKEN])
   static getPageSize(state: ReportsStateModel): number {
     return state.restQuery.currentPage.pageSize;
+  }
+
+  @Selector([REPORTS_STATE_TOKEN])
+  static getOpenMode(state: ReportsStateModel): ReportOpenMode {
+    return state.openMode;
   }
 
   @Action(Load)
@@ -119,5 +127,14 @@ export class ReportsState {
     });
 
     return ctx.dispatch(new Load());
+  }
+
+  @Action(SetOpenMode)
+  setOpenedForGroupReport(ctx: StateContext<ReportsStateModel>, action: SetOpenMode) {
+    ctx.setState(
+      patch({
+        openMode: action.openMode,
+      })
+    );
   }
 }

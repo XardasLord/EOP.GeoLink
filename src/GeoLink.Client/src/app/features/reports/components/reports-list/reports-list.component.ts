@@ -12,6 +12,9 @@ import { SingleChartDialogComponent } from '../../../../shared/components/single
 import { SingleDeviceChartDialogModel } from '../../../../shared/models/charts/single-device-chart-dialog.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { RoutePaths } from '../../../../core/modules/app-routing.module';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { ReportOpenMode } from '../../models/open-mode.enum';
 
 @Component({
   selector: 'app-reports-list',
@@ -35,13 +38,15 @@ export class ReportsListComponent implements OnInit {
   totalItems$ = this.store.select(ReportsState.getReportsCount);
   currentPage$ = this.store.select(ReportsState.getCurrentPage);
   pageSize$ = this.store.select(ReportsState.getPageSize);
+  openMode$: Observable<ReportOpenMode> = this.store.select(ReportsState.getOpenMode);
 
   protected readonly DeviceStatus = MapObjectStatusTypeEnum;
   protected readonly MapObjectStatusTypeEnum = MapObjectStatusTypeEnum;
 
   constructor(
     private store: Store,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
