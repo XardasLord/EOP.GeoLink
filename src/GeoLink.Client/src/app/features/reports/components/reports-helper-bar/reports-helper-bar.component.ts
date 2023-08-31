@@ -12,6 +12,7 @@ import { Store } from '@ngxs/store';
 })
 export class ReportsHelperBarComponent {
   openMode$: Observable<ReportOpenMode> = this.store.select(ReportsState.getOpenMode);
+  clusterLabel$: Observable<string> = this.store.select(ReportsState.getClusterLabel);
 
   @Output() mapFiltersChanged = new EventEmitter<MapFilterModel[]>();
   showObjectFilters = false;

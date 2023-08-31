@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
-import { catchError, finalize, Observable, tap, throwError } from 'rxjs';
+import { catchError, finalize, tap, throwError } from 'rxjs';
 import { ReportsStateModel } from './reports.state.model';
 import { ChangeFilters, ChangePage, Load, SetOpenMode } from './reports.action';
 import { ReportsService } from '../services/reports.service';
@@ -9,7 +9,6 @@ import { RestQueryVo } from '../../../shared/models/pagination/rest.query';
 import { RestQueryResponse } from '../../../shared/models/pagination/rest.response';
 import { patch } from '@ngxs/store/operators';
 import { ReportOpenMode } from '../models/open-mode.enum';
-import { GetReportsResponseModel } from '../models/get-reports-response.model';
 
 const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
 
@@ -61,6 +60,11 @@ export class ReportsState {
   @Selector([REPORTS_STATE_TOKEN])
   static getOpenMode(state: ReportsStateModel): ReportOpenMode {
     return state.openMode;
+  }
+
+  @Selector([REPORTS_STATE_TOKEN])
+  static getClusterLabel(state: ReportsStateModel): string {
+    return `${state.idCluster}_${state.idCluster}`;
   }
 
   @Action(Load)
