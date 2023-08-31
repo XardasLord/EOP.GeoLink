@@ -7,6 +7,8 @@ import { ReportOpenMode } from '../models/open-mode.enum';
 export interface ReportsStateModel {
   loading: boolean;
   openMode: ReportOpenMode;
+  clusterLevel: number | null;
+  idCluster: number | null;
   restQuery: RestQueryVo;
   restQueryResponse: RestQueryResponse<ReportModel[]>;
   selectedObjectMapFilters: MapFilterModel[];

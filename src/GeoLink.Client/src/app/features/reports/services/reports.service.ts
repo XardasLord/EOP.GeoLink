@@ -27,13 +27,19 @@ export class ReportsService extends RemoteServiceBase {
     selectedStatusMapFilters: MapFilterModel[],
     selectedIpMapFilters: MapFilterModel[],
     pageInfo: PageEvent,
-    includeCount: boolean
+    includeCount: boolean,
+    clusterLevel: number | null = null,
+    idCluster: number | null = null
   ): Observable<GetReportsResponseModel> {
     let params = new HttpParams()
       .set('offset', pageInfo.pageIndex * pageInfo.pageSize)
       .set('count', pageInfo.pageSize)
       .set('doCount', includeCount ? 1 : 0)
       .set('timeExtent', 1);
+
+    if (clusterLevel && idCluster) {
+      params = params.set('lvl', clusterLevel).set('idCluster', idCluster);
+    }
 
     params = this.setFilters(
       params,

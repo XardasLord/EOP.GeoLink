@@ -31,5 +31,9 @@ export class ChangeFilters {
 export class SetOpenMode {
   static readonly type = `${prefix} ${SetOpenMode.name}`;
 
-  constructor(public openMode: ReportOpenMode) {}
+  constructor(
+    public openMode: ReportOpenMode,
+    public clusterLevel: number,
+    public idCluster: number
+  ) {}
 }

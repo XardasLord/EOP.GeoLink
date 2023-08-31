@@ -20,7 +20,7 @@ export class ReportsHelperBarComponent {
   showStatusFilters = false;
   showIpFilters = false;
 
-  protected OpenMode = ReportOpenMode;
+  protected readonly OpenMode = ReportOpenMode;
 
   constructor(private store: Store) {}
 

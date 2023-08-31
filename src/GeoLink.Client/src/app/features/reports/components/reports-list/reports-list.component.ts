@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { Navigate } from '@ngxs/router-plugin';
 import { Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
 import { nameof } from '../../../../shared/helpers/name-of.helper';
 import { ReportsState } from '../../states/reports.state';
 import { ChangePage, Load } from '../../states/reports.action';
 import { ReportModel } from '../../models/report.model';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
 import { ChartTypeEnum } from '../../../../shared/models/charts/chart-type.enum';
-import { MatDialog } from '@angular/material/dialog';
 import { SingleChartDialogComponent } from '../../../../shared/components/single-chart-dialog/single-chart-dialog.component';
 import { SingleDeviceChartDialogModel } from '../../../../shared/models/charts/single-device-chart-dialog.model';
-import { Navigate } from '@ngxs/router-plugin';
 import { RoutePaths } from '../../../../core/modules/app-routing.module';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 import { ReportOpenMode } from '../../models/open-mode.enum';
 
 @Component({

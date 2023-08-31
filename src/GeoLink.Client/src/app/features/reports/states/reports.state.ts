@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
-import { catchError, finalize, tap, throwError } from 'rxjs';
+import { catchError, finalize, Observable, tap, throwError } from 'rxjs';
 import { ReportsStateModel } from './reports.state.model';
 import { ChangeFilters, ChangePage, Load, SetOpenMode } from './reports.action';
 import { ReportsService } from '../services/reports.service';
@@ -9,6 +9,7 @@ import { RestQueryVo } from '../../../shared/models/pagination/rest.query';
 import { RestQueryResponse } from '../../../shared/models/pagination/rest.response';
 import { patch } from '@ngxs/store/operators';
 import { ReportOpenMode } from '../models/open-mode.enum';
+import { GetReportsResponseModel } from '../models/get-reports-response.model';
 
 const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
 
@@ -17,6 +18,8 @@ const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
   defaults: {
     loading: false,
     openMode: ReportOpenMode.ForCustomSearch,
+    clusterLevel: null,
+    idCluster: null,
     restQuery: new RestQueryVo(),
     restQueryResponse: new RestQueryResponse<ReportModel[]>(),
     selectedObjectMapFilters: [],
@@ -76,7 +79,9 @@ export class ReportsState {
         state.selectedStatusMapFilters,
         state.selectedIpMapFilters,
         state.restQuery.currentPage,
-        action.includeReportsCount
+        action.includeReportsCount,
+        state.clusterLevel,
+        state.idCluster
       )
       .pipe(
         tap(response => {
@@ -134,6 +139,8 @@ export class ReportsState {
     ctx.setState(
       patch({
         openMode: action.openMode,
+        clusterLevel: action.openMode === ReportOpenMode.ForCluster ? action.clusterLevel : null,
+        idCluster: action.openMode === ReportOpenMode.ForCluster ? action.idCluster : null,
       })
     );
   }

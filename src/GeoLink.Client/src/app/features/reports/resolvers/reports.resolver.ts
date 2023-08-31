@@ -14,7 +14,7 @@ export const ReportResolver: ResolveFn<ReportOpenMode> = (
 
   if (route.queryParams['clusterLvl'] && route.queryParams['idCluster']) openMode = ReportOpenMode.ForCluster;
 
-  store.dispatch(new SetOpenMode(openMode));
+  store.dispatch(new SetOpenMode(openMode, route.queryParams['clusterLvl'], route.queryParams['idCluster']));
 
   return of(openMode);
 };
