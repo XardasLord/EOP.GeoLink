@@ -16,6 +16,7 @@ export const RoutePaths = {
   Analytics: 'analytics',
   Reports: 'reports',
   Integrations: 'integrations',
+  Charts: 'charts',
 };
 
 const routes: Routes = [
@@ -69,6 +70,11 @@ const routes: Routes = [
       {
         path: RoutePaths.Integrations,
         loadChildren: () => import('../../features/integrations/integrations.module').then(m => m.IntegrationsModule),
+        canActivate: mapToCanActivate([AuthGuard]),
+      },
+      {
+        path: RoutePaths.Charts,
+        loadChildren: () => import('../../features/charts/charts.module').then(m => m.ChartsModule),
         canActivate: mapToCanActivate([AuthGuard]),
       },
     ],

@@ -10,7 +10,10 @@
         <mat-icon matListItemIcon svgIcon="map"></mat-icon>
         <span matListItemTitle *ngIf="sidenav.opened">Mapa</span>
       </mat-list-item>
-      <mat-list-item routerLinkActive="active-route" *appScopeAllow="[AuthScopes.MenuCharts]">
+      <mat-list-item
+        [routerLink]="RoutePaths.Charts"
+        routerLinkActive="active-route"
+        *appScopeAllow="[AuthScopes.MenuCharts]">
         <mat-icon matListItemIcon svgIcon="bar_chart"></mat-icon>
         <span matListItemTitle *ngIf="sidenav.opened">Wykresy</span>
       </mat-list-item>
