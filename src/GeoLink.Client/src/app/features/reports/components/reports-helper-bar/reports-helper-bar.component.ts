@@ -4,6 +4,9 @@ import { Observable } from 'rxjs';
 import { ReportOpenMode } from '../../models/open-mode.enum';
 import { ReportsState } from '../../states/reports.state';
 import { Store } from '@ngxs/store';
+import { Navigate } from '@ngxs/router-plugin';
+import { RoutePaths } from '../../../../core/modules/app-routing.module';
+import { Load, SetOpenMode } from '../../states/reports.action';
 
 @Component({
   selector: 'app-reports-helper-bar',
@@ -47,5 +50,11 @@ export class ReportsHelperBarComponent {
 
   onFiltersChanged($event: MapFilterModel[]) {
     this.mapFiltersChanged.emit($event);
+  }
+
+  removeClusterGroupFilter(): void {
+    this.store.dispatch(new Navigate([RoutePaths.Reports]));
+    this.store.dispatch(new SetOpenMode(ReportOpenMode.ForCustomSearch));
+    this.store.dispatch(new Load());
   }
 }

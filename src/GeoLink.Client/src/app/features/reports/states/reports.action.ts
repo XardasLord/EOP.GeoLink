@@ -33,7 +33,7 @@ export class SetOpenMode {
 
   constructor(
     public openMode: ReportOpenMode,
-    public clusterLevel: number,
-    public idCluster: number
+    public clusterLevel: number | null = null,
+    public idCluster: number | null = null
   ) {}
 }
