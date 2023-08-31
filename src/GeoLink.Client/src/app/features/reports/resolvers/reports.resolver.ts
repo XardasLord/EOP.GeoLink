@@ -12,7 +12,7 @@ export const ReportResolver: ResolveFn<ReportOpenMode> = (
 ): Observable<ReportOpenMode> => {
   let openMode: ReportOpenMode = ReportOpenMode.ForCustomSearch;
 
-  if (route.queryParams['groupId']) openMode = ReportOpenMode.ForGroup;
+  if (route.queryParams['clusterLvl'] && route.queryParams['idCluster']) openMode = ReportOpenMode.ForCluster;
 
   store.dispatch(new SetOpenMode(openMode));
 

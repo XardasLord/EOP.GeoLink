@@ -27,7 +27,8 @@ export class MapClusterGroupReportContextDialogComponent implements AfterContent
   openReportsForGroup() {
     this.store.dispatch(
       new Navigate([RoutePaths.Reports], {
-        groupId: this.cluster.idClust,
+        clusterLvl: this.cluster.level,
+        idCluster: this.cluster.idClust,
       })
     );
   }

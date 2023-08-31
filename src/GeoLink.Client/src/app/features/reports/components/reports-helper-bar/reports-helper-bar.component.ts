@@ -20,6 +20,8 @@ export class ReportsHelperBarComponent {
   showStatusFilters = false;
   showIpFilters = false;
 
+  protected OpenMode = ReportOpenMode;
+
   constructor(private store: Store) {}
 
   toggleObjectFilters(): void {
