@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { LeafletControlLayersConfig } from '@asymmetrik/ngx-leaflet';
 import * as L from 'leaflet';
@@ -51,6 +51,8 @@ export class MapComponent implements OnInit, OnDestroy {
   mapLayersControl!: LeafletControlLayersConfig;
   mapScale!: Scale;
 
+  public loading: boolean = false;
+
   private clusterMarkers: LayerGroup = new LayerGroup();
   private objectMarkers: LayerGroup = new LayerGroup();
 
@@ -65,6 +67,7 @@ export class MapComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store,
     private dynamicComponentCreator: DynamicComponentCreatorHelper,
+    private changeDetectorRef: ChangeDetectorRef,
     private mapsService: MapsService,
     private route: ActivatedRoute
   ) {}
@@ -165,6 +168,9 @@ export class MapComponent implements OnInit, OnDestroy {
     const selectedStatusMapFilters = this.store.selectSnapshot(MapsState.getStatusSelectedMapFilters);
     const selectedIpMapFilters = this.store.selectSnapshot(MapsState.getIpSelectedMapFilters);
 
+    this.loading = true;
+    this.changeDetectorRef.detectChanges();
+
     if (mapZoom <= 17) {
       if (this.lastRequestForCluster$) {
         this.lastRequestForCluster$.unsubscribe();
@@ -203,6 +209,9 @@ export class MapComponent implements OnInit, OnDestroy {
 
             this.objectMarkers.addLayer(markerObject);
           });
+
+          this.loading = false;
+          this.changeDetectorRef.detectChanges();
         });
 
       this.getObjectsSubscriptions.add(this.lastRequestForCluster$);
@@ -233,6 +242,9 @@ export class MapComponent implements OnInit, OnDestroy {
 
           this.objectMarkers.addLayer(markerObject);
         });
+
+        this.loading = false;
+        this.changeDetectorRef.detectChanges();
       });
 
       this.getObjectsSubscriptions.add(this.lastRequestForObjects$);

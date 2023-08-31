@@ -1,5 +1,6 @@
 import { PageEvent } from '@angular/material/paginator';
 import { MapFilterModel } from '../../maps/models/map-filter-model';
+import { ReportOpenMode } from '../models/open-mode.enum';
 
 const prefix = '[Reports]';
 
@@ -24,5 +25,15 @@ export class ChangeFilters {
     public selectedRegionMapFilters: MapFilterModel[],
     public selectedStatusMapFilters: MapFilterModel[],
     public selectedIpMapFilters: MapFilterModel[]
+  ) {}
+}
+
+export class SetOpenMode {
+  static readonly type = `${prefix} ${SetOpenMode.name}`;
+
+  constructor(
+    public openMode: ReportOpenMode,
+    public clusterLevel: number,
+    public idCluster: number
   ) {}
 }

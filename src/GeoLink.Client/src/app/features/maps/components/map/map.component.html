@@ -1,4 +1,5 @@
 <app-map-helper-bar (mapFiltersChanged)="onMapFiltersChanged($event)"></app-map-helper-bar>
+<app-progress-spinner *ngIf="loading"></app-progress-spinner>
 <div
   id="map-container"
   leaflet
