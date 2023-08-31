@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
@@ -25,9 +27,8 @@ import { MapIpFiltersComponent } from './components/map-ip-filters/map-ip-filter
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 import { ProgressSpinnerService } from './services/progress-spinner.service';
 import { SingleChartDialogComponent } from './components/single-chart-dialog/single-chart-dialog.component';
+import { SingleDataChartComponent } from './components/single-data-chart/single-data-chart.component';
 import { MapDeviceFiltersComponent } from './components/map-device-filters/map-device-filters.component';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { DomSanitizer } from '@angular/platform-browser';
     AuthScopeAllowDirective,
     SingleDeviceChartComponent,
     SingleChartDialogComponent,
+    SingleDataChartComponent,
     ProgressSpinnerComponent,
   ],
   imports: [
@@ -71,6 +73,7 @@ import { DomSanitizer } from '@angular/platform-browser';
     MapIpFiltersComponent,
     SingleDeviceChartComponent,
     SingleChartDialogComponent,
+    SingleDataChartComponent,
     ProgressSpinnerComponent,
     NgOptimizedImage,
   ],

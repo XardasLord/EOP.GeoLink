@@ -2,11 +2,11 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { Navigate } from '@ngxs/router-plugin';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { ReportOpenMode } from '../../../reports/models/open-mode.enum';
-import { ReportsState } from '../../../reports/states/reports.state';
 import { MapFilterModel } from '../../../maps/models/map-filter-model';
 import { RoutePaths } from '../../../../core/modules/app-routing.module';
-import { Load, SetOpenMode } from '../../../reports/states/reports.action';
+import { ChartsState } from '../../states/charts.state';
+import { ChartOpenMode } from '../../models/open-mode.enum';
+import { Load, SetOpenMode } from '../../states/charts.action';
 
 @Component({
   selector: 'app-charts-helper-bar',
@@ -14,8 +14,8 @@ import { Load, SetOpenMode } from '../../../reports/states/reports.action';
   styleUrls: ['./charts-helper-bar.component.scss'],
 })
 export class ChartsHelperBarComponent {
-  openMode$: Observable<ReportOpenMode> = this.store.select(ReportsState.getOpenMode);
-  clusterLabel$: Observable<string> = this.store.select(ReportsState.getClusterLabel);
+  openMode$: Observable<ChartOpenMode> = this.store.select(ChartsState.getOpenMode);
+  clusterLabel$: Observable<string> = this.store.select(ChartsState.getClusterLabel);
 
   @Output() mapFiltersChanged = new EventEmitter<MapFilterModel[]>();
   showObjectFilters = false;
@@ -24,7 +24,7 @@ export class ChartsHelperBarComponent {
   showStatusFilters = false;
   showIpFilters = false;
 
-  protected readonly OpenMode = ReportOpenMode;
+  protected readonly OpenMode = ChartOpenMode;
 
   constructor(private store: Store) {}
 
@@ -53,8 +53,8 @@ export class ChartsHelperBarComponent {
   }
 
   removeClusterGroupFilter(): void {
-    this.store.dispatch(new Navigate([RoutePaths.Reports]));
-    this.store.dispatch(new SetOpenMode(ReportOpenMode.ForCustomSearch));
+    this.store.dispatch(new Navigate([RoutePaths.Charts]));
+    this.store.dispatch(new SetOpenMode(ChartOpenMode.ForCustomSearch));
     this.store.dispatch(new Load());
   }
 }

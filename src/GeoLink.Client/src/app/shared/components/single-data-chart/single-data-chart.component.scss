@@ -1,0 +1,47 @@
+@import '../../../../styles/variables.scss';
+
+.map-object-context-menu-chart {
+  height: 200px;
+}
+
+.header-info {
+  padding: 5px 5px 30px 5px;
+  font-size: 11px;
+
+  > span {
+    float: left;
+    display: inline;
+    font-weight: bold;
+  }
+
+  span.date {
+    width: 25%;
+  }
+
+  span.period {
+    width: 50%;
+    text-align: center;
+  }
+
+  span.main-label {
+    width: 15%;
+    text-align: right;
+  }
+
+  span.main-value {
+    width: 10%;
+    text-align: right;
+  }
+
+  span.main-value.good {
+    background: $marker-cluster-group-good-status-color;
+  }
+
+  span.main-value.warning {
+    background: orange;
+  }
+
+  span.main-value.bad {
+    background: red;
+  }
+}

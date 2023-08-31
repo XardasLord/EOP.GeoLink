@@ -1,2 +1,6 @@
 <app-charts-helper-bar (mapFiltersChanged)="onFiltersChanged($event)"></app-charts-helper-bar>
-<div class="p-40">TBD</div>
+<div class="p-40">
+  <app-single-data-chart
+    [chartType]="ChartTypeEnum.MovingAverage"
+    [chartModel]="(chartModel$ | async)!"></app-single-data-chart>
+</div>
