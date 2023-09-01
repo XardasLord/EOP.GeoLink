@@ -1,0 +1,30 @@
+<div class="header-info" *ngIf="chart$ | async">
+  <span class="date">Data: {{ (chart$ | async)!.dateNow | date: 'dd.MM.yyyy HH:mm:ss' }}</span>
+  <span class="period"
+    >Okres: {{ (chart$ | async)!.dateBegin | date: 'dd.MM.yyyy HH:mm:ss' }} -
+    {{ (chart$ | async)!.dateEnd | date: 'dd.MM.yyyy HH:mm:ss' }}</span
+  >
+  <ng-container *ngIf="(chart$ | async)!.chartsData[0]?.avgAvail">
+    <span class="main-label">Średnia dostępność:</span>
+    <span class="main-value">{{ (chart$ | async)!.chartsData[0]?.avgAvail | number: '1.2-2' }}%</span>
+  </ng-container>
+  <ng-container *ngIf="(chart$ | async)!.chartsData[0]?.devHealth">
+    <span class="main-label">Kondycja: </span>
+    <span
+      class="main-value"
+      [ngClass]="{
+        good: (chart$ | async)!.chartsData[0]?.devHealth === MapObjectStatusTypeEnum.OK,
+        warning: (chart$ | async)!.chartsData[0]?.devHealth === MapObjectStatusTypeEnum.Warning,
+        bad: (chart$ | async)!.chartsData[0]?.devHealth === MapObjectStatusTypeEnum.Error
+      }"
+      >{{ (chart$ | async)!.chartsData[0]?.devHealth }}
+    </span>
+  </ng-container>
+</div>
+
+<div
+  class="map-object-context-menu-chart"
+  echarts
+  [options]="(chartOptions$ | async)!"
+  [loading]="(isLoading$ | async)!"
+  [autoResize]="true"></div>

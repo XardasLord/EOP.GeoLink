@@ -14,7 +14,7 @@ import { ChartTypeEnum } from '../../../../shared/models/charts/chart-type.enum'
   styleUrls: ['./charts.component.scss'],
 })
 export class ChartsComponent implements OnInit {
-  chartModel$: Observable<ChartModel | null> = this.store.select(ChartsState.getCharts);
+  chartModel$: Observable<ChartModel | null> = this.store.select(ChartsState.getChart);
 
   protected readonly ChartTypeEnum = ChartTypeEnum;
 

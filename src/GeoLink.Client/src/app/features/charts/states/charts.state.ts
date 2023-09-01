@@ -8,6 +8,7 @@ import { ChartOpenMode } from '../models/open-mode.enum';
 import { ChangeFilters, Load, SetOpenMode } from './charts.action';
 import { ChartTypeEnum } from '../../../shared/models/charts/chart-type.enum';
 import { ChartModel } from '../../../shared/models/charts/chart.model';
+import { EChartsOption } from 'echarts';
 
 const CHARTS_STATE_TOKEN = new StateToken<ChartsStateModel>('charts');
 
@@ -16,7 +17,38 @@ const CHARTS_STATE_TOKEN = new StateToken<ChartsStateModel>('charts');
   defaults: {
     loading: false,
     openMode: ChartOpenMode.ForCustomSearch,
-    chart: null,
+    chart: {
+      chartsData: [],
+      dateNow: new Date(),
+      dateBegin: new Date(),
+      dateEnd: new Date(),
+      timeExtent: 0,
+    },
+    echartsOption: {
+      legend: {
+        data: ['bar'],
+        align: 'left',
+      },
+      tooltip: {},
+      xAxis: {
+        data: [],
+        silent: false,
+        splitLine: {
+          show: false,
+        },
+      },
+      yAxis: {},
+      series: [
+        {
+          name: 'bar',
+          type: 'line',
+          data: [],
+          animationDelay: idx => idx * 10,
+        },
+      ],
+      animationEasing: 'elasticOut',
+      animationDelayUpdate: idx => idx * 5,
+    },
     clusterLevel: null,
     idCluster: null,
     selectedObjectMapFilters: [],
@@ -41,8 +73,13 @@ export class ChartsState {
   }
 
   @Selector([CHARTS_STATE_TOKEN])
-  static getCharts(state: ChartsStateModel): ChartModel | null {
+  static getChart(state: ChartsStateModel): ChartModel {
     return state.chart;
+  }
+
+  @Selector([CHARTS_STATE_TOKEN])
+  static getEChartsOption(state: ChartsStateModel): EChartsOption {
+    return state.echartsOption;
   }
 
   @Selector([CHARTS_STATE_TOKEN])
@@ -72,8 +109,59 @@ export class ChartsState {
       )
       .pipe(
         tap(response => {
+          const xAxisData: string[] = [];
+          const standardChartData: number[] = [];
+          const polynomialChartData: number[] = [];
+
+          response.chartsData[0].data.forEach(chartData => {
+            const date = new Date(chartData.timestamp);
+            const formattedDate = `${date.getHours().toString()}:${date.getMinutes().toString()}`;
+
+            xAxisData.push(formattedDate);
+            standardChartData.push(chartData.values[0]);
+            polynomialChartData.push(chartData.values[1]);
+          });
+
+          const eChartOptions: EChartsOption = {
+            legend: {
+              data: [response.chartsData[0].chartName, 'Trend'],
+              align: 'left',
+            },
+            tooltip: {},
+            xAxis: {
+              data: xAxisData,
+              silent: false,
+              splitLine: {
+                show: false,
+              },
+            },
+            yAxis: {},
+            series: [
+              {
+                name: response.chartsData[0].chartName,
+                type: 'line',
+                data: standardChartData,
+                animationDelay: idx => idx * 10,
+              },
+              {
+                name: 'Trend',
+                type: 'line',
+                lineStyle: {
+                  type: 'dotted',
+                },
+                color: 'red',
+                smooth: true,
+                data: polynomialChartData,
+                animationDelay: idx => idx * 10 + 100,
+              },
+            ],
+            animationEasing: 'elasticOut',
+            animationDelayUpdate: idx => idx * 5,
+          };
+
           ctx.patchState({
             chart: response,
+            echartsOption: eChartOptions,
           });
         }),
         catchError(error => {

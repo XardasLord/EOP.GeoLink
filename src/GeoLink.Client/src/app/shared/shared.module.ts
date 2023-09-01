@@ -27,7 +27,6 @@ import { MapIpFiltersComponent } from './components/map-ip-filters/map-ip-filter
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 import { ProgressSpinnerService } from './services/progress-spinner.service';
 import { SingleChartDialogComponent } from './components/single-chart-dialog/single-chart-dialog.component';
-import { SingleDataChartComponent } from './components/single-data-chart/single-data-chart.component';
 import { MapDeviceFiltersComponent } from './components/map-device-filters/map-device-filters.component';
 
 @NgModule({
@@ -41,7 +40,6 @@ import { MapDeviceFiltersComponent } from './components/map-device-filters/map-d
     AuthScopeAllowDirective,
     SingleDeviceChartComponent,
     SingleChartDialogComponent,
-    SingleDataChartComponent,
     ProgressSpinnerComponent,
   ],
   imports: [
@@ -73,9 +71,9 @@ import { MapDeviceFiltersComponent } from './components/map-device-filters/map-d
     MapIpFiltersComponent,
     SingleDeviceChartComponent,
     SingleChartDialogComponent,
-    SingleDataChartComponent,
     ProgressSpinnerComponent,
     NgOptimizedImage,
+    NgxEchartsModule,
   ],
   providers: [
     ErrorService,

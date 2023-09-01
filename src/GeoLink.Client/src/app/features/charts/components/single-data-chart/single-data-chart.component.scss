@@ -1,12 +1,12 @@
-@import '../../../../styles/variables.scss';
+@import '../../../../../styles/variables.scss';
 
 .map-object-context-menu-chart {
-  height: 200px;
+  height: 600px;
 }
 
 .header-info {
   padding: 5px 5px 30px 5px;
-  font-size: 11px;
+  font-size: 16px;
 
   > span {
     float: left;
@@ -30,7 +30,7 @@
 
   span.main-value {
     width: 10%;
-    text-align: right;
+    text-align: center;
   }
 
   span.main-value.good {
