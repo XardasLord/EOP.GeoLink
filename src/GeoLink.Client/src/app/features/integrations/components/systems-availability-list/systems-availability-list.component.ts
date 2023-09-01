@@ -42,6 +42,8 @@ export class SystemsAvailabilityListComponent implements OnInit {
         systemId: systemData.idSystem,
         chartType: ChartTypeEnum.Availability,
       },
+      width: '800px',
+      height: '450px',
     });
   }
 }
