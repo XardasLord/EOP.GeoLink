@@ -123,6 +123,7 @@ export class SharedModule {
       'shuffle',
       'calculate',
       'menu_book',
+      'geolink_logo',
     ];
 
     svgIconFiles.forEach(iconFileName => {
