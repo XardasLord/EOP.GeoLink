@@ -50,13 +50,6 @@
         <span matListItemTitle *ngIf="sidenav.opened">Integracja</span>
       </mat-list-item>
       <mat-list-item
-        [routerLink]="RoutePaths.Filters"
-        routerLinkActive="active-route"
-        *appScopeAllow="[AuthScopes.MenuFilters]">
-        <mat-icon matListItemIcon svgIcon="desktop_windows"></mat-icon>
-        <span matListItemTitle *ngIf="sidenav.opened">Filtry</span>
-      </mat-list-item>
-      <mat-list-item
         [routerLink]="RoutePaths.Logs"
         routerLinkActive="active-route"
         *appScopeAllow="[AuthScopes.MenuLogs]">

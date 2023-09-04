@@ -64,6 +64,8 @@ export class ReportsListComponent implements OnInit {
         deviceId: report.actions.chartIdDev,
         chartType: ChartTypeEnum.Availability,
       },
+      width: '800px',
+      height: '450px',
     });
   }
 

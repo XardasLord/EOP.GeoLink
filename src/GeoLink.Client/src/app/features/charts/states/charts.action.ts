@@ -1,19 +1,12 @@
-import { PageEvent } from '@angular/material/paginator';
 import { MapFilterModel } from '../../maps/models/map-filter-model';
-import { ReportOpenMode } from '../models/open-mode.enum';
+import { ChartOpenMode } from '../models/open-mode.enum';
 
-const prefix = '[Reports]';
+const prefix = '[Charts]';
 
 export class Load {
   static readonly type = `${prefix} ${Load.name}`;
 
-  constructor(public includeReportsCount = true) {}
-}
-
-export class ChangePage {
-  static readonly type = `${prefix} ${ChangePage.name}`;
-
-  constructor(public event: PageEvent) {}
+  constructor() {}
 }
 
 export class ChangeFilters {
@@ -32,7 +25,7 @@ export class SetOpenMode {
   static readonly type = `${prefix} ${SetOpenMode.name}`;
 
   constructor(
-    public openMode: ReportOpenMode,
+    public openMode: ChartOpenMode,
     public clusterLevel: number | null = null,
     public idCluster: number | null = null
   ) {}

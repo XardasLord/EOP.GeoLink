@@ -1,5 +1,21 @@
 mat-card-header {
+  display: block;
   padding: 16px;
+
+  .logo-container {
+    align-items: center;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .logo-container span {
+    margin-right: 8px;
+  }
+
+  .logo-container img,
+  .logo-container span {
+    vertical-align: middle;
+  }
 }
 
 mat-card {

@@ -1,21 +1,21 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { MapFilterModel } from '../../../maps/models/map-filter-model';
-import { Observable } from 'rxjs';
-import { ReportOpenMode } from '../../models/open-mode.enum';
-import { ReportsState } from '../../states/reports.state';
-import { Store } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
+import { Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { MapFilterModel } from '../../../maps/models/map-filter-model';
 import { RoutePaths } from '../../../../core/modules/app-routing.module';
-import { Load, SetOpenMode } from '../../states/reports.action';
+import { ChartsState } from '../../states/charts.state';
+import { ChartOpenMode } from '../../models/open-mode.enum';
+import { Load, SetOpenMode } from '../../states/charts.action';
 
 @Component({
-  selector: 'app-reports-helper-bar',
-  templateUrl: './reports-helper-bar.component.html',
-  styleUrls: ['./reports-helper-bar.component.scss'],
+  selector: 'app-charts-helper-bar',
+  templateUrl: './charts-helper-bar.component.html',
+  styleUrls: ['./charts-helper-bar.component.scss'],
 })
-export class ReportsHelperBarComponent {
-  openMode$: Observable<ReportOpenMode> = this.store.select(ReportsState.getOpenMode);
-  clusterLabel$: Observable<string> = this.store.select(ReportsState.getClusterLabel);
+export class ChartsHelperBarComponent {
+  openMode$: Observable<ChartOpenMode> = this.store.select(ChartsState.getOpenMode);
+  clusterLabel$: Observable<string> = this.store.select(ChartsState.getClusterLabel);
 
   @Output() mapFiltersChanged = new EventEmitter<MapFilterModel[]>();
   showObjectFilters = false;
@@ -24,7 +24,7 @@ export class ReportsHelperBarComponent {
   showStatusFilters = false;
   showIpFilters = false;
 
-  protected readonly OpenMode = ReportOpenMode;
+  protected readonly OpenMode = ChartOpenMode;
 
   constructor(private store: Store) {}
 
@@ -53,8 +53,8 @@ export class ReportsHelperBarComponent {
   }
 
   removeClusterGroupFilter(): void {
-    this.store.dispatch(new Navigate([RoutePaths.Reports]));
-    this.store.dispatch(new SetOpenMode(ReportOpenMode.ForCustomSearch));
+    this.store.dispatch(new Navigate([RoutePaths.Charts]));
+    this.store.dispatch(new SetOpenMode(ChartOpenMode.ForCustomSearch));
     this.store.dispatch(new Load());
   }
 }

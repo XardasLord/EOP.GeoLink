@@ -32,4 +32,13 @@ export class MapClusterGroupReportContextDialogComponent implements AfterContent
       })
     );
   }
+
+  openChartsForGroup() {
+    this.store.dispatch(
+      new Navigate([RoutePaths.Charts], {
+        clusterLvl: this.cluster.level,
+        idCluster: this.cluster.idClust,
+      })
+    );
+  }
 }

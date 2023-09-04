@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
@@ -26,8 +28,6 @@ import { ProgressSpinnerComponent } from './components/progress-spinner/progress
 import { ProgressSpinnerService } from './services/progress-spinner.service';
 import { SingleChartDialogComponent } from './components/single-chart-dialog/single-chart-dialog.component';
 import { MapDeviceFiltersComponent } from './components/map-device-filters/map-device-filters.component';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
@@ -73,6 +73,7 @@ import { DomSanitizer } from '@angular/platform-browser';
     SingleChartDialogComponent,
     ProgressSpinnerComponent,
     NgOptimizedImage,
+    NgxEchartsModule,
   ],
   providers: [
     ErrorService,
@@ -122,6 +123,7 @@ export class SharedModule {
       'shuffle',
       'calculate',
       'menu_book',
+      'geolink_logo',
     ];
 
     svgIconFiles.forEach(iconFileName => {

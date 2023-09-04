@@ -64,7 +64,7 @@ export class ReportsState {
 
   @Selector([REPORTS_STATE_TOKEN])
   static getClusterLabel(state: ReportsStateModel): string {
-    return `${state.idCluster}_${state.idCluster}`;
+    return `${state.clusterLevel}_${state.idCluster}`;
   }
 
   @Action(Load)
