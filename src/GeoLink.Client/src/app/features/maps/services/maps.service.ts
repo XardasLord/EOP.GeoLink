@@ -11,6 +11,7 @@ import { RemoteServiceBase } from '../../../shared/services/remote-service.base'
 import { environment } from '../../../../environments/environment';
 import { MapObjectTypeEnum } from '../../../shared/models/map-object-type.enum';
 import { MapFilterModel } from '../models/map-filter-model';
+import { GetClustersAndObjectsRequestModel } from '../models/http-request-models/get-clusters-and-objects-request.model';
 
 @Injectable()
 export class MapsService extends RemoteServiceBase {
@@ -31,23 +32,31 @@ export class MapsService extends RemoteServiceBase {
     selectedRegionMapFilters: MapFilterModel[],
     selectedStatusMapFilters: MapFilterModel[]
   ): Observable<MapClusterObjectModel> {
-    let params = new HttpParams()
-      .set('lonMin', lonMin)
-      .set('latMin', latMin)
-      .set('lonMax', lonMax)
-      .set('latMax', latMax)
-      .set('zoomLevel', zoomLevel)
-      .set('clustObjThreshold', 5);
+    const requestModel: GetClustersAndObjectsRequestModel = {
+      zoomLevel: zoomLevel,
+      threshold: 20,
+      bbox: {
+        lonMin: lonMin,
+        lonMax: lonMax,
+        latMin: latMin,
+        latMax: latMax,
+      },
+      objectFilters: selectedObjectMapFilters
+        .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.id !== null)
+        .map(x => x.id),
+      deviceFilters: selectedDeviceMapFilters
+        .filter(x => x.apiFilterType === 'DeviceFilters' && x.id !== null)
+        .map(x => x.id),
+      regionFilters: selectedRegionMapFilters
+        .filter(x => x.apiFilterType === 'RegionFilters' && x.id !== null)
+        .map(x => x.id),
+      statusFilters: selectedStatusMapFilters
+        .filter(x => x.apiFilterType === 'StatusFilters' && x.id !== null)
+        .map(x => x.id),
+      attributeFilters: [],
+    };
 
-    params = this.setFilters(
-      params,
-      selectedObjectMapFilters,
-      selectedDeviceMapFilters,
-      selectedRegionMapFilters,
-      selectedStatusMapFilters
-    );
-
-    return this.httpClient.get<MapClusterObjectModel>(`${this.apiUrl}/map/getClustersAndObjects`, { params: params });
+    return this.httpClient.post<MapClusterObjectModel>(`${this.apiUrl}/map/getClustersAndObjects`, requestModel);
   }
 
   getObjects(
