@@ -12,7 +12,6 @@ export class MapHelperBarComponent {
   showDeviceFilters = false;
   showRegionFilters = false;
   showStatusFilters = false;
-  showIpFilters = false;
 
   toggleObjectFilters(): void {
     this.showObjectFilters = !this.showObjectFilters;
@@ -28,10 +27,6 @@ export class MapHelperBarComponent {
 
   toggleStatusFilters(): void {
     this.showStatusFilters = !this.showStatusFilters;
-  }
-
-  toggleIpFilters(): void {
-    this.showIpFilters = !this.showIpFilters;
   }
 
   onFiltersChanged($event: MapFilterModel[]) {

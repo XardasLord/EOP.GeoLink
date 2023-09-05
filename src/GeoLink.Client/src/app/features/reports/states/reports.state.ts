@@ -132,7 +132,6 @@ export class ReportsState {
       selectedDeviceMapFilters: action.selectedDeviceMapFilters,
       selectedRegionMapFilters: action.selectedRegionMapFilters,
       selectedStatusMapFilters: action.selectedStatusMapFilters,
-      selectedIpMapFilters: action.selectedIpMapFilters,
     });
 
     return ctx.dispatch(new Load());

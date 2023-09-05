@@ -30,12 +30,6 @@ export class StatusMapFiltersSelectionChange {
   constructor(public selectedMapFilters: MapFilterModel[]) {}
 }
 
-export class IpMapFiltersSelectionChange {
-  static readonly type = `${prefix} ${IpMapFiltersSelectionChange.name}`;
-
-  constructor(public selectedMapFilters: MapFilterModel[]) {}
-}
-
 export class SetInitialMapFilters {
   static readonly type = `${prefix} ${SetInitialMapFilters.name}`;
 
@@ -43,7 +37,6 @@ export class SetInitialMapFilters {
     public objectTypeFilters: number,
     public deviceFilters: number[],
     public regionFilters: number[],
-    public statusFilters: number[],
-    public ipFilters: number[]
+    public statusFilters: number[]
   ) {}
 }

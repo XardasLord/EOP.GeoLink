@@ -5,5 +5,4 @@ export interface MapFiltersModel {
   deviceFilters: MapFilterModel[];
   regionFilters: MapFilterModel[];
   statusFilters: MapFilterModel[];
-  ipFilters: MapFilterModel[];
 }

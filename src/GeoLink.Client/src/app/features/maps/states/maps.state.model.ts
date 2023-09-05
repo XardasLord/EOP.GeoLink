@@ -7,5 +7,4 @@ export interface MapsStateModel {
   selectedDeviceMapFilters: MapFilterModel[];
   selectedRegionMapFilter: MapFilterModel[];
   selectedStatusMapFilters: MapFilterModel[];
-  selectedIpMapFilters: MapFilterModel[];
 }

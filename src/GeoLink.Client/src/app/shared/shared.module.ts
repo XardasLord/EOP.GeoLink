@@ -23,7 +23,6 @@ import { AlertService } from './services/alert.service';
 import { SingleDeviceChartComponent } from './components/single-device-chart/single-device-chart.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { ChartService } from './services/chart.service';
-import { MapIpFiltersComponent } from './components/map-ip-filters/map-ip-filters.component';
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 import { ProgressSpinnerService } from './services/progress-spinner.service';
 import { SingleChartDialogComponent } from './components/single-chart-dialog/single-chart-dialog.component';
@@ -36,7 +35,6 @@ import { MapDeviceFiltersComponent } from './components/map-device-filters/map-d
     MapObjectFiltersComponent,
     MapDeviceFiltersComponent,
     MapStatusFiltersComponent,
-    MapIpFiltersComponent,
     AuthScopeAllowDirective,
     SingleDeviceChartComponent,
     SingleChartDialogComponent,
@@ -68,7 +66,6 @@ import { MapDeviceFiltersComponent } from './components/map-device-filters/map-d
     MapObjectFiltersComponent,
     MapDeviceFiltersComponent,
     MapStatusFiltersComponent,
-    MapIpFiltersComponent,
     SingleDeviceChartComponent,
     SingleChartDialogComponent,
     ProgressSpinnerComponent,

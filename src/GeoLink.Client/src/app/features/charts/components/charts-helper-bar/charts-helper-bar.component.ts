@@ -22,7 +22,6 @@ export class ChartsHelperBarComponent {
   showDeviceFilters = false;
   showRegionFilters = false;
   showStatusFilters = false;
-  showIpFilters = false;
 
   protected readonly OpenMode = ChartOpenMode;
 
@@ -42,10 +41,6 @@ export class ChartsHelperBarComponent {
 
   toggleStatusFilters(): void {
     this.showStatusFilters = !this.showStatusFilters;
-  }
-
-  toggleIpFilters(): void {
-    this.showIpFilters = !this.showIpFilters;
   }
 
   onFiltersChanged($event: MapFilterModel[]) {

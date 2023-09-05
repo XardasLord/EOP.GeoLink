@@ -34,7 +34,6 @@ export class ChartsComponent implements OnInit {
     const selectedDeviceMapFilters = this.store.selectSnapshot(MapsState.getDeviceSelectedMapFilters);
     const selectedRegionMapFilters = this.store.selectSnapshot(MapsState.getRegionSelectedMapFilters);
     const selectedStatusMapFilters = this.store.selectSnapshot(MapsState.getStatusSelectedMapFilters);
-    const selectedIpMapFilters = this.store.selectSnapshot(MapsState.getIpSelectedMapFilters);
 
     // TODO: Can be called multiple times and calls to API done multiple times - to resolve somehow
     this.store.dispatch(
@@ -42,8 +41,7 @@ export class ChartsComponent implements OnInit {
         selectedObjectMapFilters,
         selectedDeviceMapFilters,
         selectedRegionMapFilters,
-        selectedStatusMapFilters,
-        selectedIpMapFilters
+        selectedStatusMapFilters
       )
     );
   }

@@ -4,7 +4,6 @@ import { Observable, tap } from 'rxjs';
 import { MapsStateModel } from './maps.state.model';
 import {
   DeviceMapFiltersSelectionChange,
-  IpMapFiltersSelectionChange,
   LoadMapFilters,
   ObjectMapFiltersSelectionChange,
   RegionMapFiltersSelectionChange,
@@ -25,13 +24,11 @@ const MAPS_STATE_TOKEN = new StateToken<MapsStateModel>('maps');
       deviceFilters: [],
       regionFilters: [],
       statusFilters: [],
-      ipFilters: [],
     },
     selectedObjectsMapFilters: [],
     selectedDeviceMapFilters: [],
     selectedRegionMapFilter: [],
     selectedStatusMapFilters: [],
-    selectedIpMapFilters: [],
   },
 })
 @Injectable()
@@ -63,11 +60,6 @@ export class MapsState {
     return state.selectedStatusMapFilters;
   }
 
-  @Selector([MAPS_STATE_TOKEN])
-  static getIpSelectedMapFilters(state: MapsStateModel): MapFilterModel[] {
-    return state.selectedIpMapFilters;
-  }
-
   @Action(LoadMapFilters)
   loadMapFilters(ctx: StateContext<MapsStateModel>, _: LoadMapFilters): Observable<MapFilterModel[]> {
     return this.mapsService.getFilters().pipe(
@@ -77,7 +69,6 @@ export class MapsState {
           deviceFilters: response.filter(x => x.name === 'Urządzenia'),
           regionFilters: response.filter(x => x.name === 'Obszary'),
           statusFilters: response.filter(x => x.name === 'Statusy obiektów'),
-          ipFilters: response.filter(x => x.name === 'Adresy IP'),
         };
 
         ctx.patchState({
@@ -247,46 +238,6 @@ export class MapsState {
     });
   }
 
-  @Action(IpMapFiltersSelectionChange)
-  ipMapFiltersSelectionChange(ctx: StateContext<MapsStateModel>, action: IpMapFiltersSelectionChange) {
-    const filters = ctx.getState().mapFilters;
-
-    function updateFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
-      return filters.map(filter => {
-        const updatedFilter: MapFilterModel = { ...filter };
-
-        if (
-          action.selectedMapFilters.some(
-            f => f.id === filter.id && f.apiFilterType === filter.apiFilterType && f.name === filter.name
-          )
-        ) {
-          updatedFilter.completed = true;
-        } else {
-          updatedFilter.completed = false;
-        }
-
-        if (filter.filters) {
-          updatedFilter.filters = updateFiltersCompleted(filter.filters);
-        }
-
-        return updatedFilter;
-      });
-    }
-
-    const updatedFilters: MapFiltersModel = {
-      ...filters,
-      ipFilters: filters.ipFilters.map(ipFilter => ({
-        ...ipFilter,
-        filters: updateFiltersCompleted(ipFilter.filters),
-      })),
-    };
-
-    ctx.patchState({
-      selectedIpMapFilters: action.selectedMapFilters,
-      mapFilters: updatedFilters,
-    });
-  }
-
   @Action(SetInitialMapFilters)
   setInitialMapFilters(ctx: StateContext<MapsStateModel>, action: SetInitialMapFilters) {
     const filters = ctx.getState().mapFilters;
@@ -294,7 +245,6 @@ export class MapsState {
     const selectedDeviceMapFilters: MapFilterModel[] = [];
     const selectedRegionMapFilters: MapFilterModel[] = [];
     const selectedStatusMapFilters: MapFilterModel[] = [];
-    const selectedIpMapFilters: MapFilterModel[] = [];
 
     function updateObjectFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
       return filters.map(filter => {
@@ -372,25 +322,6 @@ export class MapsState {
       });
     }
 
-    function updateIpFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
-      return filters.map(filter => {
-        const updatedFilter: MapFilterModel = { ...filter };
-
-        if (action.ipFilters.includes(filter.id)) {
-          updatedFilter.completed = true;
-          selectedIpMapFilters.push(updatedFilter);
-        } else {
-          updatedFilter.completed = false;
-        }
-
-        if (filter.filters) {
-          updatedFilter.filters = updateIpFiltersCompleted(filter.filters);
-        }
-
-        return updatedFilter;
-      });
-    }
-
     const updatedFilters: MapFiltersModel = {
       ...filters,
       objectFilters: filters.objectFilters.map(objectFilters => ({
@@ -409,10 +340,6 @@ export class MapsState {
         ...statusFilter,
         filters: updateStatusFiltersCompleted(statusFilter.filters),
       })),
-      ipFilters: filters.ipFilters.map(ipFilter => ({
-        ...ipFilter,
-        filters: updateIpFiltersCompleted(ipFilter.filters),
-      })),
     };
 
     ctx.patchState({
@@ -420,7 +347,6 @@ export class MapsState {
       selectedDeviceMapFilters: selectedDeviceMapFilters,
       selectedRegionMapFilter: selectedRegionMapFilters,
       selectedStatusMapFilters: selectedStatusMapFilters,
-      selectedIpMapFilters: selectedIpMapFilters,
       mapFilters: updatedFilters,
     });
   }
