@@ -23,7 +23,7 @@ import {
 import * as esri from 'esri-leaflet';
 import 'esri-leaflet-renderers';
 import { vectorTileLayer } from 'esri-leaflet-vector';
-import { debounceTime, interval, Subscription, switchMap } from 'rxjs';
+import { debounceTime, finalize, interval, Subscription, switchMap } from 'rxjs';
 
 import '../../../../../../node_modules/leaflet.browser.print/dist/leaflet.browser.print.min.js';
 import { environment } from '../../../../../environments/environment';

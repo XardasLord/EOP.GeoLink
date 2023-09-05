@@ -1,6 +1,7 @@
 import { PageEvent } from '@angular/material/paginator';
 import { MapFilterModel } from '../../maps/models/map-filter-model';
 import { ReportOpenMode } from '../models/open-mode.enum';
+import { SearchFilterModel } from '../../../shared/models/filters/search-filter.model';
 
 const prefix = '[Reports]';
 
@@ -25,6 +26,12 @@ export class ChangeFilters {
     public selectedRegionMapFilters: MapFilterModel[],
     public selectedStatusMapFilters: MapFilterModel[]
   ) {}
+}
+
+export class ChangeSearchFilters {
+  static readonly type = `${prefix} ${ChangeSearchFilters.name}`;
+
+  constructor(public searchFilterModel: SearchFilterModel) {}
 }
 
 export class SetOpenMode {

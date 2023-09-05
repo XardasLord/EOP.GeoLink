@@ -27,6 +27,7 @@ import { ProgressSpinnerComponent } from './components/progress-spinner/progress
 import { ProgressSpinnerService } from './services/progress-spinner.service';
 import { SingleChartDialogComponent } from './components/single-chart-dialog/single-chart-dialog.component';
 import { MapDeviceFiltersComponent } from './components/map-device-filters/map-device-filters.component';
+import { SimpleInputDialogComponent } from './components/dialogs/simple-input-dialog/simple-input-dialog.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { MapDeviceFiltersComponent } from './components/map-device-filters/map-d
     SingleDeviceChartComponent,
     SingleChartDialogComponent,
     ProgressSpinnerComponent,
+    SimpleInputDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -71,6 +73,7 @@ import { MapDeviceFiltersComponent } from './components/map-device-filters/map-d
     ProgressSpinnerComponent,
     NgOptimizedImage,
     NgxEchartsModule,
+    SimpleInputDialogComponent,
   ],
   providers: [
     ErrorService,
@@ -121,6 +124,7 @@ export class SharedModule {
       'calculate',
       'menu_book',
       'geolink_logo',
+      'search',
     ];
 
     svgIconFiles.forEach(iconFileName => {

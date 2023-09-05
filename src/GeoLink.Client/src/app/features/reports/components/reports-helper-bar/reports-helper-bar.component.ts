@@ -6,7 +6,16 @@ import { ReportsState } from '../../states/reports.state';
 import { Store } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
 import { RoutePaths } from '../../../../core/modules/app-routing.module';
-import { Load, SetOpenMode } from '../../states/reports.action';
+import { ChangeSearchFilters, Load, SetOpenMode } from '../../states/reports.action';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { SearchFilterModel } from '../../../../shared/models/filters/search-filter.model';
+import { SimpleInputDialogComponent } from '../../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog.component';
+import {
+  SimpleFormModel,
+  SimpleInputDialogDataModel,
+} from '../../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog-data.model';
+import { Validators } from '@angular/forms';
+import { nameof } from '../../../../shared/helpers/name-of.helper';
 
 @Component({
   selector: 'app-reports-helper-bar',
@@ -23,9 +32,14 @@ export class ReportsHelperBarComponent {
   showRegionFilters = false;
   showStatusFilters = false;
 
+  dialogRef?: MatDialogRef<SimpleInputDialogComponent>;
+
   protected readonly OpenMode = ReportOpenMode;
 
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    private dialog: MatDialog
+  ) {}
 
   toggleObjectFilters(): void {
     this.showObjectFilters = !this.showObjectFilters;
@@ -41,6 +55,62 @@ export class ReportsHelperBarComponent {
 
   toggleStatusFilters(): void {
     this.showStatusFilters = !this.showStatusFilters;
+  }
+
+  openSearchFilters(): void {
+    this.loadForm('Szukaj po atrybutach', model => {
+      this.store.dispatch(new ChangeSearchFilters(model));
+    });
+  }
+
+  private loadForm(
+    formTitle: string,
+    action: (model: SearchFilterModel) => void,
+    searchFilterModel?: SearchFilterModel
+  ) {
+    this.dialogRef = this.dialog.open<SimpleInputDialogComponent>(SimpleInputDialogComponent, {
+      data: <SimpleInputDialogDataModel>{
+        title: formTitle,
+        inputs: [
+          {
+            controlName: nameof<SearchFilterModel>('city'),
+            label: 'Miejscowość',
+            type: 'text',
+            initValue: searchFilterModel?.city,
+          },
+          {
+            controlName: nameof<SearchFilterModel>('street'),
+            label: 'Ulica',
+            type: 'text',
+            initValue: searchFilterModel?.street,
+          },
+          {
+            controlName: nameof<SearchFilterModel>('ipAddress'),
+            label: 'Adres IP',
+            type: 'text',
+            initValue: searchFilterModel?.ipAddress,
+          },
+          {
+            controlName: nameof<SearchFilterModel>('ppe'),
+            label: 'PPE',
+            type: 'text',
+            initValue: searchFilterModel?.ppe,
+          },
+        ],
+        submitLabel: 'Szukaj',
+        submitAction: (formValue: SimpleFormModel) => {
+          const model: SearchFilterModel = {
+            city: <string>formValue[nameof<SearchFilterModel>('city')],
+            street: <string>formValue[nameof<SearchFilterModel>('street')],
+            ipAddress: <string>formValue[nameof<SearchFilterModel>('ipAddress')],
+            ppe: <string>formValue[nameof<SearchFilterModel>('ppe')],
+          };
+
+          action(model);
+        },
+      },
+      width: '400px',
+    });
   }
 
   onFiltersChanged($event: MapFilterModel[]) {
