@@ -14,6 +14,7 @@ import { AuthRoles } from '../auth/models/auth.roles';
 import {
   GetConfigDefinitions,
   GetDeviceGroupsRelation,
+  GetFilterAttributeDefinitions,
   GetMapDeviceTypes,
   GetMapObjectStatusTypes,
   GetMapObjectTypes,
@@ -65,6 +66,7 @@ export class AuthState implements NgxsOnInit {
       actions.push(new GetDeviceGroupsRelation());
       actions.push(new GetTimeExtentDefinitions());
       actions.push(new GetConfigDefinitions());
+      actions.push(new GetFilterAttributeDefinitions());
       actions.push(
         new SetInitialMapFilters(
           user.init_objecttypefilters,
@@ -143,6 +145,7 @@ export class AuthState implements NgxsOnInit {
         new GetDeviceGroupsRelation(),
         new GetTimeExtentDefinitions(),
         new GetConfigDefinitions(),
+        new GetFilterAttributeDefinitions(),
         new SetInitialMapFilters(
           state.user.init_objecttypefilters,
           state.user.init_devicefilters,

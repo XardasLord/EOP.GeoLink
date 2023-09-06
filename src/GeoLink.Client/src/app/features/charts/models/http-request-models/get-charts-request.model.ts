@@ -1,4 +1,4 @@
-import { AttributeFilterModel } from '../../../../shared/models/filters/attribute-filter.model';
+import { FilterAttributeModel } from '../../../../shared/models/filters/filter-attribute.model';
 
 export interface GetChartsRequestModel {
   chartTypes: string[];
@@ -10,5 +10,5 @@ export interface GetChartsRequestModel {
   deviceFilters: number[];
   regionFilters: number[];
   statusFilters: number[];
-  attributeFilters: AttributeFilterModel[];
+  attributeFilters: FilterAttributeModel[];
 }

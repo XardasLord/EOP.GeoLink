@@ -7,6 +7,7 @@ import { DictionaryService } from '../services/dictionary.service';
 import {
   GetConfigDefinitions,
   GetDeviceGroupsRelation,
+  GetFilterAttributeDefinitions,
   GetMapDeviceTypes,
   GetMapObjectStatusTypes,
   GetMapObjectTypes,
@@ -21,6 +22,7 @@ import { EnumDescriptionRegionModel } from '../models/enum-description-region.mo
 import { DeviceGroupRelationModel } from '../models/device-group-relation.model';
 import { append, patch } from '@ngxs/store/operators';
 import { ConfigDefinitionModel } from '../models/config/config-definition.model';
+import { FilterAttributeDefinitionModel } from '../models/filters/filter-attribute-definition.model';
 
 export const DICTIONARY_STATE_TOKEN = new StateToken<DictionaryStateModel>('dictionary');
 
@@ -37,6 +39,7 @@ export const DICTIONARY_STATE_TOKEN = new StateToken<DictionaryStateModel>('dict
     deviceGroupsRelation: [],
     timeExtentDefinitions: [],
     configDefinitions: [],
+    filterAttributeDefinitions: [],
   },
 })
 @Injectable()
@@ -91,6 +94,11 @@ export class DictionaryState {
   @Selector([DICTIONARY_STATE_TOKEN])
   static getConfigDefinitions(state: DictionaryStateModel): ConfigDefinitionModel[] {
     return state.configDefinitions;
+  }
+
+  @Selector([DICTIONARY_STATE_TOKEN])
+  static getFilterAttributeDefinitions(state: DictionaryStateModel): FilterAttributeDefinitionModel[] {
+    return state.filterAttributeDefinitions;
   }
 
   @Action(GetSystemGroups)
@@ -223,12 +231,25 @@ export class DictionaryState {
   getConfigDefinitions(ctx: StateContext<DictionaryStateModel>, _: GetConfigDefinitions) {
     return this.dictionaryService.getConfigDefinitions().pipe(
       tap(response => {
-        console.warn(response);
         ctx.setState(
           patch<DictionaryStateModel>({
             configDefinitions: append<ConfigDefinitionModel>(response),
           })
         );
+      }),
+      catchError(error => {
+        return throwError(error);
+      })
+    );
+  }
+
+  @Action(GetFilterAttributeDefinitions)
+  getFilterAttributeDefinitions(ctx: StateContext<DictionaryStateModel>, _: GetFilterAttributeDefinitions) {
+    return this.dictionaryService.getFilterAttributeDefinitions().pipe(
+      tap(response => {
+        ctx.patchState({
+          filterAttributeDefinitions: response,
+        });
       }),
       catchError(error => {
         return throwError(error);

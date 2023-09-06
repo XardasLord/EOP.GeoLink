@@ -8,7 +8,7 @@ import { EnumDescriptionWithScopesModel } from '../models/enum-description-with-
 import { EnumDescriptionRegionModel } from '../models/enum-description-region.model';
 import { DeviceGroupRelationModel } from '../models/device-group-relation.model';
 import { ConfigDefinitionModel } from '../models/config/config-definition.model';
-import { DiagnosticToolsConfigModel } from '../../features/configurations/models/diagnostic-tools-config.model';
+import { FilterAttributeDefinitionModel } from '../models/filters/filter-attribute-definition.model';
 
 @Injectable()
 export class DictionaryService extends RemoteServiceBase {
@@ -67,5 +67,9 @@ export class DictionaryService extends RemoteServiceBase {
     );
 
     return forkJoin(observables).pipe(mergeMap(results => results));
+  }
+
+  getFilterAttributeDefinitions(): Observable<FilterAttributeDefinitionModel[]> {
+    return this.httpClient.get<FilterAttributeDefinitionModel[]>(`${this.apiUrl}/interface/getAtrFiltersDef`);
   }
 }

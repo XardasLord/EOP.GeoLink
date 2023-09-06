@@ -1,5 +1,5 @@
 import { BboxModel } from '../../../../shared/models/filters/bbox.model';
-import { AttributeFilterModel } from '../../../../shared/models/filters/attribute-filter.model';
+import { FilterAttributeModel } from '../../../../shared/models/filters/filter-attribute.model';
 
 export interface GetClustersAndObjectsRequestModel {
   zoomLevel: number;
@@ -9,5 +9,5 @@ export interface GetClustersAndObjectsRequestModel {
   deviceFilters: number[];
   regionFilters: number[];
   statusFilters: number[];
-  attributeFilters: AttributeFilterModel[];
+  attributeFilters: FilterAttributeModel[];
 }

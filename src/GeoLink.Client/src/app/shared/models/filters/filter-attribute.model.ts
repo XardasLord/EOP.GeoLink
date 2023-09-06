@@ -1,4 +1,4 @@
-export interface AttributeFilterModel {
+export interface FilterAttributeModel {
   idAtrF: number;
   atrFType: number;
   value: string;

@@ -1,4 +1,4 @@
-import { AttributeFilterModel } from '../../../../shared/models/filters/attribute-filter.model';
+import { FilterAttributeModel } from '../../../../shared/models/filters/filter-attribute.model';
 
 export interface GetReportPreviewRequestModel {
   count: number;
@@ -11,5 +11,5 @@ export interface GetReportPreviewRequestModel {
   deviceFilters: number[];
   regionFilters: number[];
   statusFilters: number[];
-  attributeFilters: AttributeFilterModel[];
+  attributeFilters: FilterAttributeModel[];
 }
