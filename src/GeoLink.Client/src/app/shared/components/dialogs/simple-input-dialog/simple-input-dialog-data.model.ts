@@ -22,19 +22,26 @@ interface BooleanInput extends BaseInput {
   initValue: boolean;
 }
 
+export interface AttributeDialogInput extends BaseInput {
+  type: 'text' | 'number' | 'textarea';
+  initValue?: string | number | null;
+  idAtrF: number;
+  atrFType: number;
+}
+
 export interface SimpleInputDialogDataModel {
   title: string;
   description?: string;
   submitLabel?: string;
   cancelLabel?: string;
   validateInstantly?: boolean;
-  inputs: (DialogInput | BooleanInput)[];
+  inputs: (DialogInput | BooleanInput | AttributeDialogInput)[];
   template?: {
     ref: TemplateRef<HTMLElement>;
     data?: unknown;
   };
   submitAction: (formValue: Partial<SimpleFormModel>) => void;
-  cancelAction: () => void;
+  cancelAction?: () => void;
 }
 
 export enum SimpleInputDialogAction {

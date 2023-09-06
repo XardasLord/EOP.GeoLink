@@ -3,6 +3,7 @@ import { RestQueryVo } from '../../../shared/models/pagination/rest.query';
 import { RestQueryResponse } from '../../../shared/models/pagination/rest.response';
 import { MapFilterModel } from '../../maps/models/map-filter-model';
 import { ReportOpenMode } from '../models/open-mode.enum';
+import { FilterAttributeModel } from '../../../shared/models/filters/filter-attribute.model';
 
 export interface ReportsStateModel {
   loading: boolean;
@@ -15,4 +16,5 @@ export interface ReportsStateModel {
   selectedDeviceMapFilters: MapFilterModel[];
   selectedRegionMapFilters: MapFilterModel[];
   selectedStatusMapFilters: MapFilterModel[];
+  filterAttributeModels: FilterAttributeModel[];
 }

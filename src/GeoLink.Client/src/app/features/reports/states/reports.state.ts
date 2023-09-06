@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { catchError, finalize, tap, throwError } from 'rxjs';
 import { ReportsStateModel } from './reports.state.model';
-import { ChangeFilters, ChangePage, Load, SetOpenMode } from './reports.action';
+import { ChangeFilters, ChangePage, ChangeSearchFilters, Load, SetOpenMode } from './reports.action';
 import { ReportsService } from '../services/reports.service';
 import { ReportModel } from '../models/report.model';
 import { RestQueryVo } from '../../../shared/models/pagination/rest.query';
@@ -25,6 +25,7 @@ const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
     selectedDeviceMapFilters: [],
     selectedRegionMapFilters: [],
     selectedStatusMapFilters: [],
+    filterAttributeModels: [],
   },
 })
 @Injectable()
@@ -144,5 +145,14 @@ export class ReportsState {
         idCluster: action.openMode === ReportOpenMode.ForCluster ? action.idCluster : null,
       })
     );
+  }
+
+  @Action(ChangeSearchFilters)
+  changeSearchFilters(ctx: StateContext<ReportsStateModel>, action: ChangeSearchFilters) {
+    ctx.patchState({
+      filterAttributeModels: action.filterAttributeModel,
+    });
+
+    return ctx.dispatch(new Load());
   }
 }
