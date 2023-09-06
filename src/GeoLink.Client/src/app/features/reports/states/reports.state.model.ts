@@ -15,5 +15,4 @@ export interface ReportsStateModel {
   selectedDeviceMapFilters: MapFilterModel[];
   selectedRegionMapFilters: MapFilterModel[];
   selectedStatusMapFilters: MapFilterModel[];
-  selectedIpMapFilters: MapFilterModel[];
 }

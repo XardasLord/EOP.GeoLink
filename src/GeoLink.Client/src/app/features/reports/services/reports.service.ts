@@ -8,6 +8,8 @@ import { MapsState } from '../../maps/states/maps.state';
 import { Store } from '@ngxs/store';
 import { MapFilterModel } from '../../maps/models/map-filter-model';
 import { PageEvent } from '@angular/material/paginator';
+import { GetClusterInfoRequestModel } from '../../maps/models/http-request-models/get-cluster-info-request.model';
+import { GetReportPreviewRequestModel } from '../models/http-request-models/get-report-preview-request.model';
 
 @Injectable()
 export class ReportsService extends RemoteServiceBase {
@@ -25,72 +27,33 @@ export class ReportsService extends RemoteServiceBase {
     selectedDeviceMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
     selectedStatusMapFilters: MapFilterModel[],
-    selectedIpMapFilters: MapFilterModel[],
     pageInfo: PageEvent,
     includeCount: boolean,
     clusterLevel: number | null = null,
     idCluster: number | null = null
   ): Observable<GetReportsResponseModel> {
-    let params = new HttpParams()
-      .set('offset', pageInfo.pageIndex * pageInfo.pageSize)
-      .set('count', pageInfo.pageSize)
-      .set('doCount', includeCount ? 1 : 0)
-      .set('timeExtent', 1);
+    const requestModel: GetReportPreviewRequestModel = {
+      count: pageInfo.pageSize,
+      offset: pageInfo.pageIndex * pageInfo.pageSize,
+      doCount: includeCount ? 1 : 0,
+      timeExtent: 1,
+      lvl: clusterLevel && idCluster ? clusterLevel : null,
+      idCluster: clusterLevel && idCluster ? idCluster : null,
+      objectFilters: selectedObjectMapFilters
+        .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.id !== null)
+        .map(x => x.id),
+      deviceFilters: selectedDeviceMapFilters
+        .filter(x => x.apiFilterType === 'DeviceFilters' && x.id !== null)
+        .map(x => x.id),
+      regionFilters: selectedRegionMapFilters
+        .filter(x => x.apiFilterType === 'RegionFilters' && x.id !== null)
+        .map(x => x.id),
+      statusFilters: selectedStatusMapFilters
+        .filter(x => x.apiFilterType === 'StatusFilters' && x.id !== null)
+        .map(x => x.id),
+      attributeFilters: [],
+    };
 
-    if (clusterLevel && idCluster) {
-      params = params.set('lvl', clusterLevel).set('idCluster', idCluster);
-    }
-
-    params = this.setFilters(
-      params,
-      selectedObjectMapFilters,
-      selectedDeviceMapFilters,
-      selectedRegionMapFilters,
-      selectedStatusMapFilters,
-      selectedIpMapFilters
-    );
-
-    return this.httpClient.get<GetReportsResponseModel>(`${this.apiUrl}/reports/getReportPreview`, { params });
-  }
-
-  private setFilters(
-    httpParams: HttpParams,
-    selectedObjectMapFilters: MapFilterModel[],
-    selectedDeviceMapFilters: MapFilterModel[],
-    selectedRegionMapFilters: MapFilterModel[],
-    selectedStatusMapFilters: MapFilterModel[],
-    selectedIpMapFilters: MapFilterModel[]
-  ): HttpParams {
-    selectedObjectMapFilters
-      .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.id !== null)
-      .forEach(filter => {
-        httpParams = httpParams.append('objectTypeFilters', filter.id);
-      });
-
-    selectedDeviceMapFilters
-      .filter(x => x.apiFilterType === 'DeviceFilters' && x.id !== null)
-      .forEach(filter => {
-        httpParams = httpParams.append('deviceFilters', filter.id);
-      });
-
-    selectedRegionMapFilters
-      .filter(x => x.apiFilterType === 'RegionFilters' && x.id !== null)
-      .forEach(filter => {
-        httpParams = httpParams.append('regionFilters', filter.id);
-      });
-
-    selectedStatusMapFilters
-      .filter(x => x.apiFilterType === 'StatusFilters' && x.id !== null)
-      .forEach(filter => {
-        httpParams = httpParams.append('statusFilters', filter.id);
-      });
-
-    selectedIpMapFilters
-      .filter(x => x.apiFilterType === 'IpFilters' && x.id !== null)
-      .forEach(filter => {
-        httpParams = httpParams.append('ipFilters', filter.id);
-      });
-
-    return httpParams;
+    return this.httpClient.post<GetReportsResponseModel>(`${this.apiUrl}/reports/getReportPreview`, requestModel);
   }
 }

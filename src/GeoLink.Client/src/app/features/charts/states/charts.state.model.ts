@@ -14,5 +14,4 @@ export interface ChartsStateModel {
   selectedDeviceMapFilters: MapFilterModel[];
   selectedRegionMapFilters: MapFilterModel[];
   selectedStatusMapFilters: MapFilterModel[];
-  selectedIpMapFilters: MapFilterModel[];
 }

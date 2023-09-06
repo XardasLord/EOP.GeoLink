@@ -55,7 +55,6 @@ const CHARTS_STATE_TOKEN = new StateToken<ChartsStateModel>('charts');
     selectedDeviceMapFilters: [],
     selectedRegionMapFilters: [],
     selectedStatusMapFilters: [],
-    selectedIpMapFilters: [],
   },
 })
 @Injectable()
@@ -103,7 +102,6 @@ export class ChartsState {
         state.selectedDeviceMapFilters,
         state.selectedRegionMapFilters,
         state.selectedStatusMapFilters,
-        state.selectedIpMapFilters,
         state.clusterLevel,
         state.idCluster
       )

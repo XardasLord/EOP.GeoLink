@@ -25,7 +25,6 @@ const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
     selectedDeviceMapFilters: [],
     selectedRegionMapFilters: [],
     selectedStatusMapFilters: [],
-    selectedIpMapFilters: [],
   },
 })
 @Injectable()
@@ -81,7 +80,6 @@ export class ReportsState {
         state.selectedDeviceMapFilters,
         state.selectedRegionMapFilters,
         state.selectedStatusMapFilters,
-        state.selectedIpMapFilters,
         state.restQuery.currentPage,
         action.includeReportsCount,
         state.clusterLevel,
