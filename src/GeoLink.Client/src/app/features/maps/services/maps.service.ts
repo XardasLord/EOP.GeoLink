@@ -12,6 +12,7 @@ import { environment } from '../../../../environments/environment';
 import { MapObjectTypeEnum } from '../../../shared/models/map-object-type.enum';
 import { MapFilterModel } from '../models/map-filter-model';
 import { GetClustersAndObjectsRequestModel } from '../models/http-request-models/get-clusters-and-objects-request.model';
+import { GetObjectsRequestModel } from '../models/http-request-models/get-objects-request.model';
 
 @Injectable()
 export class MapsService extends RemoteServiceBase {
@@ -69,21 +70,29 @@ export class MapsService extends RemoteServiceBase {
     selectedRegionMapFilters: MapFilterModel[],
     selectedStatusMapFilters: MapFilterModel[]
   ): Observable<MapObjectModel[]> {
-    let params = new HttpParams()
-      .set('lonMin', lonMin)
-      .set('latMin', latMin)
-      .set('lonMax', lonMax)
-      .set('latMax', latMax);
+    const requestModel: GetObjectsRequestModel = {
+      bbox: {
+        lonMin: lonMin,
+        lonMax: lonMax,
+        latMin: latMin,
+        latMax: latMax,
+      },
+      objectFilters: selectedObjectMapFilters
+        .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.id !== null)
+        .map(x => x.id),
+      deviceFilters: selectedDeviceMapFilters
+        .filter(x => x.apiFilterType === 'DeviceFilters' && x.id !== null)
+        .map(x => x.id),
+      regionFilters: selectedRegionMapFilters
+        .filter(x => x.apiFilterType === 'RegionFilters' && x.id !== null)
+        .map(x => x.id),
+      statusFilters: selectedStatusMapFilters
+        .filter(x => x.apiFilterType === 'StatusFilters' && x.id !== null)
+        .map(x => x.id),
+      attributeFilters: [],
+    };
 
-    params = this.setFilters(
-      params,
-      selectedObjectMapFilters,
-      selectedDeviceMapFilters,
-      selectedRegionMapFilters,
-      selectedStatusMapFilters
-    );
-
-    return this.httpClient.get<MapObjectModel[]>(`${this.apiUrl}/map/getObjects`, { params: params });
+    return this.httpClient.post<MapObjectModel[]>(`${this.apiUrl}/map/getObjects`, requestModel);
   }
 
   private setFilters(
