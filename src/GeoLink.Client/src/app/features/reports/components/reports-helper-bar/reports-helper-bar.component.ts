@@ -17,6 +17,8 @@ import {
 import { DictionaryState } from '../../../../shared/states/dictionary.state';
 import { FilterAttributeNameDefinitionEnum } from '../../../../shared/models/filters/filter-attribute-definition.model';
 import { FilterAttributeModel } from '../../../../shared/models/filters/filter-attribute.model';
+import { FormGroup } from '@angular/forms';
+import { getInputDialogDataModelForFilterAttributes } from '../../../../shared/helpers/filter-attributes.helper';
 
 @Component({
   selector: 'app-reports-helper-bar',
@@ -59,9 +61,13 @@ export class ReportsHelperBarComponent {
   }
 
   openSearchFilters(): void {
-    this.loadForm('Szukaj po atrybutach', model => {
-      this.store.dispatch(new ChangeSearchFilters(model));
-    });
+    this.loadForm(
+      'Szukaj po atrybutach',
+      model => {
+        this.store.dispatch(new ChangeSearchFilters(model));
+      },
+      this.store.selectSnapshot(ReportsState.getFilterAttributeModels)
+    );
   }
 
   private loadForm(
@@ -69,43 +75,10 @@ export class ReportsHelperBarComponent {
     action: (model: FilterAttributeModel[]) => void,
     searchFilterModels?: FilterAttributeModel[]
   ) {
-    const filterAttributeDefinitions = this.store.selectSnapshot(DictionaryState.getFilterAttributeDefinitions);
-
-    const inputs: AttributeDialogInput[] = [];
-
-    filterAttributeDefinitions.forEach(attribute => {
-      inputs.push({
-        controlName: attribute.name,
-        label: attribute.name,
-        type: 'text',
-        initValue: searchFilterModels?.filter(x => x.name === attribute.name).map(x => x.value)[0],
-        idAtrF: filterAttributeDefinitions.filter(x => x.name === attribute.name).map(x => x.idAtrF)[0],
-        atrFType: filterAttributeDefinitions.filter(x => x.name === attribute.name).map(x => x.atrFType)[0],
-      });
-    });
+    const dataModel = getInputDialogDataModelForFilterAttributes(this.store, formTitle, action, searchFilterModels);
 
     this.dialogRef = this.dialog.open<SimpleInputDialogComponent>(SimpleInputDialogComponent, {
-      data: <SimpleInputDialogDataModel>{
-        title: formTitle,
-        inputs: inputs,
-        submitLabel: 'Szukaj',
-        submitAction: (formValue: SimpleFormModel) => {
-          const filterModels: FilterAttributeModel[] = [];
-
-          filterAttributeDefinitions.forEach(attribute => {
-            filterModels.push({
-              idAtrF: attribute.idAtrF,
-              atrFType: attribute.idAtrF,
-              value: <string>formValue[attribute.name],
-              name: attribute.name,
-              beginsWith: false,
-              endsWith: false,
-            });
-          });
-
-          action(filterModels);
-        },
-      },
+      data: <SimpleInputDialogDataModel>dataModel,
       width: '400px',
     });
   }

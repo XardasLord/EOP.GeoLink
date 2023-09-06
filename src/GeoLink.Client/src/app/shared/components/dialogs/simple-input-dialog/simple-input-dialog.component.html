@@ -58,4 +58,7 @@
   <button mat-stroked-button color="primary" (click)="onCancel()">
     {{ data.cancelLabel || 'Anuluj' }}
   </button>
+  <button mat-stroked-button color="accent" *ngIf="data.alternativeLabel" (click)="onAlternative()">
+    {{ data.alternativeLabel || 'Wyczyść' }}
+  </button>
 </div>

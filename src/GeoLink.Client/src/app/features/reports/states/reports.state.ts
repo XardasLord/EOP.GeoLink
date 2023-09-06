@@ -9,6 +9,7 @@ import { RestQueryVo } from '../../../shared/models/pagination/rest.query';
 import { RestQueryResponse } from '../../../shared/models/pagination/rest.response';
 import { patch } from '@ngxs/store/operators';
 import { ReportOpenMode } from '../models/open-mode.enum';
+import { FilterAttributeModel } from '../../../shared/models/filters/filter-attribute.model';
 
 const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
 
@@ -67,6 +68,11 @@ export class ReportsState {
     return `${state.clusterLevel}_${state.idCluster}`;
   }
 
+  @Selector([REPORTS_STATE_TOKEN])
+  static getFilterAttributeModels(state: ReportsStateModel): FilterAttributeModel[] {
+    return state.filterAttributeModels;
+  }
+
   @Action(Load)
   loadReports(ctx: StateContext<ReportsStateModel>, action: Load) {
     const state = ctx.getState();
@@ -81,6 +87,7 @@ export class ReportsState {
         state.selectedDeviceMapFilters,
         state.selectedRegionMapFilters,
         state.selectedStatusMapFilters,
+        state.filterAttributeModels,
         state.restQuery.currentPage,
         action.includeReportsCount,
         state.clusterLevel,

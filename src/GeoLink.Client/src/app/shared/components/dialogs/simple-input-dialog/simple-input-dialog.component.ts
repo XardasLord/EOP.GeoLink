@@ -58,6 +58,12 @@ export class SimpleInputDialogComponent {
     this.dialogRef.close();
   }
 
+  onAlternative() {
+    if (this.data.alternativeAction) {
+      this.data.alternativeAction(this.form);
+    }
+  }
+
   isFieldOptional(controlName: string): boolean {
     return !this.form.get(controlName)!.hasValidator(Validators.required);
   }

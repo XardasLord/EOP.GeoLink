@@ -10,6 +10,7 @@ import { MapFilterModel } from '../../maps/models/map-filter-model';
 import { PageEvent } from '@angular/material/paginator';
 import { GetClusterInfoRequestModel } from '../../maps/models/http-request-models/get-cluster-info-request.model';
 import { GetReportPreviewRequestModel } from '../models/http-request-models/get-report-preview-request.model';
+import { FilterAttributeModel } from '../../../shared/models/filters/filter-attribute.model';
 
 @Injectable()
 export class ReportsService extends RemoteServiceBase {
@@ -27,6 +28,7 @@ export class ReportsService extends RemoteServiceBase {
     selectedDeviceMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
     selectedStatusMapFilters: MapFilterModel[],
+    selectedAttributeFilters: FilterAttributeModel[],
     pageInfo: PageEvent,
     includeCount: boolean,
     clusterLevel: number | null = null,
@@ -51,7 +53,7 @@ export class ReportsService extends RemoteServiceBase {
       statusFilters: selectedStatusMapFilters
         .filter(x => x.apiFilterType === 'StatusFilters' && x.id !== null)
         .map(x => x.id),
-      attributeFilters: [],
+      attributeFilters: selectedAttributeFilters,
     };
 
     return this.httpClient.post<GetReportsResponseModel>(`${this.apiUrl}/reports/getReportPreview`, requestModel);

@@ -1,5 +1,5 @@
 import { TemplateRef } from '@angular/core';
-import { FormControlOptions } from '@angular/forms';
+import { FormControlOptions, FormGroup } from '@angular/forms';
 
 export interface SimpleFormModel {
   [key: number | string]: string | number | File | boolean | null;
@@ -34,6 +34,7 @@ export interface SimpleInputDialogDataModel {
   description?: string;
   submitLabel?: string;
   cancelLabel?: string;
+  alternativeLabel?: string;
   validateInstantly?: boolean;
   inputs: (DialogInput | BooleanInput | AttributeDialogInput)[];
   template?: {
@@ -42,6 +43,7 @@ export interface SimpleInputDialogDataModel {
   };
   submitAction: (formValue: Partial<SimpleFormModel>) => void;
   cancelAction?: () => void;
+  alternativeAction?: (form: FormGroup<{}>) => void;
 }
 
 export enum SimpleInputDialogAction {
