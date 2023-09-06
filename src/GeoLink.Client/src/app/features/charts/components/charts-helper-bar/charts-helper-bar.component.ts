@@ -6,12 +6,14 @@ import { MapFilterModel } from '../../../maps/models/map-filter-model';
 import { RoutePaths } from '../../../../core/modules/app-routing.module';
 import { ChartsState } from '../../states/charts.state';
 import { ChartOpenMode } from '../../models/open-mode.enum';
-import { ChangeSearchFilters, Load, SetOpenMode } from '../../states/charts.action';
+import { Load, SetOpenMode } from '../../states/charts.action';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SimpleInputDialogComponent } from '../../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog.component';
 import { FilterAttributeModel } from '../../../../shared/models/filters/filter-attribute.model';
 import { getInputDialogDataModelForFilterAttributes } from '../../../../shared/helpers/filter-attributes.helper';
 import { SimpleInputDialogDataModel } from '../../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog-data.model';
+import { FiltersState } from '../../../../shared/states/filters.state';
+import { ChangeSearchFilters } from '../../../../shared/states/filter.action';
 
 @Component({
   selector: 'app-charts-helper-bar',
@@ -58,8 +60,9 @@ export class ChartsHelperBarComponent {
       'Szukaj po atrybutach',
       model => {
         this.store.dispatch(new ChangeSearchFilters(model));
+        this.store.dispatch(new Load());
       },
-      this.store.selectSnapshot(ChartsState.getFilterAttributeModels)
+      this.store.selectSnapshot(FiltersState.getFilterAttributeModels)
     );
   }
 
@@ -78,6 +81,7 @@ export class ChartsHelperBarComponent {
 
   onFiltersChanged($event: MapFilterModel[]) {
     this.mapFiltersChanged.emit($event);
+    this.store.dispatch(new Load());
   }
 
   removeClusterGroupFilter(): void {

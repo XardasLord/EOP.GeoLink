@@ -6,16 +6,14 @@ import { ReportsState } from '../../states/reports.state';
 import { Store } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
 import { RoutePaths } from '../../../../core/modules/app-routing.module';
-import { ChangeSearchFilters, Load, SetOpenMode } from '../../states/reports.action';
+import { Load, SetOpenMode } from '../../states/reports.action';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SimpleInputDialogComponent } from '../../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog.component';
-import {
-  AttributeDialogInput,
-  SimpleFormModel,
-  SimpleInputDialogDataModel,
-} from '../../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog-data.model';
+import { SimpleInputDialogDataModel } from '../../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog-data.model';
 import { FilterAttributeModel } from '../../../../shared/models/filters/filter-attribute.model';
 import { getInputDialogDataModelForFilterAttributes } from '../../../../shared/helpers/filter-attributes.helper';
+import { FiltersState } from '../../../../shared/states/filters.state';
+import { ChangeSearchFilters } from '../../../../shared/states/filter.action';
 
 @Component({
   selector: 'app-reports-helper-bar',
@@ -62,8 +60,9 @@ export class ReportsHelperBarComponent {
       'Szukaj po atrybutach',
       model => {
         this.store.dispatch(new ChangeSearchFilters(model));
+        this.store.dispatch(new Load());
       },
-      this.store.selectSnapshot(ReportsState.getFilterAttributeModels)
+      this.store.selectSnapshot(FiltersState.getFilterAttributeModels)
     );
   }
 
@@ -82,6 +81,7 @@ export class ReportsHelperBarComponent {
 
   onFiltersChanged($event: MapFilterModel[]) {
     this.mapFiltersChanged.emit($event);
+    this.store.dispatch(new Load());
   }
 
   removeClusterGroupFilter(): void {

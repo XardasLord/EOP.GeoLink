@@ -6,8 +6,8 @@ import { SimpleInputDialogComponent } from '../../../../shared/components/dialog
 import { SimpleInputDialogDataModel } from '../../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog-data.model';
 import { Store } from '@ngxs/store';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MapsState } from '../../states/maps.state';
-import { ChangeSearchFilters } from '../../states/maps.action';
+import { ChangeSearchFilters } from '../../../../shared/states/filter.action';
+import { FiltersState } from '../../../../shared/states/filters.state';
 
 @Component({
   selector: 'app-map-helper-bar',
@@ -51,7 +51,7 @@ export class MapHelperBarComponent {
         this.store.dispatch(new ChangeSearchFilters(model));
         this.mapFiltersChanged.emit();
       },
-      this.store.selectSnapshot(MapsState.getFilterAttributeModels)
+      this.store.selectSnapshot(FiltersState.getFilterAttributeModels)
     );
   }
 

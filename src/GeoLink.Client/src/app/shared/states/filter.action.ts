@@ -1,6 +1,7 @@
-import { MapFilterModel } from '../models/map-filter-model';
+import { MapFilterModel } from '../../features/maps/models/map-filter-model';
+import { FilterAttributeModel } from '../models/filters/filter-attribute.model';
 
-const prefix = '[Maps]';
+const prefix = '[Filters]';
 
 export class LoadMapFilters {
   static readonly type = `${prefix} ${LoadMapFilters.name}`;
@@ -28,6 +29,23 @@ export class StatusMapFiltersSelectionChange {
   static readonly type = `${prefix} ${StatusMapFiltersSelectionChange.name}`;
 
   constructor(public selectedMapFilters: MapFilterModel[]) {}
+}
+
+export class ChangeFilters {
+  static readonly type = `${prefix} ${ChangeFilters.name}`;
+
+  constructor(
+    public selectedObjectMapFilters: MapFilterModel[],
+    public selectedDeviceMapFilters: MapFilterModel[],
+    public selectedRegionMapFilters: MapFilterModel[],
+    public selectedStatusMapFilters: MapFilterModel[]
+  ) {}
+}
+
+export class ChangeSearchFilters {
+  static readonly type = `${prefix} ${ChangeSearchFilters.name}`;
+
+  constructor(public filterAttributeModel: FilterAttributeModel[]) {}
 }
 
 export class SetInitialMapFilters {

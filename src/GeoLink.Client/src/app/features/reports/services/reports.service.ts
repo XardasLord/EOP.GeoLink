@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
 import { environment } from '../../../../environments/environment';
 import { GetReportsResponseModel } from '../models/get-reports-response.model';
-import { MapsState } from '../../maps/states/maps.state';
 import { Store } from '@ngxs/store';
 import { MapFilterModel } from '../../maps/models/map-filter-model';
 import { PageEvent } from '@angular/material/paginator';
-import { GetClusterInfoRequestModel } from '../../maps/models/http-request-models/get-cluster-info-request.model';
 import { GetReportPreviewRequestModel } from '../models/http-request-models/get-report-preview-request.model';
 import { FilterAttributeModel } from '../../../shared/models/filters/filter-attribute.model';
 

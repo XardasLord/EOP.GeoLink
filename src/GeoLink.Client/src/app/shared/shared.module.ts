@@ -28,6 +28,7 @@ import { ProgressSpinnerService } from './services/progress-spinner.service';
 import { SingleChartDialogComponent } from './components/single-chart-dialog/single-chart-dialog.component';
 import { MapDeviceFiltersComponent } from './components/map-device-filters/map-device-filters.component';
 import { SimpleInputDialogComponent } from './components/dialogs/simple-input-dialog/simple-input-dialog.component';
+import { FiltersState } from './states/filters.state';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,7 @@ import { SimpleInputDialogComponent } from './components/dialogs/simple-input-di
     ReactiveFormsModule,
     MaterialModule,
     HttpClientModule,
-    NgxsModule.forFeature([ModalState, DictionaryState, AlertState]),
+    NgxsModule.forFeature([ModalState, DictionaryState, AlertState, FiltersState]),
     ToastrModule.forRoot(),
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),

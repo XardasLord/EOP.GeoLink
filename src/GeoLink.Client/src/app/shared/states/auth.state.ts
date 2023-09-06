@@ -24,7 +24,7 @@ import {
   GetSystemRoles,
   GetTimeExtentDefinitions,
 } from './dictionary.action';
-import { LoadMapFilters, SetInitialMapFilters } from '../../features/maps/states/maps.action';
+import { LoadMapFilters, SetInitialMapFilters } from './filter.action';
 
 export const AUTH_STATE_TOKEN = new StateToken<AuthStateModel>('auth');
 
