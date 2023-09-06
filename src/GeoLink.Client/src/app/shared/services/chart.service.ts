@@ -7,6 +7,7 @@ import { ChartModel } from '../models/charts/chart.model';
 import { ChartTypeEnum } from '../models/charts/chart-type.enum';
 import { MapFilterModel } from '../../features/maps/models/map-filter-model';
 import { GetChartsRequestModel } from '../../features/charts/models/http-request-models/get-charts-request.model';
+import { FilterAttributeModel } from '../models/filters/filter-attribute.model';
 
 @Injectable()
 export class ChartService extends RemoteServiceBase {
@@ -49,6 +50,7 @@ export class ChartService extends RemoteServiceBase {
     selectedDeviceMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
     selectedStatusMapFilters: MapFilterModel[],
+    attributeFilters: FilterAttributeModel[],
     clusterLevel: number | null = null,
     idCluster: number | null = null
   ): Observable<ChartModel> {
@@ -70,7 +72,7 @@ export class ChartService extends RemoteServiceBase {
       statusFilters: selectedStatusMapFilters
         .filter(x => x.apiFilterType === 'StatusFilters' && x.id !== null)
         .map(x => x.id),
-      attributeFilters: [],
+      attributeFilters: attributeFilters,
     };
 
     return this.httpClient.post<ChartModel>(`${this.apiUrl}/charts/getCharts`, requestModel);

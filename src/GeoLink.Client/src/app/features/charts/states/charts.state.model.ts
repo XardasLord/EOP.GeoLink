@@ -2,6 +2,7 @@ import { MapFilterModel } from '../../maps/models/map-filter-model';
 import { ChartOpenMode } from '../models/open-mode.enum';
 import { ChartModel } from '../../../shared/models/charts/chart.model';
 import { EChartsOption } from 'echarts';
+import { FilterAttributeModel } from '../../../shared/models/filters/filter-attribute.model';
 
 export interface ChartsStateModel {
   loading: boolean;
@@ -14,4 +15,5 @@ export interface ChartsStateModel {
   selectedDeviceMapFilters: MapFilterModel[];
   selectedRegionMapFilters: MapFilterModel[];
   selectedStatusMapFilters: MapFilterModel[];
+  filterAttributeModels: FilterAttributeModel[];
 }

@@ -1,5 +1,13 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { MapFilterModel } from '../../models/map-filter-model';
+import { FilterAttributeModel } from '../../../../shared/models/filters/filter-attribute.model';
+import { getInputDialogDataModelForFilterAttributes } from '../../../../shared/helpers/filter-attributes.helper';
+import { SimpleInputDialogComponent } from '../../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog.component';
+import { SimpleInputDialogDataModel } from '../../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog-data.model';
+import { Store } from '@ngxs/store';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MapsState } from '../../states/maps.state';
+import { ChangeSearchFilters } from '../../states/maps.action';
 
 @Component({
   selector: 'app-map-helper-bar',
@@ -12,6 +20,13 @@ export class MapHelperBarComponent {
   showDeviceFilters = false;
   showRegionFilters = false;
   showStatusFilters = false;
+
+  dialogRef?: MatDialogRef<SimpleInputDialogComponent>;
+
+  constructor(
+    private store: Store,
+    private dialog: MatDialog
+  ) {}
 
   toggleObjectFilters(): void {
     this.showObjectFilters = !this.showObjectFilters;
@@ -27,6 +42,30 @@ export class MapHelperBarComponent {
 
   toggleStatusFilters(): void {
     this.showStatusFilters = !this.showStatusFilters;
+  }
+
+  openSearchFilters(): void {
+    this.loadForm(
+      'Szukaj po atrybutach',
+      model => {
+        this.store.dispatch(new ChangeSearchFilters(model));
+        this.mapFiltersChanged.emit();
+      },
+      this.store.selectSnapshot(MapsState.getFilterAttributeModels)
+    );
+  }
+
+  private loadForm(
+    formTitle: string,
+    action: (model: FilterAttributeModel[]) => void,
+    searchFilterModels?: FilterAttributeModel[]
+  ) {
+    const dataModel = getInputDialogDataModelForFilterAttributes(this.store, formTitle, action, searchFilterModels);
+
+    this.dialogRef = this.dialog.open<SimpleInputDialogComponent>(SimpleInputDialogComponent, {
+      data: <SimpleInputDialogDataModel>dataModel,
+      width: '400px',
+    });
   }
 
   onFiltersChanged($event: MapFilterModel[]) {

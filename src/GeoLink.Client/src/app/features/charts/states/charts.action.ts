@@ -1,5 +1,6 @@
 import { MapFilterModel } from '../../maps/models/map-filter-model';
 import { ChartOpenMode } from '../models/open-mode.enum';
+import { FilterAttributeModel } from '../../../shared/models/filters/filter-attribute.model';
 
 const prefix = '[Charts]';
 
@@ -18,6 +19,12 @@ export class ChangeFilters {
     public selectedRegionMapFilters: MapFilterModel[],
     public selectedStatusMapFilters: MapFilterModel[]
   ) {}
+}
+
+export class ChangeSearchFilters {
+  static readonly type = `${prefix} ${ChangeSearchFilters.name}`;
+
+  constructor(public filterAttributeModel: FilterAttributeModel[]) {}
 }
 
 export class SetOpenMode {

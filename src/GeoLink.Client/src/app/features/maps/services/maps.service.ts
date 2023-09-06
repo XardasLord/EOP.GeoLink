@@ -14,6 +14,7 @@ import { MapFilterModel } from '../models/map-filter-model';
 import { GetClustersAndObjectsRequestModel } from '../models/http-request-models/get-clusters-and-objects-request.model';
 import { GetObjectsRequestModel } from '../models/http-request-models/get-objects-request.model';
 import { GetClusterInfoRequestModel } from '../models/http-request-models/get-cluster-info-request.model';
+import { FilterAttributeModel } from '../../../shared/models/filters/filter-attribute.model';
 
 @Injectable()
 export class MapsService extends RemoteServiceBase {
@@ -32,7 +33,8 @@ export class MapsService extends RemoteServiceBase {
     selectedObjectMapFilters: MapFilterModel[],
     selectedDeviceMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
-    selectedStatusMapFilters: MapFilterModel[]
+    selectedStatusMapFilters: MapFilterModel[],
+    attributeFilers: FilterAttributeModel[]
   ): Observable<MapClusterObjectModel> {
     const requestModel: GetClustersAndObjectsRequestModel = {
       zoomLevel: zoomLevel,
@@ -55,7 +57,7 @@ export class MapsService extends RemoteServiceBase {
       statusFilters: selectedStatusMapFilters
         .filter(x => x.apiFilterType === 'StatusFilters' && x.id !== null)
         .map(x => x.id),
-      attributeFilters: [],
+      attributeFilters: attributeFilers,
     };
 
     return this.httpClient.post<MapClusterObjectModel>(`${this.apiUrl}/map/getClustersAndObjects`, requestModel);
@@ -69,7 +71,8 @@ export class MapsService extends RemoteServiceBase {
     selectedObjectMapFilters: MapFilterModel[],
     selectedDeviceMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
-    selectedStatusMapFilters: MapFilterModel[]
+    selectedStatusMapFilters: MapFilterModel[],
+    attributeFilters: FilterAttributeModel[]
   ): Observable<MapObjectModel[]> {
     const requestModel: GetObjectsRequestModel = {
       bbox: {
@@ -90,7 +93,7 @@ export class MapsService extends RemoteServiceBase {
       statusFilters: selectedStatusMapFilters
         .filter(x => x.apiFilterType === 'StatusFilters' && x.id !== null)
         .map(x => x.id),
-      attributeFilters: [],
+      attributeFilters: attributeFilters,
     };
 
     return this.httpClient.post<MapObjectModel[]>(`${this.apiUrl}/map/getObjects`, requestModel);
@@ -111,7 +114,8 @@ export class MapsService extends RemoteServiceBase {
     objType: MapObjectTypeEnum,
     selectedDeviceMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
-    selectedStatusMapFilters: MapFilterModel[]
+    selectedStatusMapFilters: MapFilterModel[],
+    attributeFilters: FilterAttributeModel[]
   ): Observable<MapClusterGroupDetails> {
     const requestModel: GetClusterInfoRequestModel = {
       idCluster: idCluster,
@@ -126,7 +130,7 @@ export class MapsService extends RemoteServiceBase {
       statusFilters: selectedStatusMapFilters
         .filter(x => x.apiFilterType === 'StatusFilters' && x.id !== null)
         .map(x => x.id),
-      attributeFilters: [],
+      attributeFilters: attributeFilters,
     };
 
     return this.httpClient.post<MapClusterGroupDetails>(`${this.apiUrl}/map/getClusterInfo`, requestModel);

@@ -166,6 +166,7 @@ export class MapComponent implements OnInit, OnDestroy {
     const selectedDeviceMapFilters = this.store.selectSnapshot(MapsState.getDeviceSelectedMapFilters);
     const selectedRegionMapFilters = this.store.selectSnapshot(MapsState.getRegionSelectedMapFilters);
     const selectedStatusMapFilters = this.store.selectSnapshot(MapsState.getStatusSelectedMapFilters);
+    const selectedAttributeFilters = this.store.selectSnapshot(MapsState.getFilterAttributeModels);
 
     this.loading = true;
     this.changeDetectorRef.detectChanges();
@@ -184,7 +185,8 @@ export class MapComponent implements OnInit, OnDestroy {
         selectedObjectMapFilters,
         selectedDeviceMapFilters,
         selectedRegionMapFilters,
-        selectedStatusMapFilters
+        selectedStatusMapFilters,
+        selectedAttributeFilters
       );
 
       this.lastRequestForCluster$ = request$
@@ -227,7 +229,8 @@ export class MapComponent implements OnInit, OnDestroy {
         selectedObjectMapFilters,
         selectedDeviceMapFilters,
         selectedRegionMapFilters,
-        selectedStatusMapFilters
+        selectedStatusMapFilters,
+        selectedAttributeFilters
       );
 
       this.lastRequestForObjects$ = request$.pipe(switchMap(() => request$)).subscribe(objects => {

@@ -145,6 +145,7 @@ export class MapClusterGroupContextDialogComponent implements AfterContentChecke
     const selectedDeviceMapFilters = this.store.selectSnapshot(MapsState.getDeviceSelectedMapFilters);
     const selectedRegionMapFilters = this.store.selectSnapshot(MapsState.getRegionSelectedMapFilters);
     const selectedStatusMapFilters = this.store.selectSnapshot(MapsState.getStatusSelectedMapFilters);
+    const selectedAttributeFilters = this.store.selectSnapshot(MapsState.getFilterAttributeModels);
 
     this.subscriptions.add(
       this.mapsService
@@ -154,7 +155,8 @@ export class MapClusterGroupContextDialogComponent implements AfterContentChecke
           groupModel.objType,
           selectedDeviceMapFilters,
           selectedRegionMapFilters,
-          selectedStatusMapFilters
+          selectedStatusMapFilters,
+          selectedAttributeFilters
         )
         .subscribe(clusterGroupModels => {
           console.log(clusterGroupModels);

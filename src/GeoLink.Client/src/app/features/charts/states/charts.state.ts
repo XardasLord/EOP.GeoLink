@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
-import { catchError, finalize, tap, throwError } from 'rxjs';
 import { patch } from '@ngxs/store/operators';
+import { catchError, finalize, tap, throwError } from 'rxjs';
+import { EChartsOption } from 'echarts';
 import { ChartsStateModel } from './charts.state.model';
 import { ChartService } from '../../../shared/services/chart.service';
 import { ChartOpenMode } from '../models/open-mode.enum';
-import { ChangeFilters, Load, SetOpenMode } from './charts.action';
+import { ChangeFilters, ChangeSearchFilters, Load, SetOpenMode } from './charts.action';
 import { ChartTypeEnum } from '../../../shared/models/charts/chart-type.enum';
 import { ChartModel } from '../../../shared/models/charts/chart.model';
-import { EChartsOption } from 'echarts';
+import { FilterAttributeModel } from '../../../shared/models/filters/filter-attribute.model';
 
 const CHARTS_STATE_TOKEN = new StateToken<ChartsStateModel>('charts');
 
@@ -55,6 +56,7 @@ const CHARTS_STATE_TOKEN = new StateToken<ChartsStateModel>('charts');
     selectedDeviceMapFilters: [],
     selectedRegionMapFilters: [],
     selectedStatusMapFilters: [],
+    filterAttributeModels: [],
   },
 })
 @Injectable()
@@ -86,6 +88,11 @@ export class ChartsState {
     return `${state.clusterLevel}_${state.idCluster}`;
   }
 
+  @Selector([CHARTS_STATE_TOKEN])
+  static getFilterAttributeModels(state: ChartsStateModel): FilterAttributeModel[] {
+    return state.filterAttributeModels;
+  }
+
   @Action(Load)
   loadReports(ctx: StateContext<ChartsStateModel>, action: Load) {
     const state = ctx.getState();
@@ -97,11 +104,12 @@ export class ChartsState {
     return this.chartService
       .getChart(
         1,
-        ChartTypeEnum.MovingAverage, // TODO: filters
+        ChartTypeEnum.MovingAverage,
         state.selectedObjectMapFilters,
         state.selectedDeviceMapFilters,
         state.selectedRegionMapFilters,
         state.selectedStatusMapFilters,
+        state.filterAttributeModels,
         state.clusterLevel,
         state.idCluster
       )
@@ -180,6 +188,15 @@ export class ChartsState {
       selectedDeviceMapFilters: action.selectedDeviceMapFilters,
       selectedRegionMapFilters: action.selectedRegionMapFilters,
       selectedStatusMapFilters: action.selectedStatusMapFilters,
+    });
+
+    return ctx.dispatch(new Load());
+  }
+
+  @Action(ChangeSearchFilters)
+  changeSearchFilters(ctx: StateContext<ChartsStateModel>, action: ChangeSearchFilters) {
+    ctx.patchState({
+      filterAttributeModels: action.filterAttributeModel,
     });
 
     return ctx.dispatch(new Load());

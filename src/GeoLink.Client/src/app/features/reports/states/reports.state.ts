@@ -143,6 +143,15 @@ export class ReportsState {
     return ctx.dispatch(new Load());
   }
 
+  @Action(ChangeSearchFilters)
+  changeSearchFilters(ctx: StateContext<ReportsStateModel>, action: ChangeSearchFilters) {
+    ctx.patchState({
+      filterAttributeModels: action.filterAttributeModel,
+    });
+
+    return ctx.dispatch(new Load());
+  }
+
   @Action(SetOpenMode)
   setOpenedForGroupReport(ctx: StateContext<ReportsStateModel>, action: SetOpenMode) {
     ctx.setState(
@@ -152,14 +161,5 @@ export class ReportsState {
         idCluster: action.openMode === ReportOpenMode.ForCluster ? action.idCluster : null,
       })
     );
-  }
-
-  @Action(ChangeSearchFilters)
-  changeSearchFilters(ctx: StateContext<ReportsStateModel>, action: ChangeSearchFilters) {
-    ctx.patchState({
-      filterAttributeModels: action.filterAttributeModel,
-    });
-
-    return ctx.dispatch(new Load());
   }
 }

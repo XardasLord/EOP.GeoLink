@@ -14,10 +14,7 @@ import {
   SimpleFormModel,
   SimpleInputDialogDataModel,
 } from '../../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog-data.model';
-import { DictionaryState } from '../../../../shared/states/dictionary.state';
-import { FilterAttributeNameDefinitionEnum } from '../../../../shared/models/filters/filter-attribute-definition.model';
 import { FilterAttributeModel } from '../../../../shared/models/filters/filter-attribute.model';
-import { FormGroup } from '@angular/forms';
 import { getInputDialogDataModelForFilterAttributes } from '../../../../shared/helpers/filter-attributes.helper';
 
 @Component({
