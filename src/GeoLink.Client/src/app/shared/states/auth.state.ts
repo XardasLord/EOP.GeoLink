@@ -14,6 +14,7 @@ import { AuthRoles } from '../auth/models/auth.roles';
 import {
   GetConfigDefinitions,
   GetDeviceGroupsRelation,
+  GetFilterAttributeDefinitions,
   GetMapDeviceTypes,
   GetMapObjectStatusTypes,
   GetMapObjectTypes,
@@ -23,7 +24,7 @@ import {
   GetSystemRoles,
   GetTimeExtentDefinitions,
 } from './dictionary.action';
-import { LoadMapFilters, SetInitialMapFilters } from '../../features/maps/states/maps.action';
+import { LoadMapFilters, SetInitialMapFilters } from './filter.action';
 
 export const AUTH_STATE_TOKEN = new StateToken<AuthStateModel>('auth');
 
@@ -65,13 +66,13 @@ export class AuthState implements NgxsOnInit {
       actions.push(new GetDeviceGroupsRelation());
       actions.push(new GetTimeExtentDefinitions());
       actions.push(new GetConfigDefinitions());
+      actions.push(new GetFilterAttributeDefinitions());
       actions.push(
         new SetInitialMapFilters(
           user.init_objecttypefilters,
           user.init_devicefilters,
           user.init_regionfilters,
-          user.init_statusfilters,
-          user.init_ipfilters
+          user.init_statusfilters
         )
       );
     }
@@ -144,12 +145,12 @@ export class AuthState implements NgxsOnInit {
         new GetDeviceGroupsRelation(),
         new GetTimeExtentDefinitions(),
         new GetConfigDefinitions(),
+        new GetFilterAttributeDefinitions(),
         new SetInitialMapFilters(
           state.user.init_objecttypefilters,
           state.user.init_devicefilters,
           state.user.init_regionfilters,
-          state.user.init_statusfilters,
-          state.user.init_ipfilters
+          state.user.init_statusfilters
         ),
       ]);
 

@@ -1,19 +1,26 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { MapFilterModel } from '../../../maps/models/map-filter-model';
-import { Observable } from 'rxjs';
+import { debounceTime, map, Observable, Subject, takeUntil } from 'rxjs';
 import { ReportOpenMode } from '../../models/open-mode.enum';
 import { ReportsState } from '../../states/reports.state';
-import { Store } from '@ngxs/store';
+import { Actions, ofActionDispatched, Store } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
 import { RoutePaths } from '../../../../core/modules/app-routing.module';
-import { Load, SetOpenMode } from '../../states/reports.action';
+import { Load, ApplyFilters, SetOpenMode } from '../../states/reports.action';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { SimpleInputDialogComponent } from '../../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog.component';
+import { SimpleInputDialogDataModel } from '../../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog-data.model';
+import { FilterAttributeModel } from '../../../../shared/models/filters/filter-attribute.model';
+import { getInputDialogDataModelForFilterAttributes } from '../../../../shared/helpers/filter-attributes.helper';
+import { FiltersState } from '../../../../shared/states/filters.state';
+import { ChangeSearchFilters } from '../../../../shared/states/filter.action';
 
 @Component({
   selector: 'app-reports-helper-bar',
   templateUrl: './reports-helper-bar.component.html',
   styleUrls: ['./reports-helper-bar.component.scss'],
 })
-export class ReportsHelperBarComponent {
+export class ReportsHelperBarComponent implements OnDestroy {
   openMode$: Observable<ReportOpenMode> = this.store.select(ReportsState.getOpenMode);
   clusterLabel$: Observable<string> = this.store.select(ReportsState.getClusterLabel);
 
@@ -22,11 +29,26 @@ export class ReportsHelperBarComponent {
   showDeviceFilters = false;
   showRegionFilters = false;
   showStatusFilters = false;
-  showIpFilters = false;
+
+  dialogRef?: MatDialogRef<SimpleInputDialogComponent>;
+  private destroy$ = new Subject<void>();
 
   protected readonly OpenMode = ReportOpenMode;
 
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    private dialog: MatDialog,
+    actions$: Actions
+  ) {
+    actions$.pipe(ofActionDispatched(ApplyFilters), debounceTime(300), takeUntil(this.destroy$)).subscribe(() => {
+      store.dispatch(new Load());
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   toggleObjectFilters(): void {
     this.showObjectFilters = !this.showObjectFilters;
@@ -44,12 +66,33 @@ export class ReportsHelperBarComponent {
     this.showStatusFilters = !this.showStatusFilters;
   }
 
-  toggleIpFilters(): void {
-    this.showIpFilters = !this.showIpFilters;
+  openSearchFilters(): void {
+    this.loadForm(
+      'Szukaj po atrybutach',
+      model => {
+        this.store.dispatch(new ChangeSearchFilters(model));
+        this.store.dispatch(new Load());
+      },
+      this.store.selectSnapshot(FiltersState.getFilterAttributeModels)
+    );
+  }
+
+  private loadForm(
+    formTitle: string,
+    action: (model: FilterAttributeModel[]) => void,
+    searchFilterModels?: FilterAttributeModel[]
+  ) {
+    const dataModel = getInputDialogDataModelForFilterAttributes(this.store, formTitle, action, searchFilterModels);
+
+    this.dialogRef = this.dialog.open<SimpleInputDialogComponent>(SimpleInputDialogComponent, {
+      data: <SimpleInputDialogDataModel>dataModel,
+      width: '400px',
+    });
   }
 
   onFiltersChanged($event: MapFilterModel[]) {
     this.mapFiltersChanged.emit($event);
+    this.store.dispatch(new ApplyFilters());
   }
 
   removeClusterGroupFilter(): void {

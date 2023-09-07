@@ -23,11 +23,12 @@ import { AlertService } from './services/alert.service';
 import { SingleDeviceChartComponent } from './components/single-device-chart/single-device-chart.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { ChartService } from './services/chart.service';
-import { MapIpFiltersComponent } from './components/map-ip-filters/map-ip-filters.component';
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 import { ProgressSpinnerService } from './services/progress-spinner.service';
 import { SingleChartDialogComponent } from './components/single-chart-dialog/single-chart-dialog.component';
 import { MapDeviceFiltersComponent } from './components/map-device-filters/map-device-filters.component';
+import { SimpleInputDialogComponent } from './components/dialogs/simple-input-dialog/simple-input-dialog.component';
+import { FiltersState } from './states/filters.state';
 
 @NgModule({
   declarations: [
@@ -36,11 +37,11 @@ import { MapDeviceFiltersComponent } from './components/map-device-filters/map-d
     MapObjectFiltersComponent,
     MapDeviceFiltersComponent,
     MapStatusFiltersComponent,
-    MapIpFiltersComponent,
     AuthScopeAllowDirective,
     SingleDeviceChartComponent,
     SingleChartDialogComponent,
     ProgressSpinnerComponent,
+    SimpleInputDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -48,7 +49,7 @@ import { MapDeviceFiltersComponent } from './components/map-device-filters/map-d
     ReactiveFormsModule,
     MaterialModule,
     HttpClientModule,
-    NgxsModule.forFeature([ModalState, DictionaryState, AlertState]),
+    NgxsModule.forFeature([ModalState, DictionaryState, AlertState, FiltersState]),
     ToastrModule.forRoot(),
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
@@ -68,12 +69,12 @@ import { MapDeviceFiltersComponent } from './components/map-device-filters/map-d
     MapObjectFiltersComponent,
     MapDeviceFiltersComponent,
     MapStatusFiltersComponent,
-    MapIpFiltersComponent,
     SingleDeviceChartComponent,
     SingleChartDialogComponent,
     ProgressSpinnerComponent,
     NgOptimizedImage,
     NgxEchartsModule,
+    SimpleInputDialogComponent,
   ],
   providers: [
     ErrorService,
@@ -124,6 +125,7 @@ export class SharedModule {
       'calculate',
       'menu_book',
       'geolink_logo',
+      'search',
     ];
 
     svgIconFiles.forEach(iconFileName => {

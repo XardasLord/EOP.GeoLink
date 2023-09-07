@@ -11,6 +11,10 @@ import { RemoteServiceBase } from '../../../shared/services/remote-service.base'
 import { environment } from '../../../../environments/environment';
 import { MapObjectTypeEnum } from '../../../shared/models/map-object-type.enum';
 import { MapFilterModel } from '../models/map-filter-model';
+import { GetClustersAndObjectsRequestModel } from '../models/http-request-models/get-clusters-and-objects-request.model';
+import { GetObjectsRequestModel } from '../models/http-request-models/get-objects-request.model';
+import { GetClusterInfoRequestModel } from '../models/http-request-models/get-cluster-info-request.model';
+import { FilterAttributeModel } from '../../../shared/models/filters/filter-attribute.model';
 
 @Injectable()
 export class MapsService extends RemoteServiceBase {
@@ -30,26 +34,33 @@ export class MapsService extends RemoteServiceBase {
     selectedDeviceMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
     selectedStatusMapFilters: MapFilterModel[],
-    selectedIpMapFilters: MapFilterModel[]
+    attributeFilers: FilterAttributeModel[]
   ): Observable<MapClusterObjectModel> {
-    let params = new HttpParams()
-      .set('lonMin', lonMin)
-      .set('latMin', latMin)
-      .set('lonMax', lonMax)
-      .set('latMax', latMax)
-      .set('zoomLevel', zoomLevel)
-      .set('clustObjThreshold', 5);
+    const requestModel: GetClustersAndObjectsRequestModel = {
+      zoomLevel: zoomLevel,
+      threshold: 20,
+      bbox: {
+        lonMin: lonMin,
+        lonMax: lonMax,
+        latMin: latMin,
+        latMax: latMax,
+      },
+      objectFilters: selectedObjectMapFilters
+        .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.id !== null)
+        .map(x => x.id),
+      deviceFilters: selectedDeviceMapFilters
+        .filter(x => x.apiFilterType === 'DeviceFilters' && x.id !== null)
+        .map(x => x.id),
+      regionFilters: selectedRegionMapFilters
+        .filter(x => x.apiFilterType === 'RegionFilters' && x.id !== null)
+        .map(x => x.id),
+      statusFilters: selectedStatusMapFilters
+        .filter(x => x.apiFilterType === 'StatusFilters' && x.id !== null)
+        .map(x => x.id),
+      attributeFilters: attributeFilers,
+    };
 
-    params = this.setFilters(
-      params,
-      selectedObjectMapFilters,
-      selectedDeviceMapFilters,
-      selectedRegionMapFilters,
-      selectedStatusMapFilters,
-      selectedIpMapFilters
-    );
-
-    return this.httpClient.get<MapClusterObjectModel>(`${this.apiUrl}/map/getClustersAndObjects`, { params: params });
+    return this.httpClient.post<MapClusterObjectModel>(`${this.apiUrl}/map/getClustersAndObjects`, requestModel);
   }
 
   getObjects(
@@ -61,65 +72,31 @@ export class MapsService extends RemoteServiceBase {
     selectedDeviceMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
     selectedStatusMapFilters: MapFilterModel[],
-    selectedIpMapFilters: MapFilterModel[]
+    attributeFilters: FilterAttributeModel[]
   ): Observable<MapObjectModel[]> {
-    let params = new HttpParams()
-      .set('lonMin', lonMin)
-      .set('latMin', latMin)
-      .set('lonMax', lonMax)
-      .set('latMax', latMax);
+    const requestModel: GetObjectsRequestModel = {
+      bbox: {
+        lonMin: lonMin,
+        lonMax: lonMax,
+        latMin: latMin,
+        latMax: latMax,
+      },
+      objectFilters: selectedObjectMapFilters
+        .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.id !== null)
+        .map(x => x.id),
+      deviceFilters: selectedDeviceMapFilters
+        .filter(x => x.apiFilterType === 'DeviceFilters' && x.id !== null)
+        .map(x => x.id),
+      regionFilters: selectedRegionMapFilters
+        .filter(x => x.apiFilterType === 'RegionFilters' && x.id !== null)
+        .map(x => x.id),
+      statusFilters: selectedStatusMapFilters
+        .filter(x => x.apiFilterType === 'StatusFilters' && x.id !== null)
+        .map(x => x.id),
+      attributeFilters: attributeFilters,
+    };
 
-    params = this.setFilters(
-      params,
-      selectedObjectMapFilters,
-      selectedDeviceMapFilters,
-      selectedRegionMapFilters,
-      selectedStatusMapFilters,
-      selectedIpMapFilters
-    );
-
-    return this.httpClient.get<MapObjectModel[]>(`${this.apiUrl}/map/getObjects`, { params: params });
-  }
-
-  private setFilters(
-    httpParams: HttpParams,
-    selectedObjectMapFilters: MapFilterModel[],
-    selectedDeviceMapFilters: MapFilterModel[],
-    selectedRegionMapFilters: MapFilterModel[],
-    selectedStatusMapFilters: MapFilterModel[],
-    selectedIpMapFilters: MapFilterModel[]
-  ): HttpParams {
-    selectedObjectMapFilters
-      .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.id !== null)
-      .forEach(filter => {
-        httpParams = httpParams.append('objectTypeFilters', filter.id);
-      });
-
-    selectedDeviceMapFilters
-      .filter(x => x.apiFilterType === 'DeviceFilters' && x.id !== null)
-      .forEach(filter => {
-        httpParams = httpParams.append('deviceFilters', filter.id);
-      });
-
-    selectedRegionMapFilters
-      .filter(x => x.apiFilterType === 'RegionFilters' && x.id !== null)
-      .forEach(filter => {
-        httpParams = httpParams.append('regionFilters', filter.id);
-      });
-
-    selectedStatusMapFilters
-      .filter(x => x.apiFilterType === 'StatusFilters' && x.id !== null)
-      .forEach(filter => {
-        httpParams = httpParams.append('statusFilters', filter.id);
-      });
-
-    selectedIpMapFilters
-      .filter(x => x.apiFilterType === 'IpFilters' && x.id !== null)
-      .forEach(filter => {
-        httpParams = httpParams.append('ipFilters', filter.id);
-      });
-
-    return httpParams;
+    return this.httpClient.post<MapObjectModel[]>(`${this.apiUrl}/map/getObjects`, requestModel);
   }
 
   getDevices(deviceIds: number[]): Observable<DeviceDetailsModel[]> {
@@ -132,27 +109,31 @@ export class MapsService extends RemoteServiceBase {
   }
 
   getClusterInfo(
-    clustId: number,
+    idCluster: number,
     lvl: number,
     objType: MapObjectTypeEnum,
-    selectedObjectMapFilters: MapFilterModel[],
     selectedDeviceMapFilters: MapFilterModel[],
     selectedRegionMapFilters: MapFilterModel[],
     selectedStatusMapFilters: MapFilterModel[],
-    selectedIpMapFilters: MapFilterModel[]
+    attributeFilters: FilterAttributeModel[]
   ): Observable<MapClusterGroupDetails> {
-    let params = new HttpParams().set('clustId', clustId).set('lvl', lvl).set('objType', +objType);
+    const requestModel: GetClusterInfoRequestModel = {
+      idCluster: idCluster,
+      lvl: lvl,
+      objType: objType,
+      deviceFilters: selectedDeviceMapFilters
+        .filter(x => x.apiFilterType === 'DeviceFilters' && x.id !== null)
+        .map(x => x.id),
+      regionFilters: selectedRegionMapFilters
+        .filter(x => x.apiFilterType === 'RegionFilters' && x.id !== null)
+        .map(x => x.id),
+      statusFilters: selectedStatusMapFilters
+        .filter(x => x.apiFilterType === 'StatusFilters' && x.id !== null)
+        .map(x => x.id),
+      attributeFilters: attributeFilters,
+    };
 
-    params = this.setFilters(
-      params,
-      selectedObjectMapFilters,
-      selectedDeviceMapFilters,
-      selectedRegionMapFilters,
-      selectedStatusMapFilters,
-      selectedIpMapFilters
-    );
-
-    return this.httpClient.get<MapClusterGroupDetails>(`${this.apiUrl}/map/getClusterInfo`, { params: params });
+    return this.httpClient.post<MapClusterGroupDetails>(`${this.apiUrl}/map/getClusterInfo`, requestModel);
   }
 
   getFilters(): Observable<MapFilterModel[]> {

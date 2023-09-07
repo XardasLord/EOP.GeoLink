@@ -1,6 +1,7 @@
-import { MapFilterModel } from '../models/map-filter-model';
+import { MapFilterModel } from '../../features/maps/models/map-filter-model';
+import { FilterAttributeModel } from '../models/filters/filter-attribute.model';
 
-const prefix = '[Maps]';
+const prefix = '[Filters]';
 
 export class LoadMapFilters {
   static readonly type = `${prefix} ${LoadMapFilters.name}`;
@@ -30,10 +31,21 @@ export class StatusMapFiltersSelectionChange {
   constructor(public selectedMapFilters: MapFilterModel[]) {}
 }
 
-export class IpMapFiltersSelectionChange {
-  static readonly type = `${prefix} ${IpMapFiltersSelectionChange.name}`;
+export class ChangeFilters {
+  static readonly type = `${prefix} ${ChangeFilters.name}`;
 
-  constructor(public selectedMapFilters: MapFilterModel[]) {}
+  constructor(
+    public selectedObjectMapFilters: MapFilterModel[],
+    public selectedDeviceMapFilters: MapFilterModel[],
+    public selectedRegionMapFilters: MapFilterModel[],
+    public selectedStatusMapFilters: MapFilterModel[]
+  ) {}
+}
+
+export class ChangeSearchFilters {
+  static readonly type = `${prefix} ${ChangeSearchFilters.name}`;
+
+  constructor(public filterAttributeModel: FilterAttributeModel[]) {}
 }
 
 export class SetInitialMapFilters {
@@ -43,7 +55,6 @@ export class SetInitialMapFilters {
     public objectTypeFilters: number,
     public deviceFilters: number[],
     public regionFilters: number[],
-    public statusFilters: number[],
-    public ipFilters: number[]
+    public statusFilters: number[]
   ) {}
 }

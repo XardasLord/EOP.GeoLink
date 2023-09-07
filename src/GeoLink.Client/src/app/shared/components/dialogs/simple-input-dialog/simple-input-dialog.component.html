@@ -1,0 +1,64 @@
+<h2 mat-dialog-title>
+  {{ data.title }}
+  <mat-icon class="close-dialog" [mat-dialog-close]>close</mat-icon>
+</h2>
+
+<mat-divider></mat-divider>
+
+<mat-dialog-content *ngIf="data.description">
+  {{ data.description }}
+</mat-dialog-content>
+
+<mat-divider></mat-divider>
+
+<mat-dialog-content>
+  <form id="simple-form" (ngSubmit)="submit()" [formGroup]="form">
+    <ng-container *ngFor="let input of data.inputs; let i = index; let j = index">
+      <p *ngIf="['number', 'text'].includes(input.type)">
+        <mat-form-field class="w-full">
+          <mat-label>{{ input.label }}</mat-label>
+          <input
+            [type]="input.type"
+            matInput
+            [formControlName]="input.controlName ?? i"
+            class="no-arrows"
+            [class]="input.class" />
+          <!--          <mat-hint *ngIf="isFieldOptional(input.controlName ?? i.toString())">Opcjonalne</mat-hint>-->
+        </mat-form-field>
+      </p>
+
+      <p *ngIf="input.type === 'textarea'">
+        <mat-form-field class="w-full">
+          <mat-label>{{ input.label }}</mat-label>
+          <textarea
+            matInput
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="3"
+            cdkAutosizeMaxRows="6"
+            [formControlName]="input.controlName ?? i">
+          </textarea>
+          <!--          <mat-hint *ngIf="isFieldOptional(input.controlName ?? i.toString())">Opcjonalne</mat-hint>-->
+        </mat-form-field>
+      </p>
+
+      <p class="mb-2" *ngIf="input.type === 'boolean'">
+        <mat-checkbox [formControlName]="input.controlName ?? i">{{ input.label }}</mat-checkbox>
+      </p>
+    </ng-container>
+  </form>
+</mat-dialog-content>
+
+<mat-divider></mat-divider>
+
+<div mat-dialog-actions align="end">
+  <button mat-flat-button color="primary" (click)="submit()" [disabled]="!form.valid">
+    {{ data.submitLabel || 'Zapisz' }}
+  </button>
+  <button mat-stroked-button color="primary" (click)="onCancel()">
+    {{ data.cancelLabel || 'Anuluj' }}
+  </button>
+  <button mat-stroked-button color="accent" *ngIf="data.alternativeLabel" (click)="onAlternative()">
+    {{ data.alternativeLabel || 'Wyczyść' }}
+  </button>
+</div>

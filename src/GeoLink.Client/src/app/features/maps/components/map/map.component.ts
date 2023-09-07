@@ -32,12 +32,12 @@ import { MapClusterModel, MapObjectModel } from '../../models/map-item.model';
 import { DynamicComponentCreatorHelper } from '../../helpers/dynamic-component-creator.helper';
 import { MapsService } from '../../services/maps.service';
 import { MapFilterModel } from '../../models/map-filter-model';
-import { MapsState } from '../../states/maps.state';
 import { GeoJsonObject } from 'geojson';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
 import { MapObjectTypeEnum } from '../../../../shared/models/map-object-type.enum';
 import Scale = Control.Scale;
 import { ActivatedRoute } from '@angular/router';
+import { FiltersState } from '../../../../shared/states/filters.state';
 
 @Component({
   selector: 'app-map',
@@ -162,11 +162,11 @@ export class MapComponent implements OnInit, OnDestroy {
   private loadMapObjects() {
     const bbox: LatLngBounds = this.map.getBounds();
     const mapZoom = this.map.getZoom();
-    const selectedObjectMapFilters = this.store.selectSnapshot(MapsState.getObjectSelectedMapFilters);
-    const selectedDeviceMapFilters = this.store.selectSnapshot(MapsState.getDeviceSelectedMapFilters);
-    const selectedRegionMapFilters = this.store.selectSnapshot(MapsState.getRegionSelectedMapFilters);
-    const selectedStatusMapFilters = this.store.selectSnapshot(MapsState.getStatusSelectedMapFilters);
-    const selectedIpMapFilters = this.store.selectSnapshot(MapsState.getIpSelectedMapFilters);
+    const selectedObjectMapFilters = this.store.selectSnapshot(FiltersState.getSelectedObjectMapFilters);
+    const selectedDeviceMapFilters = this.store.selectSnapshot(FiltersState.getSelectedDeviceMapFilters);
+    const selectedRegionMapFilters = this.store.selectSnapshot(FiltersState.getSelectedRegionMapFilters);
+    const selectedStatusMapFilters = this.store.selectSnapshot(FiltersState.getSelectedStatusMapFilters);
+    const selectedAttributeFilters = this.store.selectSnapshot(FiltersState.getFilterAttributeModels);
 
     this.loading = true;
     this.changeDetectorRef.detectChanges();
@@ -186,7 +186,7 @@ export class MapComponent implements OnInit, OnDestroy {
         selectedDeviceMapFilters,
         selectedRegionMapFilters,
         selectedStatusMapFilters,
-        selectedIpMapFilters
+        selectedAttributeFilters
       );
 
       this.lastRequestForCluster$ = request$
@@ -230,7 +230,7 @@ export class MapComponent implements OnInit, OnDestroy {
         selectedDeviceMapFilters,
         selectedRegionMapFilters,
         selectedStatusMapFilters,
-        selectedIpMapFilters
+        selectedAttributeFilters
       );
 
       this.lastRequestForObjects$ = request$.pipe(switchMap(() => request$)).subscribe(objects => {

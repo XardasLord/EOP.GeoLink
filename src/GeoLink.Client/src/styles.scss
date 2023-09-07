@@ -380,3 +380,16 @@ img.leaflet-marker-icon.bad {
 .p-40 {
   padding: 40px;
 }
+
+// FORMS
+
+mat-form-field {
+  width: 100%;
+}
+
+.close-dialog {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+}

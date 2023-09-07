@@ -7,7 +7,7 @@ import { MapObjectHelper } from '../../helpers/map-object-helper';
 import { MapsService } from '../../services/maps.service';
 import { MapObjectTypeEnum } from '../../../../shared/models/map-object-type.enum';
 import { MapDeviceTypeEnum } from '../../../../shared/models/map-device-type.enum';
-import { MapsState } from '../../states/maps.state';
+import { FiltersState } from '../../../../shared/states/filters.state';
 
 @Component({
   selector: 'app-map-cluster-group-context-dialog',
@@ -142,11 +142,10 @@ export class MapClusterGroupContextDialogComponent implements AfterContentChecke
     this.showSubMenu = true;
     this.adjustDeviceSubMenuPosition(event);
 
-    const selectedObjectMapFilters = this.store.selectSnapshot(MapsState.getObjectSelectedMapFilters);
-    const selectedDeviceMapFilters = this.store.selectSnapshot(MapsState.getDeviceSelectedMapFilters);
-    const selectedRegionMapFilters = this.store.selectSnapshot(MapsState.getRegionSelectedMapFilters);
-    const selectedStatusMapFilters = this.store.selectSnapshot(MapsState.getStatusSelectedMapFilters);
-    const selectedIpMapFilters = this.store.selectSnapshot(MapsState.getIpSelectedMapFilters);
+    const selectedDeviceMapFilters = this.store.selectSnapshot(FiltersState.getSelectedDeviceMapFilters);
+    const selectedRegionMapFilters = this.store.selectSnapshot(FiltersState.getSelectedRegionMapFilters);
+    const selectedStatusMapFilters = this.store.selectSnapshot(FiltersState.getSelectedStatusMapFilters);
+    const selectedAttributeFilters = this.store.selectSnapshot(FiltersState.getFilterAttributeModels);
 
     this.subscriptions.add(
       this.mapsService
@@ -154,11 +153,10 @@ export class MapClusterGroupContextDialogComponent implements AfterContentChecke
           this.clusterId,
           this.level,
           groupModel.objType,
-          selectedObjectMapFilters,
           selectedDeviceMapFilters,
           selectedRegionMapFilters,
           selectedStatusMapFilters,
-          selectedIpMapFilters
+          selectedAttributeFilters
         )
         .subscribe(clusterGroupModels => {
           console.log(clusterGroupModels);

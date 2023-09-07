@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
-import { catchError, finalize, tap, throwError } from 'rxjs';
+import { Action, Selector, State, StateContext, StateToken, Store } from '@ngxs/store';
 import { patch } from '@ngxs/store/operators';
+import { catchError, finalize, tap, throwError } from 'rxjs';
+import { EChartsOption } from 'echarts';
 import { ChartsStateModel } from './charts.state.model';
 import { ChartService } from '../../../shared/services/chart.service';
 import { ChartOpenMode } from '../models/open-mode.enum';
-import { ChangeFilters, Load, SetOpenMode } from './charts.action';
+import { Load, SetOpenMode } from './charts.action';
 import { ChartTypeEnum } from '../../../shared/models/charts/chart-type.enum';
 import { ChartModel } from '../../../shared/models/charts/chart.model';
-import { EChartsOption } from 'echarts';
+import { FiltersState } from '../../../shared/states/filters.state';
 
 const CHARTS_STATE_TOKEN = new StateToken<ChartsStateModel>('charts');
 
@@ -51,16 +52,14 @@ const CHARTS_STATE_TOKEN = new StateToken<ChartsStateModel>('charts');
     },
     clusterLevel: null,
     idCluster: null,
-    selectedObjectMapFilters: [],
-    selectedDeviceMapFilters: [],
-    selectedRegionMapFilters: [],
-    selectedStatusMapFilters: [],
-    selectedIpMapFilters: [],
   },
 })
 @Injectable()
 export class ChartsState {
-  constructor(private chartService: ChartService) {}
+  constructor(
+    private store: Store,
+    private chartService: ChartService
+  ) {}
 
   @Selector([CHARTS_STATE_TOKEN])
   static getIsLoading(state: ChartsStateModel): boolean {
@@ -98,12 +97,12 @@ export class ChartsState {
     return this.chartService
       .getChart(
         1,
-        ChartTypeEnum.MovingAverage, // TODO: filters
-        state.selectedObjectMapFilters,
-        state.selectedDeviceMapFilters,
-        state.selectedRegionMapFilters,
-        state.selectedStatusMapFilters,
-        state.selectedIpMapFilters,
+        ChartTypeEnum.MovingAverage,
+        this.store.selectSnapshot(FiltersState.getSelectedObjectMapFilters),
+        this.store.selectSnapshot(FiltersState.getSelectedDeviceMapFilters),
+        this.store.selectSnapshot(FiltersState.getSelectedRegionMapFilters),
+        this.store.selectSnapshot(FiltersState.getSelectedStatusMapFilters),
+        this.store.selectSnapshot(FiltersState.getFilterAttributeModels),
         state.clusterLevel,
         state.idCluster
       )
@@ -173,19 +172,6 @@ export class ChartsState {
           });
         })
       );
-  }
-
-  @Action(ChangeFilters)
-  changeFilters(ctx: StateContext<ChartsStateModel>, action: ChangeFilters) {
-    ctx.patchState({
-      selectedObjectMapFilters: action.selectedObjectMapFilters,
-      selectedDeviceMapFilters: action.selectedDeviceMapFilters,
-      selectedRegionMapFilters: action.selectedRegionMapFilters,
-      selectedStatusMapFilters: action.selectedStatusMapFilters,
-      selectedIpMapFilters: action.selectedIpMapFilters,
-    });
-
-    return ctx.dispatch(new Load());
   }
 
   @Action(SetOpenMode)

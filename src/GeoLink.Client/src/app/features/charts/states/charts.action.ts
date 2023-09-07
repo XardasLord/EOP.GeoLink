@@ -1,4 +1,3 @@
-import { MapFilterModel } from '../../maps/models/map-filter-model';
 import { ChartOpenMode } from '../models/open-mode.enum';
 
 const prefix = '[Charts]';
@@ -9,16 +8,10 @@ export class Load {
   constructor() {}
 }
 
-export class ChangeFilters {
-  static readonly type = `${prefix} ${ChangeFilters.name}`;
+export class ApplyFilters {
+  static readonly type = `${prefix} ${ApplyFilters.name}`;
 
-  constructor(
-    public selectedObjectMapFilters: MapFilterModel[],
-    public selectedDeviceMapFilters: MapFilterModel[],
-    public selectedRegionMapFilters: MapFilterModel[],
-    public selectedStatusMapFilters: MapFilterModel[],
-    public selectedIpMapFilters: MapFilterModel[]
-  ) {}
+  constructor() {}
 }
 
 export class SetOpenMode {

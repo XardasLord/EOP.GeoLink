@@ -17,9 +17,9 @@
         <mat-icon svgIcon="filter_alt"></mat-icon>
         Statusy obiektów
       </button>
-      <button mat-fab extended color="primary" (click)="toggleIpFilters()">
-        <mat-icon svgIcon="filter_alt"></mat-icon>
-        Adresy IP
+      <button mat-fab extended color="primary" (click)="openSearchFilters()">
+        <mat-icon svgIcon="search"></mat-icon>
+        Szukaj
       </button>
     </div>
   </mat-toolbar-row>
@@ -39,8 +39,4 @@
 
 <ng-container *ngIf="showStatusFilters">
   <app-map-status-filters class="status-filters" (filtersChanged)="onFiltersChanged($event)"></app-map-status-filters>
-</ng-container>
-
-<ng-container *ngIf="showIpFilters">
-  <app-map-ip-filters class="ip-filters" (filtersChanged)="onFiltersChanged($event)"></app-map-ip-filters>
 </ng-container>

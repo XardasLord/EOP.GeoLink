@@ -5,11 +5,10 @@ import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { AuthState } from '../../shared/states/auth.state';
-import { MapsState } from '../../features/maps/states/maps.state';
 
 @NgModule({
   imports: [
-    NgxsModule.forRoot([MapsState, AuthState], {
+    NgxsModule.forRoot([AuthState], {
       developmentMode: isDevMode(),
       selectorOptions: {
         suppressErrors: false,

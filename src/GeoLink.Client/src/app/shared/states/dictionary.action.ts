@@ -39,3 +39,7 @@ export class GetTimeExtentDefinitions {
 export class GetConfigDefinitions {
   static readonly type = `${prefix} ${GetConfigDefinitions.name}`;
 }
+
+export class GetFilterAttributeDefinitions {
+  static readonly type = `${prefix} ${GetFilterAttributeDefinitions.name}`;
+}

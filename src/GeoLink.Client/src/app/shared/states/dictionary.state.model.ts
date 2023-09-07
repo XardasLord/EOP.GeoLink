@@ -3,7 +3,7 @@ import { EnumDescriptionWithScopesModel } from '../models/enum-description-with-
 import { EnumDescriptionRegionModel } from '../models/enum-description-region.model';
 import { DeviceGroupRelationModel } from '../models/device-group-relation.model';
 import { ConfigDefinitionModel } from '../models/config/config-definition.model';
-import { DiagnosticToolsConfigModel } from '../../features/configurations/models/diagnostic-tools-config.model';
+import { FilterAttributeDefinitionModel } from '../models/filters/filter-attribute-definition.model';
 
 export interface DictionaryStateModel {
   systemGroups: EnumDescriptionWithScopesModel[];
@@ -16,4 +16,5 @@ export interface DictionaryStateModel {
   deviceGroupsRelation: DeviceGroupRelationModel[];
   timeExtentDefinitions: EnumDescriptionModel[];
   configDefinitions: ConfigDefinitionModel[];
+  filterAttributeDefinitions: FilterAttributeDefinitionModel[];
 }

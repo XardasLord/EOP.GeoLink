@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { MapsState } from '../../../features/maps/states/maps.state';
 import { MapFilterModel } from '../../../features/maps/models/map-filter-model';
 import { MapFiltersModel } from '../../../features/maps/models/map-filters.model';
 import { getAllSelectedFilters } from '../../helpers/map-filters.helper';
-import { RegionMapFiltersSelectionChange } from '../../../features/maps/states/maps.action';
+import { FiltersState } from '../../states/filters.state';
+import { RegionMapFiltersSelectionChange } from '../../states/filter.action';
 
 @Component({
   selector: 'app-map-region-filters',
@@ -19,7 +19,7 @@ export class MapRegionFiltersComponent {
   mapFilters: MapFiltersModel;
 
   constructor(private store: Store) {
-    this.mapOriginalFilters = this.store.selectSnapshot(MapsState.getMapFilters);
+    this.mapOriginalFilters = this.store.selectSnapshot(FiltersState.getMapFilters);
     this.mapFilters = JSON.parse(JSON.stringify(this.mapOriginalFilters));
   }
 

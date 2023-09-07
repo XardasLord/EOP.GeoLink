@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
+import { Action, Selector, State, StateContext, StateToken, Store } from '@ngxs/store';
+import { patch } from '@ngxs/store/operators';
 import { catchError, finalize, tap, throwError } from 'rxjs';
 import { ReportsStateModel } from './reports.state.model';
-import { ChangeFilters, ChangePage, Load, SetOpenMode } from './reports.action';
+import { ChangePage, Load, SetOpenMode } from './reports.action';
 import { ReportsService } from '../services/reports.service';
 import { ReportModel } from '../models/report.model';
 import { RestQueryVo } from '../../../shared/models/pagination/rest.query';
 import { RestQueryResponse } from '../../../shared/models/pagination/rest.response';
-import { patch } from '@ngxs/store/operators';
 import { ReportOpenMode } from '../models/open-mode.enum';
+import { FiltersState } from '../../../shared/states/filters.state';
 
 const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
 
@@ -21,16 +22,14 @@ const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
     idCluster: null,
     restQuery: new RestQueryVo(),
     restQueryResponse: new RestQueryResponse<ReportModel[]>(),
-    selectedObjectMapFilters: [],
-    selectedDeviceMapFilters: [],
-    selectedRegionMapFilters: [],
-    selectedStatusMapFilters: [],
-    selectedIpMapFilters: [],
   },
 })
 @Injectable()
 export class ReportsState {
-  constructor(private reportsService: ReportsService) {}
+  constructor(
+    private store: Store,
+    private reportsService: ReportsService
+  ) {}
 
   @Selector([REPORTS_STATE_TOKEN])
   static getIsLoading(state: ReportsStateModel): boolean {
@@ -77,11 +76,11 @@ export class ReportsState {
 
     return this.reportsService
       .load(
-        state.selectedObjectMapFilters,
-        state.selectedDeviceMapFilters,
-        state.selectedRegionMapFilters,
-        state.selectedStatusMapFilters,
-        state.selectedIpMapFilters,
+        this.store.selectSnapshot(FiltersState.getSelectedObjectMapFilters),
+        this.store.selectSnapshot(FiltersState.getSelectedDeviceMapFilters),
+        this.store.selectSnapshot(FiltersState.getSelectedRegionMapFilters),
+        this.store.selectSnapshot(FiltersState.getSelectedStatusMapFilters),
+        this.store.selectSnapshot(FiltersState.getFilterAttributeModels),
         state.restQuery.currentPage,
         action.includeReportsCount,
         state.clusterLevel,
@@ -123,19 +122,6 @@ export class ReportsState {
     });
 
     return ctx.dispatch(new Load(false));
-  }
-
-  @Action(ChangeFilters)
-  changeFilters(ctx: StateContext<ReportsStateModel>, action: ChangeFilters) {
-    ctx.patchState({
-      selectedObjectMapFilters: action.selectedObjectMapFilters,
-      selectedDeviceMapFilters: action.selectedDeviceMapFilters,
-      selectedRegionMapFilters: action.selectedRegionMapFilters,
-      selectedStatusMapFilters: action.selectedStatusMapFilters,
-      selectedIpMapFilters: action.selectedIpMapFilters,
-    });
-
-    return ctx.dispatch(new Load());
   }
 
   @Action(SetOpenMode)
