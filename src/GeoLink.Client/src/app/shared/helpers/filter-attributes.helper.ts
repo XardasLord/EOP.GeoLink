@@ -39,7 +39,7 @@ export function getInputDialogDataModelForFilterAttributes(
       filterAttributeDefinitions.forEach(attribute => {
         filterModels.push({
           idAtrF: attribute.idAtrF,
-          atrFType: attribute.idAtrF,
+          atrFType: attribute.atrFType,
           value: <string>formValue[attribute.name],
           name: attribute.name,
           beginsWith: false,
