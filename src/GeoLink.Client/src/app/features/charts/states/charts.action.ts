@@ -8,6 +8,12 @@ export class Load {
   constructor() {}
 }
 
+export class ApplyFilters {
+  static readonly type = `${prefix} ${ApplyFilters.name}`;
+
+  constructor() {}
+}
+
 export class SetOpenMode {
   static readonly type = `${prefix} ${SetOpenMode.name}`;
 

@@ -1,12 +1,12 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { MapFilterModel } from '../../../maps/models/map-filter-model';
-import { Observable } from 'rxjs';
+import { debounceTime, map, Observable, Subject, takeUntil } from 'rxjs';
 import { ReportOpenMode } from '../../models/open-mode.enum';
 import { ReportsState } from '../../states/reports.state';
-import { Store } from '@ngxs/store';
+import { Actions, ofActionDispatched, Store } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
 import { RoutePaths } from '../../../../core/modules/app-routing.module';
-import { Load, SetOpenMode } from '../../states/reports.action';
+import { Load, ApplyFilters, SetOpenMode } from '../../states/reports.action';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SimpleInputDialogComponent } from '../../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog.component';
 import { SimpleInputDialogDataModel } from '../../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog-data.model';
@@ -20,7 +20,7 @@ import { ChangeSearchFilters } from '../../../../shared/states/filter.action';
   templateUrl: './reports-helper-bar.component.html',
   styleUrls: ['./reports-helper-bar.component.scss'],
 })
-export class ReportsHelperBarComponent {
+export class ReportsHelperBarComponent implements OnDestroy {
   openMode$: Observable<ReportOpenMode> = this.store.select(ReportsState.getOpenMode);
   clusterLabel$: Observable<string> = this.store.select(ReportsState.getClusterLabel);
 
@@ -31,13 +31,24 @@ export class ReportsHelperBarComponent {
   showStatusFilters = false;
 
   dialogRef?: MatDialogRef<SimpleInputDialogComponent>;
+  private destroy$ = new Subject<void>();
 
   protected readonly OpenMode = ReportOpenMode;
 
   constructor(
     private store: Store,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    actions$: Actions
+  ) {
+    actions$.pipe(ofActionDispatched(ApplyFilters), debounceTime(300), takeUntil(this.destroy$)).subscribe(() => {
+      store.dispatch(new Load());
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   toggleObjectFilters(): void {
     this.showObjectFilters = !this.showObjectFilters;
@@ -81,7 +92,7 @@ export class ReportsHelperBarComponent {
 
   onFiltersChanged($event: MapFilterModel[]) {
     this.mapFiltersChanged.emit($event);
-    this.store.dispatch(new Load());
+    this.store.dispatch(new ApplyFilters());
   }
 
   removeClusterGroupFilter(): void {

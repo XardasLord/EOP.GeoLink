@@ -1,13 +1,13 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Navigate } from '@ngxs/router-plugin';
-import { Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
+import { Actions, ofActionDispatched, Store } from '@ngxs/store';
+import { debounceTime, Observable, Subject, takeUntil } from 'rxjs';
 import { MapFilterModel } from '../../../maps/models/map-filter-model';
 import { RoutePaths } from '../../../../core/modules/app-routing.module';
 import { ChartsState } from '../../states/charts.state';
 import { ChartOpenMode } from '../../models/open-mode.enum';
-import { Load, SetOpenMode } from '../../states/charts.action';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ApplyFilters, Load, SetOpenMode } from '../../states/charts.action';
 import { SimpleInputDialogComponent } from '../../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog.component';
 import { FilterAttributeModel } from '../../../../shared/models/filters/filter-attribute.model';
 import { getInputDialogDataModelForFilterAttributes } from '../../../../shared/helpers/filter-attributes.helper';
@@ -20,7 +20,7 @@ import { ChangeSearchFilters } from '../../../../shared/states/filter.action';
   templateUrl: './charts-helper-bar.component.html',
   styleUrls: ['./charts-helper-bar.component.scss'],
 })
-export class ChartsHelperBarComponent {
+export class ChartsHelperBarComponent implements OnDestroy {
   openMode$: Observable<ChartOpenMode> = this.store.select(ChartsState.getOpenMode);
   clusterLabel$: Observable<string> = this.store.select(ChartsState.getClusterLabel);
 
@@ -31,13 +31,24 @@ export class ChartsHelperBarComponent {
   showStatusFilters = false;
 
   dialogRef?: MatDialogRef<SimpleInputDialogComponent>;
+  private destroy$ = new Subject<void>();
 
   protected readonly OpenMode = ChartOpenMode;
 
   constructor(
     private store: Store,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    actions$: Actions
+  ) {
+    actions$.pipe(ofActionDispatched(ApplyFilters), debounceTime(300), takeUntil(this.destroy$)).subscribe(() => {
+      store.dispatch(new Load());
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   toggleObjectFilters(): void {
     this.showObjectFilters = !this.showObjectFilters;
@@ -81,7 +92,7 @@ export class ChartsHelperBarComponent {
 
   onFiltersChanged($event: MapFilterModel[]) {
     this.mapFiltersChanged.emit($event);
-    this.store.dispatch(new Load());
+    this.store.dispatch(new ApplyFilters());
   }
 
   removeClusterGroupFilter(): void {

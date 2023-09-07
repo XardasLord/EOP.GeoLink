@@ -9,6 +9,12 @@ export class Load {
   constructor(public includeReportsCount = true) {}
 }
 
+export class ApplyFilters {
+  static readonly type = `${prefix} ${ApplyFilters.name}`;
+
+  constructor() {}
+}
+
 export class ChangePage {
   static readonly type = `${prefix} ${ChangePage.name}`;
 
