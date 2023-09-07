@@ -61,6 +61,7 @@ export class SimpleInputDialogComponent {
   onAlternative() {
     if (this.data.alternativeAction) {
       this.data.alternativeAction(this.form);
+      this.submit();
     }
   }
 
