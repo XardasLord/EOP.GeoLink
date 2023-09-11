@@ -1,5 +1,9 @@
 const prefix = '[Systems Availability]';
 
-export class Load {
-  static readonly type = `${prefix} ${Load.name}`;
+export class LoadSystemAvailabilities {
+  static readonly type = `${prefix} ${LoadSystemAvailabilities.name}`;
+}
+
+export class LoadSystemDataFields {
+  static readonly type = `${prefix} ${LoadSystemDataFields.name}`;
 }
