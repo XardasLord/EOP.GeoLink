@@ -1,5 +1,6 @@
 import { MapFilterModel } from '../../features/maps/models/map-filter-model';
 import { FilterAttributeModel } from '../models/filters/filter-attribute.model';
+import { QuickFiltersModel } from '../models/filters/quick-filters.model';
 
 const prefix = '[Filters]';
 
@@ -57,4 +58,26 @@ export class SetInitialMapFilters {
     public regionFilters: number[],
     public statusFilters: number[]
   ) {}
+}
+
+export class LoadQuickFilters {
+  static readonly type = `${prefix} ${LoadQuickFilters.name}`;
+}
+
+export class LoadQuickFilter {
+  static readonly type = `${prefix} ${LoadQuickFilter.name}`;
+
+  constructor(public model: QuickFiltersModel) {}
+}
+
+export class SaveQuickFilters {
+  static readonly type = `${prefix} ${SaveQuickFilters.name}`;
+
+  constructor(public payload: QuickFiltersModel) {}
+}
+
+export class DeleteQuickFilter {
+  static readonly type = `${prefix} ${DeleteQuickFilter.name}`;
+
+  constructor(public id: number) {}
 }

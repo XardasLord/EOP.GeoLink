@@ -29,6 +29,8 @@ import { SingleChartDialogComponent } from './components/single-chart-dialog/sin
 import { MapDeviceFiltersComponent } from './components/map-device-filters/map-device-filters.component';
 import { SimpleInputDialogComponent } from './components/dialogs/simple-input-dialog/simple-input-dialog.component';
 import { FiltersState } from './states/filters.state';
+import { QuickFiltersDialogComponent } from './components/dialogs/quick-filters-dialog/quick-filters-dialog.component';
+import { QuickFilterService } from './services/quick-filter.service';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,7 @@ import { FiltersState } from './states/filters.state';
     SingleChartDialogComponent,
     ProgressSpinnerComponent,
     SimpleInputDialogComponent,
+    QuickFiltersDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -83,6 +86,7 @@ import { FiltersState } from './states/filters.state';
     AlertService,
     ChartService,
     ProgressSpinnerService,
+    QuickFilterService,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
   ],
 })
@@ -126,6 +130,7 @@ export class SharedModule {
       'menu_book',
       'geolink_logo',
       'search',
+      'close',
     ];
 
     svgIconFiles.forEach(iconFileName => {

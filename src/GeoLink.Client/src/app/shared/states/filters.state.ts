@@ -7,6 +7,8 @@ import {
   ChangeSearchFilters,
   DeviceMapFiltersSelectionChange,
   LoadMapFilters,
+  LoadQuickFilter,
+  LoadQuickFilters,
   ObjectMapFiltersSelectionChange,
   RegionMapFiltersSelectionChange,
   SetInitialMapFilters,
@@ -16,6 +18,8 @@ import { MapFilterModel } from '../../features/maps/models/map-filter-model';
 import { MapFiltersModel } from '../../features/maps/models/map-filters.model';
 import { Observable, tap } from 'rxjs';
 import { MapsService } from '../../features/maps/services/maps.service';
+import { QuickFiltersModel } from '../models/filters/quick-filters.model';
+import { QuickFilterService } from '../services/quick-filter.service';
 
 const FILTERS_STATE_TOKEN = new StateToken<FiltersStateModel>('filters');
 
@@ -33,11 +37,15 @@ const FILTERS_STATE_TOKEN = new StateToken<FiltersStateModel>('filters');
     selectedRegionMapFilters: [],
     selectedStatusMapFilters: [],
     filterAttributeModels: [],
+    quickFilterModels: [],
   },
 })
 @Injectable()
 export class FiltersState {
-  constructor(private mapsService: MapsService) {}
+  constructor(
+    private mapsService: MapsService,
+    private quickFiltersService: QuickFilterService
+  ) {}
 
   @Selector([FILTERS_STATE_TOKEN])
   static getMapFilters(state: FiltersStateModel): MapFiltersModel {
@@ -67,6 +75,11 @@ export class FiltersState {
   @Selector([FILTERS_STATE_TOKEN])
   static getFilterAttributeModels(state: FiltersStateModel): FilterAttributeModel[] {
     return state.filterAttributeModels;
+  }
+
+  @Selector([FILTERS_STATE_TOKEN])
+  static getQuickFilterModels(state: FiltersStateModel): QuickFiltersModel[] {
+    return state.quickFilterModels;
   }
 
   @Action(ChangeFilters)
@@ -375,5 +388,28 @@ export class FiltersState {
       selectedStatusMapFilters: action.selectedMapFilters,
       mapFilters: updatedFilters,
     });
+  }
+
+  @Action(LoadQuickFilters)
+  loadQuickFilters(ctx: StateContext<FiltersStateModel>, _: LoadQuickFilters): Observable<QuickFiltersModel[]> {
+    return this.quickFiltersService.getQuickFilters().pipe(
+      tap(response => {
+        ctx.patchState({
+          quickFilterModels: response,
+        });
+      })
+    );
+  }
+
+  @Action(LoadQuickFilter)
+  loadQuickFilter(ctx: StateContext<FiltersStateModel>, action: LoadQuickFilter) {
+    ctx.dispatch(
+      new SetInitialMapFilters(
+        action.model.objectFilters[0],
+        action.model.deviceFilters,
+        action.model.regionFilters,
+        action.model.statusFilters
+      )
+    );
   }
 }

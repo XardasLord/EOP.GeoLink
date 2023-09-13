@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { MapFilterModel } from '../../../maps/models/map-filter-model';
-import { debounceTime, map, Observable, Subject, takeUntil } from 'rxjs';
+import { debounceTime, Observable, Subject, takeUntil } from 'rxjs';
 import { ReportOpenMode } from '../../models/open-mode.enum';
 import { ReportsState } from '../../states/reports.state';
 import { Actions, ofActionDispatched, Store } from '@ngxs/store';

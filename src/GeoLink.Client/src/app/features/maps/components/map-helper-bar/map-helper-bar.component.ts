@@ -8,6 +8,7 @@ import { Store } from '@ngxs/store';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ChangeSearchFilters } from '../../../../shared/states/filter.action';
 import { FiltersState } from '../../../../shared/states/filters.state';
+import { QuickFiltersDialogComponent } from '../../../../shared/components/dialogs/quick-filters-dialog/quick-filters-dialog.component';
 
 @Component({
   selector: 'app-map-helper-bar',
@@ -21,7 +22,7 @@ export class MapHelperBarComponent {
   showRegionFilters = false;
   showStatusFilters = false;
 
-  dialogRef?: MatDialogRef<SimpleInputDialogComponent>;
+  dialogRef?: MatDialogRef<SimpleInputDialogComponent | QuickFiltersDialogComponent>;
 
   constructor(
     private store: Store,
@@ -53,6 +54,13 @@ export class MapHelperBarComponent {
       },
       this.store.selectSnapshot(FiltersState.getFilterAttributeModels)
     );
+  }
+
+  openQuickFilters(): void {
+    this.dialogRef = this.dialog.open<QuickFiltersDialogComponent>(QuickFiltersDialogComponent, {
+      data: {},
+      width: '400px',
+    });
   }
 
   private loadForm(
