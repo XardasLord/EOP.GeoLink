@@ -497,8 +497,7 @@ export class MapComponent implements OnInit, OnDestroy {
     // return new Polygon(bboxCoords, { color: 'blue', fillOpacity: 0.2 });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onMapFiltersChanged($event: MapFilterModel[]) {
+  onMapFiltersChanged() {
     this.getObjectsSubscriptions.add(this.loadMapObjects());
   }
 }

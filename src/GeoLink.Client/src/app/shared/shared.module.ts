@@ -31,6 +31,7 @@ import { SimpleInputDialogComponent } from './components/dialogs/simple-input-di
 import { FiltersState } from './states/filters.state';
 import { QuickFiltersDialogComponent } from './components/dialogs/quick-filters-dialog/quick-filters-dialog.component';
 import { QuickFilterService } from './services/quick-filter.service';
+import { MapCheckboxFiltersComponent } from './components/map-checkbox-filters/map-checkbox-filters.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { QuickFilterService } from './services/quick-filter.service';
     MapObjectFiltersComponent,
     MapDeviceFiltersComponent,
     MapStatusFiltersComponent,
+    MapCheckboxFiltersComponent,
     AuthScopeAllowDirective,
     SingleDeviceChartComponent,
     SingleChartDialogComponent,
@@ -72,6 +74,7 @@ import { QuickFilterService } from './services/quick-filter.service';
     MapObjectFiltersComponent,
     MapDeviceFiltersComponent,
     MapStatusFiltersComponent,
+    MapCheckboxFiltersComponent,
     SingleDeviceChartComponent,
     SingleChartDialogComponent,
     ProgressSpinnerComponent,

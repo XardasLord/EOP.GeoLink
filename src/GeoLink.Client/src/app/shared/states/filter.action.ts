@@ -1,11 +1,22 @@
 import { MapFilterModel } from '../../features/maps/models/map-filter-model';
 import { FilterAttributeModel } from '../models/filters/filter-attribute.model';
 import { QuickFiltersModel } from '../models/filters/quick-filters.model';
+import { FilterTypeEnum } from '../models/filters/filter-type.enum';
 
 const prefix = '[Filters]';
 
 export class LoadMapFilters {
   static readonly type = `${prefix} ${LoadMapFilters.name}`;
+}
+
+export class ToggleMapFilter {
+  static readonly type = `${prefix} ${ToggleMapFilter.name}`;
+
+  constructor(
+    public filterId: number,
+    public filterType: FilterTypeEnum,
+    public checked: boolean = true
+  ) {}
 }
 
 export class ObjectMapFiltersSelectionChange {

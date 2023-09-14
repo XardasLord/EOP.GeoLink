@@ -47,20 +47,20 @@ export class QuickFiltersDialogComponent implements OnInit {
               name: formValue[0].toString(),
               objectFilters: this.store
                 .selectSnapshot(FiltersState.getSelectedObjectMapFilters)
-                .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.id !== null)
-                .map(x => x.id),
+                .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.apiValue !== null)
+                .map(x => x.apiValue!),
               deviceFilters: this.store
                 .selectSnapshot(FiltersState.getSelectedDeviceMapFilters)
-                .filter(x => x.apiFilterType === 'DeviceFilters' && x.id !== null)
-                .map(x => x.id),
+                .filter(x => x.apiFilterType === 'DeviceFilters' && x.apiValue !== null)
+                .map(x => x.apiValue!),
               regionFilters: this.store
                 .selectSnapshot(FiltersState.getSelectedRegionMapFilters)
-                .filter(x => x.apiFilterType === 'RegionFilters' && x.id !== null)
-                .map(x => x.id),
+                .filter(x => x.apiFilterType === 'RegionFilters' && x.apiValue !== null)
+                .map(x => x.apiValue!),
               statusFilters: this.store
                 .selectSnapshot(FiltersState.getSelectedStatusMapFilters)
-                .filter(x => x.apiFilterType === 'StatusFilters' && x.id !== null)
-                .map(x => x.id),
+                .filter(x => x.apiFilterType === 'StatusFilters' && x.apiValue !== null)
+                .map(x => x.apiValue!),
             };
             this.store.dispatch(new SaveQuickFilters(payload));
           }

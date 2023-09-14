@@ -43,10 +43,11 @@ $margins-between-floating-fixed-buttons: 0 10px 0 0;
 $margins-between-map-filter-buttons: 0 86px 0 0;
 
 // Borders
-$object-filter-border: 3px solid lightgray;
-$region-filter-border: $object-filter-border;
-$status-filter-border: $object-filter-border;
-$ip-filter-border: $object-filter-border;
+$filter-border: 3px solid lightgray;
+$object-filter-border: $filter-border;
+$region-filter-border: $filter-border;
+$status-filter-border: $filter-border;
+$ip-filter-border: $filter-border;
 $map-item-context-menu-table-border: 2px solid lightgray;
 $map-item-context-menu-table-row-border: 1px solid lightgray;
 $alert-panel-border: 1px solid $navbar-background-color;
