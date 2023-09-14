@@ -37,7 +37,7 @@ export class MapCheckboxFiltersComponent {
       this.toggleParent(this.filter.parentId, newCompletedState);
     }
 
-    this.notifyFiltersChange();
+    this.filtersChanged.emit();
   }
 
   private toggleChildren(filter: MapFilterModel, completed: boolean) {
@@ -66,15 +66,6 @@ export class MapCheckboxFiltersComponent {
       this.store.dispatch(new ToggleMapFilter(parentId, this.filterType, completed));
       this.toggleParent(parent.parentId, completed);
     }
-  }
-
-  private notifyFiltersChange() {
-    // const completedFilters = getAllSelectedFilters(
-    //   this.store.selectSnapshot(FiltersState.getMapDeviceFilters).flatMap(deviceFilter => deviceFilter.filters)
-    // );
-    //
-    // this.store.dispatch(new DeviceMapFiltersSelectionChange(JSON.parse(JSON.stringify(completedFilters))));
-    this.filtersChanged.emit();
   }
 
   onFiltersChanged($event: MapFilterModel[]) {

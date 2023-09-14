@@ -23,7 +23,7 @@ export class MapHelperBarComponent {
   showRegionFilters = false;
   showStatusFilters = false;
 
-  dialogRef?: MatDialogRef<SimpleInputDialogComponent | QuickFiltersDialogComponent>;
+  private dialogRef?: MatDialogRef<SimpleInputDialogComponent | QuickFiltersDialogComponent>;
 
   objectFilters$ = this.store.select(FiltersState.getMapObjectFilters);
   deviceFilters$ = this.store.select(FiltersState.getMapDeviceFilters);

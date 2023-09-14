@@ -14,6 +14,7 @@ import { FilterAttributeModel } from '../../../../shared/models/filters/filter-a
 import { getInputDialogDataModelForFilterAttributes } from '../../../../shared/helpers/filter-attributes.helper';
 import { FiltersState } from '../../../../shared/states/filters.state';
 import { ChangeSearchFilters } from '../../../../shared/states/filter.action';
+import { FilterTypeEnum } from '../../../../shared/models/filters/filter-type.enum';
 
 @Component({
   selector: 'app-reports-helper-bar',
@@ -30,10 +31,17 @@ export class ReportsHelperBarComponent implements OnDestroy {
   showRegionFilters = false;
   showStatusFilters = false;
 
-  dialogRef?: MatDialogRef<SimpleInputDialogComponent>;
-  private destroy$ = new Subject<void>();
+  private dialogRef?: MatDialogRef<SimpleInputDialogComponent>;
+
+  objectFilters$ = this.store.select(FiltersState.getMapObjectFilters);
+  deviceFilters$ = this.store.select(FiltersState.getMapDeviceFilters);
+  regionFilters$ = this.store.select(FiltersState.getMapRegionFilters);
+  statusFilters$ = this.store.select(FiltersState.getMapStatusFilters);
 
   protected readonly OpenMode = ReportOpenMode;
+  protected readonly FilterTypeEnum = FilterTypeEnum;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private store: Store,
@@ -90,8 +98,8 @@ export class ReportsHelperBarComponent implements OnDestroy {
     });
   }
 
-  onFiltersChanged($event: MapFilterModel[]) {
-    this.mapFiltersChanged.emit($event);
+  onFiltersChanged() {
+    this.mapFiltersChanged.emit();
     this.store.dispatch(new ApplyFilters());
   }
 

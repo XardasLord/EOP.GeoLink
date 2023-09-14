@@ -33,17 +33,47 @@
 </mat-toolbar>
 
 <ng-container *ngIf="showObjectFilters">
-  <app-map-object-filters class="object-filters" (filtersChanged)="onFiltersChanged($event)"></app-map-object-filters>
+  <div class="filter-container object-filters" *ngIf="objectFilters$ | async as mapFilters">
+    <ng-container *ngFor="let filter of mapFilters">
+      <app-map-checkbox-filters
+        [filter]="filter"
+        [filterType]="FilterTypeEnum.Object"
+        (filtersChanged)="onFiltersChanged()"></app-map-checkbox-filters>
+    </ng-container>
+  </div>
 </ng-container>
 
 <ng-container *ngIf="showDeviceFilters">
-  <app-map-device-filters class="device-filters" (filtersChanged)="onFiltersChanged($event)"></app-map-device-filters>
+  <div class="filter-container device-filters" *ngIf="deviceFilters$ | async as mapFilters">
+    <ng-container *ngFor="let filter of mapFilters">
+      <app-map-checkbox-filters
+        [filter]="filter"
+        [filterType]="FilterTypeEnum.Device"
+        (filtersChanged)="onFiltersChanged()"></app-map-checkbox-filters>
+    </ng-container>
+  </div>
 </ng-container>
 
 <ng-container *ngIf="showRegionFilters">
-  <app-map-region-filters class="region-filters" (filtersChanged)="onFiltersChanged($event)"></app-map-region-filters>
+  <app-map-region-filters class="region-filters" (filtersChanged)="onFiltersChanged()"></app-map-region-filters>
+
+  <!--  <div class="filter-container region-filters" *ngIf="regionFilters$ | async as mapFilters">-->
+  <!--    <ng-container *ngFor="let filter of mapFilters">-->
+  <!--      <app-map-checkbox-filters-->
+  <!--        [filter]="filter"-->
+  <!--        [filterType]="FilterTypeEnum.Status"-->
+  <!--        (filtersChanged)="onFiltersChanged()"></app-map-checkbox-filters>-->
+  <!--    </ng-container>-->
+  <!--  </div>-->
 </ng-container>
 
 <ng-container *ngIf="showStatusFilters">
-  <app-map-status-filters class="status-filters" (filtersChanged)="onFiltersChanged($event)"></app-map-status-filters>
+  <div class="filter-container status-filters" *ngIf="statusFilters$ | async as mapFilters">
+    <ng-container *ngFor="let filter of mapFilters">
+      <app-map-checkbox-filters
+        [filter]="filter"
+        [filterType]="FilterTypeEnum.Status"
+        (filtersChanged)="onFiltersChanged()"></app-map-checkbox-filters>
+    </ng-container>
+  </div>
 </ng-container>

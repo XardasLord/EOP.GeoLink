@@ -14,6 +14,7 @@ import { getInputDialogDataModelForFilterAttributes } from '../../../../shared/h
 import { SimpleInputDialogDataModel } from '../../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog-data.model';
 import { FiltersState } from '../../../../shared/states/filters.state';
 import { ChangeSearchFilters } from '../../../../shared/states/filter.action';
+import { FilterTypeEnum } from 'src/app/shared/models/filters/filter-type.enum';
 
 @Component({
   selector: 'app-charts-helper-bar',
@@ -31,9 +32,16 @@ export class ChartsHelperBarComponent implements OnDestroy {
   showStatusFilters = false;
 
   dialogRef?: MatDialogRef<SimpleInputDialogComponent>;
+
+  objectFilters$ = this.store.select(FiltersState.getMapObjectFilters);
+  deviceFilters$ = this.store.select(FiltersState.getMapDeviceFilters);
+  regionFilters$ = this.store.select(FiltersState.getMapRegionFilters);
+  statusFilters$ = this.store.select(FiltersState.getMapStatusFilters);
+
   private destroy$ = new Subject<void>();
 
   protected readonly OpenMode = ChartOpenMode;
+  protected readonly FilterTypeEnum = FilterTypeEnum;
 
   constructor(
     private store: Store,
@@ -90,8 +98,8 @@ export class ChartsHelperBarComponent implements OnDestroy {
     });
   }
 
-  onFiltersChanged($event: MapFilterModel[]) {
-    this.mapFiltersChanged.emit($event);
+  onFiltersChanged() {
+    this.mapFiltersChanged.emit();
     this.store.dispatch(new ApplyFilters());
   }
 
