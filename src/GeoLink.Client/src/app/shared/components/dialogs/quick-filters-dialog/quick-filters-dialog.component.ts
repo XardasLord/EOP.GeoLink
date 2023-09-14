@@ -6,7 +6,7 @@ import { DeleteQuickFilter, LoadQuickFilter, LoadQuickFilters, SaveQuickFilters 
 import { FiltersState } from '../../../states/filters.state';
 import { SimpleFormModel, SimpleInputDialogDataModel } from '../simple-input-dialog/simple-input-dialog-data.model';
 import { SimpleInputDialogComponent } from '../simple-input-dialog/simple-input-dialog.component';
-import { QuickFiltersModel } from '../../../models/filters/quick-filters.model';
+import { QuickFilterModel } from '../../../models/filters/quick-filter.model';
 
 @Component({
   selector: 'app-quick-filters-dialog',
@@ -42,25 +42,25 @@ export class QuickFiltersDialogComponent implements OnInit {
         submitLabel: 'Zapisz',
         submitAction: (formValue: SimpleFormModel) => {
           if (formValue?.[0]) {
-            const payload: QuickFiltersModel = {
+            const payload: QuickFilterModel = {
               id: undefined,
               name: formValue[0].toString(),
               objectFilters: this.store
                 .selectSnapshot(FiltersState.getSelectedObjectMapFilters)
-                .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.apiValue !== null)
-                .map(x => x.apiValue!),
+                .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.idFilter !== null)
+                .map(x => x.idFilter!),
               deviceFilters: this.store
                 .selectSnapshot(FiltersState.getSelectedDeviceMapFilters)
-                .filter(x => x.apiFilterType === 'DeviceFilters' && x.apiValue !== null)
-                .map(x => x.apiValue!),
+                .filter(x => x.apiFilterType === 'DeviceFilters' && x.idFilter !== null)
+                .map(x => x.idFilter!),
               regionFilters: this.store
                 .selectSnapshot(FiltersState.getSelectedRegionMapFilters)
-                .filter(x => x.apiFilterType === 'RegionFilters' && x.apiValue !== null)
-                .map(x => x.apiValue!),
+                .filter(x => x.apiFilterType === 'RegionFilters' && x.idFilter !== null)
+                .map(x => x.idFilter!),
               statusFilters: this.store
                 .selectSnapshot(FiltersState.getSelectedStatusMapFilters)
-                .filter(x => x.apiFilterType === 'StatusFilters' && x.apiValue !== null)
-                .map(x => x.apiValue!),
+                .filter(x => x.apiFilterType === 'StatusFilters' && x.idFilter !== null)
+                .map(x => x.idFilter!),
             };
             this.store.dispatch(new SaveQuickFilters(payload));
           }
@@ -74,7 +74,7 @@ export class QuickFiltersDialogComponent implements OnInit {
     this.store.dispatch(new DeleteQuickFilter(id));
   }
 
-  loadSelectedFilter(filter: QuickFiltersModel) {
+  loadSelectedFilter(filter: QuickFilterModel) {
     this.store.dispatch(new LoadQuickFilter(filter));
   }
 }

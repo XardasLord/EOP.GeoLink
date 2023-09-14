@@ -4,20 +4,23 @@ import { FiltersStateModel } from './filter.state.model';
 import { FilterAttributeModel } from '../models/filters/filter-attribute.model';
 import {
   ChangeSearchFilters,
+  DeleteQuickFilter,
   LoadMapFilters,
   LoadQuickFilter,
   LoadQuickFilters,
+  SaveQuickFilters,
   SetInitialMapFilters,
   ToggleMapFilter,
 } from './filter.action';
 import { MapFilterModel } from '../../features/maps/models/map-filter-model';
 import { MapFiltersModel } from '../../features/maps/models/map-filters.model';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { MapsService } from '../../features/maps/services/maps.service';
-import { QuickFiltersModel } from '../models/filters/quick-filters.model';
+import { QuickFilterModel } from '../models/filters/quick-filter.model';
 import { QuickFilterService } from '../services/quick-filter.service';
 import { getAllSelectedFilters } from '../helpers/map-filters.helper';
 import { FilterTypeEnum } from '../models/filters/filter-type.enum';
+import { ToastrService } from 'ngx-toastr';
 
 const FILTERS_STATE_TOKEN = new StateToken<FiltersStateModel>('filters');
 
@@ -38,7 +41,8 @@ const FILTERS_STATE_TOKEN = new StateToken<FiltersStateModel>('filters');
 export class FiltersState {
   constructor(
     private mapsService: MapsService,
-    private quickFiltersService: QuickFilterService
+    private quickFiltersService: QuickFilterService,
+    private toastrService: ToastrService
   ) {}
 
   @Selector([FILTERS_STATE_TOKEN])
@@ -92,7 +96,7 @@ export class FiltersState {
   }
 
   @Selector([FILTERS_STATE_TOKEN])
-  static getQuickFilterModels(state: FiltersStateModel): QuickFiltersModel[] {
+  static getQuickFilterModels(state: FiltersStateModel): QuickFilterModel[] {
     return state.quickFilterModels;
   }
 
@@ -231,7 +235,7 @@ export class FiltersState {
   }
 
   @Action(LoadQuickFilters)
-  loadQuickFilters(ctx: StateContext<FiltersStateModel>, _: LoadQuickFilters): Observable<QuickFiltersModel[]> {
+  loadQuickFilters(ctx: StateContext<FiltersStateModel>, _: LoadQuickFilters): Observable<QuickFilterModel[]> {
     return this.quickFiltersService.getQuickFilters().pipe(
       tap(response => {
         ctx.patchState({
@@ -250,6 +254,36 @@ export class FiltersState {
         action.model.regionFilters,
         action.model.statusFilters
       )
+    );
+  }
+
+  @Action(SaveQuickFilters)
+  saveQuickFilter(ctx: StateContext<FiltersStateModel>, action: SaveQuickFilters) {
+    return this.quickFiltersService.save(action.payload).pipe(
+      tap(() => {
+        ctx.dispatch(new LoadQuickFilters());
+
+        this.toastrService.success('Dodano nowy szybki filtr', 'Sukces');
+      }),
+      catchError(error => {
+        this.toastrService.error('Błąd podczas dodawania szybkiego filtru', 'Błąd');
+        return throwError(error);
+      })
+    );
+  }
+
+  @Action(DeleteQuickFilter)
+  deleteQuickFilter(ctx: StateContext<FiltersStateModel>, action: DeleteQuickFilter) {
+    return this.quickFiltersService.delete(action.id).pipe(
+      tap(() => {
+        ctx.dispatch(new LoadQuickFilters());
+
+        this.toastrService.success('Usunięto szybki filtr', 'Sukces');
+      }),
+      catchError(error => {
+        this.toastrService.error('Błąd podczas usuwania szybkiego filtru', 'Błąd');
+        return throwError(error);
+      })
     );
   }
 

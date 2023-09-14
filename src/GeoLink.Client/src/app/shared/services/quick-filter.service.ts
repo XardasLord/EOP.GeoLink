@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { RemoteServiceBase } from './remote-service.base';
-import { QuickFiltersModel } from '../models/filters/quick-filters.model';
+import { QuickFilterModel } from '../models/filters/quick-filter.model';
 
 @Injectable()
 export class QuickFilterService extends RemoteServiceBase {
@@ -13,7 +13,15 @@ export class QuickFilterService extends RemoteServiceBase {
     super(httpClient);
   }
 
-  getQuickFilters(): Observable<QuickFiltersModel[]> {
-    return this.httpClient.get<QuickFiltersModel[]>(`${this.apiUrl}/filters/getFastFilters`);
+  getQuickFilters(): Observable<QuickFilterModel[]> {
+    return this.httpClient.get<QuickFilterModel[]>(`${this.apiUrl}/filters/getFastFilters`);
+  }
+
+  save(model: QuickFilterModel): Observable<QuickFilterModel> {
+    return this.httpClient.put<QuickFilterModel>(`${this.apiUrl}/filters/setFastFilters`, model);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.apiUrl}/filters/delFastFilters/${id}`);
   }
 }
