@@ -15,6 +15,7 @@ import { getInputDialogDataModelForFilterAttributes } from '../../../../shared/h
 import { FiltersState } from '../../../../shared/states/filters.state';
 import { ChangeSearchFilters } from '../../../../shared/states/filter.action';
 import { FilterTypeEnum } from '../../../../shared/models/filters/filter-type.enum';
+import { QuickFiltersDialogComponent } from '../../../../shared/components/dialogs/quick-filters-dialog/quick-filters-dialog.component';
 
 @Component({
   selector: 'app-reports-helper-bar',
@@ -31,7 +32,7 @@ export class ReportsHelperBarComponent implements OnDestroy {
   showRegionFilters = false;
   showStatusFilters = false;
 
-  private dialogRef?: MatDialogRef<SimpleInputDialogComponent>;
+  private dialogRef?: MatDialogRef<SimpleInputDialogComponent | QuickFiltersDialogComponent>;
 
   objectFilters$ = this.store.select(FiltersState.getMapObjectFilters);
   deviceFilters$ = this.store.select(FiltersState.getMapDeviceFilters);
@@ -107,5 +108,12 @@ export class ReportsHelperBarComponent implements OnDestroy {
     this.store.dispatch(new Navigate([RoutePaths.Reports]));
     this.store.dispatch(new SetOpenMode(ReportOpenMode.ForCustomSearch));
     this.store.dispatch(new Load());
+  }
+
+  openQuickFilters(): void {
+    this.dialogRef = this.dialog.open<QuickFiltersDialogComponent>(QuickFiltersDialogComponent, {
+      data: {},
+      width: '400px',
+    });
   }
 }

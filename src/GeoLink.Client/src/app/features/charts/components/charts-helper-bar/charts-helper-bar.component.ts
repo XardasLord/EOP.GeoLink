@@ -15,6 +15,7 @@ import { SimpleInputDialogDataModel } from '../../../../shared/components/dialog
 import { FiltersState } from '../../../../shared/states/filters.state';
 import { ChangeSearchFilters } from '../../../../shared/states/filter.action';
 import { FilterTypeEnum } from 'src/app/shared/models/filters/filter-type.enum';
+import { QuickFiltersDialogComponent } from '../../../../shared/components/dialogs/quick-filters-dialog/quick-filters-dialog.component';
 
 @Component({
   selector: 'app-charts-helper-bar',
@@ -31,7 +32,7 @@ export class ChartsHelperBarComponent implements OnDestroy {
   showRegionFilters = false;
   showStatusFilters = false;
 
-  dialogRef?: MatDialogRef<SimpleInputDialogComponent>;
+  private dialogRef?: MatDialogRef<SimpleInputDialogComponent | QuickFiltersDialogComponent>;
 
   objectFilters$ = this.store.select(FiltersState.getMapObjectFilters);
   deviceFilters$ = this.store.select(FiltersState.getMapDeviceFilters);
@@ -107,5 +108,12 @@ export class ChartsHelperBarComponent implements OnDestroy {
     this.store.dispatch(new Navigate([RoutePaths.Charts]));
     this.store.dispatch(new SetOpenMode(ChartOpenMode.ForCustomSearch));
     this.store.dispatch(new Load());
+  }
+
+  openQuickFilters(): void {
+    this.dialogRef = this.dialog.open<QuickFiltersDialogComponent>(QuickFiltersDialogComponent, {
+      data: {},
+      width: '400px',
+    });
   }
 }

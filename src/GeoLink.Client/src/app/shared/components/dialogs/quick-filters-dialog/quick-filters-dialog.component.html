@@ -8,7 +8,8 @@
       class="quick-filter"
       *ngFor="let filter of quickFilters$ | async"
       (click)="loadSelectedFilter(filter)"
-      >{{ filter.name }} <mat-icon (click)="deleteQuickFilter(filter.id!)" svgIcon="close"></mat-icon
+      >{{ filter.name }}
+      <mat-icon (click)="deleteQuickFilter(filter.id!)" svgIcon="close" matTooltip="Usuń szybki filtr"></mat-icon
     ></mat-list-item>
   </mat-list>
 </mat-dialog-content>

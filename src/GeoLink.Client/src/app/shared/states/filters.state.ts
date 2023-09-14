@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
+import { Action, Selector, State, StateContext, StateToken, Store } from '@ngxs/store';
 import { FiltersStateModel } from './filter.state.model';
 import { FilterAttributeModel } from '../models/filters/filter-attribute.model';
 import {
@@ -21,6 +21,10 @@ import { QuickFilterService } from '../services/quick-filter.service';
 import { getAllSelectedFilters } from '../helpers/map-filters.helper';
 import { FilterTypeEnum } from '../models/filters/filter-type.enum';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { RoutePaths } from '../../core/modules/app-routing.module';
+import { Load as LoadCharts } from '../../features/charts/states/charts.action';
+import { Load as LoadReports } from '../../features/reports/states/reports.action';
 
 const FILTERS_STATE_TOKEN = new StateToken<FiltersStateModel>('filters');
 
@@ -42,7 +46,9 @@ export class FiltersState {
   constructor(
     private mapsService: MapsService,
     private quickFiltersService: QuickFilterService,
-    private toastrService: ToastrService
+    private toastService: ToastrService,
+    private store: Store,
+    private router: Router
   ) {}
 
   @Selector([FILTERS_STATE_TOKEN])
@@ -255,6 +261,16 @@ export class FiltersState {
         action.model.statusFilters
       )
     );
+
+    if (this.router.url.indexOf(`/${RoutePaths.Reports}`) > -1) {
+      ctx.dispatch(new LoadReports());
+    } else if (this.router.url.indexOf(`/${RoutePaths.Charts}`) > -1) {
+      ctx.dispatch(new LoadCharts());
+    } else if (this.router.url.indexOf(`/${RoutePaths.Map}`) > -1) {
+      // TODO:
+    }
+
+    this.toastService.success('Pomyślnie wczytano szybki filtr', 'Sukces');
   }
 
   @Action(SaveQuickFilters)
@@ -263,10 +279,10 @@ export class FiltersState {
       tap(() => {
         ctx.dispatch(new LoadQuickFilters());
 
-        this.toastrService.success('Dodano nowy szybki filtr', 'Sukces');
+        this.toastService.success('Dodano nowy szybki filtr', 'Sukces');
       }),
       catchError(error => {
-        this.toastrService.error('Błąd podczas dodawania szybkiego filtru', 'Błąd');
+        this.toastService.error('Błąd podczas dodawania szybkiego filtru', 'Błąd');
         return throwError(error);
       })
     );
@@ -278,10 +294,10 @@ export class FiltersState {
       tap(() => {
         ctx.dispatch(new LoadQuickFilters());
 
-        this.toastrService.success('Usunięto szybki filtr', 'Sukces');
+        this.toastService.success('Usunięto szybki filtr', 'Sukces');
       }),
       catchError(error => {
-        this.toastrService.error('Błąd podczas usuwania szybkiego filtru', 'Błąd');
+        this.toastService.error('Błąd podczas usuwania szybkiego filtru', 'Błąd');
         return throwError(error);
       })
     );
