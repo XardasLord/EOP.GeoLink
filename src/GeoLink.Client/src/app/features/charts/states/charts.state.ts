@@ -24,6 +24,10 @@ const CHARTS_STATE_TOKEN = new StateToken<ChartsStateModel>('charts');
         chartNames: [],
         avgAvail: 0,
         devHealth: 0,
+        chartAxisInfo: {
+          x: '',
+          y: '',
+        },
       },
       dateNow: new Date(),
       dateBegin: new Date(),
@@ -134,12 +138,25 @@ export class ChartsState {
             tooltip: {},
             xAxis: {
               data: xAxisData,
+              name: response.chartsData.chartAxisInfo.x,
+              nameLocation: 'middle',
+              nameGap: 30,
+              nameTextStyle: {
+                color: 'black',
+              },
               silent: false,
               splitLine: {
                 show: false,
               },
             },
-            yAxis: {},
+            yAxis: {
+              name: response.chartsData.chartAxisInfo.y,
+              nameLocation: 'middle',
+              nameGap: 30,
+              nameTextStyle: {
+                color: 'black',
+              },
+            },
             series: [
               {
                 name: response.chartsData.chartNames[0],

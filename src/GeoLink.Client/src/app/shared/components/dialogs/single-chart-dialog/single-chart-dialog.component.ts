@@ -27,6 +27,10 @@ export class SingleChartDialogComponent implements OnInit, OnDestroy {
       chartNames: [],
       devHealth: 0,
       avgAvail: 0,
+      chartAxisInfo: {
+        x: '',
+        y: '',
+      },
     },
     dateNow: new Date(),
     dateBegin: new Date(),
@@ -157,12 +161,25 @@ export class SingleChartDialogComponent implements OnInit, OnDestroy {
       tooltip: {},
       xAxis: {
         data: xAxisData,
+        name: model.chartsData.chartAxisInfo.x,
+        nameLocation: 'middle',
+        nameGap: 30,
+        nameTextStyle: {
+          color: 'black',
+        },
         silent: false,
         splitLine: {
           show: false,
         },
       },
-      yAxis: {},
+      yAxis: {
+        name: model.chartsData.chartAxisInfo.y,
+        nameLocation: 'middle',
+        nameGap: 30,
+        nameTextStyle: {
+          color: 'black',
+        },
+      },
       series: [
         {
           name: model.chartsData.chartNames[0],
