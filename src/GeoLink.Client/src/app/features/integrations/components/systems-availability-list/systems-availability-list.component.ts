@@ -6,7 +6,7 @@ import { LoadSystemAvailabilities } from '../../states/systems-availability.acti
 import { nameof } from '../../../../shared/helpers/name-of.helper';
 import { SystemAvailabilityData } from '../../models/system-availability.model';
 import { SystemsAvailabilityState } from '../../states/systems-availability.state';
-import { SingleChartDialogComponent } from '../../../../shared/components/single-chart-dialog/single-chart-dialog.component';
+import { SingleChartDialogComponent } from '../../../../shared/components/dialogs/single-chart-dialog/single-chart-dialog.component';
 import { SingleDeviceChartDialogModel } from '../../../../shared/models/charts/single-device-chart-dialog.model';
 import { ChartTypeEnum } from '../../../../shared/models/charts/chart-type.enum';
 

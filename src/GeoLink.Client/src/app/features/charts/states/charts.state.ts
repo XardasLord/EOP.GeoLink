@@ -19,7 +19,12 @@ const CHARTS_STATE_TOKEN = new StateToken<ChartsStateModel>('charts');
     loading: false,
     openMode: ChartOpenMode.ForCustomSearch,
     chart: {
-      chartsData: [],
+      chartsData: {
+        data: [],
+        chartNames: [],
+        avgAvail: 0,
+        devHealth: 0,
+      },
       dateNow: new Date(),
       dateBegin: new Date(),
       dateEnd: new Date(),
@@ -112,7 +117,7 @@ export class ChartsState {
           const standardChartData: number[] = [];
           const polynomialChartData: number[] = [];
 
-          response.chartsData[0].data.forEach(chartData => {
+          response.chartsData.data.forEach(chartData => {
             const date = new Date(chartData.timestamp);
             const formattedDate = `${date.getHours().toString()}:${date.getMinutes().toString()}`;
 
@@ -123,7 +128,7 @@ export class ChartsState {
 
           const eChartOptions: EChartsOption = {
             legend: {
-              data: [response.chartsData[0].chartName, 'Trend'],
+              data: [response.chartsData.chartNames[0], response.chartsData.chartNames[1]],
               align: 'left',
             },
             tooltip: {},
@@ -137,13 +142,13 @@ export class ChartsState {
             yAxis: {},
             series: [
               {
-                name: response.chartsData[0].chartName,
+                name: response.chartsData.chartNames[0],
                 type: 'line',
                 data: standardChartData,
                 animationDelay: idx => idx * 10,
               },
               {
-                name: 'Trend',
+                name: response.chartsData.chartNames[1],
                 type: 'line',
                 lineStyle: {
                   type: 'dotted',

@@ -18,12 +18,12 @@ import { DictionaryState } from './states/dictionary.state';
 import { EnumDescriptionPipePipe } from './pipes/enum-description.pipe';
 import { AlertState } from './states/alert.state';
 import { AlertService } from './services/alert.service';
-import { SingleDeviceChartComponent } from './components/single-device-chart/single-device-chart.component';
+import { SingleDeviceAttributeChartComponent } from './components/single-device-attribute-chart/single-device-attribute-chart.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { ChartService } from './services/chart.service';
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 import { ProgressSpinnerService } from './services/progress-spinner.service';
-import { SingleChartDialogComponent } from './components/single-chart-dialog/single-chart-dialog.component';
+import { SingleChartDialogComponent } from './components/dialogs/single-chart-dialog/single-chart-dialog.component';
 import { SimpleInputDialogComponent } from './components/dialogs/simple-input-dialog/simple-input-dialog.component';
 import { FiltersState } from './states/filters.state';
 import { QuickFiltersDialogComponent } from './components/dialogs/quick-filters-dialog/quick-filters-dialog.component';
@@ -36,7 +36,7 @@ import { MapCheckboxFiltersComponent } from './components/map-checkbox-filters/m
     MapRegionFiltersComponent,
     MapCheckboxFiltersComponent,
     AuthScopeAllowDirective,
-    SingleDeviceChartComponent,
+    SingleDeviceAttributeChartComponent,
     SingleChartDialogComponent,
     ProgressSpinnerComponent,
     SimpleInputDialogComponent,
@@ -66,7 +66,7 @@ import { MapCheckboxFiltersComponent } from './components/map-checkbox-filters/m
     AuthScopeAllowDirective,
     MapRegionFiltersComponent,
     MapCheckboxFiltersComponent,
-    SingleDeviceChartComponent,
+    SingleDeviceAttributeChartComponent,
     SingleChartDialogComponent,
     ProgressSpinnerComponent,
     NgOptimizedImage,

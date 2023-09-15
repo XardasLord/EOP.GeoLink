@@ -1,7 +1,12 @@
 import { AfterContentChecked, ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
-import { DeviceDetailsModel, DeviceModel, MapObjectModel } from '../../models/map-item.model';
+import {
+  DeviceDetailsModel,
+  DeviceDetailsAttributeModel,
+  DeviceModel,
+  MapObjectModel,
+} from '../../models/map-item.model';
 import { MapObjectHelper } from '../../helpers/map-object-helper';
 import { MapDeviceTypeEnum } from '../../../../shared/models/map-device-type.enum';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
@@ -37,7 +42,7 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
   public statusChartFirstElementTop = '';
   public statusChartSecondElementLeft = '';
   public statusChartSecondElementTop = '';
-  public selectedDeviceId = 0;
+  public selectedAttributeId = 0;
 
   private subscriptions: Subscription = new Subscription();
 
@@ -75,8 +80,12 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     return this.mapObjectHelper.getDeviceTypeGroup(this.mapObject.devices);
   }
 
-  showStatusChart(deviceModel: DeviceModel, event: MouseEvent) {
-    this.selectedDeviceId = deviceModel.idDev;
+  showAttributeStatusChart(deviceAttribute: DeviceDetailsAttributeModel, event: MouseEvent) {
+    if (!deviceAttribute.isChart) {
+      return;
+    }
+
+    this.selectedAttributeId = deviceAttribute.idAtr;
     this.showChartMenu = false;
     this.changeDetectorRef.detectChanges();
     this.showChartMenu = true;

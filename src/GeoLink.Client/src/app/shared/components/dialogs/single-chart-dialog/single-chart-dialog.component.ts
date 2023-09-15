@@ -1,12 +1,12 @@
 import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EChartsOption } from 'echarts';
-import { ChartService } from '../../services/chart.service';
-import { ChartModel } from '../../models/charts/chart.model';
-import { ChartTypeEnum } from '../../models/charts/chart-type.enum';
-import { MapObjectStatusTypeEnum } from '../../models/map-object-status-type.enum';
+import { ChartService } from '../../../services/chart.service';
+import { ChartModel } from '../../../models/charts/chart.model';
+import { ChartTypeEnum } from '../../../models/charts/chart-type.enum';
+import { MapObjectStatusTypeEnum } from '../../../models/map-object-status-type.enum';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { SingleDeviceChartDialogModel } from '../../models/charts/single-device-chart-dialog.model';
+import { SingleDeviceChartDialogModel } from '../../../models/charts/single-device-chart-dialog.model';
 
 @Component({
   selector: 'app-single-chart-dialog',
@@ -17,11 +17,17 @@ export class SingleChartDialogComponent implements OnInit, OnDestroy {
   private chartType!: ChartTypeEnum;
   private readonly deviceId: number | undefined;
   private readonly systemId: number | undefined;
+  private readonly attributeId: number | undefined;
 
   protected readonly MapObjectStatusTypeEnum = MapObjectStatusTypeEnum;
 
   public chartModel: ChartModel = {
-    chartsData: [],
+    chartsData: {
+      data: [],
+      chartNames: [],
+      devHealth: 0,
+      avgAvail: 0,
+    },
     dateNow: new Date(),
     dateBegin: new Date(),
     dateEnd: new Date(),
@@ -41,6 +47,7 @@ export class SingleChartDialogComponent implements OnInit, OnDestroy {
     this.deviceId = data.deviceId;
     this.systemId = data.systemId;
     this.chartType = data.chartType;
+    this.attributeId = data.attributeId;
   }
 
   ngOnInit(): void {
@@ -62,6 +69,19 @@ export class SingleChartDialogComponent implements OnInit, OnDestroy {
     } else if (this.systemId) {
       this.getChartSubscription.add(
         this.deviceChartService.getSystemChart(this.systemId).subscribe(chartModel => {
+          this.isLoading = false;
+          this.chartModel = chartModel;
+
+          console.warn(chartModel);
+
+          this.prepareChart(chartModel);
+
+          this.changeDetectorRef.detectChanges();
+        })
+      );
+    } else if (this.attributeId) {
+      this.getChartSubscription.add(
+        this.deviceChartService.getAttributeCharts(this.attributeId).subscribe(chartModel => {
           this.isLoading = false;
           this.chartModel = chartModel;
 
@@ -120,7 +140,7 @@ export class SingleChartDialogComponent implements OnInit, OnDestroy {
     const standardChartData: number[] = [];
     const polynomialChartData: number[] = [];
 
-    model.chartsData[0].data.forEach(chartData => {
+    model.chartsData.data.forEach(chartData => {
       const date = new Date(chartData.timestamp);
       const formattedDate = `${date.getHours().toString()}:${date.getMinutes().toString()}`;
 
@@ -131,7 +151,7 @@ export class SingleChartDialogComponent implements OnInit, OnDestroy {
 
     this.chartOptions = {
       legend: {
-        data: [model.chartsData[0].chartName, 'Trend'],
+        data: [model.chartsData.chartNames[0], model.chartsData.chartNames[1]],
         align: 'left',
       },
       tooltip: {},
@@ -145,13 +165,13 @@ export class SingleChartDialogComponent implements OnInit, OnDestroy {
       yAxis: {},
       series: [
         {
-          name: model.chartsData[0].chartName,
+          name: model.chartsData.chartNames[0],
           type: 'line',
           data: standardChartData,
           animationDelay: idx => idx * 10,
         },
         {
-          name: 'Trend',
+          name: model.chartsData.chartNames[1],
           type: 'line',
           lineStyle: {
             type: 'dotted',

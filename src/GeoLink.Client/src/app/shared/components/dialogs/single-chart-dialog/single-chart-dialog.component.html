@@ -4,20 +4,20 @@
     >Okres: {{ chartModel.dateBegin | date: 'dd.MM.yyyy HH:mm:ss' }} -
     {{ chartModel.dateEnd | date: 'dd.MM.yyyy HH:mm:ss' }}</span
   >
-  <ng-container *ngIf="chartModel.chartsData[0]?.avgAvail">
+  <ng-container *ngIf="chartModel.chartsData?.avgAvail">
     <span class="main-label">Średnia dostępność:</span>
-    <span class="main-value">{{ chartModel.chartsData[0]?.avgAvail | number: '1.2-2' }}%</span>
+    <span class="main-value">{{ chartModel.chartsData?.avgAvail | number: '1.2-2' }}%</span>
   </ng-container>
-  <ng-container *ngIf="chartModel.chartsData[0]?.devHealth">
+  <ng-container *ngIf="chartModel.chartsData?.devHealth">
     <span class="main-label">Kondycja urządzenia: </span>
     <span
       class="main-value"
       [ngClass]="{
-        good: chartModel.chartsData[0]?.devHealth === MapObjectStatusTypeEnum.OK,
-        warning: chartModel.chartsData[0]?.devHealth === MapObjectStatusTypeEnum.Warning,
-        bad: chartModel.chartsData[0]?.devHealth === MapObjectStatusTypeEnum.Error
+        good: chartModel.chartsData?.devHealth === MapObjectStatusTypeEnum.OK,
+        warning: chartModel.chartsData?.devHealth === MapObjectStatusTypeEnum.Warning,
+        bad: chartModel.chartsData?.devHealth === MapObjectStatusTypeEnum.Error
       }"
-      >{{ chartModel.chartsData[0]?.devHealth }}
+      >{{ chartModel.chartsData?.devHealth }}
     </span>
   </ng-container>
 </div>

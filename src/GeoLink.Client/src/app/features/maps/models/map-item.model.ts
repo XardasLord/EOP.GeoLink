@@ -57,14 +57,16 @@ export interface DeviceDetailsModel {
   producer: string;
   ppe: string;
   model: string;
-  params: DeviceDetailsParamsModel[];
+  params: DeviceDetailsAttributeModel[];
   subDevId: number[];
 }
 
-export interface DeviceDetailsParamsModel {
+export interface DeviceDetailsAttributeModel {
+  idAtr: number;
   name: string;
   value: string;
   status: MapObjectStatusTypeEnum;
+  isChart: boolean;
   subParams: DeviceDetailsSubParamsModel[];
 }
 

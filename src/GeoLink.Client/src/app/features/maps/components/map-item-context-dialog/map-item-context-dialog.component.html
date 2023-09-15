@@ -16,9 +16,9 @@
   <ng-container *ngFor="let deviceModelType of groupedDeviceTypes | keyvalue">
     <td colspan="3" class="group-name">{{ deviceModelType.key }}</td>
     <ng-container *ngFor="let deviceModel of deviceModelType.value">
-      <tr class="device-item-row">
-        <td (click)="showDeviceSubMenu(deviceModel, $event)">{{ getDeviceType(+deviceModel.devType) }}</td>
-        <td (click)="showStatusChart(deviceModel, $event)">
+      <tr class="device-item-row" (click)="showDeviceSubMenu(deviceModel, $event)">
+        <td>{{ getDeviceType(+deviceModel.devType) }}</td>
+        <td>
           <mat-icon
             matTooltip="abc test 123"
             [ngClass]="{
@@ -58,7 +58,7 @@
     </tr>
 
     <ng-container *ngFor="let deviceDetailsParam of secondLevelDeviceDetailsModel.params">
-      <tr class="device-item-row">
+      <tr class="device-item-row" (click)="showAttributeStatusChart(deviceDetailsParam, $event)">
         <td>{{ deviceDetailsParam.name }}</td>
         <td>{{ deviceDetailsParam.value }}</td>
         <td>
@@ -83,15 +83,6 @@
   <div
     class="status-chart-content first"
     [ngStyle]="{ left: statusChartFirstElementLeft, top: statusChartFirstElementTop }">
-    <app-single-device-chart
-      [chartType]="ChartTypeEnum.Availability"
-      [deviceId]="selectedDeviceId"></app-single-device-chart>
-  </div>
-  <div
-    class="status-chart-content second"
-    [ngStyle]="{ left: statusChartSecondElementLeft, top: statusChartSecondElementTop }">
-    <app-single-device-chart
-      [chartType]="ChartTypeEnum.MovingAverage"
-      [deviceId]="selectedDeviceId"></app-single-device-chart>
+    <app-single-device-attribute-chart [attributeId]="selectedAttributeId"></app-single-device-attribute-chart>
   </div>
 </ng-container>
