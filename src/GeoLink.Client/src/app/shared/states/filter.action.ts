@@ -35,10 +35,10 @@ export class SetInitialMapFilters {
   static readonly type = `${prefix} ${SetInitialMapFilters.name}`;
 
   constructor(
-    public objectTypeFilters: number,
-    public deviceFilters: number[],
-    public regionFilters: number[],
-    public statusFilters: number[]
+    public objectFilterIds: number[],
+    public deviceFilterIds: number[],
+    public regionFilterIds: number[],
+    public statusFilterIds: number[]
   ) {}
 }
 

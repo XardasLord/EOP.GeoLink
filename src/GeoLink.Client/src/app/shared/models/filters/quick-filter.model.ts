@@ -1,8 +1,8 @@
 export interface QuickFilterModel {
   id: number | undefined;
   name: string;
-  objectFilters: number[];
-  deviceFilters: number[];
-  regionFilters: number[];
-  statusFilters: number[];
+  objectFilterIds: number[];
+  deviceFilterIds: number[];
+  regionFilterIds: number[];
+  statusFilterIds: number[];
 }

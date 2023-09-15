@@ -120,12 +120,12 @@ export class FiltersState {
     const selectedDeviceMapFilters: MapFilterModel[] = [];
     const selectedRegionMapFilters: MapFilterModel[] = [];
     const selectedStatusMapFilters: MapFilterModel[] = [];
-
+    console.warn(action);
     function updateObjectFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
       return filters.map(filter => {
         const updatedFilter: MapFilterModel = { ...filter };
 
-        if (filter.idFilter === action.objectTypeFilters && filter.apiFilterType === 'ObjectTypeFilters') {
+        if (action.objectFilterIds.some(f => f === filter.idFilter && filter.apiFilterType === 'ObjectTypeFilters')) {
           updatedFilter.completed = true;
           selectedObjectMapFilters.push(updatedFilter);
         } else {
@@ -144,7 +144,7 @@ export class FiltersState {
       return filters.map(filter => {
         const updatedFilter: MapFilterModel = { ...filter };
 
-        if (action.deviceFilters.some(f => f === filter.idFilter && filter.apiFilterType === 'DeviceFilters')) {
+        if (action.deviceFilterIds.some(f => f === filter.idFilter && filter.apiFilterType === 'DeviceFilters')) {
           updatedFilter.completed = true;
           selectedDeviceMapFilters.push(updatedFilter);
         } else {
@@ -163,7 +163,7 @@ export class FiltersState {
       return filters.map(filter => {
         const updatedFilter: MapFilterModel = { ...filter };
 
-        if (action.regionFilters.includes(filter.idFilter!)) {
+        if (action.regionFilterIds.includes(filter.idFilter!)) {
           updatedFilter.completed = true;
           selectedRegionMapFilters.push(updatedFilter);
         } else {
@@ -182,7 +182,7 @@ export class FiltersState {
       return filters.map(filter => {
         const updatedFilter: MapFilterModel = { ...filter };
 
-        if (action.statusFilters.includes(filter.idFilter!)) {
+        if (action.statusFilterIds.includes(filter.idFilter!)) {
           updatedFilter.completed = true;
           selectedStatusMapFilters.push(updatedFilter);
         } else {
@@ -255,10 +255,10 @@ export class FiltersState {
   loadQuickFilter(ctx: StateContext<FiltersStateModel>, action: LoadQuickFilter) {
     ctx.dispatch(
       new SetInitialMapFilters(
-        action.model.objectFilters[0],
-        action.model.deviceFilters,
-        action.model.regionFilters,
-        action.model.statusFilters
+        action.model.objectFilterIds,
+        action.model.deviceFilterIds,
+        action.model.regionFilterIds,
+        action.model.statusFilterIds
       )
     );
 

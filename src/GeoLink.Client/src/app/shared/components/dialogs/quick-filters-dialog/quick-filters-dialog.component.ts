@@ -45,19 +45,19 @@ export class QuickFiltersDialogComponent implements OnInit {
             const payload: QuickFilterModel = {
               id: undefined,
               name: formValue[0].toString(),
-              objectFilters: this.store
+              objectFilterIds: this.store
                 .selectSnapshot(FiltersState.getSelectedObjectMapFilters)
                 .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.idFilter !== null)
                 .map(x => x.idFilter!),
-              deviceFilters: this.store
+              deviceFilterIds: this.store
                 .selectSnapshot(FiltersState.getSelectedDeviceMapFilters)
                 .filter(x => x.apiFilterType === 'DeviceFilters' && x.idFilter !== null)
                 .map(x => x.idFilter!),
-              regionFilters: this.store
+              regionFilterIds: this.store
                 .selectSnapshot(FiltersState.getSelectedRegionMapFilters)
                 .filter(x => x.apiFilterType === 'RegionFilters' && x.idFilter !== null)
                 .map(x => x.idFilter!),
-              statusFilters: this.store
+              statusFilterIds: this.store
                 .selectSnapshot(FiltersState.getSelectedStatusMapFilters)
                 .filter(x => x.apiFilterType === 'StatusFilters' && x.idFilter !== null)
                 .map(x => x.idFilter!),

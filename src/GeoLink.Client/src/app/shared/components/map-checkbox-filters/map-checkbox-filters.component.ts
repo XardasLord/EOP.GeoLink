@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { MapFilterModel } from '../../../features/maps/models/map-filter-model';
 import { ToggleMapFilter } from '../../states/filter.action';
@@ -37,7 +37,7 @@ export class MapCheckboxFiltersComponent {
       this.toggleParent(this.filter.parentId, newCompletedState);
     }
 
-    this.filtersChanged.emit();
+    this.onFiltersChanged();
   }
 
   private toggleChildren(filter: MapFilterModel, completed: boolean) {
@@ -68,18 +68,23 @@ export class MapCheckboxFiltersComponent {
     }
   }
 
-  onFiltersChanged($event: MapFilterModel[]) {
-    this.filtersChanged.emit($event);
+  onFiltersChanged() {
+    this.filtersChanged.emit();
   }
 
-  isIndeterminate(): boolean {
-    if (!this.filter.filters || this.filter.filters.length === 0) {
+  isIndeterminate(filter: MapFilterModel): boolean {
+    if (!filter.filters || filter.filters.length === 0) {
       return false;
     }
 
-    return (
-      this.filter.filters.some(childFilter => childFilter.completed) &&
-      this.filter.filters.some(childFilter => !childFilter.completed)
-    );
+    const hasChecked = filter.filters.some(childFilter => childFilter.completed);
+    const hasUnchecked = filter.filters.some(childFilter => !childFilter.completed);
+
+    if (hasChecked && hasUnchecked) {
+      return true; // Stan indeterminate, jeśli są zarówno zaznaczone, jak i niezaznaczone dzieci
+    }
+
+    // Rekurencyjnie sprawdź indeterminate dla dzieci
+    return filter.filters.some(childFilter => this.isIndeterminate(childFilter));
   }
 }

@@ -1,6 +1,6 @@
 <mat-checkbox
   [checked]="filter.completed"
-  [indeterminate]="isIndeterminate()"
+  [indeterminate]="isIndeterminate(filter)"
   (change)="toggleFilter()"
   [disabled]="!filter.enabled"
   >{{ filter.name }}</mat-checkbox
@@ -13,7 +13,7 @@
         <app-map-checkbox-filters
           [filter]="childFilter"
           [filterType]="filterType"
-          (filtersChanged)="onFiltersChanged($event)"></app-map-checkbox-filters>
+          (filtersChanged)="onFiltersChanged()"></app-map-checkbox-filters>
       </li>
     </ul>
   </ng-container>
