@@ -14,6 +14,8 @@ import { getInputDialogDataModelForFilterAttributes } from '../../../../shared/h
 import { SimpleInputDialogDataModel } from '../../../../shared/components/dialogs/simple-input-dialog/simple-input-dialog-data.model';
 import { FiltersState } from '../../../../shared/states/filters.state';
 import { ChangeSearchFilters } from '../../../../shared/states/filter.action';
+import { FilterTypeEnum } from 'src/app/shared/models/filters/filter-type.enum';
+import { QuickFiltersDialogComponent } from '../../../../shared/components/dialogs/quick-filters-dialog/quick-filters-dialog.component';
 
 @Component({
   selector: 'app-charts-helper-bar',
@@ -30,10 +32,17 @@ export class ChartsHelperBarComponent implements OnDestroy {
   showRegionFilters = false;
   showStatusFilters = false;
 
-  dialogRef?: MatDialogRef<SimpleInputDialogComponent>;
+  private dialogRef?: MatDialogRef<SimpleInputDialogComponent | QuickFiltersDialogComponent>;
+
+  objectFilters$ = this.store.select(FiltersState.getMapObjectFilters);
+  deviceFilters$ = this.store.select(FiltersState.getMapDeviceFilters);
+  regionFilters$ = this.store.select(FiltersState.getMapRegionFilters);
+  statusFilters$ = this.store.select(FiltersState.getMapStatusFilters);
+
   private destroy$ = new Subject<void>();
 
   protected readonly OpenMode = ChartOpenMode;
+  protected readonly FilterTypeEnum = FilterTypeEnum;
 
   constructor(
     private store: Store,
@@ -90,8 +99,8 @@ export class ChartsHelperBarComponent implements OnDestroy {
     });
   }
 
-  onFiltersChanged($event: MapFilterModel[]) {
-    this.mapFiltersChanged.emit($event);
+  onFiltersChanged() {
+    this.mapFiltersChanged.emit();
     this.store.dispatch(new ApplyFilters());
   }
 
@@ -99,5 +108,12 @@ export class ChartsHelperBarComponent implements OnDestroy {
     this.store.dispatch(new Navigate([RoutePaths.Charts]));
     this.store.dispatch(new SetOpenMode(ChartOpenMode.ForCustomSearch));
     this.store.dispatch(new Load());
+  }
+
+  openQuickFilters(): void {
+    this.dialogRef = this.dialog.open<QuickFiltersDialogComponent>(QuickFiltersDialogComponent, {
+      data: {},
+      width: '400px',
+    });
   }
 }

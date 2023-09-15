@@ -1,0 +1,11 @@
+.quick-filter {
+  cursor: pointer;
+
+  mat-icon.delete {
+    float: right;
+  }
+}
+
+.quick-filter:hover {
+  background: lightgray;
+}

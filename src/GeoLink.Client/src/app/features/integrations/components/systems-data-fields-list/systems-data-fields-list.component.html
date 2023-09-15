@@ -1,0 +1,22 @@
+<ng-container *ngFor="let systemDataField of systemsDataFields$ | async">
+  <h2 class="system-type">{{ systemDataField.systemName }}</h2>
+  <table mat-table [dataSource]="systemDataField.dataFields" class="mat-elevation-z3">
+    <ng-container matColumnDef="sourceField">
+      <th mat-header-cell *matHeaderCellDef>Pole źródła danych</th>
+      <td mat-cell *matCellDef="let data">{{ data.sourceField }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="geolinkField">
+      <th mat-header-cell *matHeaderCellDef>Pole Geolink</th>
+      <td mat-cell *matCellDef="let data">{{ data.geolinkField }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="info">
+      <th mat-header-cell *matHeaderCellDef>Informacje dodatkowe</th>
+      <td mat-cell *matCellDef="let data">{{ data.info }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</ng-container>

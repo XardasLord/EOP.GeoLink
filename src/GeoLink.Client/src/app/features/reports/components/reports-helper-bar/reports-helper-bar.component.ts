@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { MapFilterModel } from '../../../maps/models/map-filter-model';
-import { debounceTime, map, Observable, Subject, takeUntil } from 'rxjs';
+import { debounceTime, Observable, Subject, takeUntil } from 'rxjs';
 import { ReportOpenMode } from '../../models/open-mode.enum';
 import { ReportsState } from '../../states/reports.state';
 import { Actions, ofActionDispatched, Store } from '@ngxs/store';
@@ -14,6 +14,8 @@ import { FilterAttributeModel } from '../../../../shared/models/filters/filter-a
 import { getInputDialogDataModelForFilterAttributes } from '../../../../shared/helpers/filter-attributes.helper';
 import { FiltersState } from '../../../../shared/states/filters.state';
 import { ChangeSearchFilters } from '../../../../shared/states/filter.action';
+import { FilterTypeEnum } from '../../../../shared/models/filters/filter-type.enum';
+import { QuickFiltersDialogComponent } from '../../../../shared/components/dialogs/quick-filters-dialog/quick-filters-dialog.component';
 
 @Component({
   selector: 'app-reports-helper-bar',
@@ -30,10 +32,17 @@ export class ReportsHelperBarComponent implements OnDestroy {
   showRegionFilters = false;
   showStatusFilters = false;
 
-  dialogRef?: MatDialogRef<SimpleInputDialogComponent>;
-  private destroy$ = new Subject<void>();
+  private dialogRef?: MatDialogRef<SimpleInputDialogComponent | QuickFiltersDialogComponent>;
+
+  objectFilters$ = this.store.select(FiltersState.getMapObjectFilters);
+  deviceFilters$ = this.store.select(FiltersState.getMapDeviceFilters);
+  regionFilters$ = this.store.select(FiltersState.getMapRegionFilters);
+  statusFilters$ = this.store.select(FiltersState.getMapStatusFilters);
 
   protected readonly OpenMode = ReportOpenMode;
+  protected readonly FilterTypeEnum = FilterTypeEnum;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private store: Store,
@@ -90,8 +99,8 @@ export class ReportsHelperBarComponent implements OnDestroy {
     });
   }
 
-  onFiltersChanged($event: MapFilterModel[]) {
-    this.mapFiltersChanged.emit($event);
+  onFiltersChanged() {
+    this.mapFiltersChanged.emit();
     this.store.dispatch(new ApplyFilters());
   }
 
@@ -99,5 +108,12 @@ export class ReportsHelperBarComponent implements OnDestroy {
     this.store.dispatch(new Navigate([RoutePaths.Reports]));
     this.store.dispatch(new SetOpenMode(ReportOpenMode.ForCustomSearch));
     this.store.dispatch(new Load());
+  }
+
+  openQuickFilters(): void {
+    this.dialogRef = this.dialog.open<QuickFiltersDialogComponent>(QuickFiltersDialogComponent, {
+      data: {},
+      width: '400px',
+    });
   }
 }

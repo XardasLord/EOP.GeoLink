@@ -1,0 +1,20 @@
+<mat-checkbox
+  [checked]="filter.completed"
+  [indeterminate]="isIndeterminate(filter)"
+  (change)="toggleFilter()"
+  [disabled]="!filter.enabled"
+  >{{ filter.name }}</mat-checkbox
+>
+
+<div *ngIf="filter.filters && filter.filters.length">
+  <ng-container *ngFor="let childFilter of filter.filters">
+    <ul>
+      <li>
+        <app-map-checkbox-filters
+          [filter]="childFilter"
+          [filterType]="filterType"
+          (filtersChanged)="onFiltersChanged()"></app-map-checkbox-filters>
+      </li>
+    </ul>
+  </ng-container>
+</div>

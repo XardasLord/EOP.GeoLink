@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
-import { Load } from '../../states/systems-availability.action';
+import { LoadSystemAvailabilities } from '../../states/systems-availability.action';
 import { nameof } from '../../../../shared/helpers/name-of.helper';
 import { SystemAvailabilityData } from '../../models/system-availability.model';
 import { SystemsAvailabilityState } from '../../states/systems-availability.state';
@@ -32,7 +32,7 @@ export class SystemsAvailabilityListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.store.dispatch(new Load());
+    this.store.dispatch(new LoadSystemAvailabilities());
   }
 
   displayChart(systemData: SystemAvailabilityData) {

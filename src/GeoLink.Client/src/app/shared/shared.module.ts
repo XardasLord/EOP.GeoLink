@@ -11,13 +11,11 @@ import { MaterialModule } from './modules/material.module';
 import { ModalState } from './states/modal.state';
 import { ErrorService } from './errors/error.service';
 import { MapRegionFiltersComponent } from './components/map-region-filters/map-region-filters.component';
-import { MapObjectFiltersComponent } from './components/map-object-filters/map-object-filters.component';
 import { AuthService } from './services/auth.service';
 import { AuthScopeAllowDirective } from './auth/directives/auth-scope-allow.directive';
 import { DictionaryService } from './services/dictionary.service';
 import { DictionaryState } from './states/dictionary.state';
 import { EnumDescriptionPipePipe } from './pipes/enum-description.pipe';
-import { MapStatusFiltersComponent } from './components/map-status-filters/map-status-filters.component';
 import { AlertState } from './states/alert.state';
 import { AlertService } from './services/alert.service';
 import { SingleDeviceChartComponent } from './components/single-device-chart/single-device-chart.component';
@@ -26,22 +24,23 @@ import { ChartService } from './services/chart.service';
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 import { ProgressSpinnerService } from './services/progress-spinner.service';
 import { SingleChartDialogComponent } from './components/single-chart-dialog/single-chart-dialog.component';
-import { MapDeviceFiltersComponent } from './components/map-device-filters/map-device-filters.component';
 import { SimpleInputDialogComponent } from './components/dialogs/simple-input-dialog/simple-input-dialog.component';
 import { FiltersState } from './states/filters.state';
+import { QuickFiltersDialogComponent } from './components/dialogs/quick-filters-dialog/quick-filters-dialog.component';
+import { QuickFilterService } from './services/quick-filter.service';
+import { MapCheckboxFiltersComponent } from './components/map-checkbox-filters/map-checkbox-filters.component';
 
 @NgModule({
   declarations: [
     EnumDescriptionPipePipe,
     MapRegionFiltersComponent,
-    MapObjectFiltersComponent,
-    MapDeviceFiltersComponent,
-    MapStatusFiltersComponent,
+    MapCheckboxFiltersComponent,
     AuthScopeAllowDirective,
     SingleDeviceChartComponent,
     SingleChartDialogComponent,
     ProgressSpinnerComponent,
     SimpleInputDialogComponent,
+    QuickFiltersDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -66,9 +65,7 @@ import { FiltersState } from './states/filters.state';
     ToastrModule,
     AuthScopeAllowDirective,
     MapRegionFiltersComponent,
-    MapObjectFiltersComponent,
-    MapDeviceFiltersComponent,
-    MapStatusFiltersComponent,
+    MapCheckboxFiltersComponent,
     SingleDeviceChartComponent,
     SingleChartDialogComponent,
     ProgressSpinnerComponent,
@@ -83,6 +80,7 @@ import { FiltersState } from './states/filters.state';
     AlertService,
     ChartService,
     ProgressSpinnerService,
+    QuickFilterService,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
   ],
 })
@@ -126,6 +124,7 @@ export class SharedModule {
       'menu_book',
       'geolink_logo',
       'search',
+      'close',
     ];
 
     svgIconFiles.forEach(iconFileName => {

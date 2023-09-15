@@ -69,10 +69,10 @@ export class AuthState implements NgxsOnInit {
       actions.push(new GetFilterAttributeDefinitions());
       actions.push(
         new SetInitialMapFilters(
-          user.init_objecttypefilters,
-          user.init_devicefilters,
-          user.init_regionfilters,
-          user.init_statusfilters
+          [user.init_objectfilterids],
+          user.init_devicefilterids,
+          user.init_regionfilterids,
+          user.init_statusfilterids
         )
       );
     }
@@ -147,10 +147,10 @@ export class AuthState implements NgxsOnInit {
         new GetConfigDefinitions(),
         new GetFilterAttributeDefinitions(),
         new SetInitialMapFilters(
-          state.user.init_objecttypefilters,
-          state.user.init_devicefilters,
-          state.user.init_regionfilters,
-          state.user.init_statusfilters
+          [state.user.init_objectfilterids],
+          state.user.init_devicefilterids,
+          state.user.init_regionfilterids,
+          state.user.init_statusfilterids
         ),
       ]);
 

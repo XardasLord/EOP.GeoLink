@@ -46,17 +46,17 @@ export class MapsService extends RemoteServiceBase {
         latMax: latMax,
       },
       objectFilters: selectedObjectMapFilters
-        .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.id !== null)
-        .map(x => x.id),
+        .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.apiValue !== null)
+        .map(x => x.apiValue!),
       deviceFilters: selectedDeviceMapFilters
-        .filter(x => x.apiFilterType === 'DeviceFilters' && x.id !== null)
-        .map(x => x.id),
+        .filter(x => x.apiFilterType === 'DeviceFilters' && x.apiValue !== null)
+        .map(x => x.apiValue!),
       regionFilters: selectedRegionMapFilters
-        .filter(x => x.apiFilterType === 'RegionFilters' && x.id !== null)
-        .map(x => x.id),
+        .filter(x => x.apiFilterType === 'RegionFilters' && x.apiValue !== null)
+        .map(x => x.apiValue!),
       statusFilters: selectedStatusMapFilters
-        .filter(x => x.apiFilterType === 'StatusFilters' && x.id !== null)
-        .map(x => x.id),
+        .filter(x => x.apiFilterType === 'StatusFilters' && x.apiValue !== null)
+        .map(x => x.apiValue!),
       attributeFilters: attributeFilers,
     };
 
@@ -82,17 +82,17 @@ export class MapsService extends RemoteServiceBase {
         latMax: latMax,
       },
       objectFilters: selectedObjectMapFilters
-        .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.id !== null)
-        .map(x => x.id),
+        .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.apiValue !== null)
+        .map(x => x.apiValue!),
       deviceFilters: selectedDeviceMapFilters
-        .filter(x => x.apiFilterType === 'DeviceFilters' && x.id !== null)
-        .map(x => x.id),
+        .filter(x => x.apiFilterType === 'DeviceFilters' && x.apiValue !== null)
+        .map(x => x.apiValue!),
       regionFilters: selectedRegionMapFilters
-        .filter(x => x.apiFilterType === 'RegionFilters' && x.id !== null)
-        .map(x => x.id),
+        .filter(x => x.apiFilterType === 'RegionFilters' && x.apiValue !== null)
+        .map(x => x.apiValue!),
       statusFilters: selectedStatusMapFilters
-        .filter(x => x.apiFilterType === 'StatusFilters' && x.id !== null)
-        .map(x => x.id),
+        .filter(x => x.apiFilterType === 'StatusFilters' && x.apiValue !== null)
+        .map(x => x.apiValue!),
       attributeFilters: attributeFilters,
     };
 
@@ -122,14 +122,14 @@ export class MapsService extends RemoteServiceBase {
       lvl: lvl,
       objType: objType,
       deviceFilters: selectedDeviceMapFilters
-        .filter(x => x.apiFilterType === 'DeviceFilters' && x.id !== null)
-        .map(x => x.id),
+        .filter(x => x.apiFilterType === 'DeviceFilters' && x.apiValue !== null)
+        .map(x => x.apiValue!),
       regionFilters: selectedRegionMapFilters
-        .filter(x => x.apiFilterType === 'RegionFilters' && x.id !== null)
-        .map(x => x.id),
+        .filter(x => x.apiFilterType === 'RegionFilters' && x.apiValue !== null)
+        .map(x => x.apiValue!),
       statusFilters: selectedStatusMapFilters
-        .filter(x => x.apiFilterType === 'StatusFilters' && x.id !== null)
-        .map(x => x.id),
+        .filter(x => x.apiFilterType === 'StatusFilters' && x.apiValue !== null)
+        .map(x => x.apiValue!),
       attributeFilters: attributeFilters,
     };
 
@@ -137,7 +137,7 @@ export class MapsService extends RemoteServiceBase {
   }
 
   getFilters(): Observable<MapFilterModel[]> {
-    return this.httpClient.get<MapFilterModel[]>(`${this.apiUrl}/interface/getFiltersDef`);
+    return this.httpClient.get<MapFilterModel[]>(`${this.apiUrl}/interface/getFiltersTreeDef`);
   }
 
   private generatePolishLat() {

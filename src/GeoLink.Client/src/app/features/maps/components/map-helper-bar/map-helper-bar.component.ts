@@ -8,6 +8,8 @@ import { Store } from '@ngxs/store';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ChangeSearchFilters } from '../../../../shared/states/filter.action';
 import { FiltersState } from '../../../../shared/states/filters.state';
+import { QuickFiltersDialogComponent } from '../../../../shared/components/dialogs/quick-filters-dialog/quick-filters-dialog.component';
+import { FilterTypeEnum } from '../../../../shared/models/filters/filter-type.enum';
 
 @Component({
   selector: 'app-map-helper-bar',
@@ -21,7 +23,14 @@ export class MapHelperBarComponent {
   showRegionFilters = false;
   showStatusFilters = false;
 
-  dialogRef?: MatDialogRef<SimpleInputDialogComponent>;
+  private dialogRef?: MatDialogRef<SimpleInputDialogComponent | QuickFiltersDialogComponent>;
+
+  objectFilters$ = this.store.select(FiltersState.getMapObjectFilters);
+  deviceFilters$ = this.store.select(FiltersState.getMapDeviceFilters);
+  regionFilters$ = this.store.select(FiltersState.getMapRegionFilters);
+  statusFilters$ = this.store.select(FiltersState.getMapStatusFilters);
+
+  protected readonly FilterTypeEnum = FilterTypeEnum;
 
   constructor(
     private store: Store,
@@ -55,6 +64,13 @@ export class MapHelperBarComponent {
     );
   }
 
+  openQuickFilters(): void {
+    this.dialogRef = this.dialog.open<QuickFiltersDialogComponent>(QuickFiltersDialogComponent, {
+      data: {},
+      width: '400px',
+    });
+  }
+
   private loadForm(
     formTitle: string,
     action: (model: FilterAttributeModel[]) => void,
@@ -68,7 +84,7 @@ export class MapHelperBarComponent {
     });
   }
 
-  onFiltersChanged($event: MapFilterModel[]) {
-    this.mapFiltersChanged.emit($event);
+  onFiltersChanged() {
+    this.mapFiltersChanged.emit();
   }
 }

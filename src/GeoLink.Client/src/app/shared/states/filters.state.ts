@@ -1,21 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
+import { Action, Selector, State, StateContext, StateToken, Store } from '@ngxs/store';
 import { FiltersStateModel } from './filter.state.model';
 import { FilterAttributeModel } from '../models/filters/filter-attribute.model';
 import {
-  ChangeFilters,
   ChangeSearchFilters,
-  DeviceMapFiltersSelectionChange,
+  DeleteQuickFilter,
   LoadMapFilters,
-  ObjectMapFiltersSelectionChange,
-  RegionMapFiltersSelectionChange,
+  LoadQuickFilter,
+  LoadQuickFilters,
+  SaveQuickFilters,
   SetInitialMapFilters,
-  StatusMapFiltersSelectionChange,
+  ToggleMapFilter,
 } from './filter.action';
 import { MapFilterModel } from '../../features/maps/models/map-filter-model';
 import { MapFiltersModel } from '../../features/maps/models/map-filters.model';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { MapsService } from '../../features/maps/services/maps.service';
+import { QuickFilterModel } from '../models/filters/quick-filter.model';
+import { QuickFilterService } from '../services/quick-filter.service';
+import { getAllSelectedFilters } from '../helpers/map-filters.helper';
+import { FilterTypeEnum } from '../models/filters/filter-type.enum';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { RoutePaths } from '../../core/modules/app-routing.module';
+import { Load as LoadCharts } from '../../features/charts/states/charts.action';
+import { Load as LoadReports } from '../../features/reports/states/reports.action';
 
 const FILTERS_STATE_TOKEN = new StateToken<FiltersStateModel>('filters');
 
@@ -28,16 +37,19 @@ const FILTERS_STATE_TOKEN = new StateToken<FiltersStateModel>('filters');
       regionFilters: [],
       statusFilters: [],
     },
-    selectedObjectMapFilters: [],
-    selectedDeviceMapFilters: [],
-    selectedRegionMapFilters: [],
-    selectedStatusMapFilters: [],
     filterAttributeModels: [],
+    quickFilterModels: [],
   },
 })
 @Injectable()
 export class FiltersState {
-  constructor(private mapsService: MapsService) {}
+  constructor(
+    private mapsService: MapsService,
+    private quickFiltersService: QuickFilterService,
+    private toastService: ToastrService,
+    private store: Store,
+    private router: Router
+  ) {}
 
   @Selector([FILTERS_STATE_TOKEN])
   static getMapFilters(state: FiltersStateModel): MapFiltersModel {
@@ -45,23 +57,43 @@ export class FiltersState {
   }
 
   @Selector([FILTERS_STATE_TOKEN])
+  static getMapObjectFilters(state: FiltersStateModel): MapFilterModel[] {
+    return state.mapFilters.objectFilters[0].filters;
+  }
+
+  @Selector([FILTERS_STATE_TOKEN])
+  static getMapDeviceFilters(state: FiltersStateModel): MapFilterModel[] {
+    return state.mapFilters.deviceFilters[0].filters;
+  }
+
+  @Selector([FILTERS_STATE_TOKEN])
+  static getMapRegionFilters(state: FiltersStateModel): MapFilterModel[] {
+    return state.mapFilters.regionFilters[0].filters;
+  }
+
+  @Selector([FILTERS_STATE_TOKEN])
+  static getMapStatusFilters(state: FiltersStateModel): MapFilterModel[] {
+    return state.mapFilters.statusFilters[0].filters;
+  }
+
+  @Selector([FILTERS_STATE_TOKEN])
   static getSelectedObjectMapFilters(state: FiltersStateModel): MapFilterModel[] {
-    return state.selectedObjectMapFilters;
+    return getAllSelectedFilters(state.mapFilters.objectFilters.flatMap(deviceFilter => deviceFilter.filters));
   }
 
   @Selector([FILTERS_STATE_TOKEN])
   static getSelectedDeviceMapFilters(state: FiltersStateModel): MapFilterModel[] {
-    return state.selectedDeviceMapFilters;
+    return getAllSelectedFilters(state.mapFilters.deviceFilters.flatMap(deviceFilter => deviceFilter.filters));
   }
 
   @Selector([FILTERS_STATE_TOKEN])
   static getSelectedRegionMapFilters(state: FiltersStateModel): MapFilterModel[] {
-    return state.selectedRegionMapFilters;
+    return getAllSelectedFilters(state.mapFilters.regionFilters.flatMap(deviceFilter => deviceFilter.filters));
   }
 
   @Selector([FILTERS_STATE_TOKEN])
   static getSelectedStatusMapFilters(state: FiltersStateModel): MapFilterModel[] {
-    return state.selectedStatusMapFilters;
+    return getAllSelectedFilters(state.mapFilters.statusFilters.flatMap(deviceFilter => deviceFilter.filters));
   }
 
   @Selector([FILTERS_STATE_TOKEN])
@@ -69,14 +101,9 @@ export class FiltersState {
     return state.filterAttributeModels;
   }
 
-  @Action(ChangeFilters)
-  changeFilters(ctx: StateContext<FiltersStateModel>, action: ChangeFilters) {
-    ctx.patchState({
-      selectedObjectMapFilters: action.selectedObjectMapFilters,
-      selectedDeviceMapFilters: action.selectedDeviceMapFilters,
-      selectedRegionMapFilters: action.selectedRegionMapFilters,
-      selectedStatusMapFilters: action.selectedStatusMapFilters,
-    });
+  @Selector([FILTERS_STATE_TOKEN])
+  static getQuickFilterModels(state: FiltersStateModel): QuickFilterModel[] {
+    return state.quickFilterModels;
   }
 
   @Action(ChangeSearchFilters)
@@ -93,12 +120,12 @@ export class FiltersState {
     const selectedDeviceMapFilters: MapFilterModel[] = [];
     const selectedRegionMapFilters: MapFilterModel[] = [];
     const selectedStatusMapFilters: MapFilterModel[] = [];
-
+    console.warn(action);
     function updateObjectFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
       return filters.map(filter => {
         const updatedFilter: MapFilterModel = { ...filter };
 
-        if (filter.id === action.objectTypeFilters && filter.apiFilterType === 'ObjectTypeFilters') {
+        if (action.objectFilterIds.some(f => f === filter.idFilter && filter.apiFilterType === 'ObjectTypeFilters')) {
           updatedFilter.completed = true;
           selectedObjectMapFilters.push(updatedFilter);
         } else {
@@ -117,7 +144,7 @@ export class FiltersState {
       return filters.map(filter => {
         const updatedFilter: MapFilterModel = { ...filter };
 
-        if (action.deviceFilters.some(f => f === filter.id && filter.apiFilterType === 'DeviceFilters')) {
+        if (action.deviceFilterIds.some(f => f === filter.idFilter && filter.apiFilterType === 'DeviceFilters')) {
           updatedFilter.completed = true;
           selectedDeviceMapFilters.push(updatedFilter);
         } else {
@@ -136,7 +163,7 @@ export class FiltersState {
       return filters.map(filter => {
         const updatedFilter: MapFilterModel = { ...filter };
 
-        if (action.regionFilters.includes(filter.id)) {
+        if (action.regionFilterIds.includes(filter.idFilter!)) {
           updatedFilter.completed = true;
           selectedRegionMapFilters.push(updatedFilter);
         } else {
@@ -155,7 +182,7 @@ export class FiltersState {
       return filters.map(filter => {
         const updatedFilter: MapFilterModel = { ...filter };
 
-        if (action.statusFilters.includes(filter.id)) {
+        if (action.statusFilterIds.includes(filter.idFilter!)) {
           updatedFilter.completed = true;
           selectedStatusMapFilters.push(updatedFilter);
         } else {
@@ -191,10 +218,6 @@ export class FiltersState {
     };
 
     ctx.patchState({
-      selectedObjectMapFilters: selectedObjectMapFilters,
-      selectedDeviceMapFilters: selectedDeviceMapFilters,
-      selectedRegionMapFilters: selectedRegionMapFilters,
-      selectedStatusMapFilters: selectedStatusMapFilters,
       mapFilters: updatedFilters,
     });
   }
@@ -217,163 +240,117 @@ export class FiltersState {
     );
   }
 
-  @Action(ObjectMapFiltersSelectionChange)
-  objectMapFiltersSelectionChange(ctx: StateContext<FiltersStateModel>, action: ObjectMapFiltersSelectionChange) {
-    const filters = ctx.getState().mapFilters;
+  @Action(LoadQuickFilters)
+  loadQuickFilters(ctx: StateContext<FiltersStateModel>, _: LoadQuickFilters): Observable<QuickFilterModel[]> {
+    return this.quickFiltersService.getQuickFilters().pipe(
+      tap(response => {
+        ctx.patchState({
+          quickFilterModels: response,
+        });
+      })
+    );
+  }
 
-    function updateFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
-      return filters.map(filter => {
-        const updatedFilter: MapFilterModel = { ...filter };
+  @Action(LoadQuickFilter)
+  loadQuickFilter(ctx: StateContext<FiltersStateModel>, action: LoadQuickFilter) {
+    ctx.dispatch(
+      new SetInitialMapFilters(
+        action.model.objectFilterIds,
+        action.model.deviceFilterIds,
+        action.model.regionFilterIds,
+        action.model.statusFilterIds
+      )
+    );
 
-        if (
-          action.selectedMapFilters.some(
-            f => f.id === filter.id && f.apiFilterType === filter.apiFilterType && f.name === filter.name
-          )
-        ) {
-          updatedFilter.completed = true;
-        } else {
-          updatedFilter.completed = false;
-        }
-
-        if (filter.filters) {
-          updatedFilter.filters = updateFiltersCompleted(filter.filters);
-        }
-
-        return updatedFilter;
-      });
+    if (this.router.url.indexOf(`/${RoutePaths.Reports}`) > -1) {
+      ctx.dispatch(new LoadReports());
+    } else if (this.router.url.indexOf(`/${RoutePaths.Charts}`) > -1) {
+      ctx.dispatch(new LoadCharts());
+    } else if (this.router.url.indexOf(`/${RoutePaths.Map}`) > -1) {
+      // TODO:
     }
 
-    const updatedFilters: MapFiltersModel = {
+    this.toastService.success('Pomyślnie wczytano szybki filtr', 'Sukces');
+  }
+
+  @Action(SaveQuickFilters)
+  saveQuickFilter(ctx: StateContext<FiltersStateModel>, action: SaveQuickFilters) {
+    return this.quickFiltersService.save(action.payload).pipe(
+      tap(() => {
+        ctx.dispatch(new LoadQuickFilters());
+
+        this.toastService.success('Dodano nowy szybki filtr', 'Sukces');
+      }),
+      catchError(error => {
+        this.toastService.error('Błąd podczas dodawania szybkiego filtru', 'Błąd');
+        return throwError(error);
+      })
+    );
+  }
+
+  @Action(DeleteQuickFilter)
+  deleteQuickFilter(ctx: StateContext<FiltersStateModel>, action: DeleteQuickFilter) {
+    return this.quickFiltersService.delete(action.id).pipe(
+      tap(() => {
+        ctx.dispatch(new LoadQuickFilters());
+
+        this.toastService.success('Usunięto szybki filtr', 'Sukces');
+      }),
+      catchError(error => {
+        this.toastService.error('Błąd podczas usuwania szybkiego filtru', 'Błąd');
+        return throwError(error);
+      })
+    );
+  }
+
+  @Action(ToggleMapFilter)
+  toggleMapFilter(ctx: StateContext<FiltersStateModel>, action: ToggleMapFilter) {
+    const filters = ctx.getState().mapFilters;
+
+    let updatedFiltersRoot: MapFiltersModel;
+    let updatedObjectFilters = [...filters.objectFilters];
+    let updatedDeviceFilters = [...filters.deviceFilters];
+    let updatedRegionFilters = [...filters.regionFilters];
+    let updatedStatusFilters = [...filters.statusFilters];
+
+    if (action.filterType === FilterTypeEnum.Object) {
+      updatedObjectFilters = this.toggleFilterRecursively(filters.objectFilters, action.filterId, action.checked);
+    } else if (action.filterType === FilterTypeEnum.Device) {
+      updatedDeviceFilters = this.toggleFilterRecursively(filters.deviceFilters, action.filterId, action.checked);
+    } else if (action.filterType === FilterTypeEnum.Region) {
+      updatedRegionFilters = this.toggleFilterRecursively(filters.regionFilters, action.filterId, action.checked);
+    } else if (action.filterType === FilterTypeEnum.Status) {
+      updatedStatusFilters = this.toggleFilterRecursively(filters.statusFilters, action.filterId, action.checked);
+    }
+
+    updatedFiltersRoot = {
       ...filters,
-      objectFilters: filters.objectFilters.map(objectFilter => ({
-        ...objectFilter,
-        filters: updateFiltersCompleted(objectFilter.filters),
-      })),
+      objectFilters: updatedObjectFilters,
+      deviceFilters: updatedDeviceFilters,
+      regionFilters: updatedRegionFilters,
+      statusFilters: updatedStatusFilters,
     };
 
     ctx.patchState({
-      selectedObjectMapFilters: action.selectedMapFilters,
-      mapFilters: updatedFilters,
+      mapFilters: updatedFiltersRoot,
     });
   }
 
-  @Action(DeviceMapFiltersSelectionChange)
-  deviceMapFiltersSelectionChange(ctx: StateContext<FiltersStateModel>, action: DeviceMapFiltersSelectionChange) {
-    const filters = ctx.getState().mapFilters;
+  private toggleFilterRecursively(filters: MapFilterModel[], filterId: number, completed: boolean): MapFilterModel[] {
+    return filters.map(filter => {
+      if (filter.idFilter === filterId) {
+        // Aktualizujemy completed rodzica
+        filter = { ...filter, completed };
+      } else if (filter.filters && filter.filters.length) {
+        // Rekurencyjnie aktualizujemy dzieci
+        filter = { ...filter, filters: this.toggleFilterRecursively(filter.filters, filterId, completed) };
 
-    function updateFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
-      return filters.map(filter => {
-        const updatedFilter: MapFilterModel = { ...filter };
+        // Jeśli jakieś dziecko nie jest zaznaczone, to rodzic też nie jest zaznaczony
+        const isAnyChildUnchecked = filter.filters.some(childFilter => !childFilter.completed);
+        filter.completed = !isAnyChildUnchecked;
+      }
 
-        if (
-          action.selectedMapFilters.some(
-            f => f.id === filter.id && f.apiFilterType === filter.apiFilterType && f.name === filter.name
-          )
-        ) {
-          updatedFilter.completed = true;
-        } else {
-          updatedFilter.completed = false;
-        }
-
-        if (filter.filters) {
-          updatedFilter.filters = updateFiltersCompleted(filter.filters);
-        }
-
-        return updatedFilter;
-      });
-    }
-
-    const updatedFilters: MapFiltersModel = {
-      ...filters,
-      deviceFilters: filters.deviceFilters.map(deviceFilter => ({
-        ...deviceFilter,
-        filters: updateFiltersCompleted(deviceFilter.filters),
-      })),
-    };
-
-    ctx.patchState({
-      selectedDeviceMapFilters: action.selectedMapFilters,
-      mapFilters: updatedFilters,
-    });
-  }
-
-  @Action(RegionMapFiltersSelectionChange)
-  regionMapFiltersSelectionChange(ctx: StateContext<FiltersStateModel>, action: RegionMapFiltersSelectionChange) {
-    const filters = ctx.getState().mapFilters;
-
-    function updateFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
-      return filters.map(filter => {
-        const updatedFilter: MapFilterModel = { ...filter };
-
-        if (
-          action.selectedMapFilters.some(
-            f => f.id === filter.id && f.apiFilterType === filter.apiFilterType && f.name === filter.name
-          )
-        ) {
-          updatedFilter.completed = true;
-        } else {
-          updatedFilter.completed = false;
-        }
-
-        if (filter.filters) {
-          updatedFilter.filters = updateFiltersCompleted(filter.filters);
-        }
-
-        return updatedFilter;
-      });
-    }
-
-    const updatedFilters: MapFiltersModel = {
-      ...filters,
-      regionFilters: filters.regionFilters.map(regionFilter => ({
-        ...regionFilter,
-        filters: updateFiltersCompleted(regionFilter.filters),
-      })),
-    };
-
-    ctx.patchState({
-      selectedRegionMapFilters: action.selectedMapFilters,
-      mapFilters: updatedFilters,
-    });
-  }
-
-  @Action(StatusMapFiltersSelectionChange)
-  statusMapFiltersSelectionChange(ctx: StateContext<FiltersStateModel>, action: StatusMapFiltersSelectionChange) {
-    const filters = ctx.getState().mapFilters;
-
-    function updateFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
-      return filters.map(filter => {
-        const updatedFilter: MapFilterModel = { ...filter };
-
-        if (
-          action.selectedMapFilters.some(
-            f => f.id === filter.id && f.apiFilterType === filter.apiFilterType && f.name === filter.name
-          )
-        ) {
-          updatedFilter.completed = true;
-        } else {
-          updatedFilter.completed = false;
-        }
-
-        if (filter.filters) {
-          updatedFilter.filters = updateFiltersCompleted(filter.filters);
-        }
-
-        return updatedFilter;
-      });
-    }
-
-    const updatedFilters: MapFiltersModel = {
-      ...filters,
-      statusFilters: filters.statusFilters.map(statusFilter => ({
-        ...statusFilter,
-        filters: updateFiltersCompleted(statusFilter.filters),
-      })),
-    };
-
-    ctx.patchState({
-      selectedStatusMapFilters: action.selectedMapFilters,
-      mapFilters: updatedFilters,
+      return filter;
     });
   }
 }

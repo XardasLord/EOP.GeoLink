@@ -21,7 +21,7 @@ export function getInputDialogDataModelForFilterAttributes(
   filterAttributeDefinitions.forEach(attribute => {
     inputs.push({
       controlName: attribute.name,
-      label: attribute.name,
+      label: attribute.description,
       type: 'text',
       initValue: searchFilterModels?.filter(x => x.name === attribute.name).map(x => x.value)[0],
       idAtrF: filterAttributeDefinitions.filter(x => x.name === attribute.name).map(x => x.idAtrF)[0],
