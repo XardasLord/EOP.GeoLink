@@ -143,6 +143,7 @@ export class ChartsState {
               nameGap: 30,
               nameTextStyle: {
                 color: 'black',
+                fontSize: 20,
               },
               silent: false,
               splitLine: {
@@ -155,6 +156,7 @@ export class ChartsState {
               nameGap: 30,
               nameTextStyle: {
                 color: 'black',
+                fontSize: 20,
               },
             },
             series: [
