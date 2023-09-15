@@ -1,5 +1,11 @@
 @import '../../../../../styles/variables';
 
+.chart-not-available {
+  text-align: center;
+  vertical-align: middle;
+  line-height: 400px;
+}
+
 .map-object-context-menu-chart {
   height: 400px;
 }

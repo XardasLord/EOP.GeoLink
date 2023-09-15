@@ -1,30 +1,36 @@
-<div class="header-info">
-  <span class="date">Data: {{ chartModel.dateNow | date: 'dd.MM.yyyy HH:mm:ss' }}</span>
-  <span class="period"
-    >Okres: {{ chartModel.dateBegin | date: 'dd.MM.yyyy HH:mm:ss' }} -
-    {{ chartModel.dateEnd | date: 'dd.MM.yyyy HH:mm:ss' }}</span
-  >
-  <ng-container *ngIf="chartModel.chartsData?.avgAvail">
-    <span class="main-label">Średnia dostępność:</span>
-    <span class="main-value">{{ chartModel.chartsData?.avgAvail | number: '1.2-2' }}%</span>
-  </ng-container>
-  <ng-container *ngIf="chartModel.chartsData?.devHealth">
-    <span class="main-label">Kondycja urządzenia: </span>
-    <span
-      class="main-value"
-      [ngClass]="{
-        good: chartModel.chartsData?.devHealth === MapObjectStatusTypeEnum.OK,
-        warning: chartModel.chartsData?.devHealth === MapObjectStatusTypeEnum.Warning,
-        bad: chartModel.chartsData?.devHealth === MapObjectStatusTypeEnum.Error
-      }"
-      >{{ chartModel.chartsData?.devHealth }}
-    </span>
-  </ng-container>
-</div>
+<ng-container *ngIf="chartModel.chartsData.data && chartModel.chartsData.data.length > 0; else no_chart">
+  <div class="header-info">
+    <span class="date">Data: {{ chartModel.dateNow | date: 'dd.MM.yyyy HH:mm:ss' }}</span>
+    <span class="period"
+      >Okres: {{ chartModel.dateBegin | date: 'dd.MM.yyyy HH:mm:ss' }} -
+      {{ chartModel.dateEnd | date: 'dd.MM.yyyy HH:mm:ss' }}</span
+    >
+    <ng-container *ngIf="chartModel.chartsData?.avgAvail">
+      <span class="main-label">Średnia dostępność:</span>
+      <span class="main-value">{{ chartModel.chartsData?.avgAvail | number: '1.2-2' }}%</span>
+    </ng-container>
+    <ng-container *ngIf="chartModel.chartsData?.devHealth">
+      <span class="main-label">Kondycja urządzenia: </span>
+      <span
+        class="main-value"
+        [ngClass]="{
+          good: chartModel.chartsData?.devHealth === MapObjectStatusTypeEnum.OK,
+          warning: chartModel.chartsData?.devHealth === MapObjectStatusTypeEnum.Warning,
+          bad: chartModel.chartsData?.devHealth === MapObjectStatusTypeEnum.Error
+        }"
+        >{{ chartModel.chartsData?.devHealth }}
+      </span>
+    </ng-container>
+  </div>
 
-<div
-  class="map-object-context-menu-chart"
-  echarts
-  [options]="chartOptions"
-  [loading]="isLoading"
-  [autoResize]="true"></div>
+  <div
+    class="map-object-context-menu-chart"
+    echarts
+    [options]="chartOptions"
+    [loading]="isLoading"
+    [autoResize]="true"></div>
+</ng-container>
+
+<ng-template #no_chart>
+  <h1 class="chart-not-available">Wykres niedostępny</h1>
+</ng-template>

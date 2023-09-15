@@ -62,7 +62,7 @@ export class ChartService extends RemoteServiceBase {
     idCluster: number | null = null
   ): Observable<ChartModel> {
     const requestModel: GetChartsRequestModel = {
-      chartTypes: [chartType],
+      chartType: chartType,
       // dateEnd: dateEnd ? dateEnd : new Date().toDateString(),
       timeExtent: timeExtent,
       lvl: clusterLevel && idCluster ? clusterLevel : null,
