@@ -1,20 +1,19 @@
 <table #myTable>
   <tr class="header-summary-row">
     <th>{{ getObjectType() }}</th>
-    <th colspan="2">{{ mapObject.nrExpl }}</th>
+    <th>{{ mapObject.nrExpl }}</th>
   </tr>
   <tr class="header-summary-row">
     <th>Nazwa</th>
-    <th colspan="2">{{ mapObject.name }}</th>
+    <th>{{ mapObject.name }}</th>
   </tr>
   <tr>
     <th>Kategoria</th>
     <th>Status</th>
-    <th>Narzędzia</th>
   </tr>
 
   <ng-container *ngFor="let deviceModelType of groupedDeviceTypes | keyvalue">
-    <td colspan="3" class="group-name">{{ deviceModelType.key }}</td>
+    <td colspan="2" class="group-name">{{ deviceModelType.key }}</td>
     <ng-container *ngFor="let deviceModel of deviceModelType.value">
       <tr class="device-item-row" (click)="showDeviceSubMenu(deviceModel, $event)">
         <td>{{ getDeviceType(+deviceModel.devType) }}</td>
@@ -29,7 +28,6 @@
             }"
             svgIcon="circle"></mat-icon>
         </td>
-        <td><span disabled>>>></span></td>
       </tr>
     </ng-container>
   </ng-container>
@@ -82,7 +80,7 @@
 <ng-container *ngIf="showChartMenu">
   <div
     class="status-chart-content first"
-    [ngStyle]="{ left: statusChartFirstElementLeft, top: statusChartFirstElementTop }">
+    [ngStyle]="{ left: attributeStatusChartElementLeft, top: attributeStatusChartElementTop }">
     <app-single-device-attribute-chart [attributeId]="selectedAttributeId"></app-single-device-attribute-chart>
   </div>
 </ng-container>
