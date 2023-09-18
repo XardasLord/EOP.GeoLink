@@ -10,7 +10,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { MaterialModule } from './modules/material.module';
 import { ModalState } from './states/modal.state';
 import { ErrorService } from './errors/error.service';
-import { MapRegionFiltersComponent } from './components/map-region-filters/map-region-filters.component';
 import { AuthService } from './services/auth.service';
 import { AuthScopeAllowDirective } from './auth/directives/auth-scope-allow.directive';
 import { DictionaryService } from './services/dictionary.service';
@@ -33,7 +32,6 @@ import { MapCheckboxFiltersComponent } from './components/map-checkbox-filters/m
 @NgModule({
   declarations: [
     EnumDescriptionPipePipe,
-    MapRegionFiltersComponent,
     MapCheckboxFiltersComponent,
     AuthScopeAllowDirective,
     SingleDeviceAttributeChartComponent,
@@ -64,7 +62,6 @@ import { MapCheckboxFiltersComponent } from './components/map-checkbox-filters/m
     EnumDescriptionPipePipe,
     ToastrModule,
     AuthScopeAllowDirective,
-    MapRegionFiltersComponent,
     MapCheckboxFiltersComponent,
     SingleDeviceAttributeChartComponent,
     SingleChartDialogComponent,

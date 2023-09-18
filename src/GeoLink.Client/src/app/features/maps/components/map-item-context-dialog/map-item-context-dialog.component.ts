@@ -106,15 +106,20 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
   }
 
   private adjustDeviceSubMenuPosition(event: MouseEvent) {
+    console.warn('event.pageY', event.pageY);
+    console.warn('window', window);
     // TODO: Get scrollY from the scrolled component instead of 'window.scrollY'
     const y = event.pageY;
     const tableRect = this.parentTable.nativeElement.getBoundingClientRect();
     const tableTop = tableRect.top + window.scrollY;
     const windowHeight = window.innerHeight;
     const maxY = windowHeight;
-    const top = y - tableTop > maxY ? maxY : y - tableTop;
+    const scrollOffset = window.scrollY; // Nowa linia dodana
+    const top = y - (tableTop - scrollOffset) > maxY ? maxY : y - (tableTop - scrollOffset);
     this.subMenuElementLeft = `425px`;
     this.subMenuElementTop = `${top}px`;
+    console.warn('tableTop', tableTop);
+    console.warn('top', top);
 
     this.changeDetectorRef.detectChanges();
   }
