@@ -11,7 +11,7 @@ import { ChangePage, Load } from '../../states/reports.action';
 import { ReportModel } from '../../models/report.model';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
 import { ChartTypeEnum } from '../../../../shared/models/charts/chart-type.enum';
-import { SingleChartDialogComponent } from '../../../../shared/components/single-chart-dialog/single-chart-dialog.component';
+import { SingleChartDialogComponent } from '../../../../shared/components/dialogs/single-chart-dialog/single-chart-dialog.component';
 import { SingleDeviceChartDialogModel } from '../../../../shared/models/charts/single-device-chart-dialog.model';
 import { RoutePaths } from '../../../../core/modules/app-routing.module';
 import { ReportOpenMode } from '../../models/open-mode.enum';

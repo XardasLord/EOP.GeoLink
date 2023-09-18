@@ -3,22 +3,29 @@ import { Subscription } from 'rxjs';
 import { EChartsOption } from 'echarts';
 import { ChartService } from '../../services/chart.service';
 import { ChartModel } from '../../models/charts/chart.model';
-import { ChartTypeEnum } from '../../models/charts/chart-type.enum';
 import { MapObjectStatusTypeEnum } from '../../models/map-object-status-type.enum';
 
 @Component({
-  selector: 'app-single-device-chart',
-  templateUrl: './single-device-chart.component.html',
-  styleUrls: ['./single-device-chart.component.scss'],
+  selector: 'app-single-device-attribute-chart',
+  templateUrl: './single-device-attribute-chart.component.html',
+  styleUrls: ['./single-device-attribute-chart.component.scss'],
 })
-export class SingleDeviceChartComponent implements OnInit, OnDestroy {
-  @Input() public chartType!: ChartTypeEnum;
-  @Input() public deviceId!: number;
+export class SingleDeviceAttributeChartComponent implements OnInit, OnDestroy {
+  @Input() public attributeId!: number;
 
   protected readonly MapObjectStatusTypeEnum = MapObjectStatusTypeEnum;
 
-  public deviceChartModel: ChartModel = {
-    chartsData: [],
+  public chartModel: ChartModel = {
+    chartsData: {
+      data: [],
+      chartNames: [],
+      avgAvail: 0,
+      devHealth: 0,
+      chartAxisInfo: {
+        x: '',
+        y: '',
+      },
+    },
     dateNow: new Date(),
     dateBegin: new Date(),
     dateEnd: new Date(),
@@ -36,16 +43,12 @@ export class SingleDeviceChartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.prepareChartMock();
-
     this.getChartSubscription.add(
-      this.deviceChartService.getDeviceChart(this.deviceId, this.chartType).subscribe(deviceChartModel => {
+      this.deviceChartService.getAttributeCharts(this.attributeId).subscribe(chartModel => {
         this.isLoading = false;
-        this.deviceChartModel = deviceChartModel;
+        this.chartModel = chartModel;
 
-        console.warn(deviceChartModel);
-
-        this.prepareChart(deviceChartModel);
+        this.prepareChart(chartModel);
 
         this.changeDetectorRef.detectChanges();
       })
@@ -56,48 +59,12 @@ export class SingleDeviceChartComponent implements OnInit, OnDestroy {
     this.getChartSubscription.unsubscribe();
   }
 
-  prepareChartMock() {
-    const xAxisData = [];
-    const standardChartData = [];
-
-    for (let i = 0; i < 100; i++) {
-      xAxisData.push('category' + i);
-      standardChartData.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
-    }
-
-    this.chartOptions = {
-      legend: {
-        data: ['bar'],
-        align: 'left',
-      },
-      tooltip: {},
-      xAxis: {
-        data: xAxisData,
-        silent: false,
-        splitLine: {
-          show: false,
-        },
-      },
-      yAxis: {},
-      series: [
-        {
-          name: 'bar',
-          type: 'line',
-          data: standardChartData,
-          animationDelay: idx => idx * 10,
-        },
-      ],
-      animationEasing: 'elasticOut',
-      animationDelayUpdate: idx => idx * 5,
-    };
-  }
-
   prepareChart(model: ChartModel) {
     const xAxisData: string[] = [];
     const standardChartData: number[] = [];
     const polynomialChartData: number[] = [];
 
-    model.chartsData[0].data.forEach(chartData => {
+    model.chartsData.data.forEach(chartData => {
       const date = new Date(chartData.timestamp);
       const formattedDate = `${date.getHours().toString()}:${date.getMinutes().toString()}`;
 
@@ -108,27 +75,40 @@ export class SingleDeviceChartComponent implements OnInit, OnDestroy {
 
     this.chartOptions = {
       legend: {
-        data: [model.chartsData[0].chartName, 'Trend'],
+        data: [model.chartsData.chartNames[0], model.chartsData.chartNames[1]],
         align: 'left',
       },
       tooltip: {},
       xAxis: {
         data: xAxisData,
+        name: model.chartsData.chartAxisInfo.x,
+        nameLocation: 'middle',
+        nameGap: 30,
+        nameTextStyle: {
+          color: 'black',
+        },
         silent: false,
         splitLine: {
           show: false,
         },
       },
-      yAxis: {},
+      yAxis: {
+        name: model.chartsData.chartAxisInfo.y,
+        nameLocation: 'middle',
+        nameGap: 30,
+        nameTextStyle: {
+          color: 'black',
+        },
+      },
       series: [
         {
-          name: model.chartsData[0].chartName,
+          name: model.chartsData.chartNames[0],
           type: 'line',
           data: standardChartData,
           animationDelay: idx => idx * 10,
         },
         {
-          name: 'Trend',
+          name: model.chartsData.chartNames[1],
           type: 'line',
           lineStyle: {
             type: 'dotted',

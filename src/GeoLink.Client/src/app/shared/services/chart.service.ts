@@ -17,6 +17,7 @@ export class ChartService extends RemoteServiceBase {
     super(httpClient);
   }
 
+  // This is not relevant anymore and does not exist in API anymore
   getDeviceChart(
     deviceId: number,
     chartType: ChartTypeEnum,
@@ -43,6 +44,12 @@ export class ChartService extends RemoteServiceBase {
     return this.httpClient.get<ChartModel>(`${this.apiUrl}/charts/getSystemCharts`, { params });
   }
 
+  getAttributeCharts(attributeId: number): Observable<ChartModel> {
+    const params = new HttpParams().set('atrId', attributeId);
+
+    return this.httpClient.get<ChartModel>(`${this.apiUrl}/charts/getAttributeCharts`, { params });
+  }
+
   getChart(
     timeExtent = 1,
     chartType: ChartTypeEnum,
@@ -55,7 +62,7 @@ export class ChartService extends RemoteServiceBase {
     idCluster: number | null = null
   ): Observable<ChartModel> {
     const requestModel: GetChartsRequestModel = {
-      chartTypes: [chartType],
+      chartType: chartType,
       // dateEnd: dateEnd ? dateEnd : new Date().toDateString(),
       timeExtent: timeExtent,
       lvl: clusterLevel && idCluster ? clusterLevel : null,

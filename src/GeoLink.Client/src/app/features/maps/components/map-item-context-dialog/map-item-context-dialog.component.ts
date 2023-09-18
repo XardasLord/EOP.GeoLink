@@ -1,12 +1,15 @@
 import { AfterContentChecked, ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
-import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
-import { DeviceDetailsModel, DeviceModel, MapObjectModel } from '../../models/map-item.model';
+import {
+  DeviceDetailsModel,
+  DeviceDetailsAttributeModel,
+  DeviceModel,
+  MapObjectModel,
+} from '../../models/map-item.model';
 import { MapObjectHelper } from '../../helpers/map-object-helper';
 import { MapDeviceTypeEnum } from '../../../../shared/models/map-device-type.enum';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
 import { MapsService } from '../../services/maps.service';
-import { ChartTypeEnum } from '../../../../shared/models/charts/chart-type.enum';
 
 @Component({
   selector: 'app-map-item-context-dialog',
@@ -33,18 +36,13 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
   public showChartMenu = false;
   public subMenuElementLeft = '';
   public subMenuElementTop = '';
-  public statusChartFirstElementLeft = '';
-  public statusChartFirstElementTop = '';
-  public statusChartSecondElementLeft = '';
-  public statusChartSecondElementTop = '';
-  public selectedDeviceId = 0;
+  public attributeStatusChartElementLeft = '';
+  public attributeStatusChartElementTop = '';
+  public selectedAttributeId = 0;
 
   private subscriptions: Subscription = new Subscription();
 
-  protected readonly ChartTypeEnum = ChartTypeEnum;
-
   constructor(
-    private store: Store,
     private changeDetectorRef: ChangeDetectorRef,
     private mapObjectHelper: MapObjectHelper,
     private mapsService: MapsService
@@ -75,12 +73,16 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     return this.mapObjectHelper.getDeviceTypeGroup(this.mapObject.devices);
   }
 
-  showStatusChart(deviceModel: DeviceModel, event: MouseEvent) {
-    this.selectedDeviceId = deviceModel.idDev;
+  showAttributeStatusChart(deviceAttribute: DeviceDetailsAttributeModel, event: MouseEvent) {
+    if (!deviceAttribute.isChart) {
+      return;
+    }
+
+    this.selectedAttributeId = deviceAttribute.idAtr;
     this.showChartMenu = false;
     this.changeDetectorRef.detectChanges();
     this.showChartMenu = true;
-    this.adjustDeviceStatusChartMenuPosition(event);
+    this.adjustAttributeStatusChartMenuPosition(event);
 
     this.changeDetectorRef.detectChanges();
   }
@@ -117,17 +119,15 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     this.changeDetectorRef.detectChanges();
   }
 
-  private adjustDeviceStatusChartMenuPosition(event: MouseEvent) {
+  private adjustAttributeStatusChartMenuPosition(event: MouseEvent) {
     const y = event.pageY;
     const tableRect = this.parentTable.nativeElement.getBoundingClientRect();
     const tableTop = tableRect.top + window.scrollY;
     const windowHeight = window.innerHeight;
     const maxY = windowHeight;
     const top = y - tableTop > maxY ? maxY : y - tableTop;
-    this.statusChartFirstElementLeft = `-490px`;
-    this.statusChartFirstElementTop = `${top}px`;
-    this.statusChartSecondElementLeft = `-490px`;
-    this.statusChartSecondElementTop = `${top + 240}px`;
+    this.attributeStatusChartElementLeft = `-60px`;
+    this.attributeStatusChartElementTop = `${top}px`;
 
     this.changeDetectorRef.detectChanges();
   }

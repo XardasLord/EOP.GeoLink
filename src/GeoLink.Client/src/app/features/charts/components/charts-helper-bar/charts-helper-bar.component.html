@@ -59,16 +59,14 @@
 </ng-container>
 
 <ng-container *ngIf="showRegionFilters">
-  <app-map-region-filters class="region-filters" (filtersChanged)="onFiltersChanged()"></app-map-region-filters>
-
-  <!--  <div class="filter-container region-filters" *ngIf="regionFilters$ | async as mapFilters">-->
-  <!--    <ng-container *ngFor="let filter of mapFilters">-->
-  <!--      <app-map-checkbox-filters-->
-  <!--        [filter]="filter"-->
-  <!--        [filterType]="FilterTypeEnum.Status"-->
-  <!--        (filtersChanged)="onFiltersChanged()"></app-map-checkbox-filters>-->
-  <!--    </ng-container>-->
-  <!--  </div>-->
+  <div class="filter-container region-filters" *ngIf="regionFilters$ | async as mapFilters">
+    <ng-container *ngFor="let filter of mapFilters">
+      <app-map-checkbox-filters
+        [filter]="filter"
+        [filterType]="FilterTypeEnum.Region"
+        (filtersChanged)="onFiltersChanged()"></app-map-checkbox-filters>
+    </ng-container>
+  </div>
 </ng-container>
 
 <ng-container *ngIf="showStatusFilters">

@@ -1,7 +1,7 @@
 import { FilterAttributeModel } from '../../../../shared/models/filters/filter-attribute.model';
 
 export interface GetChartsRequestModel {
-  chartTypes: string[];
+  chartType: string;
   timeExtent: number;
   // dateEnd: string;
   lvl: number | null;

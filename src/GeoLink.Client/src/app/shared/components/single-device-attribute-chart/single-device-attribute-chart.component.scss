@@ -1,5 +1,10 @@
 @import '../../../../styles/variables.scss';
 
+.chart-not-available {
+  text-align: center;
+  vertical-align: middle;
+}
+
 .map-object-context-menu-chart {
   height: 200px;
 }
