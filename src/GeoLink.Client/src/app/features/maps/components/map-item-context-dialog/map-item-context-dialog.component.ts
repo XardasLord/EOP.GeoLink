@@ -27,6 +27,7 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     ppe: '',
     idDev: 0,
     params: [],
+    diagTools: [],
     subDevId: [],
   };
 

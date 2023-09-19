@@ -58,6 +58,7 @@ export interface DeviceDetailsModel {
   ppe: string;
   model: string;
   params: DeviceDetailsAttributeModel[];
+  diagTools: DiagTool[];
   subDevId: number[];
 }
 
@@ -93,4 +94,9 @@ export interface MapClusterDeviceGroupDetails {
 export interface DeviceGroupStatus {
   devGroup: string;
   idStatus: MapObjectStatusTypeEnum;
+}
+
+export interface DiagTool {
+  name: string;
+  link: string;
 }
