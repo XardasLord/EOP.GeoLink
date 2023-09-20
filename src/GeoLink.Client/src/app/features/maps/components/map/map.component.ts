@@ -338,6 +338,15 @@ export class MapComponent implements OnInit, OnDestroy {
     });
 
     clusterMarker.on('click', () => {
+      this.unregisterMapEvents();
+
+      const markerLatLng = clusterMarker.getLatLng();
+
+      // We move the point to flyTo to move 100px down
+      const latLngToFlyTo = this.map.layerPointToLatLng(this.map.latLngToLayerPoint(markerLatLng).add([0, 100]));
+
+      this.map.flyTo(latLngToFlyTo, this.map.getZoom());
+
       const popupComponent = this.dynamicComponentCreator.createClusterGroupPopup(
         cluster.idClust,
         cluster.level,
@@ -352,6 +361,11 @@ export class MapComponent implements OnInit, OnDestroy {
           closeOnClick: false,
         })
         .openPopup();
+
+      // This is to prevent from loading map objects while map's flying to the marker
+      setTimeout(() => {
+        this.registerMapEvents();
+      }, 1000);
     });
 
     clusterMarker.on('contextmenu', () => {

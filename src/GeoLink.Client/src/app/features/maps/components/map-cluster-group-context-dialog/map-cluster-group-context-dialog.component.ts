@@ -23,8 +23,8 @@ export class MapClusterGroupContextDialogComponent implements AfterContentChecke
   public secondLevelClusterGroupDetailsModels!: MapClusterGroupDetails;
 
   public showSubMenu = false;
-  public elementLeft = '';
-  public elementTop = '';
+  // public elementLeft = '';
+  // public elementTop = '';
 
   private subscriptions: Subscription = new Subscription();
 
@@ -140,7 +140,7 @@ export class MapClusterGroupContextDialogComponent implements AfterContentChecke
 
   showClusterGroupSubMenu(groupModel: MapObjectGroupModel, event: MouseEvent) {
     this.showSubMenu = true;
-    this.adjustDeviceSubMenuPosition(event);
+    // this.adjustDeviceSubMenuPosition(event);
 
     const selectedDeviceMapFilters = this.store.selectSnapshot(FiltersState.getSelectedDeviceMapFilters);
     const selectedRegionMapFilters = this.store.selectSnapshot(FiltersState.getSelectedRegionMapFilters);
@@ -171,16 +171,16 @@ export class MapClusterGroupContextDialogComponent implements AfterContentChecke
     this.changeDetectorRef.detectChanges();
   }
 
-  private adjustDeviceSubMenuPosition(event: MouseEvent) {
-    const y = event.pageY;
-    const tableRect = this.parentTable.nativeElement.getBoundingClientRect();
-    const tableTop = tableRect.top + window.scrollY;
-    const windowHeight = window.innerHeight;
-    const maxY = windowHeight;
-    const top = y - tableTop > maxY ? maxY : y - tableTop;
-    this.elementLeft = `437px`;
-    this.elementTop = `${top}px`;
-
-    this.changeDetectorRef.detectChanges();
-  }
+  // private adjustDeviceSubMenuPosition(event: MouseEvent) {
+  //   const y = event.pageY;
+  //   const tableRect = this.parentTable.nativeElement.getBoundingClientRect();
+  //   const tableTop = tableRect.top + window.scrollY;
+  //   const windowHeight = window.innerHeight;
+  //   const maxY = windowHeight;
+  //   const top = y - tableTop > maxY ? maxY : y - tableTop;
+  //   this.elementLeft = `437px`;
+  //   this.elementTop = `${top}px`;
+  //
+  //   this.changeDetectorRef.detectChanges();
+  // }
 }
