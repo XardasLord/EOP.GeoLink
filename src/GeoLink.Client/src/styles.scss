@@ -330,6 +330,7 @@ img.leaflet-marker-icon.bad {
 // Context menu for single map object
 .map-object-context-menu {
   width: 420px;
+  bottom: 46px !important;
 
   .leaflet-popup-content-wrapper {
     max-height: 300px;
