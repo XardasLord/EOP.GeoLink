@@ -51,6 +51,8 @@ td {
 
 .second-level-table {
   position: fixed;
+  top: 0;
+  left: 425px;
   background-color: white;
   width: 325px;
   padding: 20px;
@@ -70,6 +72,8 @@ td {
 
 .status-chart-content {
   position: fixed;
+  top: 0;
+  left: -485px;
   background-color: white;
   width: 480px;
   border-radius: $context-menu-border-radius;

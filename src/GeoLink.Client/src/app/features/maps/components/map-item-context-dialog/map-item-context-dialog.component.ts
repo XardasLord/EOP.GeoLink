@@ -35,10 +35,10 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
   public deviceStatus = MapObjectStatusTypeEnum;
   public showSubMenu = false;
   public showChartMenu = false;
-  public subMenuElementLeft = '';
-  public subMenuElementTop = '';
-  public attributeStatusChartElementLeft = '';
-  public attributeStatusChartElementTop = '';
+  // public subMenuElementLeft = '';
+  // public subMenuElementTop = '';
+  // public attributeStatusChartElementLeft = '';
+  // public attributeStatusChartElementTop = '';
   public selectedAttributeId = 0;
 
   private subscriptions: Subscription = new Subscription();
@@ -83,7 +83,7 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     this.showChartMenu = false;
     this.changeDetectorRef.detectChanges();
     this.showChartMenu = true;
-    this.adjustAttributeStatusChartMenuPosition(event);
+    // this.adjustAttributeStatusChartMenuPosition(event);
 
     this.changeDetectorRef.detectChanges();
   }
@@ -91,7 +91,7 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
   showDeviceSubMenu(deviceModel: DeviceModel, event: MouseEvent) {
     this.showSubMenu = true;
     this.showChartMenu = false;
-    this.adjustDeviceSubMenuPosition(event);
+    // this.adjustDeviceSubMenuPosition(event);
 
     const deviceIds = [deviceModel.idDev];
     this.subscriptions.add(
@@ -108,30 +108,32 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     this.changeDetectorRef.detectChanges();
   }
 
-  private adjustDeviceSubMenuPosition(event: MouseEvent) {
-    // TODO: Get scrollY from the scrolled component instead of 'window.scrollY'
-    const y = event.pageY;
-    const tableRect = this.parentTable.nativeElement.getBoundingClientRect();
-    const tableTop = tableRect.top + window.scrollY;
-    const windowHeight = window.innerHeight;
-    const maxY = windowHeight;
-    const top = y - tableTop > maxY ? maxY : y - tableTop;
-    this.subMenuElementLeft = `425px`;
-    this.subMenuElementTop = `${top}px`;
+  // private adjustDeviceSubMenuPosition(event: MouseEvent) {
+  //   // TODO: Get scrollY from the scrolled component instead of 'window.scrollY'
+  //   // TODO: This window should open on a static fixed position
+  //   const y = event.pageY;
+  //   const tableRect = this.parentTable.nativeElement.getBoundingClientRect();
+  //   const tableTop = tableRect.top + window.scrollY;
+  //   const windowHeight = window.innerHeight;
+  //   const maxY = windowHeight;
+  //   const top = y - tableTop > maxY ? maxY : y - tableTop;
+  //   this.subMenuElementLeft = `425px`;
+  //   this.subMenuElementTop = `${top}px`;
+  //
+  //   this.changeDetectorRef.detectChanges();
+  // }
 
-    this.changeDetectorRef.detectChanges();
-  }
-
-  private adjustAttributeStatusChartMenuPosition(event: MouseEvent) {
-    const y = event.pageY;
-    const tableRect = this.parentTable.nativeElement.getBoundingClientRect();
-    const tableTop = tableRect.top + window.scrollY;
-    const windowHeight = window.innerHeight;
-    const maxY = windowHeight;
-    const top = y - tableTop > maxY ? maxY : y - tableTop;
-    this.attributeStatusChartElementLeft = `-60px`;
-    this.attributeStatusChartElementTop = `${top}px`;
-
-    this.changeDetectorRef.detectChanges();
-  }
+  // private adjustAttributeStatusChartMenuPosition(event: MouseEvent) {
+  //   // TODO: This window should open on a static fixed position
+  //   const y = event.pageY;
+  //   const tableRect = this.parentTable.nativeElement.getBoundingClientRect();
+  //   const tableTop = tableRect.top + window.scrollY;
+  //   const windowHeight = window.innerHeight;
+  //   const maxY = windowHeight;
+  //   const top = y - tableTop > maxY ? maxY : y - tableTop;
+  //   this.attributeStatusChartElementLeft = `-60px`;
+  //   this.attributeStatusChartElementTop = `${top}px`;
+  //
+  //   this.changeDetectorRef.detectChanges();
+  // }
 }
