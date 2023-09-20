@@ -74,6 +74,18 @@
         </td>
       </tr>
     </ng-container>
+    <ng-container *ngIf="secondLevelDeviceDetailsModel.diagTools.length > 0">
+      <tr class="header-summary-row">
+        <th colspan="3">Narzędzia diagnostyczne</th>
+      </tr>
+      <ng-container *ngFor="let diagTools of secondLevelDeviceDetailsModel.diagTools">
+        <tr class="device-item-row">
+          <td colspan="3">
+            <a [href]="diagTools.link" target="_blank">{{ diagTools.name }}</a>
+          </td>
+        </tr>
+      </ng-container>
+    </ng-container>
   </table>
 </div>
 

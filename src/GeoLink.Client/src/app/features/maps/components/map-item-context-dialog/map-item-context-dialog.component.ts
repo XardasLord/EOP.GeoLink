@@ -90,6 +90,7 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
 
   showDeviceSubMenu(deviceModel: DeviceModel, event: MouseEvent) {
     this.showSubMenu = true;
+    this.showChartMenu = false;
     this.adjustDeviceSubMenuPosition(event);
 
     const deviceIds = [deviceModel.idDev];
@@ -103,6 +104,7 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
 
   closeSubMenu() {
     this.showSubMenu = false;
+    this.showChartMenu = false;
     this.changeDetectorRef.detectChanges();
   }
 
