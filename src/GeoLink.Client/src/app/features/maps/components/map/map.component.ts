@@ -449,7 +449,7 @@ export class MapComponent implements OnInit, OnDestroy {
     } else {
       marker.on('mouseover', () => {
         marker.unbindTooltip();
-        marker.bindTooltip(mapObject.nrExpl).openTooltip();
+        marker.bindTooltip(`${mapObject.nrExpl} - ${mapObject.name}`).openTooltip();
       });
     }
 
