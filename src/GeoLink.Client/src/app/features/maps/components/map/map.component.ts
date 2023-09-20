@@ -31,7 +31,6 @@ import { MarkerClusterHelper } from '../../helpers/marker-cluster.helper';
 import { MapClusterModel, MapObjectModel } from '../../models/map-item.model';
 import { DynamicComponentCreatorHelper } from '../../helpers/dynamic-component-creator.helper';
 import { MapsService } from '../../services/maps.service';
-import { MapFilterModel } from '../../models/map-filter-model';
 import { GeoJsonObject } from 'geojson';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
 import { MapObjectTypeEnum } from '../../../../shared/models/map-object-type.enum';
