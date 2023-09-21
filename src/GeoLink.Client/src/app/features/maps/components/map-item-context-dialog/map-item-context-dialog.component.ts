@@ -10,6 +10,8 @@ import { MapObjectHelper } from '../../helpers/map-object-helper';
 import { MapDeviceTypeEnum } from '../../../../shared/models/map-device-type.enum';
 import { MapObjectStatusTypeEnum } from '../../../../shared/models/map-object-status-type.enum';
 import { MapsService } from '../../services/maps.service';
+import { Store } from '@ngxs/store';
+import { DictionaryState } from '../../../../shared/states/dictionary.state';
 
 @Component({
   selector: 'app-map-item-context-dialog',
@@ -20,7 +22,7 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
   @ViewChild('myTable') parentTable!: ElementRef;
 
   public mapObject!: MapObjectModel;
-  public secondLevelDeviceDetailsModel: DeviceDetailsModel = {
+  public deviceDetailsModel: DeviceDetailsModel = {
     devType: MapDeviceTypeEnum.Licznik,
     model: '',
     producer: '',
@@ -30,6 +32,7 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     diagTools: [],
     subDevId: [],
   };
+  public deviceDetailsModelGroupedByAttributeSourceType!: Map<number, DeviceDetailsAttributeModel[]>;
 
   public groupedDeviceTypes!: Record<string, DeviceModel[]>;
   public deviceStatus = MapObjectStatusTypeEnum;
@@ -42,8 +45,10 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
   public selectedAttributeId = 0;
 
   private subscriptions: Subscription = new Subscription();
+  private attributeSourceTypes = this.store.selectSnapshot(DictionaryState.getDeviceAttributeSourceTypes);
 
   constructor(
+    private store: Store,
     private changeDetectorRef: ChangeDetectorRef,
     private mapObjectHelper: MapObjectHelper,
     private mapsService: MapsService
@@ -96,7 +101,18 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     const deviceIds = [deviceModel.idDev];
     this.subscriptions.add(
       this.mapsService.getDevices(deviceIds).subscribe(deviceStatisticsModels => {
-        this.secondLevelDeviceDetailsModel = deviceStatisticsModels[0];
+        this.deviceDetailsModel = deviceStatisticsModels[0];
+
+        this.deviceDetailsModelGroupedByAttributeSourceType = this.deviceDetailsModel.params.reduce((grouped, item) => {
+          if (!grouped.has(item.idSrc)) {
+            grouped.set(item.idSrc, []);
+          }
+
+          grouped.get(item.idSrc)!.push(item);
+
+          return grouped;
+        }, new Map<number, DeviceDetailsAttributeModel[]>());
+
         this.changeDetectorRef.detectChanges();
       })
     );
@@ -106,6 +122,10 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     this.showSubMenu = false;
     this.showChartMenu = false;
     this.changeDetectorRef.detectChanges();
+  }
+
+  getAttributeSourceName(sourceId: number) {
+    return this.attributeSourceTypes.filter(x => x.id === sourceId)[0]?.name ?? 'Brak danych';
   }
 
   // private adjustDeviceSubMenuPosition(event: MouseEvent) {

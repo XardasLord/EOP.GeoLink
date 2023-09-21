@@ -46,6 +46,10 @@ export class DictionaryService extends RemoteServiceBase {
     return this.httpClient.get<EnumDescriptionModel[]>(`${this.apiUrl}/map/getStatusTypes`);
   }
 
+  getDeviceAttributeSourceTypes(): Observable<EnumDescriptionModel[]> {
+    return this.httpClient.get<EnumDescriptionModel[]>(`${this.apiUrl}/map/getSourceTypes`);
+  }
+
   getDeviceGroupsRelation(): Observable<DeviceGroupRelationModel[]> {
     return this.httpClient.get<DeviceGroupRelationModel[]>(`${this.apiUrl}/map/getDeviceGroups`);
   }

@@ -28,6 +28,10 @@ export class GetMapObjectStatusTypes {
   static readonly type = `${prefix} ${GetMapObjectStatusTypes.name}`;
 }
 
+export class GetDeviceAttributeSourceTypes {
+  static readonly type = `${prefix} ${GetDeviceAttributeSourceTypes.name}`;
+}
+
 export class GetDeviceGroupsRelation {
   static readonly type = `${prefix} ${GetDeviceGroupsRelation.name}`;
 }

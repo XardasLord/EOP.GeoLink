@@ -69,6 +69,9 @@ export interface DeviceDetailsAttributeModel {
   status: MapObjectStatusTypeEnum;
   isChart: boolean;
   subParams: DeviceDetailsSubParamsModel[];
+  idSrc: number;
+  idStatusSrc: number;
+  statusDateAdd: string;
 }
 
 export interface DeviceDetailsSubParamsModel {

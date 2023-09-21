@@ -6,6 +6,7 @@ import { EnumDescriptionModel } from '../models/enum-description.model';
 import { DictionaryService } from '../services/dictionary.service';
 import {
   GetConfigDefinitions,
+  GetDeviceAttributeSourceTypes,
   GetDeviceGroupsRelation,
   GetFilterAttributeDefinitions,
   GetMapDeviceTypes,
@@ -36,6 +37,7 @@ export const DICTIONARY_STATE_TOKEN = new StateToken<DictionaryStateModel>('dict
     mapObjectTypes: [],
     mapDeviceTypes: [],
     mapObjectStatusTypes: [],
+    deviceAttributeSourceTypes: [],
     deviceGroupsRelation: [],
     timeExtentDefinitions: [],
     configDefinitions: [],
@@ -79,6 +81,11 @@ export class DictionaryState {
   @Selector([DICTIONARY_STATE_TOKEN])
   static getMapObjectStatusTypes(state: DictionaryStateModel): EnumDescriptionModel[] {
     return state.mapObjectStatusTypes;
+  }
+
+  @Selector([DICTIONARY_STATE_TOKEN])
+  static getDeviceAttributeSourceTypes(state: DictionaryStateModel): EnumDescriptionModel[] {
+    return state.deviceAttributeSourceTypes;
   }
 
   @Selector([DICTIONARY_STATE_TOKEN])
@@ -191,6 +198,20 @@ export class DictionaryState {
       tap(response => {
         ctx.patchState({
           mapObjectStatusTypes: response,
+        });
+      }),
+      catchError(error => {
+        return throwError(error);
+      })
+    );
+  }
+
+  @Action(GetDeviceAttributeSourceTypes)
+  getDeviceAttributeSourceTypes(ctx: StateContext<DictionaryStateModel>, _: GetDeviceAttributeSourceTypes) {
+    return this.dictionaryService.getDeviceAttributeSourceTypes().pipe(
+      tap(response => {
+        ctx.patchState({
+          deviceAttributeSourceTypes: response,
         });
       }),
       catchError(error => {

@@ -38,16 +38,16 @@
   <table>
     <a class="leaflet-popup-close-button" (click)="closeSubMenu()">×</a>
     <tr class="header-summary-row">
-      <th>{{ getDeviceType(secondLevelDeviceDetailsModel.devType) }}</th>
-      <th colspan="2">{{ secondLevelDeviceDetailsModel.producer }}</th>
+      <th>{{ getDeviceType(deviceDetailsModel.devType) }}</th>
+      <th colspan="2">{{ deviceDetailsModel.producer }}</th>
     </tr>
     <tr class="header-summary-row">
       <th>Typ</th>
-      <th colspan="2">{{ secondLevelDeviceDetailsModel.model }}</th>
+      <th colspan="2">{{ deviceDetailsModel.model }}</th>
     </tr>
-    <tr class="header-summary-row" *ngIf="secondLevelDeviceDetailsModel.ppe">
+    <tr class="header-summary-row" *ngIf="deviceDetailsModel.ppe">
       <th>PPE</th>
-      <th colspan="2">{{ secondLevelDeviceDetailsModel.ppe }}</th>
+      <th colspan="2">{{ deviceDetailsModel.ppe }}</th>
     </tr>
     <tr>
       <th>Parametr</th>
@@ -55,30 +55,33 @@
       <th>Status</th>
     </tr>
 
-    <ng-container *ngFor="let deviceDetailsParam of secondLevelDeviceDetailsModel.params">
-      <tr class="device-item-row" (click)="showAttributeStatusChart(deviceDetailsParam, $event)">
-        <td>{{ deviceDetailsParam.name }}</td>
-        <td>{{ deviceDetailsParam.value }}</td>
-        <td>
-          <mat-icon
-            *ngIf="deviceDetailsParam?.status"
-            matTooltip="abc test 123"
-            [ngClass]="{
-              good: deviceDetailsParam?.status === deviceStatus.OK,
-              warning: deviceDetailsParam?.status === deviceStatus.Warning,
-              bad: deviceDetailsParam?.status === deviceStatus.Error,
-              'not-available': deviceDetailsParam?.status === deviceStatus.NotAvailable
-            }"
-            svgIcon="circle"></mat-icon>
-          <span *ngIf="!deviceDetailsParam?.status">n.d.</span>
-        </td>
-      </tr>
+    <ng-container *ngFor="let deviceDetailsParamType of deviceDetailsModelGroupedByAttributeSourceType | keyvalue">
+      <td colspan="3" class="group-name">{{ getAttributeSourceName(deviceDetailsParamType.key) }}</td>
+      <ng-container *ngFor="let deviceDetailsParam of deviceDetailsParamType.value">
+        <tr class="device-item-row" (click)="showAttributeStatusChart(deviceDetailsParam, $event)">
+          <td>{{ deviceDetailsParam.name }}</td>
+          <td>{{ deviceDetailsParam.value }}</td>
+          <td>
+            <mat-icon
+              *ngIf="deviceDetailsParam?.status"
+              matTooltip="abc test 123"
+              [ngClass]="{
+                good: deviceDetailsParam?.status === deviceStatus.OK,
+                warning: deviceDetailsParam?.status === deviceStatus.Warning,
+                bad: deviceDetailsParam?.status === deviceStatus.Error,
+                'not-available': deviceDetailsParam?.status === deviceStatus.NotAvailable
+              }"
+              svgIcon="circle"></mat-icon>
+            <span *ngIf="!deviceDetailsParam?.status">n.d.</span>
+          </td>
+        </tr>
+      </ng-container>
     </ng-container>
-    <ng-container *ngIf="secondLevelDeviceDetailsModel.diagTools.length > 0">
+    <ng-container *ngIf="deviceDetailsModel.diagTools.length > 0">
       <tr class="header-summary-row">
         <th colspan="3">Narzędzia diagnostyczne</th>
       </tr>
-      <ng-container *ngFor="let diagTools of secondLevelDeviceDetailsModel.diagTools">
+      <ng-container *ngFor="let diagTools of deviceDetailsModel.diagTools">
         <tr class="device-item-row">
           <td colspan="3">
             <a [href]="diagTools.link" target="_blank">{{ diagTools.name }}</a>

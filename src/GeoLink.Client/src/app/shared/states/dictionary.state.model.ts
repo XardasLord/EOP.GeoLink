@@ -13,6 +13,7 @@ export interface DictionaryStateModel {
   mapObjectTypes: EnumDescriptionModel[];
   mapDeviceTypes: EnumDescriptionModel[];
   mapObjectStatusTypes: EnumDescriptionModel[];
+  deviceAttributeSourceTypes: EnumDescriptionModel[];
   deviceGroupsRelation: DeviceGroupRelationModel[];
   timeExtentDefinitions: EnumDescriptionModel[];
   configDefinitions: ConfigDefinitionModel[];

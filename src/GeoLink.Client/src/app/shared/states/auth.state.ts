@@ -13,6 +13,7 @@ import { UserAuthHelper } from '../auth/helpers/user-auth.helper';
 import { AuthRoles } from '../auth/models/auth.roles';
 import {
   GetConfigDefinitions,
+  GetDeviceAttributeSourceTypes,
   GetDeviceGroupsRelation,
   GetFilterAttributeDefinitions,
   GetMapDeviceTypes,
@@ -63,6 +64,7 @@ export class AuthState implements NgxsOnInit {
       actions.push(new GetMapObjectTypes());
       actions.push(new GetMapDeviceTypes());
       actions.push(new GetMapObjectStatusTypes());
+      actions.push(new GetDeviceAttributeSourceTypes());
       actions.push(new GetDeviceGroupsRelation());
       actions.push(new GetTimeExtentDefinitions());
       actions.push(new GetConfigDefinitions());
@@ -142,6 +144,7 @@ export class AuthState implements NgxsOnInit {
         new GetMapObjectTypes(),
         new GetMapDeviceTypes(),
         new GetMapObjectStatusTypes(),
+        new GetDeviceAttributeSourceTypes(),
         new GetDeviceGroupsRelation(),
         new GetTimeExtentDefinitions(),
         new GetConfigDefinitions(),
