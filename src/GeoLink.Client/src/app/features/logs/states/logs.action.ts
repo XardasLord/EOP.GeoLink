@@ -11,3 +11,7 @@ export class ChangePage {
 
   constructor(public event: PageEvent) {}
 }
+
+export class DownloadAsCsv {
+  static readonly type = `${prefix} ${DownloadAsCsv.name}`;
+}

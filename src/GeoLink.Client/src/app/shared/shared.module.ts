@@ -28,6 +28,7 @@ import { FiltersState } from './states/filters.state';
 import { QuickFiltersDialogComponent } from './components/dialogs/quick-filters-dialog/quick-filters-dialog.component';
 import { QuickFilterService } from './services/quick-filter.service';
 import { MapCheckboxFiltersComponent } from './components/map-checkbox-filters/map-checkbox-filters.component';
+import { DownloadService } from './services/download.service';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { MapCheckboxFiltersComponent } from './components/map-checkbox-filters/m
     DictionaryService,
     AlertService,
     ChartService,
+    DownloadService,
     ProgressSpinnerService,
     QuickFilterService,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
@@ -122,6 +124,7 @@ export class SharedModule {
       'geolink_logo',
       'search',
       'close',
+      'download',
     ];
 
     svgIconFiles.forEach(iconFileName => {

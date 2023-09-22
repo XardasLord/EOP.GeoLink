@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken, Store } from '@ngxs/store';
 import { patch } from '@ngxs/store/operators';
-import { catchError, finalize, tap, throwError } from 'rxjs';
+import { catchError, finalize, take, tap, throwError } from 'rxjs';
 import { ReportsStateModel } from './reports.state.model';
-import { ChangePage, Load, SetOpenMode } from './reports.action';
+import { ChangePage, DownloadAsCsv, Load, SetOpenMode } from './reports.action';
 import { ReportsService } from '../services/reports.service';
 import { ReportModel } from '../models/report.model';
 import { RestQueryVo } from '../../../shared/models/pagination/rest.query';
 import { RestQueryResponse } from '../../../shared/models/pagination/rest.response';
 import { ReportOpenMode } from '../models/open-mode.enum';
 import { FiltersState } from '../../../shared/states/filters.state';
+import { ProgressSpinnerService } from '../../../shared/services/progress-spinner.service';
+import { DownloadService } from '../../../shared/services/download.service';
 
 const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
 
@@ -28,7 +30,9 @@ const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
 export class ReportsState {
   constructor(
     private store: Store,
-    private reportsService: ReportsService
+    private reportsService: ReportsService,
+    private progressSpinner: ProgressSpinnerService,
+    private downloadService: DownloadService
   ) {}
 
   @Selector([REPORTS_STATE_TOKEN])
@@ -133,5 +137,26 @@ export class ReportsState {
         idCluster: action.openMode === ReportOpenMode.ForCluster ? action.idCluster : null,
       })
     );
+  }
+
+  @Action(DownloadAsCsv)
+  downloadAsCsv(ctx: StateContext<ReportsStateModel>, action: DownloadAsCsv) {
+    // TODO: Download logic
+    console.log('Downloading report as CSV...');
+
+    // this.progressSpinner.showProgressSpinner();
+    //
+    // this.downloadService.downloadFileFromApi("")
+    //   .pipe(
+    //     take(1),
+    //     tap((resBlob) => {
+    //       this.downloadService.getFile(resBlob, "LABEL");
+    //       this.progressSpinner.hideProgressSpinner();
+    //     }),
+    //     catchError((error) => {
+    //       this.progressSpinner.hideProgressSpinner();
+    //       return throwError(() => error);
+    //     })
+    //   );
   }
 }

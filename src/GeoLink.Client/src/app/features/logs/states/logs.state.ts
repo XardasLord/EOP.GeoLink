@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { catchError, tap, throwError } from 'rxjs';
 import { LogsStateModel } from './logs.state.model';
-import { ChangePage, Load } from './logs.action';
+import { ChangePage, DownloadAsCsv, Load } from './logs.action';
 import { LogModel } from '../models/log.model';
 import { LogsService } from '../services/logs.service';
 import { RestQueryVo } from '../../../shared/models/pagination/rest.query';
@@ -69,5 +69,11 @@ export class LogsState {
     });
 
     return ctx.dispatch(new Load());
+  }
+
+  @Action(DownloadAsCsv)
+  downloadAsCsv(ctx: StateContext<LogsStateModel>, action: DownloadAsCsv) {
+    // TODO: Download logic
+    console.log('Downloading logs as CSV...');
   }
 }

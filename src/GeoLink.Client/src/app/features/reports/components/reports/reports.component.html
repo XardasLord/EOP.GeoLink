@@ -1,4 +1,9 @@
 <app-reports-helper-bar></app-reports-helper-bar>
 <div class="p-40">
   <app-reports-list></app-reports-list>
+  <div class="fixed-button-container">
+    <button mat-fab color="primary" matTooltip="Pobierz raport jako CSV" (click)="downloadAsCsv()">
+      <mat-icon svgIcon="download"></mat-icon>
+    </button>
+  </div>
 </div>

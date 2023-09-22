@@ -30,3 +30,7 @@ export class SetOpenMode {
     public idCluster: number | null = null
   ) {}
 }
+
+export class DownloadAsCsv {
+  static readonly type = `${prefix} ${DownloadAsCsv.name}`;
+}
