@@ -49,7 +49,7 @@ export function getInputDialogDataModelForFilterAttributes(
 
       action(filterModels);
     },
-    alternativeLabel: 'Wyczyść filtry',
+    alternativeLabel: 'Wyczyść',
     alternativeAction: (form: FormGroup<{}>) => {
       form.reset();
     },
