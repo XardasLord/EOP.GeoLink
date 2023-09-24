@@ -9,6 +9,8 @@ import { MapFilterModel } from '../../maps/models/map-filter-model';
 import { PageEvent } from '@angular/material/paginator';
 import { GetReportPreviewRequestModel } from '../models/http-request-models/get-report-preview-request.model';
 import { FilterAttributeModel } from '../../../shared/models/filters/filter-attribute.model';
+import { GenerateReportRequestModel } from '../models/http-request-models/generate-report-request.model';
+import { GenerateReportResponseModel } from '../models/http-request-responses/generate-report-response.model';
 
 @Injectable()
 export class ReportsService extends RemoteServiceBase {
@@ -55,5 +57,42 @@ export class ReportsService extends RemoteServiceBase {
     };
 
     return this.httpClient.post<GetReportsResponseModel>(`${this.apiUrl}/reports/getReportPreview`, requestModel);
+  }
+
+  generateReportRequest(
+    selectedObjectMapFilters: MapFilterModel[],
+    selectedDeviceMapFilters: MapFilterModel[],
+    selectedRegionMapFilters: MapFilterModel[],
+    selectedStatusMapFilters: MapFilterModel[],
+    selectedAttributeFilters: FilterAttributeModel[],
+    clusterLevel: number | null = null,
+    idCluster: number | null = null
+  ): Observable<GenerateReportResponseModel> {
+    const requestModel: GenerateReportRequestModel = {
+      timeExtent: 1,
+      lvl: clusterLevel && idCluster ? clusterLevel : null,
+      idCluster: clusterLevel && idCluster ? idCluster : null,
+      objectFilters: selectedObjectMapFilters
+        .filter(x => x.apiFilterType === 'ObjectTypeFilters' && x.apiValue !== null)
+        .map(x => x.apiValue!),
+      deviceFilters: selectedDeviceMapFilters
+        .filter(x => x.apiFilterType === 'DeviceFilters' && x.apiValue !== null)
+        .map(x => x.apiValue!),
+      regionFilters: selectedRegionMapFilters
+        .filter(x => x.apiFilterType === 'RegionFilters' && x.apiValue !== null)
+        .map(x => x.apiValue!),
+      statusFilters: selectedStatusMapFilters
+        .filter(x => x.apiFilterType === 'StatusFilters' && x.apiValue !== null)
+        .map(x => x.apiValue!),
+      attributeFilters: selectedAttributeFilters,
+    };
+
+    return this.httpClient.post<GenerateReportResponseModel>(`${this.apiUrl}/reports/reportFile/init`, requestModel);
+  }
+
+  checkReportGenerationStatus(reportIdentifiedKey: string): Observable<GenerateReportResponseModel> {
+    return this.httpClient.get<GenerateReportResponseModel>(
+      `${this.apiUrl}/reports/reportFile/status/${reportIdentifiedKey}`
+    );
   }
 }

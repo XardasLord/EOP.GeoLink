@@ -31,6 +31,12 @@ export class SetOpenMode {
   ) {}
 }
 
-export class DownloadAsCsv {
-  static readonly type = `${prefix} ${DownloadAsCsv.name}`;
+export class RequestForCsvReport {
+  static readonly type = `${prefix} ${RequestForCsvReport.name}`;
+}
+
+export class CheckCsvReportStatus {
+  static readonly type = `${prefix} ${CheckCsvReportStatus.name}`;
+
+  constructor(public reportIdentifierKey: string) {}
 }

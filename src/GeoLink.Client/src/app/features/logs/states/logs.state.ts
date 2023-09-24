@@ -72,7 +72,7 @@ export class LogsState {
   }
 
   @Action(DownloadAsCsv)
-  downloadAsCsv(ctx: StateContext<LogsStateModel>, action: DownloadAsCsv) {
+  downloadAsCsv(ctx: StateContext<LogsStateModel>) {
     // TODO: Download logic
     console.log('Downloading logs as CSV...');
   }

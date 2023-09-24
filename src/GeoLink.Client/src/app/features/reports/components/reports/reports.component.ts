@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { DownloadAsCsv } from '../../states/reports.action';
+import { RequestForCsvReport } from '../../states/reports.action';
 
 @Component({
   selector: 'app-reports',
@@ -11,6 +11,6 @@ export class ReportsComponent {
   constructor(private store: Store) {}
 
   downloadAsCsv() {
-    this.store.dispatch(new DownloadAsCsv());
+    this.store.dispatch(new RequestForCsvReport());
   }
 }

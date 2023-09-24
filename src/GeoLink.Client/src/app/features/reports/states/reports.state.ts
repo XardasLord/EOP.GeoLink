@@ -1,9 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken, Store } from '@ngxs/store';
 import { patch } from '@ngxs/store/operators';
-import { catchError, finalize, take, tap, throwError } from 'rxjs';
+import {
+  catchError,
+  EMPTY,
+  filter,
+  finalize,
+  interval,
+  startWith,
+  switchMap,
+  switchMapTo,
+  take,
+  takeUntil,
+  tap,
+  throwError,
+} from 'rxjs';
 import { ReportsStateModel } from './reports.state.model';
-import { ChangePage, DownloadAsCsv, Load, SetOpenMode } from './reports.action';
+import { ChangePage, CheckCsvReportStatus, Load, RequestForCsvReport, SetOpenMode } from './reports.action';
 import { ReportsService } from '../services/reports.service';
 import { ReportModel } from '../models/report.model';
 import { RestQueryVo } from '../../../shared/models/pagination/rest.query';
@@ -12,6 +25,9 @@ import { ReportOpenMode } from '../models/open-mode.enum';
 import { FiltersState } from '../../../shared/states/filters.state';
 import { ProgressSpinnerService } from '../../../shared/services/progress-spinner.service';
 import { DownloadService } from '../../../shared/services/download.service';
+import { ToastrService } from 'ngx-toastr';
+import { GenerateReportFileStatus } from '../models/http-request-responses/generate-report-response.model';
+import { environment } from '../../../../environments/environment';
 
 const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
 
@@ -32,7 +48,8 @@ export class ReportsState {
     private store: Store,
     private reportsService: ReportsService,
     private progressSpinner: ProgressSpinnerService,
-    private downloadService: DownloadService
+    private downloadService: DownloadService,
+    private toastService: ToastrService
   ) {}
 
   @Selector([REPORTS_STATE_TOKEN])
@@ -139,24 +156,104 @@ export class ReportsState {
     );
   }
 
-  @Action(DownloadAsCsv)
-  downloadAsCsv(ctx: StateContext<ReportsStateModel>, action: DownloadAsCsv) {
-    // TODO: Download logic
+  @Action(RequestForCsvReport)
+  requestForCsvReport(ctx: StateContext<ReportsStateModel>) {
+    const state = ctx.getState();
+
     console.log('Downloading report as CSV...');
 
-    // this.progressSpinner.showProgressSpinner();
-    //
-    // this.downloadService.downloadFileFromApi("")
-    //   .pipe(
-    //     take(1),
-    //     tap((resBlob) => {
-    //       this.downloadService.getFile(resBlob, "LABEL");
-    //       this.progressSpinner.hideProgressSpinner();
-    //     }),
-    //     catchError((error) => {
-    //       this.progressSpinner.hideProgressSpinner();
-    //       return throwError(() => error);
-    //     })
-    //   );
+    ctx.patchState({
+      loading: true,
+    });
+
+    return this.reportsService
+      .generateReportRequest(
+        this.store.selectSnapshot(FiltersState.getSelectedObjectMapFilters),
+        this.store.selectSnapshot(FiltersState.getSelectedDeviceMapFilters),
+        this.store.selectSnapshot(FiltersState.getSelectedRegionMapFilters),
+        this.store.selectSnapshot(FiltersState.getSelectedStatusMapFilters),
+        this.store.selectSnapshot(FiltersState.getFilterAttributeModels),
+        state.clusterLevel,
+        state.idCluster
+      )
+      .pipe(
+        tap(response => {
+          console.log('RequestForCsvReport', response);
+
+          this.toastService.success(
+            'Generowanie raportu zostało zlecone. Gdy raport będzie gotowy to zostanie automatycznie ściągnięty.',
+            'Raport CSV'
+          );
+
+          ctx.dispatch(new CheckCsvReportStatus(response.key));
+        }),
+        catchError(error => {
+          return throwError(error);
+        }),
+        finalize(() => {
+          ctx.patchState({
+            loading: false,
+          });
+        })
+      );
+  }
+
+  @Action(CheckCsvReportStatus)
+  checkCsvReportStatus(ctx: StateContext<ReportsStateModel>, action: CheckCsvReportStatus) {
+    const reportIdentifierKey = action.reportIdentifierKey;
+    let isCompleted = false;
+
+    const checkReportGenerationStatus = () => {
+      if (isCompleted) {
+        return EMPTY; // Zwróć pusty observable, aby zakończyć operację
+      }
+
+      return this.reportsService.checkReportGenerationStatus(reportIdentifierKey).pipe(
+        filter(response => !!response),
+        switchMap(response => {
+          console.log('CheckCsvReportStatus', response);
+
+          switch (response.status) {
+            case GenerateReportFileStatus.GENERATED:
+              console.log('GENERATED', response);
+              return this.downloadService.downloadFileFromApi(`/reports/reportFile/download/${response.key}`).pipe(
+                switchMap(resBlob => {
+                  this.downloadService.getFile(resBlob, 'GeolinkRaport.csv');
+                  isCompleted = true;
+
+                  this.toastService.success('Raport CSV został pobrany.', 'Raport CSV');
+                  return EMPTY;
+                }),
+                catchError(error => {
+                  this.toastService.error(`Błąd podczas pobierania raportu CSV`, 'Raport CSV');
+                  isCompleted = true;
+                  return EMPTY;
+                })
+              );
+            case GenerateReportFileStatus.IN_PROGRESS:
+              console.log('IN_PROGRESS', response);
+              return interval(5000);
+            case GenerateReportFileStatus.ERROR:
+              console.log('ERROR', response);
+              this.toastService.error(`Błąd podczas generowania raportu CSV - ${response.message}`, 'Raport CSV');
+              isCompleted = true;
+              return EMPTY;
+            default:
+              return EMPTY;
+          }
+        }),
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+    };
+
+    interval(5000)
+      .pipe(
+        startWith(0),
+        switchMap(() => checkReportGenerationStatus()),
+        takeUntil(interval(1).pipe(filter(() => isCompleted)))
+      )
+      .subscribe();
   }
 }
