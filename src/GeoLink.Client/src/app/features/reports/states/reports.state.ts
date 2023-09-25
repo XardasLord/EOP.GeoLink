@@ -205,36 +205,30 @@ export class ReportsState {
 
     const checkReportGenerationStatus = () => {
       if (isCompleted) {
-        return EMPTY; // Zwróć pusty observable, aby zakończyć operację
+        return EMPTY;
       }
 
       return this.reportsService.checkReportGenerationStatus(reportIdentifierKey).pipe(
         filter(response => !!response),
         switchMap(response => {
-          console.log('CheckCsvReportStatus', response);
-
           switch (response.status) {
             case GenerateReportFileStatus.GENERATED:
-              console.log('GENERATED', response);
               return this.downloadService.downloadFileFromApi(`/reports/reportFile/download/${response.key}`).pipe(
                 switchMap(resBlob => {
                   this.downloadService.getFile(resBlob, 'GeolinkRaport.csv');
                   isCompleted = true;
-
                   this.toastService.success('Raport CSV został pobrany.', 'Raport CSV');
                   return EMPTY;
                 }),
-                catchError(error => {
+                catchError(() => {
                   this.toastService.error(`Błąd podczas pobierania raportu CSV`, 'Raport CSV');
                   isCompleted = true;
                   return EMPTY;
                 })
               );
             case GenerateReportFileStatus.IN_PROGRESS:
-              console.log('IN_PROGRESS', response);
               return interval(5000);
             case GenerateReportFileStatus.ERROR:
-              console.log('ERROR', response);
               this.toastService.error(`Błąd podczas generowania raportu CSV - ${response.message}`, 'Raport CSV');
               isCompleted = true;
               return EMPTY;
