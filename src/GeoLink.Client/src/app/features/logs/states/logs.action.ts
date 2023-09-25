@@ -12,6 +12,12 @@ export class ChangePage {
   constructor(public event: PageEvent) {}
 }
 
-export class DownloadAsCsv {
-  static readonly type = `${prefix} ${DownloadAsCsv.name}`;
+export class RequestForCsvLogs {
+  static readonly type = `${prefix} ${RequestForCsvLogs.name}`;
+}
+
+export class CheckCsvLogStatus {
+  static readonly type = `${prefix} ${CheckCsvLogStatus.name}`;
+
+  constructor(public reportIdentifierKey: string) {}
 }

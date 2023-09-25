@@ -26,7 +26,7 @@ import { FiltersState } from '../../../shared/states/filters.state';
 import { ProgressSpinnerService } from '../../../shared/services/progress-spinner.service';
 import { DownloadService } from '../../../shared/services/download.service';
 import { ToastrService } from 'ngx-toastr';
-import { GenerateReportFileStatus } from '../models/http-request-responses/generate-report-response.model';
+import { GenerateCsvFileStatus } from '../../../shared/models/csv/generate-csv-response.model';
 import { environment } from '../../../../environments/environment';
 
 const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
@@ -160,14 +160,12 @@ export class ReportsState {
   requestForCsvReport(ctx: StateContext<ReportsStateModel>) {
     const state = ctx.getState();
 
-    console.log('Downloading report as CSV...');
-
     ctx.patchState({
       loading: true,
     });
 
     return this.reportsService
-      .generateReportRequest(
+      .generateReportCsvRequest(
         this.store.selectSnapshot(FiltersState.getSelectedObjectMapFilters),
         this.store.selectSnapshot(FiltersState.getSelectedDeviceMapFilters),
         this.store.selectSnapshot(FiltersState.getSelectedRegionMapFilters),
@@ -178,8 +176,6 @@ export class ReportsState {
       )
       .pipe(
         tap(response => {
-          console.log('RequestForCsvReport', response);
-
           this.toastService.success(
             'Generowanie raportu zostało zlecone. Gdy raport będzie gotowy to zostanie automatycznie ściągnięty.',
             'Raport CSV'
@@ -212,7 +208,7 @@ export class ReportsState {
         filter(response => !!response),
         switchMap(response => {
           switch (response.status) {
-            case GenerateReportFileStatus.GENERATED:
+            case GenerateCsvFileStatus.GENERATED:
               return this.downloadService.downloadFileFromApi(`/reports/reportFile/download/${response.key}`).pipe(
                 switchMap(resBlob => {
                   this.downloadService.getFile(resBlob, 'GeolinkRaport.csv');
@@ -226,9 +222,9 @@ export class ReportsState {
                   return EMPTY;
                 })
               );
-            case GenerateReportFileStatus.IN_PROGRESS:
+            case GenerateCsvFileStatus.IN_PROGRESS:
               return interval(5000);
-            case GenerateReportFileStatus.ERROR:
+            case GenerateCsvFileStatus.ERROR:
               this.toastService.error(`Błąd podczas generowania raportu CSV - ${response.message}`, 'Raport CSV');
               isCompleted = true;
               return EMPTY;

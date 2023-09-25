@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { DownloadAsCsv } from '../../states/logs.action';
+import { RequestForCsvLogs } from '../../states/logs.action';
 
 @Component({
   selector: 'app-logs',
@@ -11,6 +11,6 @@ export class LogsComponent {
   constructor(private store: Store) {}
 
   downloadAsCsv() {
-    this.store.dispatch(new DownloadAsCsv());
+    this.store.dispatch(new RequestForCsvLogs());
   }
 }
