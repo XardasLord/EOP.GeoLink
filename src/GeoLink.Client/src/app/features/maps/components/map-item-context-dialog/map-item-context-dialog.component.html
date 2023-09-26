@@ -34,7 +34,7 @@
 </table>
 
 <!-- Second level context menu -->
-<div class="second-level-table" *ngIf="showSubMenu">
+<div id="second-level-table" class="second-level-table" *ngIf="showSubMenu">
   <table>
     <a class="leaflet-popup-close-button" (click)="closeSubMenu()">×</a>
     <tr class="header-summary-row">
@@ -93,7 +93,7 @@
 </div>
 
 <ng-container *ngIf="showChartMenu">
-  <div class="status-chart-content">
+  <div class="status-chart-content" [ngStyle]="{ top: attributeStatusChartElementTop }">
     <app-single-device-attribute-chart [attributeId]="selectedAttributeId"></app-single-device-attribute-chart>
   </div>
 </ng-container>

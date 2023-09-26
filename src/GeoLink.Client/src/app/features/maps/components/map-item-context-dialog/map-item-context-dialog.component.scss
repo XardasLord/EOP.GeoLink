@@ -54,11 +54,11 @@ td {
   top: 0;
   left: 425px;
   background-color: white;
-  width: 325px;
+  width: 375px;
   padding: 20px;
   border-radius: $context-menu-border-radius;
   box-shadow: $context-menu-box-shadow;
-  max-height: 400px;
+  max-height: 550px;
   overflow-y: auto;
 
   .leaflet-popup-close-button {
@@ -66,14 +66,14 @@ td {
   }
 
   table {
-    width: 305px;
+    width: 355px;
   }
 }
 
 .status-chart-content {
   position: fixed;
   top: 0;
-  left: -485px;
+  left: 425px;
   background-color: white;
   width: 480px;
   border-radius: $context-menu-border-radius;

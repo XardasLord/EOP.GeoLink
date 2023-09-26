@@ -41,7 +41,7 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
   // public subMenuElementLeft = '';
   // public subMenuElementTop = '';
   // public attributeStatusChartElementLeft = '';
-  // public attributeStatusChartElementTop = '';
+  public attributeStatusChartElementTop = '';
   public selectedAttributeId = 0;
 
   private subscriptions: Subscription = new Subscription();
@@ -88,7 +88,7 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     this.showChartMenu = false;
     this.changeDetectorRef.detectChanges();
     this.showChartMenu = true;
-    // this.adjustAttributeStatusChartMenuPosition(event);
+    this.adjustAttributeStatusChartMenuPosition(event);
 
     this.changeDetectorRef.detectChanges();
   }
@@ -143,17 +143,20 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
   //   this.changeDetectorRef.detectChanges();
   // }
 
-  // private adjustAttributeStatusChartMenuPosition(event: MouseEvent) {
-  //   // TODO: This window should open on a static fixed position
-  //   const y = event.pageY;
-  //   const tableRect = this.parentTable.nativeElement.getBoundingClientRect();
-  //   const tableTop = tableRect.top + window.scrollY;
-  //   const windowHeight = window.innerHeight;
-  //   const maxY = windowHeight;
-  //   const top = y - tableTop > maxY ? maxY : y - tableTop;
-  //   this.attributeStatusChartElementLeft = `-60px`;
-  //   this.attributeStatusChartElementTop = `${top}px`;
-  //
-  //   this.changeDetectorRef.detectChanges();
-  // }
+  private adjustAttributeStatusChartMenuPosition(event: MouseEvent) {
+    // TODO: This window should open on a static fixed position
+    // const y = event.pageY;
+    // const tableRect = this.parentTable.nativeElement.getBoundingClientRect();
+    // const tableTop = tableRect.top + window.scrollY;
+    // const windowHeight = window.innerHeight;
+    // const maxY = windowHeight;
+    // const top = y - tableTop > maxY ? maxY : y - tableTop;
+    // this.attributeStatusChartElementLeft = `-60px`;
+    // this.attributeStatusChartElementTop = `${top}px`;
+
+    const attributeDivElement = document.getElementById('second-level-table') as HTMLElement;
+
+    const height = attributeDivElement.clientHeight;
+    this.attributeStatusChartElementTop = `${height + 10}px`;
+  }
 }
