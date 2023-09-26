@@ -25,7 +25,7 @@ export class SingleChartDialogComponent implements OnInit, OnDestroy {
     chartsData: {
       data: [],
       chartNames: [],
-      devHealth: 0,
+      health: 0,
       avgAvail: 0,
       chartAxisInfo: {
         x: '',

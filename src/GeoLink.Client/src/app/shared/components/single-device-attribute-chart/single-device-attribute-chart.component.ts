@@ -20,7 +20,7 @@ export class SingleDeviceAttributeChartComponent implements OnInit, OnDestroy {
       data: [],
       chartNames: [],
       avgAvail: 0,
-      devHealth: 0,
+      health: 0,
       chartAxisInfo: {
         x: '',
         y: '',

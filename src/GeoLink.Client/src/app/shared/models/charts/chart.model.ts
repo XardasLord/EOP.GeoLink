@@ -9,7 +9,7 @@ export interface ChartModel {
 export interface ChartGeneralData {
   chartNames: string[];
   avgAvail: number; // Średnia dostępność (0,100)
-  devHealth: number; // Kondycja urządzenia (1,2,3)
+  health: number; // Kondycja urządzenia (1,2,3)
   data: ChartData[]; // array z szeregiem czasowym do wyrzucenia na wykres
   chartAxisInfo: ChartAxisInfo;
 }

@@ -401,3 +401,52 @@ mat-form-field {
   right: 30px;
   bottom: 30px;
 }
+
+
+// CHARTS
+.chart-header-info {
+  padding: 5px 5px 15px 5px;
+  font-size: 11px;
+  font-weight: bold;
+
+  table {
+    width: 100%;
+
+    td.date {
+      width: 20%;
+    }
+
+    td.period {
+      width: 60%;
+      text-align: center;
+    }
+
+    td.statuses {
+      width: 20%;
+
+      div.status-label {
+        display: inline-block;
+        text-align: right;
+        margin-right: 10px;
+      }
+
+      div.status-value {
+        display: inline-block;
+        text-align: center;
+        width: 20%;
+      }
+
+      div.status-value.good {
+        background: $marker-cluster-group-good-status-color;
+      }
+
+      div.status-value.warning {
+        background: $marker-cluster-group-warning-status-color;
+      }
+
+      div.status-value.bad {
+        background: $marker-cluster-group-bad-status-color;
+      }
+    }
+  }
+}

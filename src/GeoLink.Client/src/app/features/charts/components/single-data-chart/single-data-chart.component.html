@@ -1,25 +1,32 @@
-<div class="header-info" *ngIf="chart$ | async">
-  <span class="date">Data: {{ (chart$ | async)!.dateNow | date: 'dd.MM.yyyy HH:mm:ss' }}</span>
-  <span class="period"
-    >Okres: {{ (chart$ | async)!.dateBegin | date: 'dd.MM.yyyy HH:mm:ss' }} -
-    {{ (chart$ | async)!.dateEnd | date: 'dd.MM.yyyy HH:mm:ss' }}</span
-  >
-  <ng-container *ngIf="(chart$ | async)!.chartsData?.avgAvail">
-    <span class="main-label">Średnia dostępność:</span>
-    <span class="main-value">{{ (chart$ | async)!.chartsData?.avgAvail | number: '1.2-2' }}%</span>
-  </ng-container>
-  <ng-container *ngIf="(chart$ | async)!.chartsData?.devHealth">
-    <span class="main-label">Kondycja: </span>
-    <span
-      class="main-value"
-      [ngClass]="{
-        good: (chart$ | async)!.chartsData?.devHealth === MapObjectStatusTypeEnum.OK,
-        warning: (chart$ | async)!.chartsData?.devHealth === MapObjectStatusTypeEnum.Warning,
-        bad: (chart$ | async)!.chartsData?.devHealth === MapObjectStatusTypeEnum.Error
-      }"
-      >{{ (chart$ | async)!.chartsData?.devHealth }}
-    </span>
-  </ng-container>
+<div class="chart-header-info" *ngIf="chart$ | async">
+  <table>
+    <tr>
+      <td class="date">Data: {{ (chart$ | async)!.dateNow | date: 'dd.MM.yyyy HH:mm:ss' }}</td>
+      <td class="period">
+        Okres: {{ (chart$ | async)!.dateBegin | date: 'dd.MM.yyyy HH:mm:ss' }} -
+        {{ (chart$ | async)!.dateEnd | date: 'dd.MM.yyyy HH:mm:ss' }}
+      </td>
+      <td class="statuses">
+        <ng-container *ngIf="(chart$ | async)!.chartsData?.avgAvail">
+          <div class="status-label">Śr. dost.:</div>
+          <div class="status-value">{{ (chart$ | async)!.chartsData?.avgAvail | number: '1.2-2' }}%</div>
+        </ng-container>
+        <br />
+        <ng-container *ngIf="(chart$ | async)!.chartsData?.health">
+          <div class="status-label">Kondycja:</div>
+          <div
+            class="status-value"
+            [ngClass]="{
+              good: (chart$ | async)!.chartsData?.health === MapObjectStatusTypeEnum.OK,
+              warning: (chart$ | async)!.chartsData?.health === MapObjectStatusTypeEnum.Warning,
+              bad: (chart$ | async)!.chartsData?.health === MapObjectStatusTypeEnum.Error
+            }">
+            {{ (chart$ | async)!.chartsData?.health }}
+          </div>
+        </ng-container>
+      </td>
+    </tr>
+  </table>
 </div>
 
 <div

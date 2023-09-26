@@ -1,26 +1,33 @@
 <ng-container *ngIf="chartModel.chartsData.data && chartModel.chartsData.data.length > 0; else no_chart">
-  <div class="header-info">
-    <span class="date">Data: {{ chartModel.dateNow | date: 'dd.MM.yyyy HH:mm:ss' }}</span>
-    <span class="period"
-      >Okres: {{ chartModel.dateBegin | date: 'dd.MM.yyyy HH:mm:ss' }} -
-      {{ chartModel.dateEnd | date: 'dd.MM.yyyy HH:mm:ss' }}</span
-    >
-    <ng-container *ngIf="chartModel.chartsData?.avgAvail">
-      <span class="main-label">Średnia dostępność:</span>
-      <span class="main-value">{{ chartModel.chartsData?.avgAvail | number: '1.2-2' }}%</span>
-    </ng-container>
-    <ng-container *ngIf="chartModel.chartsData?.devHealth">
-      <span class="main-label">Kondycja urządzenia: </span>
-      <span
-        class="main-value"
-        [ngClass]="{
-          good: chartModel.chartsData?.devHealth === MapObjectStatusTypeEnum.OK,
-          warning: chartModel.chartsData?.devHealth === MapObjectStatusTypeEnum.Warning,
-          bad: chartModel.chartsData?.devHealth === MapObjectStatusTypeEnum.Error
-        }"
-        >{{ chartModel.chartsData?.devHealth }}
-      </span>
-    </ng-container>
+  <div class="chart-header-info">
+    <table>
+      <tr>
+        <td class="date">Data: {{ chartModel.dateNow | date: 'dd.MM.yyyy' }}</td>
+        <td class="period">
+          Okres: {{ chartModel.dateBegin | date: 'dd.MM.yyyy HH:mm:ss' }} -
+          {{ chartModel.dateEnd | date: 'dd.MM.yyyy HH:mm:ss' }}
+        </td>
+        <td class="statuses">
+          <ng-container *ngIf="chartModel.chartsData?.avgAvail">
+            <div class="status-label">Śr. dost.:</div>
+            <div class="status-value">{{ chartModel.chartsData?.avgAvail | number: '1.2-2' }}%</div>
+          </ng-container>
+          <br />
+          <ng-container *ngIf="chartModel.chartsData?.health">
+            <div class="status-label">Kondycja:</div>
+            <div
+              class="status-value"
+              [ngClass]="{
+                good: chartModel.chartsData?.health === MapObjectStatusTypeEnum.OK,
+                warning: chartModel.chartsData?.health === MapObjectStatusTypeEnum.Warning,
+                bad: chartModel.chartsData?.health === MapObjectStatusTypeEnum.Error
+              }">
+              {{ chartModel.chartsData?.health }}
+            </div>
+          </ng-container>
+        </td>
+      </tr>
+    </table>
   </div>
 
   <div class="map-object-context-menu-chart" echarts [options]="chartOptions" [autoResize]="true"></div>
