@@ -36,7 +36,6 @@
       <th>Typ urządzenia</th>
       <th>Liczba urządzeń</th>
       <th colspan="3">Status</th>
-      <th colspan>Narzędzia</th>
     </tr>
 
     <ng-container *ngIf="secondLevelClusterGroupDetailsModels">
@@ -55,7 +54,6 @@
           <mat-icon class="bad" svgIcon="circle"></mat-icon
           ><span class="status-count">{{ getBadStatusDevicesGroupCount(group.devStat) }}</span>
         </td>
-        <td><span disabled>>>></span></td>
       </tr>
     </ng-container>
   </div>
