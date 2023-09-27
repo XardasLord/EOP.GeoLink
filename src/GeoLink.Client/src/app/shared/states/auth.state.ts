@@ -135,32 +135,45 @@ export class AuthState implements NgxsOnInit {
       user: action.response,
     });
 
-    ctx.dispatch(new Navigate([RoutePaths.Map]));
-
     const state = ctx.getState();
 
+    ctx.dispatch(new Navigate([RoutePaths.Map]));
+
+    const actions: any[] = [];
+
+    if (state.user?.role === AuthRoles.Geolink_Admin) {
+      actions.push(new GetSystemGroups());
+      actions.push(new GetSystemRoles());
+      actions.push(new GetSystemRegions());
+      actions.push(new GetSystemPermissions());
+    }
+
     if (state.user) {
-      ctx.dispatch([
-        new GetMapObjectTypes(),
-        new GetMapDeviceTypes(),
-        new GetMapObjectStatusTypes(),
-        new GetDeviceAttributeSourceTypes(),
-        new GetDeviceGroupsRelation(),
-        new GetTimeExtentDefinitions(),
-        new GetConfigDefinitions(),
-        new GetFilterAttributeDefinitions(),
+      actions.push(new LoadMapFilters());
+      actions.push(new GetMapObjectTypes());
+      actions.push(new GetMapDeviceTypes());
+      actions.push(new GetMapObjectStatusTypes());
+      actions.push(new GetDeviceAttributeSourceTypes());
+      actions.push(new GetDeviceGroupsRelation());
+      actions.push(new GetTimeExtentDefinitions());
+      actions.push(new GetConfigDefinitions());
+      actions.push(new GetFilterAttributeDefinitions());
+      actions.push(
         new SetInitialMapFilters(
           [state.user.init_objectfilterids],
           state.user.init_devicefilterids,
           state.user.init_regionfilterids,
           state.user.init_statusfilterids
-        ),
-      ]);
-
-      if (state.user?.role === AuthRoles.Geolink_Admin) {
-        ctx.dispatch([new GetSystemGroups(), new GetSystemRoles(), new GetSystemRegions(), new GetSystemPermissions()]);
-      }
+        )
+      );
     }
+
+    of(actions)
+      .pipe(
+        concatMap(actionsArray => actionsArray),
+        concatMap(action => ctx.dispatch(action))
+      )
+      .subscribe();
   }
 
   @Action(Logout)
