@@ -23,7 +23,7 @@ import {
 import * as esri from 'esri-leaflet';
 import 'esri-leaflet-renderers';
 import { vectorTileLayer } from 'esri-leaflet-vector';
-import { debounceTime, interval, Subscription, switchMap } from 'rxjs';
+import { interval, Subscription, throttleTime } from 'rxjs';
 
 import '../../../../../../node_modules/leaflet.browser.print/dist/leaflet.browser.print.min.js';
 import { environment } from '../../../../../environments/environment';
@@ -37,6 +37,8 @@ import { MapObjectTypeEnum } from '../../../../shared/models/map-object-type.enu
 import Scale = Control.Scale;
 import { ActivatedRoute } from '@angular/router';
 import { FiltersState } from '../../../../shared/states/filters.state';
+import { MapFilterModel } from '../../models/map-filter-model';
+import { FilterAttributeModel } from '../../../../shared/models/filters/filter-attribute.model';
 
 @Component({
   selector: 'app-map',
@@ -55,8 +57,8 @@ export class MapComponent implements OnInit, OnDestroy {
   private clusterMarkers: LayerGroup = new LayerGroup();
   private objectMarkers: LayerGroup = new LayerGroup();
 
-  private lastRequestForCluster$!: any;
-  private lastRequestForObjects$!: any;
+  private lastRequestForCluster$!: Subscription;
+  private lastRequestForObjects$!: Subscription;
 
   private refreshObjectsSubscription: Subscription = new Subscription();
   private getObjectsSubscriptions: Subscription = new Subscription();
@@ -80,7 +82,7 @@ export class MapComponent implements OnInit, OnDestroy {
       zoomControl: false,
     };
 
-    this.refreshObjectsSubscription = interval(environment.refreshMapObjectsIntervalInMilliseconds).subscribe(_ =>
+    this.refreshObjectsSubscription = interval(environment.refreshMapObjectsIntervalInMilliseconds).subscribe(() =>
       this.getObjectsSubscriptions.add(this.loadMapObjects())
     );
 
@@ -167,19 +169,13 @@ export class MapComponent implements OnInit, OnDestroy {
     const selectedStatusMapFilters = this.store.selectSnapshot(FiltersState.getSelectedStatusMapFilters);
     const selectedAttributeFilters = this.store.selectSnapshot(FiltersState.getFilterAttributeModels);
 
+    // TODO: Loading move to state?
     this.loading = true;
     this.changeDetectorRef.detectChanges();
 
     if (mapZoom <= 17) {
-      if (this.lastRequestForCluster$) {
-        this.lastRequestForCluster$.unsubscribe();
-      }
-
-      const request$ = this.mapsService.getClustersAndObjects(
-        bbox.getSouthWest().lng,
-        bbox.getSouthWest().lat,
-        bbox.getNorthEast().lng,
-        bbox.getNorthEast().lat,
+      this.handleClusterRequest(
+        bbox,
         mapZoom,
         selectedObjectMapFilters,
         selectedDeviceMapFilters,
@@ -187,67 +183,106 @@ export class MapComponent implements OnInit, OnDestroy {
         selectedStatusMapFilters,
         selectedAttributeFilters
       );
-
-      this.lastRequestForCluster$ = request$
-        .pipe(
-          switchMap(() => request$),
-          debounceTime(200)
-        )
-        .subscribe(response => {
-          this.clusterMarkers.clearLayers();
-          this.objectMarkers.clearLayers();
-
-          response.clusters.forEach(cluster => {
-            const markerCluster = this.createMapClusterMarker(cluster);
-
-            this.clusterMarkers.addLayer(markerCluster);
-          });
-
-          response.objects?.forEach(object => {
-            const markerObject = this.createMapObjectMarker(object);
-
-            this.objectMarkers.addLayer(markerObject);
-          });
-
-          this.loading = false;
-          this.changeDetectorRef.detectChanges();
-        });
-
-      this.getObjectsSubscriptions.add(this.lastRequestForCluster$);
     } else {
-      // Zoom 18 (max)
-      if (this.lastRequestForCluster$) {
-        this.lastRequestForCluster$.unsubscribe();
-      }
-
-      const request$ = this.mapsService.getObjects(
-        bbox.getSouthWest().lng,
-        bbox.getSouthWest().lat,
-        bbox.getNorthEast().lng,
-        bbox.getNorthEast().lat,
+      this.handleObjectsRequest(
+        bbox,
         selectedObjectMapFilters,
         selectedDeviceMapFilters,
         selectedRegionMapFilters,
         selectedStatusMapFilters,
         selectedAttributeFilters
       );
+    }
+  }
 
-      this.lastRequestForObjects$ = request$.pipe(switchMap(() => request$)).subscribe(objects => {
-        this.clusterMarkers.clearLayers();
-        this.objectMarkers.clearLayers();
+  private handleClusterRequest(
+    bbox: LatLngBounds,
+    mapZoom: number,
+    selectedObjectMapFilters: MapFilterModel[],
+    selectedDeviceMapFilters: MapFilterModel[],
+    selectedRegionMapFilters: MapFilterModel[],
+    selectedStatusMapFilters: MapFilterModel[],
+    selectedAttributeFilters: FilterAttributeModel[]
+  ) {
+    if (this.lastRequestForCluster$) {
+      this.lastRequestForCluster$.unsubscribe();
+    }
 
-        objects?.forEach(object => {
-          const markerObject = this.createMapObjectMarker(object);
+    const request$ = this.mapsService.getClustersAndObjects(
+      bbox.getSouthWest().lng,
+      bbox.getSouthWest().lat,
+      bbox.getNorthEast().lng,
+      bbox.getNorthEast().lat,
+      mapZoom,
+      selectedObjectMapFilters,
+      selectedDeviceMapFilters,
+      selectedRegionMapFilters,
+      selectedStatusMapFilters,
+      selectedAttributeFilters
+    );
 
-          this.objectMarkers.addLayer(markerObject);
-        });
+    this.lastRequestForCluster$ = request$.pipe(throttleTime(200)).subscribe(response => {
+      this.clusterMarkers.clearLayers();
+      this.objectMarkers.clearLayers();
 
-        this.loading = false;
-        this.changeDetectorRef.detectChanges();
+      response.clusters.forEach(cluster => {
+        const markerCluster = this.createMapClusterMarker(cluster);
+
+        this.clusterMarkers.addLayer(markerCluster);
       });
 
-      this.getObjectsSubscriptions.add(this.lastRequestForObjects$);
+      response.objects?.forEach(object => {
+        const markerObject = this.createMapObjectMarker(object);
+
+        this.objectMarkers.addLayer(markerObject);
+      });
+
+      this.loading = false;
+      this.changeDetectorRef.detectChanges();
+    });
+
+    this.getObjectsSubscriptions.add(this.lastRequestForCluster$);
+  }
+
+  private handleObjectsRequest(
+    bbox: LatLngBounds,
+    selectedObjectMapFilters: MapFilterModel[],
+    selectedDeviceMapFilters: MapFilterModel[],
+    selectedRegionMapFilters: MapFilterModel[],
+    selectedStatusMapFilters: MapFilterModel[],
+    selectedAttributeFilters: FilterAttributeModel[]
+  ) {
+    if (this.lastRequestForCluster$) {
+      this.lastRequestForCluster$.unsubscribe();
     }
+
+    const request$ = this.mapsService.getObjects(
+      bbox.getSouthWest().lng,
+      bbox.getSouthWest().lat,
+      bbox.getNorthEast().lng,
+      bbox.getNorthEast().lat,
+      selectedObjectMapFilters,
+      selectedDeviceMapFilters,
+      selectedRegionMapFilters,
+      selectedStatusMapFilters,
+      selectedAttributeFilters
+    );
+
+    this.lastRequestForObjects$ = request$.subscribe(objects => {
+      this.clusterMarkers.clearLayers();
+      this.objectMarkers.clearLayers();
+
+      objects?.forEach(object => {
+        const markerObject = this.createMapObjectMarker(object);
+
+        this.objectMarkers.addLayer(markerObject);
+      });
+
+      this.loading = false;
+      this.changeDetectorRef.detectChanges();
+    });
+
+    this.getObjectsSubscriptions.add(this.lastRequestForObjects$);
   }
 
   private loadLayersFromArcGIS() {
