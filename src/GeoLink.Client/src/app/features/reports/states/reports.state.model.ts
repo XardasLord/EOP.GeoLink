@@ -10,4 +10,5 @@ export interface ReportsStateModel {
   idCluster: number | null;
   restQuery: RestQueryVo;
   restQueryResponse: RestQueryResponse<ReportModel[]>;
+  isDownloadingReport: boolean;
 }

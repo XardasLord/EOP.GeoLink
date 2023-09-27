@@ -3,14 +3,15 @@ import { Action, Selector, State, StateContext, StateToken, Store } from '@ngxs/
 import { patch } from '@ngxs/store/operators';
 import {
   catchError,
+  delay,
   EMPTY,
   filter,
   finalize,
+  from,
   interval,
+  Observable,
   startWith,
   switchMap,
-  switchMapTo,
-  take,
   takeUntil,
   tap,
   throwError,
@@ -27,7 +28,6 @@ import { ProgressSpinnerService } from '../../../shared/services/progress-spinne
 import { DownloadService } from '../../../shared/services/download.service';
 import { ToastrService } from 'ngx-toastr';
 import { GenerateCsvFileStatus } from '../../../shared/models/csv/generate-csv-response.model';
-import { environment } from '../../../../environments/environment';
 
 const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
 
@@ -40,6 +40,7 @@ const REPORTS_STATE_TOKEN = new StateToken<ReportsStateModel>('reports');
     idCluster: null,
     restQuery: new RestQueryVo(),
     restQueryResponse: new RestQueryResponse<ReportModel[]>(),
+    isDownloadingReport: false,
   },
 })
 @Injectable()
@@ -197,10 +198,11 @@ export class ReportsState {
   @Action(CheckCsvReportStatus)
   checkCsvReportStatus(ctx: StateContext<ReportsStateModel>, action: CheckCsvReportStatus) {
     const reportIdentifierKey = action.reportIdentifierKey;
-    let isCompleted = false;
 
     const checkReportGenerationStatus = () => {
-      if (isCompleted) {
+      const isDownloadingReport = ctx.getState().isDownloadingReport;
+
+      if (isDownloadingReport) {
         return EMPTY;
       }
 
@@ -209,24 +211,30 @@ export class ReportsState {
         switchMap(response => {
           switch (response.status) {
             case GenerateCsvFileStatus.GENERATED:
+              ctx.patchState({ isDownloadingReport: true });
+
               return this.downloadService.downloadFileFromApi(`/reports/reportFile/download/${response.key}`).pipe(
                 switchMap(resBlob => {
                   this.downloadService.getFile(resBlob, 'GeolinkRaport.csv');
-                  isCompleted = true;
                   this.toastService.success('Raport CSV został pobrany.', 'Raport CSV');
+
                   return EMPTY;
                 }),
                 catchError(() => {
                   this.toastService.error(`Błąd podczas pobierania raportu CSV`, 'Raport CSV');
-                  isCompleted = true;
+
                   return EMPTY;
+                }),
+                finalize(() => {
+                  ctx.patchState({ isDownloadingReport: false });
                 })
               );
             case GenerateCsvFileStatus.IN_PROGRESS:
-              return interval(5000);
+              return EMPTY;
             case GenerateCsvFileStatus.ERROR:
               this.toastService.error(`Błąd podczas generowania raportu CSV - ${response.message}`, 'Raport CSV');
-              isCompleted = true;
+              ctx.patchState({ isDownloadingReport: false });
+
               return EMPTY;
             default:
               return EMPTY;
@@ -234,16 +242,29 @@ export class ReportsState {
         }),
         catchError(error => {
           return throwError(error);
+        }),
+        finalize(() => {
+          ctx.patchState({ isDownloadingReport: false });
         })
       );
     };
 
-    interval(5000)
-      .pipe(
-        startWith(0),
-        switchMap(() => checkReportGenerationStatus()),
-        takeUntil(interval(1).pipe(filter(() => isCompleted)))
-      )
-      .subscribe();
+    // interval(10000)
+    //   .pipe(
+    //     startWith(0),
+    //     switchMap(() => checkReportGenerationStatus()),
+    //     takeUntil(interval(1000).pipe(filter(() => !ctx.getState().isDownloadingReport)))
+    //   )
+    //   .subscribe();
+
+    const recursiveCheck: () => Observable<any> = () => {
+      return checkReportGenerationStatus().pipe(
+        delay(10000),
+        switchMap(() => recursiveCheck()),
+        takeUntil(interval(1000).pipe(filter(() => !ctx.getState().isDownloadingReport)))
+      );
+    };
+
+    recursiveCheck().subscribe();
   }
 }
