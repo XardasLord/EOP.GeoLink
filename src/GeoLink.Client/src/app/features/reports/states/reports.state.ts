@@ -10,11 +10,14 @@ import {
   from,
   interval,
   Observable,
+  of,
   startWith,
   switchMap,
   takeUntil,
+  takeWhile,
   tap,
   throwError,
+  timer,
 } from 'rxjs';
 import { ReportsStateModel } from './reports.state.model';
 import { ChangePage, CheckCsvReportStatus, Load, RequestForCsvReport, SetOpenMode } from './reports.action';
@@ -199,72 +202,56 @@ export class ReportsState {
   checkCsvReportStatus(ctx: StateContext<ReportsStateModel>, action: CheckCsvReportStatus) {
     const reportIdentifierKey = action.reportIdentifierKey;
 
-    const checkReportGenerationStatus = () => {
-      const isDownloadingReport = ctx.getState().isDownloadingReport;
+    const isDownloadingReport = ctx.getState().isDownloadingReport;
 
-      if (isDownloadingReport) {
-        return EMPTY;
-      }
+    if (isDownloadingReport) {
+      return of(null);
+    }
 
-      return this.reportsService.checkReportGenerationStatus(reportIdentifierKey).pipe(
-        filter(response => !!response),
-        switchMap(response => {
-          switch (response.status) {
-            case GenerateCsvFileStatus.GENERATED:
-              ctx.patchState({ isDownloadingReport: true });
+    return this.reportsService.checkReportGenerationStatus(reportIdentifierKey).pipe(
+      filter(response => !!response),
+      switchMap(response => {
+        switch (response.status) {
+          case GenerateCsvFileStatus.GENERATED:
+            ctx.patchState({ isDownloadingReport: true });
 
-              return this.downloadService.downloadFileFromApi(`/reports/reportFile/download/${response.key}`).pipe(
-                switchMap(resBlob => {
-                  this.downloadService.getFile(resBlob, 'GeolinkRaport.csv');
-                  this.toastService.success('Raport CSV został pobrany.', 'Raport CSV');
+            return this.downloadService.downloadFileFromApi(`/reports/reportFile/download/${response.key}`).pipe(
+              switchMap(resBlob => {
+                this.downloadService.getFile(resBlob, 'GeolinkRaport.csv');
+                this.toastService.success('Raport CSV został pobrany.', 'Raport CSV');
 
-                  return EMPTY;
-                }),
-                catchError(() => {
-                  this.toastService.error(`Błąd podczas pobierania raportu CSV`, 'Raport CSV');
+                return of(null);
+              }),
+              catchError(() => {
+                this.toastService.error(`Błąd podczas pobierania raportu CSV`, 'Raport CSV');
 
-                  return EMPTY;
-                }),
-                finalize(() => {
-                  ctx.patchState({ isDownloadingReport: false });
-                })
-              );
-            case GenerateCsvFileStatus.IN_PROGRESS:
-              return EMPTY;
-            case GenerateCsvFileStatus.ERROR:
-              this.toastService.error(`Błąd podczas generowania raportu CSV - ${response.message}`, 'Raport CSV');
-              ctx.patchState({ isDownloadingReport: false });
+                return of(null);
+              }),
+              finalize(() => {
+                ctx.patchState({ isDownloadingReport: false });
+              })
+            );
+          case GenerateCsvFileStatus.IN_PROGRESS:
+            setTimeout(() => {
+              ctx.dispatch(new CheckCsvReportStatus(action.reportIdentifierKey));
+            }, 5000);
 
-              return EMPTY;
-            default:
-              return EMPTY;
-          }
-        }),
-        catchError(error => {
-          return throwError(error);
-        }),
-        finalize(() => {
-          ctx.patchState({ isDownloadingReport: false });
-        })
-      );
-    };
+            return of(null);
+          case GenerateCsvFileStatus.ERROR:
+            this.toastService.error(`Błąd podczas generowania raportu CSV - ${response.message}`, 'Raport CSV');
+            ctx.patchState({ isDownloadingReport: false });
 
-    // interval(10000)
-    //   .pipe(
-    //     startWith(0),
-    //     switchMap(() => checkReportGenerationStatus()),
-    //     takeUntil(interval(1000).pipe(filter(() => !ctx.getState().isDownloadingReport)))
-    //   )
-    //   .subscribe();
-
-    const recursiveCheck: () => Observable<any> = () => {
-      return checkReportGenerationStatus().pipe(
-        delay(10000),
-        switchMap(() => recursiveCheck()),
-        takeUntil(interval(1000).pipe(filter(() => !ctx.getState().isDownloadingReport)))
-      );
-    };
-
-    recursiveCheck().subscribe();
+            return EMPTY;
+          default:
+            return EMPTY;
+        }
+      }),
+      catchError(error => {
+        return throwError(error);
+      }),
+      finalize(() => {
+        ctx.patchState({ isDownloadingReport: false });
+      })
+    );
   }
 }

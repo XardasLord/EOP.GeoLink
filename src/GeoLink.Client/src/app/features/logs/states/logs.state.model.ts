@@ -5,4 +5,5 @@ import { RestQueryResponse } from '../../../shared/models/pagination/rest.respon
 export interface LogsStateModel {
   restQuery: RestQueryVo;
   restQueryResponse: RestQueryResponse<LogModel[]>;
+  isDownloadingReport: boolean;
 }
