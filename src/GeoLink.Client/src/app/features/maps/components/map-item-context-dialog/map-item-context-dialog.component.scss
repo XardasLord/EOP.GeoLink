@@ -54,11 +54,11 @@ td {
   top: 0;
   left: 425px;
   background-color: white;
-  width: 375px;
+  width: 510px;
   padding: 20px;
   border-radius: $context-menu-border-radius;
   box-shadow: $context-menu-box-shadow;
-  max-height: 550px;
+  max-height: 600px;
   overflow-y: auto;
 
   .leaflet-popup-close-button {
@@ -66,7 +66,7 @@ td {
   }
 
   table {
-    width: 355px;
+    width: 510px;
   }
 }
 
