@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { MapFilterModel } from '../../../features/maps/models/map-filter-model';
 import { ToggleMapFilter } from '../../states/filter.action';

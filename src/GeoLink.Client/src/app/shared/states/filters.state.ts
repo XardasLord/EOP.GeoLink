@@ -116,24 +116,18 @@ export class FiltersState {
   @Action(SetInitialMapFilters)
   setInitialMapFilters(ctx: StateContext<FiltersStateModel>, action: SetInitialMapFilters) {
     const filters = ctx.getState().mapFilters;
-    const selectedObjectMapFilters: MapFilterModel[] = [];
-    const selectedDeviceMapFilters: MapFilterModel[] = [];
-    const selectedRegionMapFilters: MapFilterModel[] = [];
-    const selectedStatusMapFilters: MapFilterModel[] = [];
-    console.warn(action);
+
     function updateObjectFiltersCompleted(filters: MapFilterModel[]): MapFilterModel[] {
       return filters.map(filter => {
         const updatedFilter: MapFilterModel = { ...filter };
 
-        if (action.objectFilterIds.some(f => f === filter.idFilter && filter.apiFilterType === 'ObjectTypeFilters')) {
-          updatedFilter.completed = true;
-          selectedObjectMapFilters.push(updatedFilter);
-        } else {
-          updatedFilter.completed = false;
-        }
-
         if (filter.filters) {
           updatedFilter.filters = updateObjectFiltersCompleted(filter.filters);
+          updatedFilter.completed = updatedFilter.filters.every(childFilter => childFilter.completed);
+        } else {
+          updatedFilter.completed = action.objectFilterIds.some(
+            f => f === filter.idFilter && filter.apiFilterType === FilterTypeEnum.Object
+          );
         }
 
         return updatedFilter;
@@ -144,15 +138,13 @@ export class FiltersState {
       return filters.map(filter => {
         const updatedFilter: MapFilterModel = { ...filter };
 
-        if (action.deviceFilterIds.some(f => f === filter.idFilter && filter.apiFilterType === 'DeviceFilters')) {
-          updatedFilter.completed = true;
-          selectedDeviceMapFilters.push(updatedFilter);
-        } else {
-          updatedFilter.completed = false;
-        }
-
         if (filter.filters) {
           updatedFilter.filters = updateDeviceFiltersCompleted(filter.filters);
+          updatedFilter.completed = updatedFilter.filters.every(childFilter => childFilter.completed);
+        } else {
+          updatedFilter.completed = action.deviceFilterIds.some(
+            f => f === filter.idFilter && filter.apiFilterType === FilterTypeEnum.Device
+          );
         }
 
         return updatedFilter;
@@ -163,15 +155,11 @@ export class FiltersState {
       return filters.map(filter => {
         const updatedFilter: MapFilterModel = { ...filter };
 
-        if (action.regionFilterIds.includes(filter.idFilter!)) {
-          updatedFilter.completed = true;
-          selectedRegionMapFilters.push(updatedFilter);
-        } else {
-          updatedFilter.completed = false;
-        }
-
         if (filter.filters) {
           updatedFilter.filters = updateRegionFiltersCompleted(filter.filters);
+          updatedFilter.completed = updatedFilter.filters.every(childFilter => childFilter.completed);
+        } else {
+          updatedFilter.completed = action.regionFilterIds.includes(filter.idFilter!);
         }
 
         return updatedFilter;
@@ -182,15 +170,11 @@ export class FiltersState {
       return filters.map(filter => {
         const updatedFilter: MapFilterModel = { ...filter };
 
-        if (action.statusFilterIds.includes(filter.idFilter!)) {
-          updatedFilter.completed = true;
-          selectedStatusMapFilters.push(updatedFilter);
-        } else {
-          updatedFilter.completed = false;
-        }
-
         if (filter.filters) {
           updatedFilter.filters = updateStatusFiltersCompleted(filter.filters);
+          updatedFilter.completed = updatedFilter.filters.every(childFilter => childFilter.completed);
+        } else {
+          updatedFilter.completed = action.statusFilterIds.includes(filter.idFilter!);
         }
 
         return updatedFilter;
