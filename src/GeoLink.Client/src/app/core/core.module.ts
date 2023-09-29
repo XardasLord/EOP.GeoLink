@@ -12,6 +12,7 @@ import { LoginComponent } from './ui/login/login/login.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { AuthGuard } from './guards/auth.guard';
 import { NoCacheInterceptor } from './interceptor/no-cache.interceptor';
+import { UnauthorizedInterceptor } from './interceptor/unauthorized.interceptor';
 
 @NgModule({
   declarations: [NavigationComponent, ToolbarComponent, LoginComponent],
@@ -30,6 +31,11 @@ import { NoCacheInterceptor } from './interceptor/no-cache.interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: NoCacheInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UnauthorizedInterceptor,
       multi: true,
     },
     MapsService,
