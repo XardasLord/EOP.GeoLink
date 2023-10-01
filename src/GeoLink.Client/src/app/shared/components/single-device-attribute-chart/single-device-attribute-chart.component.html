@@ -10,7 +10,7 @@
         <td class="statuses">
           <ng-container *ngIf="chartModel.chartsData?.avgAvail">
             <div class="status-label">Śr. dost.:</div>
-            <div class="status-value">{{ chartModel.chartsData?.avgAvail | number: '1.2-2' }}%</div>
+            <div class="status-value">{{ chartModel.chartsData.avgAvail | number: '1.2-2' }}%</div>
           </ng-container>
           <br />
           <ng-container *ngIf="chartModel.chartsData?.health">
@@ -18,11 +18,11 @@
             <div
               class="status-value"
               [ngClass]="{
-                good: chartModel.chartsData?.health === MapObjectStatusTypeEnum.OK,
-                warning: chartModel.chartsData?.health === MapObjectStatusTypeEnum.Warning,
-                bad: chartModel.chartsData?.health === MapObjectStatusTypeEnum.Error
+                good: chartModel.chartsData.health === MapObjectStatusTypeEnum.OK,
+                warning: chartModel.chartsData.health === MapObjectStatusTypeEnum.Warning,
+                bad: chartModel.chartsData.health === MapObjectStatusTypeEnum.Error
               }">
-              {{ chartModel.chartsData?.health }}
+              {{ chartModel.chartsData.health }}
             </div>
           </ng-container>
         </td>

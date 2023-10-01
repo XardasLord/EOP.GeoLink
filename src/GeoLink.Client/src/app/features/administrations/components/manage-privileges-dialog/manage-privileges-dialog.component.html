@@ -3,7 +3,7 @@
     <h2 mat-dialog-title>Edytuj uprawnienia dla {{ dialogData.model.name }}</h2>
 
     <mat-dialog-content>
-      <section class="filter-container">
+      <ng-container>
         <ul>
           <li *ngFor="let systemPermission of systemPermissions$ | async">
             <mat-checkbox
@@ -15,7 +15,7 @@
             </mat-checkbox>
           </li>
         </ul>
-      </section>
+      </ng-container>
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">

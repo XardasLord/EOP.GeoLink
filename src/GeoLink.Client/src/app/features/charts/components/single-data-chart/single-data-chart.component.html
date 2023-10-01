@@ -9,7 +9,7 @@
       <td class="statuses">
         <ng-container *ngIf="(chart$ | async)!.chartsData?.avgAvail">
           <div class="status-label">Śr. dost.:</div>
-          <div class="status-value">{{ (chart$ | async)!.chartsData?.avgAvail | number: '1.2-2' }}%</div>
+          <div class="status-value">{{ (chart$ | async)!.chartsData.avgAvail | number: '1.2-2' }}%</div>
         </ng-container>
         <br />
         <ng-container *ngIf="(chart$ | async)!.chartsData?.health">
@@ -17,11 +17,11 @@
           <div
             class="status-value"
             [ngClass]="{
-              good: (chart$ | async)!.chartsData?.health === MapObjectStatusTypeEnum.OK,
-              warning: (chart$ | async)!.chartsData?.health === MapObjectStatusTypeEnum.Warning,
-              bad: (chart$ | async)!.chartsData?.health === MapObjectStatusTypeEnum.Error
+              good: (chart$ | async)!.chartsData.health === MapObjectStatusTypeEnum.OK,
+              warning: (chart$ | async)!.chartsData.health === MapObjectStatusTypeEnum.Warning,
+              bad: (chart$ | async)!.chartsData.health === MapObjectStatusTypeEnum.Error
             }">
-            {{ (chart$ | async)!.chartsData?.health }}
+            {{ (chart$ | async)!.chartsData.health }}
           </div>
         </ng-container>
       </td>

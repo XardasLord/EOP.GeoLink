@@ -7,18 +7,18 @@
     >
     <ng-container *ngIf="chartModel.chartsData?.avgAvail">
       <span class="main-label">Średnia dostępność:</span>
-      <span class="main-value">{{ chartModel.chartsData?.avgAvail | number: '1.2-2' }}%</span>
+      <span class="main-value">{{ chartModel.chartsData.avgAvail | number: '1.2-2' }}%</span>
     </ng-container>
     <ng-container *ngIf="chartModel.chartsData?.health">
       <span class="main-label">Kondycja urządzenia: </span>
       <span
         class="main-value"
         [ngClass]="{
-          good: chartModel.chartsData?.health === MapObjectStatusTypeEnum.OK,
-          warning: chartModel.chartsData?.health === MapObjectStatusTypeEnum.Warning,
-          bad: chartModel.chartsData?.health === MapObjectStatusTypeEnum.Error
+          good: chartModel.chartsData.health === MapObjectStatusTypeEnum.OK,
+          warning: chartModel.chartsData.health === MapObjectStatusTypeEnum.Warning,
+          bad: chartModel.chartsData.health === MapObjectStatusTypeEnum.Error
         }"
-        >{{ chartModel.chartsData?.health }}
+        >{{ chartModel.chartsData.health }}
       </span>
     </ng-container>
   </div>
