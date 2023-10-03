@@ -84,11 +84,11 @@ span[disabled] {
   }
 }
 
-.mat-column-status, .mat-column-objStatus {
+td {
   .mat-icon {
-    font-size: $report-status-icon-size;
+    font-size: $table-status-icon-size;
     text-align: end;
-    padding-top: 0px;
+    padding-top: 0;
     height: 14px;
   }
 

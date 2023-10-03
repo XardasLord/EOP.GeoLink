@@ -1,30 +1,31 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { RemoteServiceBase } from '../../../shared/services/remote-service.base';
+import { AvailableAnalyticsModel } from '../models/available-analytics.model';
+import { environment } from '../../../../environments/environment';
+import { AnalyticModel } from '../models/analytic.model';
 
 @Injectable()
 export class AnalyticsService extends RemoteServiceBase {
+  private apiUrl = environment.apiEndpoint;
+
   constructor(httpClient: HttpClient) {
     super(httpClient);
   }
 
-  loadAlgorithms(): Observable<string[]> {
-    const algorithms = [
-      '1. Urządzenia w statusie krytycznym lub zagrożonym na obszarze jednego rejonu energetycznego przekracza zadaną wartość',
-      '2. Urządzenia w statusie krytycznym lub zagrożonym na obszarze jednego rejonu energetycznego przekracza zadaną wartość',
-      '3. Lokalizacje gdzie liczba routerów i modemów zalogowanych do tej samej stacji bazowej przekracza zadaną wartość',
-    ];
-
-    return of(algorithms);
+  getAvailableAnalytics(): Observable<AvailableAnalyticsModel[]> {
+    return this.httpClient.get<AvailableAnalyticsModel[]>(`${this.apiUrl}/analytics/getAnalyticsDef`);
   }
 
-  loadConjunction(): Observable<string[]> {
-    const conjunctions = [
-      'Koniunkcja 1 (liczba urządzeń jest w statusie ...).',
-      'Koniunkcja 2 (ile urządzeń jest w statusie ...).',
-    ];
+  getAnalytics(idAnalytics: number, pageInfo: PageEvent, includeCount: boolean): Observable<AnalyticModel> {
+    const params = new HttpParams()
+      .set('idAnalytics', idAnalytics)
+      .set('offset', pageInfo.pageIndex * pageInfo.pageSize)
+      .set('count', pageInfo.pageSize)
+      .set('doCount', includeCount ? 1 : 0);
 
-    return of(conjunctions);
+    return this.httpClient.get<AnalyticModel>(`${this.apiUrl}/analytics/getAnalytics`, { params });
   }
 }

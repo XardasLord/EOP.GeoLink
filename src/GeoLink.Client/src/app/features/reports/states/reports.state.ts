@@ -1,24 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken, Store } from '@ngxs/store';
 import { patch } from '@ngxs/store/operators';
-import {
-  catchError,
-  delay,
-  EMPTY,
-  filter,
-  finalize,
-  from,
-  interval,
-  Observable,
-  of,
-  startWith,
-  switchMap,
-  takeUntil,
-  takeWhile,
-  tap,
-  throwError,
-  timer,
-} from 'rxjs';
+import { catchError, EMPTY, filter, finalize, of, switchMap, tap, throwError } from 'rxjs';
 import { ReportsStateModel } from './reports.state.model';
 import { ChangePage, CheckCsvReportStatus, Load, RequestForCsvReport, SetOpenMode } from './reports.action';
 import { ReportsService } from '../services/reports.service';
@@ -27,7 +10,6 @@ import { RestQueryVo } from '../../../shared/models/pagination/rest.query';
 import { RestQueryResponse } from '../../../shared/models/pagination/rest.response';
 import { ReportOpenMode } from '../models/open-mode.enum';
 import { FiltersState } from '../../../shared/states/filters.state';
-import { ProgressSpinnerService } from '../../../shared/services/progress-spinner.service';
 import { DownloadService } from '../../../shared/services/download.service';
 import { ToastrService } from 'ngx-toastr';
 import { GenerateCsvFileStatus } from '../../../shared/models/csv/generate-csv-response.model';
@@ -51,7 +33,6 @@ export class ReportsState {
   constructor(
     private store: Store,
     private reportsService: ReportsService,
-    private progressSpinner: ProgressSpinnerService,
     private downloadService: DownloadService,
     private toastService: ToastrService
   ) {}

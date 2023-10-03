@@ -5,11 +5,10 @@ import { AnalyticsComponent } from './components/analytics/analytics.component';
 import { AnalyticsRoutingModule } from './analytics-routing.module';
 import { AnalyticsState } from './states/analytics.state';
 import { AnalyticsService } from './services/analytics.service';
-import { ConjunctionsComponent } from './components/conjunctions/conjunctions.component';
-import { AlgorithmsComponent } from './components/algorithms/algorithms.component';
+import { AnalyticComponent } from './components/analytic/analytic.component';
 
 @NgModule({
-  declarations: [AnalyticsComponent, ConjunctionsComponent, AlgorithmsComponent],
+  declarations: [AnalyticsComponent, AnalyticComponent],
   imports: [SharedModule, AnalyticsRoutingModule, NgxsModule.forFeature([AnalyticsState])],
   providers: [AnalyticsService],
 })

@@ -1,24 +1,12 @@
 <mat-tab-group mat-stretch-tabs="false">
-  <mat-tab>
+  <mat-tab *ngFor="let analytic of availableAnalytics$ | async">
     <ng-template mat-tab-label>
       <mat-icon class="tab-icon" svgIcon="shuffle"></mat-icon>
-      Koniunkcje
+      {{ analytic.title }}
     </ng-template>
     <ng-template matTabContent>
       <div class="padding-content">
-        <app-conjunctions></app-conjunctions>
-      </div>
-    </ng-template>
-  </mat-tab>
-
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <mat-icon class="tab-icon" svgIcon="calculate"></mat-icon>
-      Algorytmy
-    </ng-template>
-    <ng-template matTabContent>
-      <div class="padding-content">
-        <app-algorithms></app-algorithms>
+        <app-analytic [analyticId]="analytic.idAnalytics"></app-analytic>
       </div>
     </ng-template>
   </mat-tab>
