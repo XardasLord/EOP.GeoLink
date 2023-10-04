@@ -7,7 +7,11 @@ import { MapClusterGroupReportContextDialogComponent } from '../components/map-c
 
 @Injectable()
 export class DynamicComponentCreatorHelper {
-  constructor(private resolver: ComponentFactoryResolver, private injector: Injector, private appRef: ApplicationRef) {}
+  constructor(
+    private resolver: ComponentFactoryResolver,
+    private injector: Injector,
+    private appRef: ApplicationRef
+  ) {}
 
   public createMapItemPopup(item: MapObjectModel) {
     // Bind custom Angular Component as a popup/tooltip - https://stackoverflow.com/questions/42340067/angular-component-into-leaflet-popup

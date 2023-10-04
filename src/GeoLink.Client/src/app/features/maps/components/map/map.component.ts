@@ -13,6 +13,7 @@ import {
   Layer,
   LayerGroup,
   LeafletEventHandlerFn,
+  LeafletMouseEvent,
   Map,
   MapOptions,
   Marker,
@@ -22,6 +23,7 @@ import {
 } from 'leaflet';
 import * as esri from 'esri-leaflet';
 import 'esri-leaflet-renderers';
+import 'leaflet-contextmenu';
 import { vectorTileLayer } from 'esri-leaflet-vector';
 import { interval, Subscription, throttleTime } from 'rxjs';
 
@@ -47,7 +49,7 @@ import { FilterAttributeModel } from '../../../../shared/models/filters/filter-a
 })
 export class MapComponent implements OnInit, OnDestroy {
   map!: Map;
-  mapOptions!: MapOptions;
+  mapOptions!: MapOptions | any;
   mapLayers!: Layer[];
   mapLayersControl!: LeafletControlLayersConfig;
   mapScale!: Scale;
@@ -80,6 +82,16 @@ export class MapComponent implements OnInit, OnDestroy {
       center: latLng(52.22779941887071, 19.764404296875),
       preferCanvas: true,
       zoomControl: false,
+      contextmenu: true,
+      contextmenuWidth: 140,
+      contextmenuItems: [
+        {
+          text: 'Skopiuj współrzędne',
+          callback: (event: LeafletMouseEvent) => {
+            this.copyToClipboard(`${event.latlng.lat},${event.latlng.lng}`);
+          },
+        },
+      ],
     };
 
     this.refreshObjectsSubscription = interval(environment.refreshMapObjectsIntervalInMilliseconds).subscribe(() =>
@@ -148,6 +160,32 @@ export class MapComponent implements OnInit, OnDestroy {
       .addTo(this.map);
 
     this.registerMapEvents();
+  }
+
+  private copyToClipboard(textToCopy: string) {
+    if (navigator.clipboard) {
+      navigator.clipboard
+        .writeText(textToCopy)
+        .then(() => {})
+        .catch(err => {
+          console.error(`Błąd podczas kopiowania do schowka: ${err}`);
+        });
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = textToCopy;
+      document.body.appendChild(textarea);
+
+      textarea.select();
+
+      try {
+        document.execCommand('copy');
+      } catch (err) {
+        console.error(`Błąd podczas kopiowania do schowka: ${err}`);
+      } finally {
+        // Usuwamy tymczasowy element textarea
+        document.body.removeChild(textarea);
+      }
+    }
   }
 
   private registerMapEvents() {
