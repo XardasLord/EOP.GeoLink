@@ -83,7 +83,7 @@ export class MapComponent implements OnInit, OnDestroy {
       preferCanvas: true,
       zoomControl: false,
       contextmenu: true,
-      contextmenuWidth: 140,
+      contextmenuWidth: 160,
       contextmenuItems: [
         {
           text: 'Skopiuj współrzędne',
