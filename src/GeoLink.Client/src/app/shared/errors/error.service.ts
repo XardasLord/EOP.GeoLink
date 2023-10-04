@@ -12,7 +12,7 @@ export class ErrorService {
       messageStatus === MessageStatusEnum.Warning ||
       messageStatus === MessageStatusEnum.Error
     ) {
-      this.snackBar.open(`Błąd podczas komunikacji z API - ${message}`);
+      this.snackBar.open(`Aplikacja GeoLink utraciła połączenie z bazą danych - ${message}`);
     }
   }
 }
