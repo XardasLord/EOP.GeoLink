@@ -64,7 +64,6 @@
           <td>
             <mat-icon
               *ngIf="deviceDetailsParam?.status"
-              matTooltip="abc test 123"
               [ngClass]="{
                 good: deviceDetailsParam?.status === deviceStatus.OK,
                 warning: deviceDetailsParam?.status === deviceStatus.Warning,
