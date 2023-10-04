@@ -489,7 +489,7 @@ export class MapComponent implements OnInit, OnDestroy {
       const markerLatLng = marker.getLatLng();
 
       // We move the point to flyTo to move 100px down
-      const latLngToFlyTo = this.map.layerPointToLatLng(this.map.latLngToLayerPoint(markerLatLng).add([0, 100]));
+      const latLngToFlyTo = this.map.layerPointToLatLng(this.map.latLngToLayerPoint(markerLatLng).add([0, 70]));
 
       this.map.flyTo(latLngToFlyTo, this.map.getZoom());
 
