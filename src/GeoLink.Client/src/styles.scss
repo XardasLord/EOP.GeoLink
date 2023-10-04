@@ -86,7 +86,7 @@ span[disabled] {
 }
 
 td {
-  .mat-icon {
+  .mat-icon[svgIcon='circle'] {
     font-size: $table-status-icon-size;
     text-align: end;
     padding-top: 0;
