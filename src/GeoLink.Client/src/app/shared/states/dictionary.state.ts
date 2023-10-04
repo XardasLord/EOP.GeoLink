@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
-import { catchError, tap, throwError } from 'rxjs';
+import { catchError, forkJoin, tap, throwError } from 'rxjs';
 import { DictionaryStateModel } from './dictionary.state.model';
 import { EnumDescriptionModel } from '../models/enum-description.model';
 import { DictionaryService } from '../services/dictionary.service';
@@ -34,6 +34,8 @@ export const DICTIONARY_STATE_TOKEN = new StateToken<DictionaryStateModel>('dict
     systemRoles: [],
     systemRegions: [],
     systemPermissions: [],
+    systemPermissionsForRoles: [],
+    systemPermissionsForGroups: [],
     mapObjectTypes: [],
     mapDeviceTypes: [],
     mapObjectStatusTypes: [],
@@ -66,6 +68,16 @@ export class DictionaryState {
   @Selector([DICTIONARY_STATE_TOKEN])
   static getSystemPermissions(state: DictionaryStateModel): EnumDescriptionModel[] {
     return state.systemPermissions;
+  }
+
+  @Selector([DICTIONARY_STATE_TOKEN])
+  static getSystemPermissionsForRoles(state: DictionaryStateModel): EnumDescriptionModel[] {
+    return state.systemPermissionsForRoles;
+  }
+
+  @Selector([DICTIONARY_STATE_TOKEN])
+  static getSystemPermissionsForGroups(state: DictionaryStateModel): EnumDescriptionModel[] {
+    return state.systemPermissionsForGroups;
   }
 
   @Selector([DICTIONARY_STATE_TOKEN])
@@ -152,10 +164,16 @@ export class DictionaryState {
 
   @Action(GetSystemPermissions)
   getSystemPermissions(ctx: StateContext<DictionaryStateModel>, _: GetSystemPermissions) {
-    return this.dictionaryService.getSystemPermission().pipe(
-      tap(response => {
+    const systemPermissions$ = this.dictionaryService.getSystemPermission();
+    const systemPermissionsForRoles$ = this.dictionaryService.getSystemPermissionsForRoles();
+    const systemPermissionsForGroups$ = this.dictionaryService.getSystemPermissionsForGroups();
+
+    return forkJoin([systemPermissions$, systemPermissionsForRoles$, systemPermissionsForGroups$]).pipe(
+      tap(([permissionsResponse, permissionsForRolesResponse, permissionsForGroupsResponse]) => {
         ctx.patchState({
-          systemPermissions: response,
+          systemPermissions: permissionsResponse,
+          systemPermissionsForRoles: permissionsForRolesResponse,
+          systemPermissionsForGroups: permissionsForGroupsResponse,
         });
       }),
       catchError(error => {

@@ -10,6 +10,8 @@ export interface DictionaryStateModel {
   systemRoles: EnumDescriptionWithScopesModel[];
   systemRegions: EnumDescriptionRegionModel[];
   systemPermissions: EnumDescriptionModel[];
+  systemPermissionsForRoles: EnumDescriptionModel[];
+  systemPermissionsForGroups: EnumDescriptionModel[];
   mapObjectTypes: EnumDescriptionModel[];
   mapDeviceTypes: EnumDescriptionModel[];
   mapObjectStatusTypes: EnumDescriptionModel[];
