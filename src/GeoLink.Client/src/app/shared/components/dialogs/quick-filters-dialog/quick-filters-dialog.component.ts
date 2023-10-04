@@ -7,6 +7,8 @@ import { FiltersState } from '../../../states/filters.state';
 import { SimpleFormModel, SimpleInputDialogDataModel } from '../simple-input-dialog/simple-input-dialog-data.model';
 import { SimpleInputDialogComponent } from '../simple-input-dialog/simple-input-dialog.component';
 import { QuickFilterModel } from '../../../models/filters/quick-filter.model';
+import { SimpleConfirmDialogComponent } from '../simple-confirm-dialog/simple-confirm-dialog.component';
+import { SimpleConfirmDialogDataModel } from '../simple-confirm-dialog/simple-confirm-dialog-data.model';
 
 @Component({
   selector: 'app-quick-filters-dialog',
@@ -16,7 +18,8 @@ import { QuickFilterModel } from '../../../models/filters/quick-filter.model';
 export class QuickFiltersDialogComponent implements OnInit {
   quickFilters$ = this.store.select(FiltersState.getQuickFilterModels);
 
-  dialogRef?: MatDialogRef<SimpleInputDialogComponent>;
+  dialogSaveFiltersRef?: MatDialogRef<SimpleInputDialogComponent>;
+  dialogConfirmationRef?: MatDialogRef<SimpleConfirmDialogComponent>;
 
   constructor(
     private store: Store,
@@ -28,7 +31,7 @@ export class QuickFiltersDialogComponent implements OnInit {
   }
 
   saveCurrentFilters() {
-    this.dialogRef = this.dialog.open<SimpleInputDialogComponent>(SimpleInputDialogComponent, {
+    this.dialogSaveFiltersRef = this.dialog.open<SimpleInputDialogComponent>(SimpleInputDialogComponent, {
       data: <SimpleInputDialogDataModel>{
         title: 'Zapisz szybki filtr',
         inputs: [
@@ -71,7 +74,20 @@ export class QuickFiltersDialogComponent implements OnInit {
   }
 
   deleteQuickFilter(id: number) {
-    this.store.dispatch(new DeleteQuickFilter(id));
+    this.dialogConfirmationRef = this.dialog.open<SimpleConfirmDialogComponent, SimpleConfirmDialogDataModel>(
+      SimpleConfirmDialogComponent,
+      {
+        data: <SimpleConfirmDialogDataModel>{
+          title: 'Czy na pewno chcesz usunąć szybki filtr?',
+          primaryBtnLabel: 'Zatwierdź',
+          secondaryBtnLabel: 'Anuluj',
+          primaryAction: () => {
+            this.store.dispatch(new DeleteQuickFilter(id));
+          },
+        },
+        width: '400px',
+      }
+    );
   }
 
   loadSelectedFilter(filter: QuickFilterModel) {

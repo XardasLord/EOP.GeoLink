@@ -29,6 +29,7 @@ import { QuickFiltersDialogComponent } from './components/dialogs/quick-filters-
 import { QuickFilterService } from './services/quick-filter.service';
 import { MapCheckboxFiltersComponent } from './components/map-checkbox-filters/map-checkbox-filters.component';
 import { DownloadService } from './services/download.service';
+import { SimpleConfirmDialogComponent } from './components/dialogs/simple-confirm-dialog/simple-confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { DownloadService } from './services/download.service';
     ProgressSpinnerComponent,
     SimpleInputDialogComponent,
     QuickFiltersDialogComponent,
+    SimpleConfirmDialogComponent,
   ],
   imports: [
     CommonModule,

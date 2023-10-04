@@ -1,0 +1,27 @@
+<div class="flex flex-col h-full">
+  <div mat-dialog-title>
+    <div class="flex justify-between items-center">
+      <div>
+        {{ data.title }}
+      </div>
+      <mat-icon class="cursor-pointer" [mat-dialog-close]>close</mat-icon>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div mat-dialog-content *ngIf="data.description">
+    {{ data.description }}
+  </div>
+  <!--  <div *ngIf="data.template">-->
+  <!--    <ng-container *ngTemplateOutlet="data.template.ref; context: { $implicit: data.template.data }"></ng-container>-->
+  <!--  </div>-->
+  <div class="flex-grow"></div>
+  <mat-divider></mat-divider>
+  <div mat-dialog-actions align="end">
+    <button mat-flat-button color="accent" (click)="onPrimaryAction()" [disabled]="data.primaryBtnDisabled">
+      {{ data.primaryBtnLabel || 'Zatwierdź' }}
+    </button>
+    <button mat-stroked-button color="accent" (click)="onSecondaryAction()">
+      {{ data.secondaryBtnLabel || 'Anuluj' }}
+    </button>
+  </div>
+</div>
