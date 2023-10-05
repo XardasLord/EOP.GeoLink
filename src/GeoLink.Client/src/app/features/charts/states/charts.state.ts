@@ -96,7 +96,7 @@ export class ChartsState {
   }
 
   @Action(Load)
-  loadReports(ctx: StateContext<ChartsStateModel>, action: Load) {
+  loadChart(ctx: StateContext<ChartsStateModel>, action: Load) {
     const state = ctx.getState();
 
     ctx.patchState({
@@ -105,7 +105,7 @@ export class ChartsState {
 
     return this.chartService
       .getChart(
-        1,
+        action.timeExtent,
         ChartTypeEnum.MovingAverage,
         this.store.selectSnapshot(FiltersState.getSelectedObjectMapFilters),
         this.store.selectSnapshot(FiltersState.getSelectedDeviceMapFilters),
@@ -158,6 +158,9 @@ export class ChartsState {
                 color: 'black',
                 fontSize: 20,
               },
+              max: 100,
+              min: 0,
+              interval: 10,
             },
             series: [
               {

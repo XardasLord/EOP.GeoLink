@@ -1,4 +1,16 @@
 <app-charts-helper-bar></app-charts-helper-bar>
 <div class="p-40">
   <app-single-data-chart></app-single-data-chart>
+  <div class="fixed bottom-8 right-8">
+    <ng-container *ngFor="let timeExtent of timeExtentDictionary$ | async">
+      <button
+        class="mr-2"
+        mat-fab
+        color="primary"
+        matTooltip="Ustaw okno czasowe {{ timeExtent.name }}"
+        (click)="setTimeExtent(timeExtent.id)">
+        {{ timeExtent.name }}
+      </button>
+    </ng-container>
+  </div>
 </div>

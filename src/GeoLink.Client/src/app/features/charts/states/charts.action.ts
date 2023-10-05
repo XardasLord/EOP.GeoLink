@@ -5,7 +5,7 @@ const prefix = '[Charts]';
 export class Load {
   static readonly type = `${prefix} ${Load.name}`;
 
-  constructor() {}
+  constructor(public timeExtent: number = 1) {}
 }
 
 export class ApplyFilters {
