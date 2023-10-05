@@ -1,13 +1,13 @@
 <form [formGroup]="diagnosticForm" (ngSubmit)="onSubmit()" ngxsForm="diagnosticToolsConfig.configFormGroup">
   <p>
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="fill">
       <mat-label>PRTG URL</mat-label>
       <input matInput placeholder="PRTG URL" formControlName="prtgUrl" type="text" />
       <mat-hint>Podaj URL</mat-hint>
     </mat-form-field>
   </p>
   <p>
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="fill">
       <mat-label>Konsola SSH Hostname</mat-label>
       <input matInput placeholder="Konsola SSH Hostname" formControlName="consoleSshHostname" type="text" />
       <mat-hint>Podaj Hostname</mat-hint>
