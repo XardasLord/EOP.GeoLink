@@ -79,6 +79,11 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     return this.mapObjectHelper.getDeviceTypeGroup(this.mapObject.devices);
   }
 
+  displayPpeGroupIdentifiers(ppeGroups: number[]) {
+    const formattedGroups = ppeGroups.map(group => `[${group}]`);
+    return formattedGroups.join(' ');
+  }
+
   showAttributeStatusChart(deviceAttribute: DeviceDetailsAttributeModel, event: MouseEvent) {
     if (!deviceAttribute.isChart) {
       return;

@@ -49,6 +49,7 @@ export interface DeviceModel {
   producer: string;
   model: string;
   idStatus: MapObjectStatusTypeEnum;
+  ppeGrp: number[];
 }
 
 export interface DeviceDetailsModel {

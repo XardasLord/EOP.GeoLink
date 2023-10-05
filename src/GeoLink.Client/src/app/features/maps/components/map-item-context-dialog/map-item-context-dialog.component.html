@@ -16,7 +16,12 @@
     <td colspan="2" class="group-name">{{ deviceModelType.key }}</td>
     <ng-container *ngFor="let deviceModel of deviceModelType.value">
       <tr class="device-item-row" (click)="showDeviceSubMenu(deviceModel, $event)">
-        <td>{{ getDeviceType(+deviceModel.devType) }}</td>
+        <td>
+          {{ getDeviceType(+deviceModel.devType) }}
+          <ng-container *ngIf="deviceModel.ppeGrp">
+            <span class="italic">{{ displayPpeGroupIdentifiers(deviceModel.ppeGrp) }}</span>
+          </ng-container>
+        </td>
         <td>
           <mat-icon
             matTooltip="abc test 123"
