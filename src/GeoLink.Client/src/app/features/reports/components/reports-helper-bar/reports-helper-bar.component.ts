@@ -38,6 +38,7 @@ export class ReportsHelperBarComponent implements OnDestroy {
   deviceFilters$ = this.store.select(FiltersState.getMapDeviceFilters);
   regionFilters$ = this.store.select(FiltersState.getMapRegionFilters);
   statusFilters$ = this.store.select(FiltersState.getMapStatusFilters);
+  activeFilterAttributesCount$ = this.store.select(FiltersState.getActiveFilterAttributesCount);
 
   protected readonly OpenMode = ReportOpenMode;
   protected readonly FilterTypeEnum = FilterTypeEnum;

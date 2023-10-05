@@ -29,6 +29,7 @@ export class MapHelperBarComponent {
   deviceFilters$ = this.store.select(FiltersState.getMapDeviceFilters);
   regionFilters$ = this.store.select(FiltersState.getMapRegionFilters);
   statusFilters$ = this.store.select(FiltersState.getMapStatusFilters);
+  activeFilterAttributesCount$ = this.store.select(FiltersState.getActiveFilterAttributesCount);
 
   protected readonly FilterTypeEnum = FilterTypeEnum;
 

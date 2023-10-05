@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Action, Selector, State, StateContext, StateToken, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { FiltersStateModel } from './filter.state.model';
 import { FilterAttributeModel } from '../models/filters/filter-attribute.model';
 import {
@@ -47,7 +47,6 @@ export class FiltersState {
     private mapsService: MapsService,
     private quickFiltersService: QuickFilterService,
     private toastService: ToastrService,
-    private store: Store,
     private router: Router
   ) {}
 
@@ -99,6 +98,11 @@ export class FiltersState {
   @Selector([FILTERS_STATE_TOKEN])
   static getFilterAttributeModels(state: FiltersStateModel): FilterAttributeModel[] {
     return state.filterAttributeModels;
+  }
+
+  @Selector([FILTERS_STATE_TOKEN])
+  static getActiveFilterAttributesCount(state: FiltersStateModel): number {
+    return state.filterAttributeModels.filter(x => x.value && x.value.length > 0).length;
   }
 
   @Selector([FILTERS_STATE_TOKEN])

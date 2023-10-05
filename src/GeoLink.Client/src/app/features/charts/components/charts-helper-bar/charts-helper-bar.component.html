@@ -19,7 +19,7 @@
       </button>
       <button mat-fab extended color="primary" (click)="openSearchFilters()">
         <mat-icon svgIcon="search"></mat-icon>
-        Szukaj
+        Szukaj ({{ activeFilterAttributesCount$ | async }})
       </button>
       <button
         mat-button
