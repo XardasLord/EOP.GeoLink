@@ -162,6 +162,6 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
     const attributeDivElement = document.getElementById('second-level-table') as HTMLElement;
 
     const height = attributeDivElement.clientHeight;
-    this.attributeStatusChartElementTop = `${height + 10}px`;
+    this.attributeStatusChartElementTop = `${height + 5}px`;
   }
 }
