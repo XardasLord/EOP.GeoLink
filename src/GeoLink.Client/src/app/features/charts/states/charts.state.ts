@@ -86,6 +86,11 @@ export class ChartsState {
   }
 
   @Selector([CHARTS_STATE_TOKEN])
+  static hasChartData(state: ChartsStateModel): boolean {
+    return state.chart?.chartsData?.data?.length > 0;
+  }
+
+  @Selector([CHARTS_STATE_TOKEN])
   static getEChartsOption(state: ChartsStateModel): EChartsOption {
     return state.echartsOption;
   }
