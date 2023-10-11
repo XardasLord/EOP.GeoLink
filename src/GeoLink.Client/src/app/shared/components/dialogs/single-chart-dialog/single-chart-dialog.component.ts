@@ -140,13 +140,23 @@ export class SingleChartDialogComponent implements OnInit, OnDestroy {
   }
 
   prepareChart(model: ChartModel) {
+    const dayMonthInfo: (null | string)[] = [];
     const xAxisData: string[] = [];
     const standardChartData: number[] = [];
     const polynomialChartData: number[] = [];
 
     model.chartsData.data.forEach(chartData => {
       const date = new Date(chartData.timestamp);
-      const formattedDate = `${date.getHours().toString()}:${date.getMinutes().toString()}`;
+      const formattedDate = `${date.getHours().toString().padStart(2, '0')}:${date
+        .getMinutes()
+        .toString()
+        .padStart(2, '0')}`;
+
+      const formattedDayMonth = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1)
+        .toString()
+        .padStart(2, '0')}`;
+
+      dayMonthInfo.push(formattedDayMonth);
 
       xAxisData.push(formattedDate);
       standardChartData.push(chartData.values[0]);
@@ -170,6 +180,19 @@ export class SingleChartDialogComponent implements OnInit, OnDestroy {
         silent: false,
         splitLine: {
           show: false,
+        },
+        axisLabel: {
+          formatter: function (value: string, index: number) {
+            const dayMonth = dayMonthInfo[index];
+
+            return `{bold|${dayMonth}}\n${value}`;
+          },
+          rich: {
+            bold: {
+              fontWeight: 'bold',
+              color: 'blue',
+            },
+          },
         },
       },
       yAxis: {
