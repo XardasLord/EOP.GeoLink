@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RemoteServiceBase } from './remote-service.base';
 import { environment } from '../../../environments/environment';
@@ -24,16 +24,17 @@ export class DownloadService extends RemoteServiceBase {
     tempLink.dispatchEvent(new MouseEvent(`click`));
   }
 
-  public downloadFileFromApi(uri: string, httpParams?: HttpParams): Observable<Blob> {
+  public downloadFileFromApi(uri: string, httpParams?: HttpParams): Observable<HttpResponse<Blob>> {
     return this.downloadFile(this.apiUrl, uri, httpParams);
   }
 
-  private downloadFile(baseUrl: string, uri: string, httpParams?: HttpParams) {
+  private downloadFile(baseUrl: string, uri: string, httpParams?: HttpParams): Observable<HttpResponse<Blob>> {
     const url = `${baseUrl}${uri}`;
 
     return this.httpClient.get<Blob>(url, {
       responseType: 'blob' as 'json',
       params: httpParams,
+      observe: 'response',
     });
   }
 }

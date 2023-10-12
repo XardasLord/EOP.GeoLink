@@ -197,8 +197,10 @@ export class ReportsState {
             ctx.patchState({ isDownloadingReport: true });
 
             return this.downloadService.downloadFileFromApi(`/reports/reportFile/download/${response.key}`).pipe(
-              switchMap(resBlob => {
-                this.downloadService.getFile(resBlob, 'GeolinkRaport.csv');
+              switchMap(response => {
+                const filename = response.headers.get('Filename') ?? 'GeolinkRaport.csv';
+
+                this.downloadService.getFile(response.body!, filename);
                 this.toastService.success('Raport CSV został pobrany.', 'Raport CSV');
 
                 return of(null);
