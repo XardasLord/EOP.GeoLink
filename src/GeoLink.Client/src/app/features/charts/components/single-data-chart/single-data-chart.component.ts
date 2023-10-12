@@ -12,6 +12,7 @@ export class SingleDataChartComponent {
   isLoading$ = this.store.select(ChartsState.getIsLoading);
   chartOptions$ = this.store.select(ChartsState.getEChartsOption);
   chart$ = this.store.select(ChartsState.getChart);
+  hasChartData$ = this.store.select(ChartsState.hasChartData);
 
   protected readonly MapObjectStatusTypeEnum = MapObjectStatusTypeEnum;
 

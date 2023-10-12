@@ -10,6 +10,7 @@ import { Load, SetOpenMode } from './charts.action';
 import { ChartTypeEnum } from '../../../shared/models/charts/chart-type.enum';
 import { ChartModel } from '../../../shared/models/charts/chart.model';
 import { FiltersState } from '../../../shared/states/filters.state';
+import { TopLevelFormatterParams } from 'echarts/types/dist/shared';
 
 const CHARTS_STATE_TOKEN = new StateToken<ChartsStateModel>('charts');
 
@@ -86,6 +87,11 @@ export class ChartsState {
   }
 
   @Selector([CHARTS_STATE_TOKEN])
+  static hasChartData(state: ChartsStateModel): boolean {
+    return state.chart?.chartsData?.data?.length > 0;
+  }
+
+  @Selector([CHARTS_STATE_TOKEN])
   static getEChartsOption(state: ChartsStateModel): EChartsOption {
     return state.echartsOption;
   }
@@ -117,13 +123,23 @@ export class ChartsState {
       )
       .pipe(
         tap(response => {
+          const dayMonthInfo: (null | string)[] = [];
           const xAxisData: string[] = [];
           const standardChartData: number[] = [];
           const polynomialChartData: number[] = [];
 
           response.chartsData.data.forEach(chartData => {
             const date = new Date(chartData.timestamp);
-            const formattedDate = `${date.getHours().toString()}:${date.getMinutes().toString()}`;
+            const formattedDate = `${date.getHours().toString().padStart(2, '0')}:${date
+              .getMinutes()
+              .toString()
+              .padStart(2, '0')}`;
+
+            const formattedDayMonth = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1)
+              .toString()
+              .padStart(2, '0')}`;
+
+            dayMonthInfo.push(formattedDayMonth);
 
             xAxisData.push(formattedDate);
             standardChartData.push(chartData.values[0]);
@@ -135,12 +151,14 @@ export class ChartsState {
               data: [response.chartsData.chartNames[0], response.chartsData.chartNames[1]],
               align: 'left',
             },
-            tooltip: {},
+            tooltip: {
+              backgroundColor: 'lightyellow',
+            },
             xAxis: {
               data: xAxisData,
               name: response.chartsData.chartAxisInfo.x,
               nameLocation: 'middle',
-              nameGap: 30,
+              nameGap: 50,
               nameTextStyle: {
                 color: 'black',
                 fontSize: 20,
@@ -149,11 +167,24 @@ export class ChartsState {
               splitLine: {
                 show: false,
               },
+              axisLabel: {
+                formatter: function (value: string, index: number) {
+                  const dayMonth = dayMonthInfo[index];
+
+                  return `{bold|${dayMonth}}\n${value}`;
+                },
+                rich: {
+                  bold: {
+                    fontWeight: 'bold',
+                    color: 'blue',
+                  },
+                },
+              },
             },
             yAxis: {
               name: response.chartsData.chartAxisInfo.y,
               nameLocation: 'middle',
-              nameGap: 30,
+              nameGap: 40,
               nameTextStyle: {
                 color: 'black',
                 fontSize: 20,

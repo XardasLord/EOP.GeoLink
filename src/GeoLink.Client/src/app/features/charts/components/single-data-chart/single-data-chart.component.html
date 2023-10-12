@@ -1,4 +1,6 @@
-<div class="chart-header-info" *ngIf="chart$ | async">
+<app-progress-spinner *ngIf="isLoading$ | async"></app-progress-spinner>
+
+<div class="chart-header-info" *ngIf="hasChartData$ | async; else no_chart">
   <table>
     <tr>
       <td class="date">Data: {{ (chart$ | async)!.dateNow | date: 'dd.MM.yyyy HH:mm:ss' }}</td>
@@ -30,8 +32,12 @@
 </div>
 
 <div
+  *ngIf="hasChartData$ | async"
   class="map-object-context-menu-chart"
   echarts
   [options]="(chartOptions$ | async)!"
-  [loading]="(isLoading$ | async)!"
   [autoResize]="true"></div>
+
+<ng-template #no_chart>
+  <div class="font-bold text-3xl text-center align-middle bg-accent-light rounded-lg p-4">Wykres niedostępny</div>
+</ng-template>
