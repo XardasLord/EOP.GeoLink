@@ -168,14 +168,17 @@ export class SingleChartDialogComponent implements OnInit, OnDestroy {
         data: [model.chartsData.chartNames[0], model.chartsData.chartNames[1]],
         align: 'left',
       },
-      tooltip: {},
+      tooltip: {
+        backgroundColor: 'lightyellow',
+      },
       xAxis: {
         data: xAxisData,
         name: model.chartsData.chartAxisInfo.x,
         nameLocation: 'middle',
-        nameGap: 30,
+        nameGap: 50,
         nameTextStyle: {
           color: 'black',
+          fontSize: 20,
         },
         silent: false,
         splitLine: {
@@ -198,9 +201,10 @@ export class SingleChartDialogComponent implements OnInit, OnDestroy {
       yAxis: {
         name: model.chartsData.chartAxisInfo.y,
         nameLocation: 'middle',
-        nameGap: 30,
+        nameGap: 40,
         nameTextStyle: {
           color: 'black',
+          fontSize: 20,
         },
       },
       series: [

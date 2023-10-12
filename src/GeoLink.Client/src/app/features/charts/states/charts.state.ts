@@ -10,6 +10,7 @@ import { Load, SetOpenMode } from './charts.action';
 import { ChartTypeEnum } from '../../../shared/models/charts/chart-type.enum';
 import { ChartModel } from '../../../shared/models/charts/chart.model';
 import { FiltersState } from '../../../shared/states/filters.state';
+import { TopLevelFormatterParams } from 'echarts/types/dist/shared';
 
 const CHARTS_STATE_TOKEN = new StateToken<ChartsStateModel>('charts');
 
@@ -150,12 +151,14 @@ export class ChartsState {
               data: [response.chartsData.chartNames[0], response.chartsData.chartNames[1]],
               align: 'left',
             },
-            tooltip: {},
+            tooltip: {
+              backgroundColor: 'lightyellow',
+            },
             xAxis: {
               data: xAxisData,
               name: response.chartsData.chartAxisInfo.x,
               nameLocation: 'middle',
-              nameGap: 30,
+              nameGap: 50,
               nameTextStyle: {
                 color: 'black',
                 fontSize: 20,
@@ -181,7 +184,7 @@ export class ChartsState {
             yAxis: {
               name: response.chartsData.chartAxisInfo.y,
               nameLocation: 'middle',
-              nameGap: 30,
+              nameGap: 40,
               nameTextStyle: {
                 color: 'black',
                 fontSize: 20,
