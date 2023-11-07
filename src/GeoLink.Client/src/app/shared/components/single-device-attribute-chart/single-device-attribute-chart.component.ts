@@ -129,21 +129,24 @@ export class SingleDeviceAttributeChartComponent implements OnInit, OnDestroy {
       },
       series: [
         {
+          // https://stackoverflow.com/questions/48375036/working-with-many-data-points-in-echarts-js
           name: model.chartsData.chartNames[0],
           type: 'line',
           data: standardChartData,
           animationDelay: idx => idx * 10,
+          showAllSymbol: true,
         },
         {
           name: model.chartsData.chartNames[1],
           type: 'line',
+          data: polynomialChartData,
           lineStyle: {
             type: 'dotted',
           },
           color: 'red',
           smooth: true,
-          data: polynomialChartData,
           animationDelay: idx => idx * 10 + 100,
+          showAllSymbol: true,
         },
       ],
       animationEasing: 'elasticOut',
