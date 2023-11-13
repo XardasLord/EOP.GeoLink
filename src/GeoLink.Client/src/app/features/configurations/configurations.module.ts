@@ -16,6 +16,7 @@ import { LogsStorageConfigService } from './services/logs-storage-config.service
 import { DiagnosticToolsConfigComponent } from './components/diagnostic-tools-config/diagnostic-tools-config.component';
 import { DiagnosticToolsConfigService } from './services/diagnostic-tools-config.service';
 import { DiagnosticToolsConfigState } from './states/diagnostic-tools-config.state';
+import { StatusesConfigComponent } from './components/statuses-config/statuses-config.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { DiagnosticToolsConfigState } from './states/diagnostic-tools-config.sta
     RetentionTimeConfigComponent,
     LogsStorageConfigComponent,
     DiagnosticToolsConfigComponent,
+    StatusesConfigComponent,
   ],
   imports: [
     SharedModule,
