@@ -19,7 +19,6 @@ import {
   GetMapDeviceTypes,
   GetMapObjectStatusTypes,
   GetMapObjectTypes,
-  GetStatusesConfig,
   GetSystemGroups,
   GetSystemPermissions,
   GetSystemRegions,
@@ -70,7 +69,6 @@ export class AuthState implements NgxsOnInit {
       actions.push(new GetTimeExtentDefinitions());
       actions.push(new GetConfigDefinitions());
       actions.push(new GetFilterAttributeDefinitions());
-      actions.push(new GetStatusesConfig());
       actions.push(
         new SetInitialMapFilters(
           [user.init_objectfilterids],
@@ -160,7 +158,6 @@ export class AuthState implements NgxsOnInit {
       actions.push(new GetTimeExtentDefinitions());
       actions.push(new GetConfigDefinitions());
       actions.push(new GetFilterAttributeDefinitions());
-      actions.push(new GetStatusesConfig());
       actions.push(
         new SetInitialMapFilters(
           [state.user.init_objectfilterids],

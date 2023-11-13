@@ -85,8 +85,4 @@ export class DictionaryService extends RemoteServiceBase {
   getFilterAttributeDefinitions(): Observable<FilterAttributeDefinitionModel[]> {
     return this.httpClient.get<FilterAttributeDefinitionModel[]>(`${this.apiUrl}/interface/getAtrFiltersDef`);
   }
-
-  getStatusesConfig(): Observable<StatusConfigModel[]> {
-    return this.httpClient.get<StatusConfigModel[]>(`${this.apiUrl}/settings/getStatAggrConfig`);
-  }
 }

@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { nameof } from '../../../../shared/helpers/name-of.helper';
-import { EnumDescriptionWithScopesModel } from '../../../../shared/models/enum-description-with-scopes.model';
 import { DictionaryState } from '../../../../shared/states/dictionary.state';
-import { OpenEditPrivilegesDialogForGroup } from '../../../../shared/states/modal.action';
+import { OpenEditStatusConfigDialog } from '../../../../shared/states/modal.action';
 import { StatusConfigModel } from '../../../../shared/models/status-config.model';
+import { Load } from '../../states/statuses-config.action';
+import { StatusesConfigState } from '../../states/statuses-config.state';
 
 @Component({
   selector: 'app-statuses-config',
   templateUrl: './statuses-config.component.html',
   styleUrls: ['./statuses-config.component.scss'],
 })
-export class StatusesConfigComponent {
+export class StatusesConfigComponent implements OnInit {
   displayedColumns: string[] = [
     nameof<StatusConfigModel>('atrName'),
     nameof<StatusConfigModel>('srcStatus'),
@@ -20,11 +21,15 @@ export class StatusesConfigComponent {
     'actions',
   ];
 
-  statusesConfig$ = this.store.select(DictionaryState.getStatusesConfigGroupedByAttributeSourceType);
+  statusesConfig$ = this.store.select(StatusesConfigState.getStatusesConfigGroupedByAttributeSourceType);
   sourceTypes = this.store.selectSnapshot(DictionaryState.getDeviceAttributeSourceTypes);
   statusTypes = this.store.selectSnapshot(DictionaryState.getMapObjectStatusTypes);
 
   constructor(private store: Store) {}
+
+  ngOnInit(): void {
+    this.store.dispatch(new Load());
+  }
 
   getAttributeSourceName(idSrc: number) {
     return this.sourceTypes.filter(x => x.id === idSrc)[0].name;
@@ -34,7 +39,7 @@ export class StatusesConfigComponent {
     return this.statusTypes.filter(x => x.id === idStatus)[0].name;
   }
 
-  changePrivileges(group: EnumDescriptionWithScopesModel) {
-    this.store.dispatch(new OpenEditPrivilegesDialogForGroup(group));
+  changePrivileges(statusConfig: StatusConfigModel) {
+    this.store.dispatch(new OpenEditStatusConfigDialog(this.getAttributeSourceName(statusConfig.idSrc), statusConfig));
   }
 }

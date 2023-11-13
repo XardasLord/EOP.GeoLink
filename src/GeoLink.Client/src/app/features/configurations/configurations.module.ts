@@ -17,6 +17,9 @@ import { DiagnosticToolsConfigComponent } from './components/diagnostic-tools-co
 import { DiagnosticToolsConfigService } from './services/diagnostic-tools-config.service';
 import { DiagnosticToolsConfigState } from './states/diagnostic-tools-config.state';
 import { StatusesConfigComponent } from './components/statuses-config/statuses-config.component';
+import { EditStatusConfigDialogComponent } from './components/dialogs/edit-status-config-dialog/edit-status-config-dialog.component';
+import { StatusesConfigState } from './states/statuses-config.state';
+import { StatusesConfigService } from './services/statuses-config.service';
 
 @NgModule({
   declarations: [
@@ -26,6 +29,7 @@ import { StatusesConfigComponent } from './components/statuses-config/statuses-c
     LogsStorageConfigComponent,
     DiagnosticToolsConfigComponent,
     StatusesConfigComponent,
+    EditStatusConfigDialogComponent,
   ],
   imports: [
     SharedModule,
@@ -35,6 +39,7 @@ import { StatusesConfigComponent } from './components/statuses-config/statuses-c
       RetentionTimeConfigState,
       LogsStorageConfigState,
       DiagnosticToolsConfigState,
+      StatusesConfigState,
     ]),
     NgxsFormPluginModule,
   ],
@@ -43,6 +48,7 @@ import { StatusesConfigComponent } from './components/statuses-config/statuses-c
     RetentionTimeConfigService,
     LogsStorageConfigService,
     DiagnosticToolsConfigService,
+    StatusesConfigService,
   ],
 })
 export class ConfigurationsModule {}

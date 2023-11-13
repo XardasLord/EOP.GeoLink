@@ -1,0 +1,38 @@
+<div mat-dialog-title>
+  <div class="flex justify-between items-center text-xl">
+    <div>Edytuj status atrybutu</div>
+    <mat-icon class="cursor-pointer" mat-dialog-close>close</mat-icon>
+  </div>
+</div>
+<mat-divider></mat-divider>
+<div mat-dialog-content class="!pb-1">
+  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <div class="text-lg mt-4 items-center">{{ dialogData.sourceName }} - {{ dialogData.model.atrName }}</div>
+
+    <div class="flex mt-4">
+      <mat-form-field class="w-full flex-auto">
+        <mat-label>Wartość źródłowa statusu</mat-label>
+        <input type="text" matInput formControlName="sourceStatus" />
+      </mat-form-field>
+    </div>
+
+    <mat-form-field class="w-full flex-auto">
+      <mat-label>Etykieta wartości źródłowej statusu</mat-label>
+      <input type="text" matInput formControlName="description" />
+    </mat-form-field>
+
+    <mat-form-field class="w-full flex-auto">
+      <mat-label>Status GeoLink</mat-label>
+      <mat-select formControlName="geoLinkStatus">
+        <mat-option *ngFor="let status of geoLinkStatuses" [value]="status.id">{{ status.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <input type="number" matInput formControlName="id" hidden />
+  </form>
+</div>
+<mat-divider></mat-divider>
+<div mat-dialog-actions align="end">
+  <button mat-flat-button [disabled]="form.invalid" color="primary" (click)="onSubmit()">Edytuj</button>
+  <button mat-stroked-button color="primary" mat-dialog-close>Anuluj</button>
+</div>

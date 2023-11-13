@@ -47,7 +47,3 @@ export class GetConfigDefinitions {
 export class GetFilterAttributeDefinitions {
   static readonly type = `${prefix} ${GetFilterAttributeDefinitions.name}`;
 }
-
-export class GetStatusesConfig {
-  static readonly type = `${prefix} ${GetStatusesConfig.name}`;
-}
