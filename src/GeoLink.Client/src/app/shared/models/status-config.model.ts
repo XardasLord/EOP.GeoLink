@@ -1,6 +1,6 @@
 export interface StatusConfigModel {
   id: number;
-  atrType: string;
+  atrName: string;
   idSrc: number;
   srcStatus: string;
   srcStatusDescription: string;

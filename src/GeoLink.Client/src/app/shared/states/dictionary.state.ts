@@ -128,6 +128,19 @@ export class DictionaryState {
     return state.statusesConfig;
   }
 
+  @Selector([DICTIONARY_STATE_TOKEN])
+  static getStatusesConfigGroupedByAttributeSourceType(state: DictionaryStateModel): Map<number, StatusConfigModel[]> {
+    return state.statusesConfig.reduce((grouped, item) => {
+      if (!grouped.has(item.idSrc)) {
+        grouped.set(item.idSrc, []);
+      }
+
+      grouped.get(item.idSrc)!.push(item);
+
+      return grouped;
+    }, new Map<number, StatusConfigModel[]>());
+  }
+
   @Action(GetSystemGroups)
   getSystemGroups(ctx: StateContext<DictionaryStateModel>, _: GetSystemGroups) {
     return this.dictionaryService.getSystemGroups().pipe(
