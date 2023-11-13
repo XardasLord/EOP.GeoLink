@@ -1,0 +1,40 @@
+<ng-container *ngFor="let statusConfig of (statusesConfig$ | async)! | keyvalue">
+  <h2>{{ getAttributeSourceName(statusConfig.key) }}</h2>
+
+  <table mat-table [dataSource]="statusConfig.value" class="mat-elevation-z3 mb-10">
+    <ng-container matColumnDef="atrName">
+      <th mat-header-cell *matHeaderCellDef>Nazwa atrybutu</th>
+      <td mat-cell *matCellDef="let config">{{ config?.atrName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="srcStatus">
+      <th mat-header-cell *matHeaderCellDef>Wartość źródłowa statusu</th>
+      <td mat-cell *matCellDef="let config">{{ config?.srcStatus }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="srcStatusDescription">
+      <th mat-header-cell *matHeaderCellDef>Etykieta wartości źródłowej statusu</th>
+      <td mat-cell *matCellDef="let config">{{ config?.srcStatusDescription }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="idStatus">
+      <th mat-header-cell *matHeaderCellDef>ID statusu Geolink</th>
+      <td mat-cell *matCellDef="let config">{{ getGeoLinkStatusName(config?.idStatus) }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let config">
+        <button
+          mat-icon-button
+          matTooltip="Edytuj status atrybutu"
+          (click)="changePrivileges(config); $event.stopPropagation()">
+          <mat-icon class="material-icons-outlined" matListItemIcon svgIcon="edit"></mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</ng-container>

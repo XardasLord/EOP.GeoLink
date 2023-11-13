@@ -59,8 +59,11 @@
       <th>Status</th>
     </tr>
 
-    <ng-container *ngFor="let deviceDetailsParamType of deviceDetailsModelGroupedByAttributeSourceType | keyvalue">
-      <td colspan="3" class="group-name">{{ getAttributeSourceName(deviceDetailsParamType.key) }}</td>
+    <ng-container
+      *ngFor="let deviceDetailsParamType of deviceDetailsModelGroupedByAttributeSourceType | keyvalue: doNotOrder">
+      <td colspan="3" class="group-name">
+        {{ getAttributeSourceName(deviceDetailsParamType.key) }}
+      </td>
       <ng-container *ngFor="let deviceDetailsParam of deviceDetailsParamType.value">
         <tr class="device-item-row" (click)="showAttributeStatusChart(deviceDetailsParam, $event)">
           <td>{{ deviceDetailsParam.name }}</td>

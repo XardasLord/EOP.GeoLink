@@ -1,4 +1,5 @@
 import { EnumDescriptionWithScopesModel } from '../models/enum-description-with-scopes.model';
+import { StatusConfigModel } from '../models/status-config.model';
 
 const prefix = '[Modal]';
 
@@ -20,4 +21,17 @@ export class CloseEditPrivilegesDialogForGroup {
 
 export class CloseEditPrivilegesDialogForRole {
   static readonly type = `${prefix} ${CloseEditPrivilegesDialogForRole.name}`;
+}
+
+export class CloseModal {
+  static readonly type = `${prefix} ${CloseModal.name}`;
+}
+
+export class OpenEditStatusConfigDialog {
+  constructor(
+    public attributeSourceName: string,
+    public statusConfig?: StatusConfigModel
+  ) {}
+
+  static readonly type = `${prefix} ${OpenEditStatusConfigDialog.name}`;
 }
