@@ -118,6 +118,20 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
           return grouped;
         }, new Map<number, DeviceDetailsAttributeModel[]>());
 
+        // Sorting based on the order on 'getDeviceAttributeSourceTypes' dictionary
+        const sourceTypes = this.store.selectSnapshot(DictionaryState.getDeviceAttributeSourceTypes);
+
+        const idsOrder = sourceTypes.map(item => item.id);
+
+        const sortedMap = new Map<number, DeviceDetailsAttributeModel[]>();
+        idsOrder.forEach(id => {
+          if (this.deviceDetailsModelGroupedByAttributeSourceType.has(id)) {
+            sortedMap.set(id, this.deviceDetailsModelGroupedByAttributeSourceType.get(id)!);
+          }
+        });
+
+        this.deviceDetailsModelGroupedByAttributeSourceType = sortedMap;
+
         this.changeDetectorRef.detectChanges();
       })
     );
@@ -163,5 +177,9 @@ export class MapItemContextDialogComponent implements AfterContentChecked, OnDes
 
     const height = attributeDivElement.clientHeight;
     this.attributeStatusChartElementTop = `${height + 5}px`;
+  }
+
+  doNotOrder() {
+    return 0;
   }
 }
