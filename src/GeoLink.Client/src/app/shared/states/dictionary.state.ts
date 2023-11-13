@@ -12,6 +12,7 @@ import {
   GetMapDeviceTypes,
   GetMapObjectStatusTypes,
   GetMapObjectTypes,
+  GetStatusesConfig,
   GetSystemGroups,
   GetSystemPermissions,
   GetSystemRegions,
@@ -24,6 +25,7 @@ import { DeviceGroupRelationModel } from '../models/device-group-relation.model'
 import { append, patch } from '@ngxs/store/operators';
 import { ConfigDefinitionModel } from '../models/config/config-definition.model';
 import { FilterAttributeDefinitionModel } from '../models/filters/filter-attribute-definition.model';
+import { StatusConfigModel } from '../models/status-config.model';
 
 export const DICTIONARY_STATE_TOKEN = new StateToken<DictionaryStateModel>('dictionary');
 
@@ -44,6 +46,7 @@ export const DICTIONARY_STATE_TOKEN = new StateToken<DictionaryStateModel>('dict
     timeExtentDefinitions: [],
     configDefinitions: [],
     filterAttributeDefinitions: [],
+    statusesConfig: [],
   },
 })
 @Injectable()
@@ -118,6 +121,11 @@ export class DictionaryState {
   @Selector([DICTIONARY_STATE_TOKEN])
   static getFilterAttributeDefinitions(state: DictionaryStateModel): FilterAttributeDefinitionModel[] {
     return state.filterAttributeDefinitions;
+  }
+
+  @Selector([DICTIONARY_STATE_TOKEN])
+  static getStatusesConfig(state: DictionaryStateModel): StatusConfigModel[] {
+    return state.statusesConfig;
   }
 
   @Action(GetSystemGroups)
@@ -288,6 +296,20 @@ export class DictionaryState {
       tap(response => {
         ctx.patchState({
           filterAttributeDefinitions: response,
+        });
+      }),
+      catchError(error => {
+        return throwError(error);
+      })
+    );
+  }
+
+  @Action(GetStatusesConfig)
+  getStatusesConfig(ctx: StateContext<DictionaryStateModel>, _: GetStatusesConfig) {
+    return this.dictionaryService.getStatusesConfig().pipe(
+      tap(response => {
+        ctx.patchState({
+          statusesConfig: response,
         });
       }),
       catchError(error => {

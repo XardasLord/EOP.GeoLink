@@ -4,6 +4,7 @@ import { EnumDescriptionRegionModel } from '../models/enum-description-region.mo
 import { DeviceGroupRelationModel } from '../models/device-group-relation.model';
 import { ConfigDefinitionModel } from '../models/config/config-definition.model';
 import { FilterAttributeDefinitionModel } from '../models/filters/filter-attribute-definition.model';
+import { StatusConfigModel } from '../models/status-config.model';
 
 export interface DictionaryStateModel {
   systemGroups: EnumDescriptionWithScopesModel[];
@@ -20,4 +21,5 @@ export interface DictionaryStateModel {
   timeExtentDefinitions: EnumDescriptionModel[];
   configDefinitions: ConfigDefinitionModel[];
   filterAttributeDefinitions: FilterAttributeDefinitionModel[];
+  statusesConfig: StatusConfigModel[];
 }

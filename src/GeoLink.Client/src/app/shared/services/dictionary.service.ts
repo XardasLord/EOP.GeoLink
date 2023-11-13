@@ -9,6 +9,7 @@ import { EnumDescriptionRegionModel } from '../models/enum-description-region.mo
 import { DeviceGroupRelationModel } from '../models/device-group-relation.model';
 import { ConfigDefinitionModel } from '../models/config/config-definition.model';
 import { FilterAttributeDefinitionModel } from '../models/filters/filter-attribute-definition.model';
+import { StatusConfigModel } from '../models/status-config.model';
 
 @Injectable()
 export class DictionaryService extends RemoteServiceBase {
@@ -83,5 +84,9 @@ export class DictionaryService extends RemoteServiceBase {
 
   getFilterAttributeDefinitions(): Observable<FilterAttributeDefinitionModel[]> {
     return this.httpClient.get<FilterAttributeDefinitionModel[]>(`${this.apiUrl}/interface/getAtrFiltersDef`);
+  }
+
+  getStatusesConfig(): Observable<StatusConfigModel[]> {
+    return this.httpClient.get<StatusConfigModel[]>(`${this.apiUrl}/settings/getStatAggrConfig`);
   }
 }
