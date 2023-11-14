@@ -34,6 +34,8 @@ const CHARTS_STATE_TOKEN = new StateToken<ChartsStateModel>('charts');
       dateBegin: new Date(),
       dateEnd: new Date(),
       timeExtent: 0,
+      chartTitle: '',
+      chartSubtitle: '',
     },
     echartsOption: {
       legend: {

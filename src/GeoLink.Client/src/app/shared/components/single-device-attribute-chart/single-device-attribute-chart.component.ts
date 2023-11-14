@@ -30,6 +30,8 @@ export class SingleDeviceAttributeChartComponent implements OnInit, OnDestroy {
     dateBegin: new Date(),
     dateEnd: new Date(),
     timeExtent: 0,
+    chartTitle: '',
+    chartSubtitle: '',
   };
 
   chartOptions!: EChartsOption;
