@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
-import { catchError, tap, throwError } from 'rxjs';
+import { catchError, EMPTY, tap, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { DefaultFormStateValue } from '../../../shared/models/form-states.model';
 import { StatusesConfigStateModel } from './statuses-config.state.model';
@@ -69,8 +70,12 @@ export class StatusesConfigState {
 
         ctx.dispatch([new Load(), new CloseModal()]);
       }),
-      catchError(error => {
-        return throwError(error);
+      catchError((error: HttpErrorResponse) => {
+        this.toastService.error(error.error, 'Edycja statusu', {
+          onActivateTick: true,
+        });
+
+        return EMPTY;
       })
     );
   }

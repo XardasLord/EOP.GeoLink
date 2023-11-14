@@ -1,4 +1,6 @@
 <ng-container *ngIf="chartModel.chartsData.data && chartModel.chartsData.data.length > 0; else no_chart">
+  <div class="text-base text-center font-semibold mt-1">{{ chartModel.chartTitle }}</div>
+  <div class="text-sm text-center font-medium">{{ chartModel.chartSubtitle }}</div>
   <div class="chart-header-info">
     <table>
       <tr>

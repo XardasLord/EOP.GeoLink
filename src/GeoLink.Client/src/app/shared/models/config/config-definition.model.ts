@@ -7,7 +7,9 @@ export interface ConfigDefinitionModel {
     | 'DATA_RETENTION_DAYS'
     | 'DATA_RETENTION_ACTION'
     | 'DIAGTOOLS_PRTG_URL'
-    | 'DIAGTOOLS_CONSOLE_SSH_HOSTNAME';
+    | 'DIAGTOOLS_CONSOLE_SSH_HOSTNAME'
+    | 'DIAGTOOLS_WEBSITE_POLKOMTEL'
+    | 'DIAGTOOLS_WEBSITE_TMOBILE';
   title: string;
   dataType: 'dict' | 'number' | 'text';
   dict: ConfigDefinitionDictValueModel[];

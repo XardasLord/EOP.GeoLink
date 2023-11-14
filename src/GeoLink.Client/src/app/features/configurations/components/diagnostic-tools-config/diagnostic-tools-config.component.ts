@@ -34,6 +34,14 @@ export class DiagnosticToolsConfigComponent implements OnInit, OnDestroy {
         nonNullable: true,
         validators: [Validators.required],
       }),
+      websitePolkomtel: new FormControl<string>('url', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+      websiteTMobile: new FormControl<string>('url', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
     });
   }
 
@@ -48,6 +56,8 @@ export class DiagnosticToolsConfigComponent implements OnInit, OnDestroy {
             value: {
               prtgUrl: diagnosticToolsConfig.prtgUrl,
               consoleSshHostname: diagnosticToolsConfig.consoleSshHostname,
+              websitePolkomtel: diagnosticToolsConfig.websitePolkomtel,
+              websiteTMobile: diagnosticToolsConfig.websiteTMobile,
             },
           })
         );

@@ -1,4 +1,6 @@
 export interface ChartModel {
+  chartTitle: string;
+  chartSubtitle: string;
   dateNow: Date;
   dateBegin: Date;
   dateEnd: Date;

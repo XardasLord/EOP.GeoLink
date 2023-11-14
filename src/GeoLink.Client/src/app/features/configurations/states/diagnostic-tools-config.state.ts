@@ -17,6 +17,8 @@ const DIAGNOSTIC_TOOLS_CONFIG_STATE_TOKEN = new StateToken<DiagnosticToolsConfig
     config: {
       prtgUrl: '',
       consoleSshHostname: '',
+      websitePolkomtel: '',
+      websiteTMobile: '',
     },
     configFormGroup: DefaultFormStateValue,
   },
@@ -56,6 +58,8 @@ export class DiagnosticToolsConfigState {
             config: {
               prtgUrl: action.command.prtgUrl,
               consoleSshHostname: action.command.consoleSshHostname,
+              websitePolkomtel: action.command.websitePolkomtel,
+              websiteTMobile: action.command.websiteTMobile,
             },
           })
         );
