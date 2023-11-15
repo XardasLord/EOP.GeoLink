@@ -15,7 +15,6 @@ const DIAGNOSTIC_TOOLS_CONFIG_STATE_TOKEN = new StateToken<DiagnosticToolsConfig
   name: DIAGNOSTIC_TOOLS_CONFIG_STATE_TOKEN,
   defaults: {
     config: {
-      prtgUrl: '',
       consoleSshHostname: '',
       websitePolkomtel: '',
       websiteTMobile: '',
@@ -56,7 +55,6 @@ export class DiagnosticToolsConfigState {
         ctx.setState(
           patch({
             config: {
-              prtgUrl: action.command.prtgUrl,
               consoleSshHostname: action.command.consoleSshHostname,
               websitePolkomtel: action.command.websitePolkomtel,
               websiteTMobile: action.command.websiteTMobile,
