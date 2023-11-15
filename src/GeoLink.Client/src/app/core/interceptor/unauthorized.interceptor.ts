@@ -3,10 +3,14 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } fr
 import { Store } from '@ngxs/store';
 import { Observable, tap } from 'rxjs';
 import { Logout } from '../../shared/states/auth.action';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class UnauthorizedInterceptor implements HttpInterceptor {
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    private toastService: ToastrService
+  ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
@@ -17,6 +21,10 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
         },
         error => {
           if (error.status === 401) {
+            this.toastService.success('Wylogowano użytkownika', '', {
+              onActivateTick: true,
+            });
+
             this.store.dispatch(new Logout());
           }
         }
