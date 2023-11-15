@@ -26,10 +26,6 @@ export class DiagnosticToolsConfigComponent implements OnInit, OnDestroy {
     private store: Store
   ) {
     this.diagnosticForm = this.fb.group<DiagnosticToolsConfigFormGroup>({
-      prtgUrl: new FormControl<string>('test url', {
-        nonNullable: true,
-        validators: [Validators.required],
-      }),
       consoleSshHostname: new FormControl<string>('hostname', {
         nonNullable: true,
         validators: [Validators.required],
@@ -54,7 +50,6 @@ export class DiagnosticToolsConfigComponent implements OnInit, OnDestroy {
           new UpdateFormValue({
             path: `diagnosticToolsConfig.${nameof<DiagnosticToolsConfigStateModel>('configFormGroup')}`,
             value: {
-              prtgUrl: diagnosticToolsConfig.prtgUrl,
               consoleSshHostname: diagnosticToolsConfig.consoleSshHostname,
               websitePolkomtel: diagnosticToolsConfig.websitePolkomtel,
               websiteTMobile: diagnosticToolsConfig.websiteTMobile,

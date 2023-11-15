@@ -23,13 +23,11 @@ export class DiagnosticToolsConfigService extends RemoteServiceBase {
 
   loadConfig(): Observable<DiagnosticToolsConfigModel> {
     const configDefs = this.store.selectSnapshot(DictionaryState.getConfigDefinitions);
-    const prtgUrlId = configDefs.filter(x => x.name === 'DIAGTOOLS_PRTG_URL').map(x => x.id)[0];
     const consoleSshHostnameId = configDefs.filter(x => x.name === 'DIAGTOOLS_CONSOLE_SSH_HOSTNAME').map(x => x.id)[0];
     const websitePolkomtelId = configDefs.filter(x => x.name === 'DIAGTOOLS_WEBSITE_POLKOMTEL').map(x => x.id)[0];
     const websiteTMobileId = configDefs.filter(x => x.name === 'DIAGTOOLS_WEBSITE_TMOBILE').map(x => x.id)[0];
 
     const params = new HttpParams()
-      .append('idConfig', prtgUrlId)
       .append('idConfig', consoleSshHostnameId)
       .append('idConfig', websitePolkomtelId)
       .append('idConfig', websiteTMobileId);
@@ -37,7 +35,6 @@ export class DiagnosticToolsConfigService extends RemoteServiceBase {
     return this.httpClient.get<ConfigResponseModel[]>(`${this.apiUrl}/settings/getConfig`, { params }).pipe(
       map((response: ConfigResponseModel[]) => {
         const result: DiagnosticToolsConfigModel = {
-          prtgUrl: response.filter(x => x.id === prtgUrlId).map(x => x.textVal)[0],
           consoleSshHostname: response.filter(x => x.id === consoleSshHostnameId).map(x => x.textVal)[0],
           websitePolkomtel: response.filter(x => x.id === websitePolkomtelId).map(x => x.textVal)[0],
           websiteTMobile: response.filter(x => x.id === websiteTMobileId).map(x => x.textVal)[0],
@@ -51,13 +48,6 @@ export class DiagnosticToolsConfigService extends RemoteServiceBase {
     const updateModel: ConfigUpdateModel[] = [];
 
     const configDefs = this.store.selectSnapshot(DictionaryState.getConfigDefinitions);
-
-    updateModel.push({
-      id: configDefs.filter(x => x.name === 'DIAGTOOLS_PRTG_URL').map(x => x.id)[0],
-      numVal: undefined,
-      dictVal: undefined,
-      textVal: command.prtgUrl,
-    });
 
     updateModel.push({
       id: configDefs.filter(x => x.name === 'DIAGTOOLS_CONSOLE_SSH_HOSTNAME').map(x => x.id)[0],
