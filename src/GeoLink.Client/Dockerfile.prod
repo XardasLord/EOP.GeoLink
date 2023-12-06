@@ -3,7 +3,7 @@ FROM node:18.16 as node
 WORKDIR /app
 COPY . .
 RUN yarn install
-RUN npm run build
+RUN npm run build-prod
 
 # Stage 2
 FROM nginx:alpine
